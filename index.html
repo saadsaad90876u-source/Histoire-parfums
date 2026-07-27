@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<style>
+/* Critical inline CSS -- prevents the "flash of unstyled content" (FOUC)
+   on slow connections while style.css and web fonts are still
+   downloading. Every value here matches the final stylesheet exactly,
+   so there is no visual jump once the full CSS finishes loading --
+   this is purely a safety net for the very first paint. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: #FAF8F3; }
+body { background: #FAF8F3; color: #0c1424; font-family: sans-serif; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+svg:not([width]) { width: 1em; height: 1em; }
+</style>
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#FAF8F3">
+<title>SYMPHONIE — Parfums de Luxe pour Homme et Femme</title>
+<meta name="description" content="SYMPHONIE — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
+<meta name="keywords" content="parfum, parfums de luxe, SYMPHONIE, parfum homme, parfum femme, boutique parfum Maroc">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://your-domain.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SYMPHONIE — Parfums de Luxe">
+<meta property="og:description" content="Découvrez notre collection exclusive de parfums de luxe pour homme et femme.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:url" content="https://your-domain.vercel.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SYMPHONIE — Parfums de Luxe">
+<meta name="twitter:description" content="Découvrez notre collection exclusive de parfums de luxe pour homme et femme.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Cairo:wght@400;500;600;700&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<script>
+// Self-healing check: if style.css failed to load, or loaded but somehow
+// didn't apply (rare network/CDN glitch), automatically retry once with
+// a cache-busting reload instead of leaving the visitor stuck on an
+// unstyled page. Guarded with sessionStorage so it can only trigger a
+// single reload per session (never an infinite reload loop).
+(function(){
+  function cssIsBroken(){
+    var applied = getComputedStyle(document.documentElement).getPropertyValue('--css-loaded-check').trim();
+    return window.__cssFailed === true || applied !== '"ok"';
+  }
+  function runCheck(){
+    setTimeout(function(){
+      if(cssIsBroken() && !sessionStorage.getItem('cssRetryDone')){
+        sessionStorage.setItem('cssRetryDone', '1');
+        var link = document.getElementById('main-stylesheet');
+        if(link){ link.href = '/style.css?retry=' + Date.now(); }
+        setTimeout(function(){
+          if(cssIsBroken()) location.reload();
+        }, 800);
+      } else if(!cssIsBroken()){
+        sessionStorage.removeItem('cssRetryDone');
+      }
+    }, 400);
+  }
+  window.addEventListener('load', runCheck);
+  // Safari/iOS can restore a page from the back-forward cache (after
+  // switching apps or navigating back) without firing 'load' again --
+  // 'pageshow' catches that case too, so the check still runs.
+  window.addEventListener('pageshow', function(e){ if(e.persisted) runCheck(); });
+})();
+</script>
+<link rel="icon" href="/symphonie-logo.png" type="image/png">
+</head>
+<body>
+<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="SYMPHONIE PARFUMS" class="splash-logo"></div>
+<h1 class="sr-only">SYMPHONIE — Parfums de Luxe pour Homme et Femme</h1>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.3c-.25 0-.5-.09-.7-.27C7.7 16.8 4.3 13.6 4.3 9.9 4.3 7 6.6 4.8 9.3 4.8c1.5 0 2.9.7 3.7 1.9.8-1.2 2.2-1.9 3.7-1.9 2.7 0 5 2.2 5 5.1 0 3.7-3.4 6.9-7 10.1-.2.18-.45.27-.7.27z"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M1.5 2h2.6l2.1 12.4a2 2 0 0 0 2 1.6h9.9a2 2 0 0 0 2-1.6L22 6.5H5"/></symbol>
+<symbol id="i-track" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.2-4 3.9-6.2 7.2-6.2s6 2.2 7.2 6.2"/></symbol>
+</defs>
+</svg>
+
+<div id="announcement-bar">
+  <div class="ab-track">
+    <div class="ab-group">
+      <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span data-i18n="freeShippingBar">Livraison gratuite à partir de 195 DH</span></span>
+    </div>
+    <div class="ab-group" aria-hidden="true">
+      <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span data-i18n="freeShippingBar">Livraison gratuite à partir de 195 DH</span></span>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="nav-wrap">
+    <button type="button" id="menu-toggle-btn" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.png" alt="SYMPHONIE" class="logo-img"></button>
+    <div class="nav-icons">
+      <button aria-label="Search" id="search-btn"><svg class="icon"><use href="#i-search"></use></svg></button>
+      <button aria-label="Cart" id="cart-btn"><svg class="icon"><use href="#i-bag"></use></svg><span class="cart-badge" id="cart-badge-count" style="display:none;">0</span></button>
+    </div>
+  </div>
+</header>
+
+<div id="shop-view">
+<section id="hero-banner" style="display:none;">
+  <div class="hero-banner-frame" id="hero-banner-frame">
+    <div id="hero-banner-content"></div>
+  </div>
+</section>
+<input type="file" id="hero-banner-input" accept="image/*,video/mp4" multiple style="display:none;">
+
+<section class="shop-section">
+  <div class="container">
+    <h2 class="shop-heading reveal" id="shop-heading">Women's Collection</h2>
+    <div class="shop-filters" id="shop-filters">
+      <button class="sf-btn active" data-f="women" data-i18n="filterWomen">Women</button>
+      <button class="sf-btn" data-f="men" data-i18n="filterMen">Men</button>
+    </div>
+
+    <div class="pack4-banner reveal" id="pack4-banner-btn">
+      <div class="pack4-banner-image" id="pack4-banner-image">
+        <img id="pack4-banner-img" class="pack4-banner-img" src="" alt="Pack 3 parfums" loading="eager" fetchpriority="high" style="display:none;">
+        <div class="pack4-banner-image-placeholder" id="pack4-banner-image-placeholder" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        </div>
+        <button type="button" class="pack4-banner-image-edit" id="pack4-banner-image-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
+        <input type="file" id="pack4-banner-image-input" accept="image/*" hidden>
+      </div>
+      <div class="pack4-banner-text">
+        <div class="pack4-banner-heading">
+          <span class="pack4-banner-heading-top" data-i18n="pack4BannerHeadingTop">Offre pack de</span>
+          <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>
+        </div>
+        <div class="pack4-banner-title" data-i18n="pack4BannerLabelPre">Choisissez votre pack</div>
+        <div class="pack4-banner-price">
+          <span class="pack4-price-new">195 DH</span>
+          <span class="pack4-price-sep"></span>
+          <span class="pack4-price-old">225 DH</span>
+        </div>
+        <div class="pack4-banner-cta" id="pack4-banner-cta">
+          <span data-i18n="pack4BannerCta">Découvrir le pack</span>
+          <span class="pack4-banner-cta-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="12" x2="19" y2="12"></line>
+              <polyline points="13 6 19 12 13 18"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-grid" id="shop-grid"></div>
+
+    <div class="featured-products" id="featured-products-list"></div>
+  </div>
+</section>
+
+<section id="bottom-banner" class="reveal" style="display:none;">
+  <div class="hero-banner-frame" id="bottom-banner-frame">
+    <div id="bottom-banner-content"></div>
+  </div>
+</section>
+<input type="file" id="bottom-banner-input" accept="image/*,video/mp4" multiple style="display:none;">
+
+<section id="bottom-banner-2" class="reveal" style="display:none;">
+  <div class="hero-banner-frame" id="bottom-banner-2-frame">
+    <div id="bottom-banner-2-content"></div>
+  </div>
+</section>
+<input type="file" id="bottom-banner-2-input" accept="image/*,video/mp4" multiple style="display:none;">
+
+<!-- ============================================================
+     LUXURY MARKETING SECTIONS (additive) — About, Why Choose,
+     Trust Stats, Testimonials, Lifestyle, FAQ, Newsletter, Contact.
+     ============================================================ -->
+
+
+<section class="lux-section lux-section-alt" id="faq-section">
+  <div class="container">
+    <div class="lux-eyebrow">Questions Fréquentes</div>
+    <h2 class="lux-heading reveal">FAQ</h2>
+    <p class="lux-subheading">Tout ce que vous devez savoir avant de commander.</p>
+    <div class="faq-list" id="faq-list">
+      <div class="faq-item reveal d1">
+        <button type="button" class="faq-question">
+          <span>Quels types de parfums proposez-vous ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <button type="button" class="faq-question">
+          <span>Comment choisir le parfum idéal ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <button type="button" class="faq-question">
+          <span>Quelle est la tenue moyenne ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <button type="button" class="faq-question">
+          <span>Vos parfums sont-ils sûrs pour la peau ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.</div></div>
+      </div>
+      <div class="faq-item reveal d1">
+        <button type="button" class="faq-question">
+          <span>Comment fonctionne la livraison ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <button type="button" class="faq-question">
+          <span>Quels sont les délais de livraison ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <button type="button" class="faq-question">
+          <span>Puis-je retourner un produit ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <button type="button" class="faq-question">
+          <span>Comment conserver mon parfum ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lux-section" id="contact-section">
+  <div class="container">
+    <div class="lux-eyebrow">Restons en contact</div>
+    <h2 class="lux-heading reveal">Contactez-nous</h2>
+    <p class="lux-subheading">Notre équipe est à votre écoute pour toute question sur votre commande ou nos parfums.</p>
+    <div class="contact-grid">
+      <a class="contact-card reveal d1" href="https://wa.me/212712804966" target="_blank" rel="noopener">
+        <div class="contact-card-icon contact-card-icon-wa"><svg viewBox="0 0 32 32" style="width:26px;height:26px;" fill="#fff"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.35.65 4.55 1.78 6.43L3 29l7.24-2.24a12.44 12.44 0 0 0 5.76 1.46c6.894 0 12.5-5.607 12.5-12.5S22.895 3 16.001 3zm0 22.6c-1.86 0-3.62-.5-5.14-1.4l-.37-.22-4.3 1.33 1.36-4.2-.24-.38a10.06 10.06 0 0 1-1.55-5.24c0-5.58 4.55-10.13 10.13-10.13 5.58 0 10.13 4.55 10.13 10.13.13 5.58-4.42 10.11-10 10.11zm5.55-7.58c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.68-1.65-.94-2.26-.25-.6-.5-.51-.68-.52-.18-.01-.38-.01-.58-.01-.2 0-.53.08-.8.38-.28.3-1.05 1.03-1.05 2.5 0 1.47 1.08 2.9 1.23 3.1.15.2 2.13 3.25 5.16 4.56.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.07-.13-.27-.2-.57-.35z"/></svg></div>
+        <h4>WhatsApp</h4>
+      </a>
+      <a class="contact-card reveal d2" href="https://www.instagram.com/symphonie.parfums?igsh=cjY5aG91ZzZxM25l" target="_blank" rel="noopener">
+        <div class="contact-card-icon contact-card-icon-ig"><svg viewBox="0 0 24 24" style="width:22px;height:22px;" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="#fff" stroke="none"/></svg></div>
+        <h4>Instagram</h4>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="lux-section lux-section-alt" id="reviews-section">
+  <div class="container">
+    <div class="lux-eyebrow">Témoignages</div>
+    <h2 class="lux-heading reveal">Avis de nos clients</h2>
+    <p class="lux-subheading">Découvrez ce que nos clients pensent de leurs parfums SYMPHONIE.</p>
+
+    <div class="testimonial-rating-line" id="reviews-summary" style="display:none;">
+      <span class="testimonial-rating-stars" id="reviews-summary-stars"></span>
+      <span class="testimonial-rating-text" id="reviews-summary-text"></span>
+    </div>
+
+    <div class="testimonial-carousel reveal" id="testimonial-carousel">
+      <div class="testimonial-carousel-track" id="reviews-grid">
+        <div class="testimonial-skel"></div>
+      </div>
+      <div class="testimonial-dots" id="testimonial-dots"></div>
+    </div>
+
+    <div class="testimonial-empty" id="reviews-empty-note" style="display:none;">
+      <p class="testimonial-empty-title">Les premières confidences n'ont pas encore été partagées.</p>
+      <p class="testimonial-empty-sub">Soyez le premier à raconter votre expérience avec SYMPHONIE.</p>
+    </div>
+
+    <div class="testimonial-write-row">
+      <button type="button" class="reviews-write-btn-outline" id="reviews-write-btn">Écrire un avis</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="modal-overlay" id="review-overlay"></div>
+<div class="checkout-modal review-modal" id="review-modal" style="text-align:left;">
+  <button class="wd-close" id="review-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:6px;">Partagez votre avis</h3>
+  <p class="checkout-sub" style="margin-bottom:18px;">Votre avis sera publié après validation par notre équipe.</p>
+  <form id="review-form">
+    <label class="cf-label"><span>Nom complet</span>
+      <input type="text" id="review-name" class="cf-input" required maxlength="60" placeholder="Votre nom">
+    </label>
+    <div class="review-stars-field">
+      <span class="cf-label-text">Votre note</span>
+      <div class="review-star-picker" id="review-star-picker" role="radiogroup" aria-label="Note">
+        <button type="button" class="review-star-btn" data-star="1" aria-label="1 étoile">★</button>
+        <button type="button" class="review-star-btn" data-star="2" aria-label="2 étoiles">★</button>
+        <button type="button" class="review-star-btn" data-star="3" aria-label="3 étoiles">★</button>
+        <button type="button" class="review-star-btn" data-star="4" aria-label="4 étoiles">★</button>
+        <button type="button" class="review-star-btn" data-star="5" aria-label="5 étoiles">★</button>
+      </div>
+      <input type="hidden" id="review-rating" value="0">
+    </div>
+    <label class="cf-label"><span>Votre commentaire</span>
+      <textarea id="review-comment" class="cf-input review-textarea" required maxlength="600" rows="4" placeholder="Racontez votre expérience avec ce parfum..."></textarea>
+    </label>
+    <label class="cf-label">
+      <span>Photo <em class="review-optional-tag">(optionnel)</em></span>
+      <div class="review-image-upload" id="review-image-upload">
+        <input type="file" id="review-image-input" accept="image/*" style="display:none;">
+        <div class="review-image-placeholder" id="review-image-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
+          <span>Ajouter une photo</span>
+        </div>
+        <img id="review-image-preview" style="display:none;">
+        <button type="button" id="review-image-remove" style="display:none;" aria-label="Supprimer la photo">✕</button>
+      </div>
+    </label>
+    <p id="review-form-error" style="display:none; color:#c0392b; font-size:13px; margin:-8px 0 14px;">Veuillez renseigner votre nom, une note et un commentaire.</p>
+    <button type="submit" class="checkout-btn" id="review-submit-btn">Envoyer mon avis</button>
+  </form>
+  <div id="review-thanks" style="display:none; text-align:center; padding:20px 0;">
+    <div class="review-thanks-icon">✓</div>
+    <h3 style="margin:14px 0 8px;">Merci pour votre avis !</h3>
+    <p style="color:var(--text-soft); font-size:14px; line-height:1.7;">Votre commentaire sera publié dès qu'il aura été validé par notre équipe.</p>
+    <button type="button" class="checkout-btn" id="review-thanks-close">Fermer</button>
+  </div>
+</div>
+
+<section id="product-page" style="display:none;">
+  <div class="container">
+    <div id="product-page-content"></div>
+  </div>
+</section>
+<input type="file" id="pp-admin-add-input" accept="image/*" multiple style="display:none;">
+
+<section id="checkout-page" style="display:none;">
+  <div class="container checkout-page-inner">
+    <button type="button" class="pp-back" id="checkout-modal-close" data-i18n="backToShopBtn">← Back</button>
+    <div id="checkout-form-view">
+
+      <!-- Order Summary -->
+      <div class="order-summary-card">
+        <div class="osc-title" data-i18n="orderSummaryTitle">Order Summary</div>
+        <div id="checkout-items-list" style="display:none;"></div>
+        <div class="osc-row"><span data-i18n="subtotal">Subtotal</span><span id="co-subtotal">0 DH</span></div>
+        <div class="osc-row"><span data-i18n="deliveryFee">Delivery Fee</span><span id="co-shipping">10 DH</span></div>
+        <div class="osc-row" id="co-discount-row" style="display:none;"><span data-i18n="discountLabel">Discount</span><span id="co-discount">-0 DH</span></div>
+      </div>
+      <div class="order-total-card">
+        <span data-i18n="totalLabel">Total</span>
+        <span id="co-total">0 DH</span>
+      </div>
+
+      <!-- Coupon (hidden — feature removed from the checkout UI, elements kept so existing JS listeners don't break) -->
+      <div style="display:none;">
+        <input type="text" id="coupon-input" value="">
+        <button type="button" id="coupon-apply-btn"></button>
+        <p id="coupon-success"></p>
+        <p id="coupon-error"></p>
+      </div>
+
+      <form id="checkout-form">
+        <div class="osc-title" style="margin-top:6px;" data-i18n="deliveryInfoTitle">Delivery Information</div>
+        <label class="cf-label"><span class="sr-only" data-i18n="fullName">Full Name</span>
+          <div class="cf-field-wrap">
+            <span class="cf-field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c1.2-4 3.9-6.2 7.2-6.2s6 2.2 7.2 6.2"/></svg></span>
+            <input type="text" id="checkout-name" class="cf-input cf-input-icon" data-i18n-placeholder="fullNamePh" placeholder="e.g. Sara Ahmed" required>
+          </div>
+        </label>
+        <label class="cf-label"><span class="sr-only" data-i18n="phoneNumber">Phone Number</span>
+          <div class="cf-field-wrap">
+            <span class="cf-field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1v3.6c0 .6-.4 1-1 1C10.6 21.1 3 13.5 3 4.2c0-.6.4-1 1-1h3.6c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8z"/></svg></span>
+            <input type="tel" id="checkout-phone" class="cf-input cf-input-icon" data-i18n-placeholder="phonePh" placeholder="Numero" required>
+          </div>
+        </label>
+        <input type="hidden" id="checkout-city" value="">
+        <label class="cf-label"><span class="sr-only" data-i18n="addressLabel">Home Address</span>
+          <div class="cf-field-wrap">
+            <span class="cf-field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11A6.5 6.5 0 0 1 12 3.5 6.5 6.5 0 0 1 18.5 10c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg></span>
+            <textarea id="checkout-address" class="cf-input cf-input-icon" rows="1" style="resize:vertical;" data-i18n-placeholder="addressPh" placeholder="Street, city, area..." required></textarea>
+          </div>
+        </label>
+        <input type="hidden" id="checkout-notes" value="">
+
+        <label class="gift-wrap-option" for="checkout-giftwrap">
+          <input type="checkbox" id="checkout-giftwrap">
+          <span class="gift-wrap-icon">🎁</span>
+          <span class="gift-wrap-text">
+            <strong>Emballage cadeau</strong>
+            <span>Offert — présentation soignée avec ruban</span>
+          </span>
+        </label>
+        <div id="checkout-giftwrap-message-wrap" style="display:none; margin:-6px 0 16px;">
+          <textarea id="checkout-giftwrap-message" class="cf-input" rows="2" maxlength="200" placeholder="Message pour la carte cadeau (optionnel)"></textarea>
+        </div>
+
+        <div class="osc-title" data-i18n="paymentMethodTitle">Payment Method</div>
+        <div class="payment-card">
+          <div class="payment-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="2"/>
+            <circle cx="12" cy="12" r="2.6"/>
+            <path d="M6 12h.01M18 12h.01"/>
+          </svg>
+        </div>
+          <div>
+            <div class="payment-name" data-i18n="codLabel">Cash on Delivery</div>
+          </div>
+        </div>
+
+        <p id="checkout-error" data-i18n="checkoutError" style="display:none; color:#c0392b; font-size:13px; margin:10px 0 -2px;">Please fill in your name and phone number.</p>
+        <button type="submit" id="checkout-submit-btn" class="checkout-btn" style="margin-top:14px;"><span data-i18n="confirmOrder">Confirm Order</span> — <span id="checkout-btn-total">0 DH</span></button>
+
+        <div class="trust-grid">
+          <div class="trust-item">✓ <span data-i18n="trustCod">Cash on Delivery</span></div>
+          <div class="trust-item">✓ <span data-i18n="trustSecure">Secure Order</span></div>
+          <div class="trust-item">✓ <span data-i18n="trustPackaging">Premium Packaging</span></div>
+          <div class="trust-item">✓ <span data-i18n="trustShipping">Fast Shipping</span></div>
+          <div class="trust-item">✓ <span data-i18n="trustSupport">Customer Support</span></div>
+        </div>
+      </form>
+    </div>
+
+    <div id="checkout-success-view" style="display:none; text-align:center; padding:16px 0 4px;">
+      <div class="success-icon">✓</div>
+      <h3 data-i18n="orderSuccessTitle" style="margin-bottom:8px;">Your order has been placed successfully!</h3>
+      <p style="color:var(--text-soft); font-size:14px; margin-bottom:24px;" data-i18n="orderSuccessMsg">Thank you for choosing SYMPHONIE. Your order has been received and is now being processed.</p>
+      <div class="confirm-details">
+        <div class="cd-row"><span data-i18n="orderNumberLabel">Order Number</span><strong id="cd-order-number"></strong></div>
+        <div class="cd-row"><span data-i18n="dateLabel">Date</span><strong id="cd-date"></strong></div>
+        <div class="cd-row"><span data-i18n="totalLabel">Total</span><strong id="cd-total"></strong></div>
+        <div class="cd-row"><span data-i18n="shippingFeeLabel">Shipping Fee</span><strong>10 DH</strong></div>
+        <div class="cd-row"><span data-i18n="paymentMethodTitle">Payment Method</span><strong data-i18n="codLabel">Cash on Delivery</strong></div>
+        <div class="cd-row"><span data-i18n="orderStatusLabel">Order Status</span><strong><span id="cd-status-badge" class="status-badge"></span></strong></div>
+      </div>
+      <button class="checkout-btn" id="track-order-btn" data-i18n="trackOrderBtn" style="margin-top:22px;">Track my Order</button>
+      <button class="checkout-btn" id="continue-shopping-btn" data-i18n="continueShoppingBtn" style="background:none; border:1px solid var(--line); color:var(--ink); margin-top:10px;">Continue Shopping</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-logo"><img src="/symphonie-logo.png" alt="SYMPHONIE" class="footer-logo-img"></div>
+    </div>
+
+    <div class="footer-links-grid">
+      <div class="footer-links-col">
+        <h5>Liens Rapides</h5>
+        <button type="button" id="footer-link-men">Collection Homme</button>
+        <button type="button" id="footer-link-women">Collection Femme</button>
+        <button type="button" id="footer-link-faq">FAQ</button>
+        <button type="button" id="footer-link-contact">Contact</button>
+      </div>
+      <div class="footer-links-col">
+        <h5>Politiques</h5>
+        <button type="button" id="footer-link-privacy">Politique de confidentialité</button>
+        <button type="button" id="footer-link-terms">Conditions générales</button>
+        <button type="button" id="footer-link-shipping">Politique de livraison</button>
+        <button type="button" id="footer-link-returns">Politique de retour</button>
+      </div>
+    </div>
+
+    <div class="footer-social-row">
+      <a href="https://www.instagram.com/symphonie.parfums?igsh=cjY5aG91ZzZxM25l" target="_blank" rel="noopener" class="instagram-btn" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;">
+          <defs>
+            <linearGradient id="igGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FFDD55"/>
+              <stop offset="35%" stop-color="#FF543E"/>
+              <stop offset="70%" stop-color="#C837AB"/>
+              <stop offset="100%" stop-color="#7000FF"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#igGradient)" d="M12 2c-2.7 0-3.05.01-4.12.06-1.06.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.16-.56.55-.9 1.11-1.16 1.77-.25.64-.42 1.37-.47 2.43C2 8.95 2 9.3 2 12s.01 3.05.06 4.12c.05 1.06.22 1.79.47 2.43.26.66.6 1.22 1.16 1.77.55.56 1.11.9 1.77 1.16.64.25 1.37.42 2.43.47C8.95 22 9.3 22 12 22s3.05-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.16.56-.55.9-1.11 1.16-1.77.25-.64.42-1.37.47-2.43.05-1.07.06-1.42.06-4.12s-.01-3.05-.06-4.12c-.05-1.06-.22-1.79-.47-2.43-.26-.66-.6-1.22-1.16-1.77-.55-.56-1.11-.9-1.77-1.16-.64-.25-1.37-.42-2.43-.47C15.05 2.01 14.7 2 12 2zm0 1.8c2.65 0 2.97.01 4.02.06.97.04 1.5.2 1.85.34.46.18.79.39 1.14.74.35.35.56.68.74 1.14.14.35.3.88.34 1.85.05 1.05.06 1.37.06 4.02s-.01 2.97-.06 4.02c-.04.97-.2 1.5-.34 1.85-.18.46-.39.79-.74 1.14-.35.35-.68.56-1.14.74-.35.14-.88.3-1.85.34-1.05.05-1.37.06-4.02.06s-2.97-.01-4.02-.06c-.97-.04-1.5-.2-1.85-.34-.46-.18-.79-.39-1.14-.74-.35-.35-.56-.68-.74-1.14-.14-.35-.3-.88-.34-1.85-.05-1.05-.06-1.37-.06-4.02s.01-2.97.06-4.02c.04-.97.2-1.5.34-1.85.18-.46.39-.79.74-1.14.35-.35.68-.56 1.14-.74.35-.14.88-.3 1.85-.34C9.03 3.81 9.35 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.48a3.34 3.34 0 1 1 0-6.68 3.34 3.34 0 0 1 0 6.68zm5.34-8.68a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/>
+        </svg>
+      </a>
+      <a href="#" target="_blank" rel="noopener" class="facebook-btn" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;">
+          <path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.25h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/>
+        </svg>
+      </a>
+      <a href="#" target="_blank" rel="noopener" class="tiktok-btn" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;">
+          <path fill="#FFFFFF" d="M16.6 5.82c-1.02-1.11-1.59-2.56-1.59-4.07h-3.13v13.44c0 1.63-1.32 2.96-2.95 2.96a2.96 2.96 0 0 1-2.96-2.96 2.96 2.96 0 0 1 2.96-2.96c.3 0 .59.05.86.13V9.28a6.1 6.1 0 0 0-.86-.06 6.1 6.1 0 0 0-6.1 6.1 6.1 6.1 0 0 0 6.1 6.1 6.1 6.1 0 0 0 6.1-6.1V8.83a9.14 9.14 0 0 0 5.35 1.71V7.42a5.94 5.94 0 0 1-3.78-1.6z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="copyright">© 2026 SYMPHONIE Parfum Collection. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="wishlist-overlay" id="menu-overlay"></div>
+<div class="wishlist-drawer menu-drawer-left" id="menu-drawer">
+  <div class="wd-header">
+    <h3 data-i18n="menuTitle">Menu</h3>
+    <button class="wd-close" id="menu-close" aria-label="Close menu">✕</button>
+  </div>
+  <div class="wd-body">
+    <div id="menu-list">
+      <button type="button" class="menu-link" id="menu-track-order">
+        <svg class="icon"><use href="#i-track"></use></svg>
+        <span data-i18n="trackOrderBtn">Track my Order</span>
+      </button>
+      <button type="button" class="menu-link" id="menu-about-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:20px;height:20px;"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span data-i18n="aboutUsBtn">About Us</span>
+      </button>
+    </div>
+    <div id="menu-about-content" style="display:none;">
+      <button type="button" class="menu-back" id="menu-about-back">← <span data-i18n="menuTitle">Menu</span></button>
+      <h4 data-i18n="aboutUsBtn">About Us</h4>
+      <p data-i18n="aboutUsText"></p>
+    </div>
+  </div>
+</div>
+
+<div class="wishlist-overlay" id="wishlist-overlay"></div>
+<div class="wishlist-drawer" id="wishlist-drawer">
+  <div class="wd-header">
+    <h3><span data-i18n="wishlistTitle">Wishlist</span> (<span id="wishlist-count-label">0</span>)</h3>
+    <button class="wd-close" id="wishlist-close" aria-label="Close wishlist">✕</button>
+  </div>
+  <div class="wd-body" id="wishlist-items">
+    <p class="wishlist-empty" data-i18n="wishlistEmpty">Your wishlist is empty.</p>
+  </div>
+</div>
+
+<div class="wishlist-overlay" id="cart-overlay"></div>
+<div class="wishlist-drawer" id="cart-drawer">
+  <div class="wd-header">
+    <h3><span data-i18n="cartTitle">Cart</span> (<span id="cart-count-label">0</span>)</h3>
+    <button class="wd-close" id="cart-close" aria-label="Close cart">✕</button>
+  </div>
+  <div class="wd-body" id="cart-items">
+    <p class="wishlist-empty" data-i18n="cartEmpty">Your cart is empty.</p>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-subtotal"><span data-i18n="subtotal">Subtotal</span><span id="cart-subtotal">0 DH</span></div>
+    <button class="checkout-btn" id="checkout-btn" data-i18n="checkoutBtn">Checkout</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="tracking-overlay"></div>
+<div class="checkout-modal" id="tracking-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="tracking-modal-close" aria-label="Close">✕</button>
+  <h3 data-i18n="trackingTitle" style="margin-bottom:6px;">Track my Order</h3>
+  <p class="checkout-sub" data-i18n="trackingLookupSub" style="margin-bottom:16px;">Enter your order number to see its status.</p>
+  <div id="tracking-my-orders" style="display:none; margin-bottom:20px;">
+    <p class="tk-mine-label" data-i18n="trackingMineLabel">Mes commandes précédentes</p>
+    <div id="tracking-my-orders-list" class="tk-mine-list"></div>
+  </div>
+  <div class="coupon-row" style="margin-bottom:8px;">
+    <input type="text" id="tracking-lookup-input" class="cf-input" data-i18n-placeholder="trackingLookupPh" placeholder="e.g. SYMPHONIE-XXXXXXX" style="margin-top:0;">
+    <button type="button" id="tracking-lookup-btn" class="coupon-apply-btn" data-i18n="trackingLookupBtn">Track</button>
+  </div>
+  <p id="tracking-lookup-error" style="display:none; color:#c0392b; font-size:13px; margin-bottom:16px;" data-i18n="trackingNotFound">No order found with this number.</p>
+  <p id="tracking-order-number" style="color:var(--text-soft); font-size:13px; margin-bottom:20px;"></p>
+  <div id="tracking-timeline" class="tracking-timeline"></div>
+  <section id="tracking-banner" style="display:none; margin-top:24px;">
+    <div class="hero-banner-frame" id="tracking-banner-frame">
+      <div id="tracking-banner-content"></div>
+    </div>
+  </section>
+  <input type="file" id="tracking-banner-input" accept="image/*,video/mp4" multiple style="display:none;">
+</div>
+
+<div class="wishlist-overlay" id="side-menu-overlay"></div>
+<div class="wishlist-drawer side-menu-drawer" id="side-menu-drawer">
+  <div class="wd-header">
+    <div class="sm-header-mark">
+      <h3 data-i18n="sideMenuTitle">Menu</h3>
+    </div>
+    <button class="wd-close" id="side-menu-close" aria-label="Close menu">✕</button>
+  </div>
+  <div class="sm-divider"></div>
+  <div class="wd-body sm-body">
+    <button type="button" class="side-menu-item" id="side-menu-track-order">
+      <span class="sm-icon-badge"><svg class="icon"><use href="#i-track"></use></svg></span>
+      <span class="sm-item-text">
+        <span class="sm-item-label" data-i18n="sideMenuTrackOrder">Track my Order</span>
+        <span class="sm-item-sub">Consultez l'état de votre commande</span>
+      </span>
+      <span class="sm-chevron-badge"><svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
+    </button>
+    <a href="https://wa.me/212712804966" target="_blank" rel="noopener" class="side-menu-item" id="side-menu-whatsapp">
+      <span class="sm-icon-badge sm-icon-badge-wa"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M12 2.1c-5.5 0-10 4.5-10 10 0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10s-4.5-9.8-10-9.8zm0 18.1c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3c-.9-1.4-1.4-3-1.4-4.7 0-4.6 3.8-8.4 8.4-8.4s8.3 3.7 8.3 8.4-3.7 8.5-8.2 8.5zm4.6-6.3c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8.9-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg></span>
+      <span class="sm-item-text">
+        <span class="sm-item-label">Contact WhatsApp</span>
+        <span class="sm-item-sub">Discutez avec nous directement</span>
+      </span>
+      <span class="sm-chevron-badge"><svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
+    </a>
+    <button type="button" class="side-menu-item" id="side-menu-about">
+      <span class="sm-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:18px;height:18px;"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></span>
+      <span class="sm-item-text">
+        <span class="sm-item-label" data-i18n="sideMenuAboutUs">About Us</span>
+        <span class="sm-item-sub">Découvrez notre histoire</span>
+      </span>
+      <span class="sm-chevron-badge"><svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
+    </button>
+    <button type="button" class="side-menu-item" id="side-menu-founder">
+      <span class="sm-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:18px;height:18px;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg></span>
+      <span class="sm-item-text">
+        <span class="sm-item-label">Derrière la Marque</span>
+        <span class="sm-item-sub">La personne derrière SYMPHONIE</span>
+      </span>
+      <span class="sm-chevron-badge"><svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
+    </button>
+    <a class="side-menu-item" href="https://www.instagram.com/symphonie.parfums?igsh=cjY5aG91ZzZxM25l" target="_blank" rel="noopener">
+      <span class="sm-icon-badge"><svg viewBox="0 0 24 24" style="width:18px;height:18px;" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></span>
+      <span class="sm-item-text">
+        <span class="sm-item-label">Instagram</span>
+        <span class="sm-item-sub">@symphonie.parfums</span>
+      </span>
+      <span class="sm-chevron-badge"><svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></span>
+    </a>
+  </div>
+  <div class="sm-footer">
+    <div class="sm-footer-divider"></div>
+    <div class="sm-footer-brand">SYMPHONIE<span class="sm-footer-sub">PARFUMS</span></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="about-overlay"></div>
+<div class="checkout-modal" id="about-modal" style="text-align:left;">
+  <button class="wd-close" id="about-modal-close" aria-label="Close">✕</button>
+  <h3 data-i18n="aboutUsTitle" style="margin-bottom:14px;">About Us</h3>
+  <p style="font-size:14.5px; color:var(--text-soft); line-height:1.8;" data-i18n="aboutUsBody">SYMPHONIE parfum collection body text.</p>
+</div>
+
+<div class="modal-overlay" id="founder-overlay"></div>
+<div class="checkout-modal" id="founder-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="founder-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:20px;">Derrière la Marque</h3>
+  <div class="founder-photo-wrap" id="founder-photo-wrap">
+    <img id="founder-photo-img" class="founder-photo" style="display:none;">
+    <div class="founder-photo-placeholder" id="founder-photo-placeholder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="width:30px;height:30px;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg>
+    </div>
+    <button type="button" class="founder-photo-edit" id="founder-photo-edit" style="display:none;" aria-label="Changer la photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+    </button>
+    <input type="file" id="founder-photo-input" accept="image/*" style="display:none;">
+  </div>
+  <p class="founder-bio-text" id="founder-bio-text" style="font-size:14.5px; color:var(--text-soft); line-height:1.85; white-space:pre-line; text-align:center;"></p>
+  <div id="founder-bio-edit-wrap" style="display:none;">
+    <textarea id="founder-bio-input" class="cf-input" rows="9" style="resize:vertical; margin-top:6px;" placeholder="Parlez de vous : votre parcours, vos objectifs, vos ambitions pour SYMPHONIE..."></textarea>
+    <button type="button" class="coupon-apply-btn" id="founder-bio-save" style="margin-top:10px; width:100%;">Enregistrer</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="label-preview-overlay"></div>
+<div class="checkout-modal label-preview-modal" id="label-preview-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="label-preview-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:4px;">Aperçu — Étiquette(s) de colis</h3>
+  <p class="checkout-sub" style="margin-bottom:18px;">Vérifiez l'étiquette avant l'impression. Format 100mm × 150mm.</p>
+  <div id="label-preview-body" class="label-preview-body"></div>
+  <div class="label-preview-actions">
+    <button type="button" class="coupon-apply-btn" id="label-preview-print-btn" style="width:100%;">🖨️ Imprimer</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="privacy-overlay"></div>
+<div class="checkout-modal" id="privacy-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="privacy-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:14px;">Politique de confidentialité</h3>
+  <div class="policy-modal-body">
+    <h4>Collecte des données</h4>
+    <p>Nous collectons uniquement les informations nécessaires au traitement de votre commande : nom, numéro de téléphone, adresse de livraison et ville.</p>
+    <h4>Utilisation des données</h4>
+    <p>Ces informations sont utilisées exclusivement pour confirmer, préparer et livrer votre commande, ainsi que pour vous contacter en cas de besoin.</p>
+    <h4>Protection des données</h4>
+    <p>Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales. Elles sont conservées de manière sécurisée.</p>
+    <h4>Vos droits</h4>
+    <p>Vous pouvez à tout moment demander la consultation, la modification ou la suppression de vos données en nous contactant via WhatsApp ou par email.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="terms-overlay"></div>
+<div class="checkout-modal" id="terms-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="terms-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:14px;">Conditions générales</h3>
+  <div class="policy-modal-body">
+    <h4>Commandes</h4>
+    <p>Toute commande passée sur SYMPHONIE est considérée comme définitive après confirmation par nos équipes, par téléphone ou WhatsApp.</p>
+    <h4>Prix</h4>
+    <p>Les prix affichés sont en Dirhams marocains (DH) et incluent la TVA le cas échéant. Les frais de livraison sont indiqués séparément avant validation de la commande.</p>
+    <h4>Paiement</h4>
+    <p>Le paiement s'effectue exclusivement à la livraison (Cash on Delivery), sauf indication contraire.</p>
+    <h4>Responsabilité</h4>
+    <p>SYMPHONIE s'engage à livrer des produits conformes à la description affichée sur le site. En cas d'anomalie, contactez notre service client sous 48h après réception.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shipping-overlay"></div>
+<div class="checkout-modal" id="shipping-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="shipping-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:14px;">Politique de livraison</h3>
+  <div class="policy-modal-body">
+    <h4>Zone de livraison</h4>
+    <p>Nous livrons dans toutes les villes du Maroc, via des partenaires de livraison locaux fiables.</p>
+    <h4>Délais</h4>
+    <p>Le délai de livraison moyen est de 1 à 3 jours ouvrables après confirmation de la commande, selon votre ville.</p>
+    <h4>Frais de livraison</h4>
+    <p>Des frais de livraison forfaitaires s'appliquent et sont indiqués avant validation de la commande. La livraison est gratuite à partir de 195 DH d'achat.</p>
+    <h4>Suivi de commande</h4>
+    <p>Un numéro de commande vous est fourni pour suivre l'état de votre livraison à tout moment depuis le site.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="returns-overlay"></div>
+<div class="checkout-modal" id="returns-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="returns-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:14px;">Politique de retour</h3>
+  <div class="policy-modal-body">
+    <h4>Conditions de retour</h4>
+    <p>Un retour est accepté dans un délai de 7 jours après réception, à condition que le produit soit non ouvert, non utilisé et dans son emballage d'origine.</p>
+    <h4>Procédure</h4>
+    <p>Contactez notre service client par WhatsApp ou téléphone en précisant votre numéro de commande pour lancer une demande de retour ou d'échange.</p>
+    <h4>Remboursement</h4>
+    <p>Après validation du retour, le remboursement ou l'échange est effectué dans les meilleurs délais selon le mode convenu avec notre équipe.</p>
+    <h4>Produits non éligibles</h4>
+    <p>Les produits ouverts, testés ou endommagés ne peuvent malheureusement pas être repris.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="admin-login-overlay"></div>
+<div class="checkout-modal" id="admin-login-modal" style="">
+  <button class="wd-close" id="admin-login-close" aria-label="Close">✕</button>
+  <h3 data-i18n="adminLoginTitle">Admin Login</h3>
+  <p class="checkout-sub" data-i18n="adminLoginSub">Enter the admin password to manage products.</p>
+  <form id="admin-login-form">
+    <label class="cf-label"><span>Email</span>
+      <input type="email" id="admin-login-email" class="cf-input" required autocomplete="username">
+    </label>
+    <label class="cf-label"><span data-i18n="passwordLabel">Password</span>
+      <input type="password" id="admin-login-password" class="cf-input" required autocomplete="current-password">
+    </label>
+    <p id="admin-login-error" data-i18n="incorrectPassword" style="display:none; color:#c0392b; font-size:13px; margin:-8px 0 14px;">Incorrect password.</p>
+    <button type="submit" class="checkout-btn" data-i18n="loginBtn">Login</button>
+  </form>
+</div>
+
+<button id="exit-admin-btn" data-i18n="exitAdminBtn" style="display:none;">Exit Admin Mode</button>
+<button id="customers-btn" data-i18n="ordersBtn" style="display:none;">Orders</button>
+<div id="toast"></div>
+
+<div id="cart-toast" class="cart-toast" role="status" aria-live="polite">
+  <div class="cart-toast-check">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path id="cart-toast-check-path" d="M5 12.5l4.5 4.5L19 7.5"/>
+    </svg>
+  </div>
+  <div class="cart-toast-body">
+    <div class="cart-toast-title" data-i18n="cartToastTitle">Ajouté au panier</div>
+    <div class="cart-toast-sub" id="cart-toast-sub"></div>
+  </div>
+  <div class="cart-toast-bag">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bag"></use></svg>
+  </div>
+  <div class="cart-toast-progress"><div class="cart-toast-progress-bar" id="cart-toast-progress-bar"></div></div>
+</div>
+
+<div class="modal-overlay" id="search-overlay"></div>
+<div class="checkout-modal" id="search-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="search-modal-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:16px;" data-i18n="searchTitle">Search Fragrances</h3>
+  <input type="text" id="search-input" class="cf-input" data-i18n-placeholder="searchPh" placeholder="Search by name or notes..." style="margin-bottom:16px;">
+  <div id="search-results"></div>
+</div>
+
+<div class="modal-overlay" id="pack4-overlay"></div>
+<div class="checkout-modal" id="pack4-modal" style="text-align:left; overflow:hidden; display:flex; flex-direction:column; padding-bottom:0;">
+  <button class="wd-close" id="pack4-modal-close" aria-label="Close">✕</button>
+  <div id="pack4-modal-scroll" style="overflow-y:auto; padding:0 0 4px;">
+    <h3 style="margin-bottom:6px;" data-i18n="pack4ModalTitle">Composez votre Pack de 3 Parfums</h3>
+    <p class="checkout-sub" data-i18n="pack4ModalSub">Choisissez votre sélection de 3 parfums selon vos goûts, parmi toute notre collection.</p>
+
+    <div class="pack4-card">
+      <div class="pack4-card-heading" data-i18n="pack4CardHeading">Composez votre pack</div>
+      <div class="pack4-slots" id="pack4-slots"></div>
+      <div class="pack4-card-shipping" data-i18n="pack4CardShipping">Livraison gratuite.</div>
+    </div>
+  </div>
+
+  <div style="flex-shrink:0; padding:14px 0 22px;">
+    <div class="pack4-price-row">
+      <div class="label" data-i18n="pack4PriceLabel">Prix du pack</div>
+      <div class="value" id="pack4-price-value">195 DH</div>
+    </div>
+
+    <div class="pack4-qty-row">
+      <div class="pack4-qty-label" data-i18n="quantityLabel">Quantité</div>
+      <div class="pack4-qty-stepper">
+        <button type="button" class="pack4-qty-btn" id="pack4-qty-dec">−</button>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" class="pack4-qty-num" id="pack4-qty-num" value="1" aria-label="Quantité">
+        <button type="button" class="pack4-qty-btn" id="pack4-qty-inc">+</button>
+      </div>
+    </div>
+
+    <button class="pack4-cart-btn" id="pack4-cart-btn" style="margin-top:4px;" disabled><span data-i18n="pack4AddCartBtn">Ajouter au panier</span></button>
+    <button class="checkout-btn" id="pack4-add-btn" style="margin-top:10px;" disabled><span data-i18n="pack4AddBtn">Acheter maintenant</span> — <span id="pack4-progress">0/3</span></button>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="pack4-picker-overlay"></div>
+<div class="checkout-modal" id="pack4-picker-modal" style="text-align:left; overflow-y:auto;">
+  <button class="wd-close" id="pack4-picker-close" aria-label="Close">✕</button>
+  <h3 style="margin-bottom:16px;" data-i18n="pack4PickerTitle">Choisissez un parfum</h3>
+  <div class="pack4-picker-search-wrap">
+    <svg class="pack4-picker-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="pack4-picker-search" class="pack4-picker-search-input" placeholder="Rechercher un parfum...">
+  </div>
+  <div class="pack4-picker-filters" id="pack4-picker-filters">
+    <button type="button" class="pack4-pf-btn" data-pf="women" data-i18n="filterWomen">Femme</button>
+    <button type="button" class="pack4-pf-btn" data-pf="men" data-i18n="filterMen">Homme</button>
+    <button type="button" class="pack4-pf-btn active" data-pf="all" data-i18n="pack4FilterAll">Tous</button>
+  </div>
+  <div id="pack4-picker-list"></div>
+</div>
+
+<div class="modal-overlay" id="confirm-overlay"></div>
+<div class="checkout-modal" id="confirm-modal" style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+  <p id="confirm-text" style="font-family:'Cormorant Garamond',serif; font-size:19px; line-height:1.5; margin-bottom:22px;">Delete this product?</p>
+  <div style="display:flex; gap:10px;">
+    <button id="confirm-cancel" class="checkout-btn" data-i18n="cancelBtn" style="background:none; border:1px solid var(--line); color:var(--ink);">Cancel</button>
+    <button id="confirm-ok" class="checkout-btn" data-i18n="deleteBtn" style="background:#c0392b; color:#fff;">Delete</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="featured-overlay"></div>
+<div class="checkout-modal" id="featured-modal" style="">
+  <button class="wd-close" id="featured-modal-close" aria-label="Close">✕</button>
+  <h3 id="featured-modal-title">Ajouter un produit en vedette</h3>
+  <form id="featured-form">
+    <input type="hidden" id="featured-idx">
+    <label class="cf-label"><span>Nom du produit</span>
+      <input type="text" id="featured-name" class="cf-input" required>
+    </label>
+    <label class="cf-label"><span>Prix (DH)</span>
+      <input type="number" id="featured-price" class="cf-input" min="1" required>
+    </label>
+    <label class="cf-label"><span>Collection (pack Femme/Homme)</span>
+      <select id="featured-gender" class="cf-input" required>
+        <option value="women">Femme</option>
+        <option value="men">Homme</option>
+      </select>
+    </label>
+    <label class="cf-label"><span>Image</span>
+      <input type="file" id="featured-image" class="cf-input" accept="image/*" style="padding:10px;">
+    </label>
+    <div id="featured-image-preview" style="display:none; margin-bottom:16px;">
+      <img id="featured-image-preview-img" style="width:100%; max-height:220px; object-fit:cover; border-radius:16px;">
+    </div>
+    <button type="submit" class="checkout-btn" style="margin-top:4px;">Enregistrer</button>
+  </form>
+</div>
+
+<div class="modal-overlay" id="admin-overlay"></div>
+<div class="checkout-modal" id="admin-modal" style="">
+  <button class="wd-close" id="admin-modal-close" aria-label="Close">✕</button>
+  <h3 id="admin-modal-title">Edit Perfume</h3>
+  <form id="admin-form">
+    <input type="hidden" id="admin-category">
+    <input type="hidden" id="admin-idx">
+    <label class="cf-label"><span data-i18n="productNameLabel">Product Name</span>
+      <input type="text" id="admin-name" class="cf-input" required>
+    </label>
+    <label class="cf-label"><span data-i18n="descriptionLabel">Description</span>
+      <textarea id="admin-desc" class="cf-input" rows="3" style="resize:vertical;" required></textarea>
+    </label>
+    <label class="cf-label"><span data-i18n="priceLabel">Price (DH)</span>
+      <input type="number" id="admin-price" class="cf-input" min="1" required>
+    </label>
+    <label class="cf-label"><span data-i18n="familyLabel">Category line (e.g. Homme · Aromatique)</span>
+      <input type="text" id="admin-family" class="cf-input" placeholder="Homme · Aromatique">
+    </label>
+    <label class="cf-label"><span data-i18n="sizeLabel">Size line (e.g. 100ml · EDP)</span>
+      <input type="text" id="admin-size" class="cf-input" placeholder="100ml · EDP">
+    </label>
+    <label class="cf-label"><span>Notes de tête (ex. Bergamote, Poivre rose)</span>
+      <input type="text" id="admin-notes-top" class="cf-input" placeholder="Bergamote, Poivre rose">
+    </label>
+    <label class="cf-label"><span>Notes de cœur (ex. Jasmin, Rose)</span>
+      <input type="text" id="admin-notes-heart" class="cf-input" placeholder="Jasmin, Rose">
+    </label>
+    <label class="cf-label"><span>Notes de fond (ex. Musc, Bois de santal)</span>
+      <input type="text" id="admin-notes-base" class="cf-input" placeholder="Musc, Bois de santal">
+    </label>
+    <label class="cf-label"><span data-i18n="categoryLabel">Category</span>
+      <select id="admin-cat-select" class="cf-input">
+        <option value="men" data-i18n="filterMen">Men</option>
+        <option value="women" data-i18n="filterWomen">Women</option>
+      </select>
+    </label>
+    <label class="cf-label"><span data-i18n="productImageLabel">Product Image</span>
+      <input type="file" id="admin-image" class="cf-input" accept="image/*" style="padding:10px;">
+    </label>
+    <div id="admin-image-preview" style="display:none; margin-bottom:16px;">
+      <img id="admin-image-preview-img" style="width:100%; max-height:160px; object-fit:cover; border-radius:12px;">
+    </div>
+    <label class="cf-label" style="flex-direction:row; align-items:center; gap:10px; cursor:pointer;">
+      <input type="checkbox" id="admin-pinned" style="width:16px; height:16px; margin:0;">
+      <span data-i18n="pinnedPackLabel">Toujours afficher en dernier (Pack)</span>
+    </label>
+    <button type="submit" class="checkout-btn" data-i18n="saveProductBtn" style="margin-top:4px;">Save Perfume</button>
+  </form>
+</div>
+
+<div id="admin-dashboard-page" class="admin-dash">
+  <div class="ad-sidebar-backdrop" id="ad-sidebar-backdrop"></div>
+  <aside class="ad-sidebar">
+    <div class="ad-sidebar-top">
+      <div class="ad-brand">
+        <span class="ad-brand-mark">R</span>
+        <span class="ad-brand-name">SYMPHONIE<small>Admin</small></span>
+      </div>
+      <nav class="ad-nav">
+        <button class="ad-nav-item active" data-ad-page="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7L4.7 3H2"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17.5" cy="20" r="1.4"/></svg>
+          <span>Orders</span>
+          <span class="ad-nav-badge" id="ad-nav-orders-count">0</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 7 12 3 4 7v10l8 4 8-4z"/><path d="M4 7l8 4 8-4"/><path d="M12 11v10"/></svg>
+          <span>Products</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="reviews">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 17.3 6.2 20.5l1.1-6.5L2.5 9.3l6.6-.95L12 2.5l2.9 5.85 6.6.95-4.8 4.7 1.1 6.5z"/></svg>
+          <span>Avis</span>
+          <span class="ad-nav-badge" id="ad-nav-reviews-count">0</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="customers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/><circle cx="17.5" cy="8.5" r="2.7"/><path d="M15.3 13.8c2.9.3 5.2 2.9 5.2 6.2"/></svg>
+          <span>Customers</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="analytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V9M11 19V4M18 19v-7"/><path d="M2.5 19.5h19"/></svg>
+          <span>Analytics</span>
+        </button>
+        <button class="ad-nav-item" data-ad-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V19a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H4a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H10a1.65 1.65 0 0 0 1-1.51V4a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V10a1.65 1.65 0 0 0 1.51 1H20a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+    </div>
+    <button class="ad-sidebar-exit" id="ad-exit-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M9 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/></svg>
+      <span>Retour au site</span>
+    </button>
+  </aside>
+
+  <div class="ad-main">
+    <header class="ad-topbar">
+      <button class="ad-topbar-menu-btn" id="ad-sidebar-toggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="ad-topbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="ad-global-search" placeholder="Rechercher client, téléphone, N° commande, ville...">
+      </div>
+      <div class="ad-topbar-actions">
+        <button class="ad-desktop-toggle" id="ad-desktop-toggle" aria-label="Vue ordinateur" title="Basculer en vue ordinateur">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="12" rx="1.5"/><path d="M8 21h8"/><path d="M12 16.5V21"/></svg>
+        </button>
+        <div class="ad-notif-wrap">
+          <button class="ad-notif-btn" id="ad-notif-btn" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="ad-notif-dot" id="ad-notif-dot" style="display:none;"></span>
+          </button>
+          <div class="ad-notif-panel" id="ad-notif-panel">
+            <div class="ad-notif-panel-head">Notifications</div>
+            <div class="ad-notif-panel-list" id="ad-notif-panel-list">
+              <div class="ad-notif-empty">Aucune nouvelle notification pour l'instant.</div>
+            </div>
+          </div>
+        </div>
+        <div class="ad-admin-profile">
+          <span class="ad-admin-avatar">A</span>
+          <span class="ad-admin-name">Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="ad-content" id="ad-content">
+
+      <!-- ============ DASHBOARD PAGE ============ -->
+      <section class="ad-page active" data-ad-page="dashboard">
+        <div class="ad-page-head">
+          <h2>Dashboard</h2>
+          <p>Vue d'ensemble de l'activité de votre boutique</p>
+        </div>
+
+        <div class="ad-stats-grid">
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon ad-stat-icon-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="ad-stat-label">Revenu total</div>
+            <div class="ad-stat-value" id="ad-stat-revenue">0 DH</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon ad-stat-icon-navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7L4.7 3H2"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17.5" cy="20" r="1.4"/></svg></div>
+            <div class="ad-stat-label">Total commandes</div>
+            <div class="ad-stat-value" id="ad-stat-total">0</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon ad-stat-icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <div class="ad-stat-label">En attente</div>
+            <div class="ad-stat-value" id="ad-stat-pending">0</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon ad-stat-icon-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <div class="ad-stat-label">Livrées</div>
+            <div class="ad-stat-value" id="ad-stat-delivered">0</div>
+          </div>
+        </div>
+
+        <div class="ad-charts-grid">
+          <div class="ad-chart-card ad-chart-wide">
+            <div class="ad-chart-head"><h3>Revenu — 30 derniers jours</h3></div>
+            <div class="ad-bars" id="ad-chart-revenue"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Meilleures ventes</h3></div>
+            <div class="ad-best-sellers" id="ad-best-sellers"></div>
+          </div>
+          <div class="ad-chart-card ad-chart-wide">
+            <div class="ad-chart-head"><h3>Commandes par jour</h3></div>
+            <div class="ad-bars" id="ad-chart-daily-orders"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Revenu par mois</h3></div>
+            <div class="ad-bars ad-bars-month" id="ad-chart-monthly"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ORDERS PAGE ============ -->
+      <section class="ad-page" data-ad-page="orders">
+        <div class="ad-page-head">
+          <h2>Commandes</h2>
+          <p>Gérez et suivez toutes les commandes de votre boutique</p>
+        </div>
+
+        <div class="ad-orders-toolbar">
+          <div class="ad-topbar-search ad-orders-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="ad-orders-search" placeholder="Client, téléphone, N° commande, ville...">
+          </div>
+          <label class="ad-select-all-label">
+            <input type="checkbox" id="ad-orders-select-all">
+            <span>Tout sélectionner</span>
+          </label>
+          <button type="button" class="ad-print-selected-btn" id="ad-print-selected-btn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+            Imprimer étiquettes sélectionnées (<span id="ad-print-selected-count">0</span>)
+          </button>
+        </div>
+
+        <div class="ad-filter-tabs" id="ad-filter-tabs">
+          <button class="ad-tab active" data-status="all">Toutes <span class="ad-tab-count" id="ad-tab-count-all">0</span></button>
+          <button class="ad-tab" data-status="pending">En attente <span class="ad-tab-count" id="ad-tab-count-pending">0</span></button>
+          <button class="ad-tab" data-status="confirmed">Confirmées <span class="ad-tab-count" id="ad-tab-count-confirmed">0</span></button>
+          <button class="ad-tab" data-status="preparing">En préparation <span class="ad-tab-count" id="ad-tab-count-preparing">0</span></button>
+          <button class="ad-tab" data-status="shipped">Expédiées <span class="ad-tab-count" id="ad-tab-count-shipped">0</span></button>
+          <button class="ad-tab" data-status="delivered">Livrées <span class="ad-tab-count" id="ad-tab-count-delivered">0</span></button>
+          <button class="ad-tab" data-status="cancelled">Annulées <span class="ad-tab-count" id="ad-tab-count-cancelled">0</span></button>
+        </div>
+
+        <div id="ad-orders-list" class="ad-orders-list"></div>
+      </section>
+
+      <!-- ============ PRODUCTS PAGE ============ -->
+      <section class="ad-page" data-ad-page="products">
+        <div class="ad-page-head ad-page-head-row">
+          <div>
+            <h2>Produits</h2>
+            <p>Gérez votre catalogue de parfums</p>
+          </div>
+          <button class="ad-primary-btn" id="ad-add-product-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un parfum
+          </button>
+        </div>
+        <div id="ad-products-list" class="ad-products-list"></div>
+      </section>
+
+      <!-- ============ REVIEWS PAGE ============ -->
+      <section class="ad-page" data-ad-page="reviews">
+        <div class="ad-page-head">
+          <h2>Avis clients</h2>
+          <p>Validez les avis avant qu'ils n'apparaissent sur le site</p>
+        </div>
+
+        <div class="ad-filter-tabs" id="ad-reviews-filter-tabs">
+          <button class="ad-tab active" data-review-status="pending">En attente <span class="ad-tab-count" id="ad-tab-count-review-pending">0</span></button>
+          <button class="ad-tab" data-review-status="approved">Publiés <span class="ad-tab-count" id="ad-tab-count-review-approved">0</span></button>
+        </div>
+
+        <div id="ad-reviews-list" class="ad-reviews-list"></div>
+      </section>
+
+      <!-- ============ CUSTOMERS PAGE ============ -->
+      <section class="ad-page" data-ad-page="customers">
+        <div class="ad-page-head">
+          <h2>Clients</h2>
+          <p>Historique et coordonnées de vos clients</p>
+        </div>
+        <div class="ad-topbar-search ad-orders-search" style="margin-bottom:20px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="ad-customers-search" placeholder="Nom, téléphone ou ville...">
+        </div>
+        <div id="ad-customers-list" class="ad-customers-list"></div>
+      </section>
+
+      <!-- ============ ANALYTICS PAGE ============ -->
+      <section class="ad-page" data-ad-page="analytics">
+        <div class="ad-page-head">
+          <h2>Analytique</h2>
+          <p>Performance de la boutique dans le temps</p>
+        </div>
+
+        <div class="ad-stats-grid" id="ad-analytics-kpis">
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon ad-stat-icon-gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="ad-stat-label">Revenu (30 jours)</div>
+            <div class="ad-stat-value" id="ad-kpi-revenue-30">0 DH</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7L4.7 3H2"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17.5" cy="20" r="1.4"/></svg></div>
+            <div class="ad-stat-label">Commandes (30 jours)</div>
+            <div class="ad-stat-value" id="ad-kpi-orders-30">0</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 7 12 3 4 7v10l8 4 8-4z"/><path d="M4 7l8 4 8-4"/><path d="M12 11v10"/></svg></div>
+            <div class="ad-stat-label">Panier moyen</div>
+            <div class="ad-stat-value" id="ad-kpi-aov">0 DH</div>
+          </div>
+          <div class="ad-stat-card">
+            <div class="ad-stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <div class="ad-stat-label">Taux de livraison</div>
+            <div class="ad-stat-value" id="ad-kpi-delivery-rate">0%</div>
+          </div>
+        </div>
+
+        <div class="ad-charts-grid">
+          <div class="ad-chart-card ad-chart-wide">
+            <div class="ad-chart-head">
+              <h3>Revenu — 30 derniers jours</h3>
+              <span class="ad-chart-summary" id="ad-analytics-revenue-summary"></span>
+            </div>
+            <div class="ad-bars" id="ad-analytics-revenue"></div>
+          </div>
+          <div class="ad-chart-card ad-chart-wide">
+            <div class="ad-chart-head">
+              <h3>Commandes par jour</h3>
+              <span class="ad-chart-summary" id="ad-analytics-daily-summary"></span>
+            </div>
+            <div class="ad-bars" id="ad-analytics-daily"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Meilleures ventes</h3></div>
+            <div class="ad-best-sellers" id="ad-analytics-best-sellers"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Revenu par mois</h3></div>
+            <div class="ad-bars ad-bars-month" id="ad-analytics-monthly"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Commandes par statut</h3></div>
+            <div class="ad-best-sellers" id="ad-analytics-status-breakdown"></div>
+          </div>
+          <div class="ad-chart-card">
+            <div class="ad-chart-head"><h3>Meilleures villes</h3></div>
+            <div class="ad-best-sellers" id="ad-analytics-city-breakdown"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SETTINGS PAGE ============ -->
+      <section class="ad-page" data-ad-page="settings">
+        <div class="ad-page-head">
+          <h2>Paramètres</h2>
+          <p>Configuration générale du panneau d'administration</p>
+        </div>
+        <div class="ad-settings-card">
+          <h3>Compte administrateur</h3>
+          <p>Vous êtes connecté en tant qu'administrateur de SYMPHONIE Parfum Collection.</p>
+          <button class="ad-secondary-btn" id="ad-settings-exit-btn">Se déconnecter du mode admin</button>
+        </div>
+        <div class="ad-settings-card">
+          <h3>À propos</h3>
+          <p>Panneau d'administration SYMPHONIE — gestion des commandes, produits et clients. D'autres paramètres seront bientôt disponibles ici.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="ad-print-area" style="display:none;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+<script src="/script.js" defer></script>
+<script src="/motion.js" defer></script>
+</body>
+</html>
