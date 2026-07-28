@@ -1310,25 +1310,22 @@ async function createOrder({name, phone, city, address, notes, items, subtotal, 
       // which made every checkout silently fail into the local fallback).
       // Knowing the id in advance means we never need to read it back.
       const orderId = (crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2));
-      const { error: orderErr } = await supabaseClient
-        .from('orders')
-        .insert({
-          id: orderId,
-          order_number: orderNumber,
-          customer_name: name, customer_phone: phone, customer_city: city,
-          customer_address: address, customer_notes: notes || null,
-          subtotal, shipping_fee: shipping, discount, coupon_code: couponCode || null,
-          total, status: 'pending', payment_method: 'cod'
-        });
+      const orderPayload = {
+        id: orderId,
+        order_number: orderNumber,
+        customer_name: name, customer_phone: phone, customer_city: city,
+        customer_address: address, customer_notes: notes || null,
+        subtotal, shipping_fee: shipping, discount, coupon_code: couponCode || null,
+        total
+      };
+      const itemsPayload = (items || []).map(i => ({
+        product_name: i.name, unit_price: i.price, quantity: i.qty, subtotal: i.price * i.qty
+      }));
+      const { error: orderErr } = await supabaseClient.rpc('create_order_with_items', {
+        p_order: orderPayload,
+        p_items: itemsPayload
+      });
       if(orderErr) throw orderErr;
-
-      if(items && items.length){
-        const rows = items.map(i => ({
-          order_id: orderId, product_name: i.name, unit_price: i.price, quantity: i.qty, subtotal: i.price * i.qty
-        }));
-        await supabaseClient.from('order_items').insert(rows);
-      }
-      await supabaseClient.from('order_status_history').insert({ order_id: orderId, status: 'pending' });
 
       return { orderNumber, id: orderId, createdAt: nowIso };
     }catch(err){
