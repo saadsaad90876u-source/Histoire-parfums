@@ -52,7 +52,7 @@
 }
 
 .splash-logo {
-  width: min(62vw, 360px);
+  width: min(45vw, 240px);
   height: auto;
   display: block;
   opacity: 0;
