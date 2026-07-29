@@ -1,5 +1,5 @@
 /* ================================================================
-   SYMPHONIE -- stylesheet (cleaned & de-duplicated)
+   HISTOIRE -- stylesheet (cleaned & de-duplicated)
    Sections: Variables -> Reset -> Typography -> Animations ->
    Layout -> Components -> Utilities -> Visual Refinement Layer.
    See CSS_CLEANUP_REPORT.md for the full change log.
@@ -2688,14 +2688,14 @@ footer {
 }
 
 .logo-img {
-  height: 20px;
+  height: 70px;
   width: auto;
   display: block;
   margin: 0 auto;
 }
 
 .footer-logo-img {
-  height: 15px;
+  height: 36px;
   width: auto;
   display: block;
   margin: 0 auto;
@@ -4777,7 +4777,7 @@ textarea.cf-input-icon {
 
 
 /* ================================================================
-   ADMIN DASHBOARD — full-page SaaS-style panel (SYMPHONIE branding)
+   ADMIN DASHBOARD — full-page SaaS-style panel (HISTOIRE branding)
    ================================================================ */
 
 :root {
@@ -6107,7 +6107,7 @@ textarea.cf-input-icon {
   letter-spacing: .02em;
 }
 
-/* ---------- About SYMPHONIE ---------- */
+/* ---------- About HISTOIRE ---------- */
 .about-symphonie-wrap {
   max-width: 780px;
   margin: 0 auto;
@@ -6160,7 +6160,7 @@ textarea.cf-input-icon {
   font-weight: 500;
 }
 
-/* ---------- Why Choose SYMPHONIE ---------- */
+/* ---------- Why Choose HISTOIRE ---------- */
 .why-symphonie-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

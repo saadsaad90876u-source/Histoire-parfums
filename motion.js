@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SYMPHONIE — premium motion layer
+   HISTOIRE — premium motion layer
    --------------------------------------------------------------------------
    Adds Dior/LV/Apple-style micro-interactions on top of the existing site
    WITHOUT touching colors, typography, layout, spacing, branding, or the

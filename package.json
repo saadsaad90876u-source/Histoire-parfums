@@ -1,8 +1,5 @@
 {
-  "name": "symphonie-parfums",
+  "name": "histoire-parfums",
   "private": true,
-  "type": "module",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.4"
-  }
+  "type": "module"
 }
