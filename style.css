@@ -2071,8 +2071,8 @@ h1,h2,h3 {
   padding: 6px;
   border: none;
   border-radius: 12px;
-  background: rgba(212,175,55,.06);
-  backdrop-filter: blur(8px);
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .sf-btn {
