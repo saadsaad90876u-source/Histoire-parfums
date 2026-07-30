@@ -4043,7 +4043,7 @@ textarea.cf-input-icon {
   display: flex;
   align-items: stretch;
   gap: 14px;
-  background: #ffffff;
+  background: #051F14;
   border: 1.5px solid var(--gold-light);
   border-radius: 22px;
   padding: 22px 24px;
@@ -4180,7 +4180,7 @@ textarea.cf-input-icon {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: .01em;
-  color: var(--royal);
+  color: var(--gold);
   text-transform: uppercase;
 }
 
@@ -4198,7 +4198,7 @@ textarea.cf-input-icon {
   font-family: 'Jost', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-soft);
+  color: #e8e6df;
   margin-bottom: 12px;
 }
 
