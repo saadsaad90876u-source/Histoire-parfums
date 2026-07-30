@@ -2112,14 +2112,14 @@ h1,h2,h3 {
 .sf-btn::before {
   background-image:
     linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #C59A3F, #D6B563 50%, #C59A3F);
+    linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
   background-position: -100% 0, 0 0;
 }
 
 .sf-btn::after {
   background-image:
     linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #33383B, #454B4F 50%, #33383B);
+    linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
   background-position: -100% 0, 0 0;
 }
 
@@ -2157,11 +2157,13 @@ h1,h2,h3 {
 }
 
 .sf-btn.active[data-f="men"] {
-  background: linear-gradient(120deg, #C59A3F, #D6B563 50%, #C59A3F);
+  background: linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
+  color: #fff;
 }
 
 .sf-btn.active[data-f="women"] {
-  background: linear-gradient(120deg, #33383B, #454B4F 50%, #33383B);
+  background: linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
+  color: #211510;
 }
 
 .product-card .pc-fam, .product-card .desc {
@@ -4414,14 +4416,14 @@ textarea.cf-input-icon {
 .pack4-pf-btn::before {
   background-image:
     linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #C59A3F, #D6B563 50%, #C59A3F);
+    linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
   background-position: -100% 0, 0 0;
 }
 
 .pack4-pf-btn::after {
   background-image:
     linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #33383B, #454B4F 50%, #33383B);
+    linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
   background-position: -100% 0, 0 0;
 }
 
@@ -4458,20 +4460,22 @@ textarea.cf-input-icon {
 
 .pack4-pf-btn.active[data-pf="men"] {
   background: none;
-  box-shadow: 0 10px 20px -8px rgba(197, 154, 63, .55);
+  box-shadow: 0 10px 20px -8px rgba(52, 52, 54, .55);
+  color: #fff;
 }
 
 .pack4-pf-btn.active[data-pf="women"] {
   background: none;
-  box-shadow: 0 10px 20px -8px rgba(51, 56, 59, .55);
+  box-shadow: 0 10px 20px -8px rgba(107, 74, 61, .55);
+  color: #211510;
 }
 
 .pack4-pf-btn.active[data-pf="men"]:active {
-  background: #A67F2E;
+  background: #232324;
 }
 
 .pack4-pf-btn.active[data-pf="women"]:active {
-  background: #24282B;
+  background: #4E362D;
 }
 
 .pack4-card {
