@@ -2406,6 +2406,9 @@ function attachProductPageEvents(){
   document.querySelectorAll('.pp-dot').forEach(dot => {
     dot.addEventListener('click', () => goToPpSlide(parseInt(dot.dataset.i, 10)));
   });
+  document.querySelectorAll('.pp-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => goToPpSlide(parseInt(thumb.dataset.i, 10)));
+  });
   const prevBtn = document.getElementById('pp-prev');
   const nextBtn = document.getElementById('pp-next');
   if(prevBtn) prevBtn.addEventListener('click', () => goToPpSlide(ppActiveIndex - 1));
@@ -2554,6 +2557,7 @@ function goToPpSlide(i){
   ppActiveIndex = (i + slides.length) % slides.length;
   track.style.transform = `translateX(${-ppActiveIndex * 100}%)`;
   document.querySelectorAll('.pp-dot').forEach((d, idx) => d.classList.toggle('active', idx === ppActiveIndex));
+  document.querySelectorAll('.pp-thumb').forEach((th, idx) => th.classList.toggle('active', idx === ppActiveIndex));
 }
 
 function productPageTemplate(pRaw, category, idx){
@@ -2568,7 +2572,8 @@ function productPageTemplate(pRaw, category, idx){
       </div>
       ${images.length > 1 ? `<div class="pp-dots">${images.map((_, i) => `<button type="button" class="pp-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : ''}
       ${images.length > 1 ? `<button type="button" class="pp-arrow prev" id="pp-prev" aria-label="Previous">‹</button><button type="button" class="pp-arrow next" id="pp-next" aria-label="Next">›</button>` : ''}
-    </div>` : `
+    </div>
+    ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img src="${url}" alt="${p.name} miniature ${i + 1}" loading="lazy"></button>`).join('')}</div>` : ''}` : `
     <div class="pp-gallery pp-gallery-placeholder">
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
         <div class="cap"></div><div class="neck"></div>
