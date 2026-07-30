@@ -2129,10 +2129,10 @@ h1,h2,h3 {
 .sf-btn.active[data-f="men"]::after    { opacity: 0; }
 
 .sf-btn.active[data-f="men"]::before {
-  animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1) both;
+  animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1);
 }
 .sf-btn.active[data-f="women"]::after {
-  animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1) both;
+  animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1);
 }
 
 @keyframes sfSweep {
@@ -4429,11 +4429,11 @@ textarea.cf-input-icon {
 
 .pack4-pf-btn.active[data-pf="men"]::before {
   opacity: 1;
-  animation: pack4PfSweep .5s cubic-bezier(0.4,0,0.2,1) both;
+  animation: pack4PfSweep .5s cubic-bezier(0.4,0,0.2,1);
 }
 .pack4-pf-btn.active[data-pf="women"]::after {
   opacity: 1;
-  animation: pack4PfSweep .5s cubic-bezier(0.4,0,0.2,1) both;
+  animation: pack4PfSweep .5s cubic-bezier(0.4,0,0.2,1);
 }
 
 @keyframes pack4PfSweep {
