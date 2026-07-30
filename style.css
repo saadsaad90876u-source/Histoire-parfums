@@ -44,7 +44,7 @@
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background: #000000;
+  background: #0A2F1D;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,7 +254,7 @@ header {
   right: 0;
   z-index: 1000;
   backdrop-filter: blur(16px) saturate(160%);
-  background: #000;
+  background: #0A2F1D;
   border-bottom: 1px solid rgba(212,175,55,.3);
 }
 
@@ -2662,7 +2662,7 @@ h1,h2,h3 {
 }
 
 footer {
-  background: #000000;
+  background: #0A2F1D;
   color: #b9b3a0;
   padding: 60px 0 26px;
   margin-top: 20px;
