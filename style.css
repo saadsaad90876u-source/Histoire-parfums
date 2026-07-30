@@ -3123,21 +3123,12 @@ footer {
   color: var(--text-soft);
 }
 
-.pp-notes-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  flex: 1;
-}
-
-.pp-note-chip {
+.pp-notes-text {
   font-family: 'Jost', sans-serif;
-  font-size: 12.5px;
+  font-size: 13px;
+  line-height: 1.6;
   color: var(--ink);
-  background: color-mix(in srgb, var(--gold) 7%, transparent);
-  border: 1px solid rgba(212, 175, 55, .3);
-  border-radius: 20px;
-  padding: 3px 12px;
+  flex: 1;
 }
 
 .pp-price-row {

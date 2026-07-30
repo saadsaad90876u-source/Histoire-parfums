@@ -2720,7 +2720,7 @@ function fragrancePyramidHtml(p){
       ${rows.map(r => `
         <div class="pp-notes-row">
           <span class="pp-notes-label">${r.label}</span>
-          <div class="pp-notes-chips">${r.value.split(',').map(n => n.trim()).filter(Boolean).map(n => `<span class="pp-note-chip">${n}</span>`).join('')}</div>
+          <div class="pp-notes-text">${r.value.split(',').map(n => n.trim()).filter(Boolean).join(', ')}</div>
         </div>`).join('')}
     </div>`;
 }
