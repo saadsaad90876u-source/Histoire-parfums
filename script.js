@@ -354,6 +354,10 @@ function productCard(pRaw, category, idx){
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
       <h4>${p.name}</h4>
+      <div class="pc-rating">
+        <span class="pc-stars">★★★★★</span>
+        <span class="pc-rating-value">(4.9)</span>
+      </div>
       <div class="desc">${p.desc}</div>
       <div class="pc-bottom">
         <div class="pc-price-wrap">
