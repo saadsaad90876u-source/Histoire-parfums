@@ -2080,7 +2080,8 @@ h1,h2,h3 {
   font-size: clamp(27px,3.8vw,39px);
   margin-bottom: 8px;
   color: #000000;
-  font-family: 'Cinzel', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 375;
   text-shadow: none;
   text-align: center;
 }
