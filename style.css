@@ -16,7 +16,7 @@
   --gold-light: #f0dfa0;
   --gold-deep: #a5811f;
   --navy-dark: #050B1A;
-  --cream: #E8DCC0;
+  --cream: #EEE5D0;
   --ink: #0c1424;
   --paper: #ffffff;
   --line: #ffffff;
@@ -1762,7 +1762,7 @@ header {
    ============================================================ */
 
 body {
-  background: #E8DCC0;
+  background: #EEE5D0;
   color: var(--ink);
   font-family: 'Jost', sans-serif;
   font-weight: 400;
@@ -6100,7 +6100,7 @@ textarea.cf-input-icon {
 
 .lux-section {
   padding: 90px 0;
-  background: #FAF8F3;
+  background: #EEE5D0;
 }
 
 #contact-section {
@@ -6110,11 +6110,11 @@ textarea.cf-input-icon {
 
 #faq-section {
   padding-bottom: 30px;
-  background: #FAF8F3;
+  background: #EEE5D0;
 }
 
 .lux-section-alt {
-  background: #FAF8F3;
+  background: #EEE5D0;
 }
 
 .lux-eyebrow {
