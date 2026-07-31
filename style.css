@@ -1,8 +1,9 @@
 /* ================================================================
-   HISTOIRE -- stylesheet (cleaned & de-duplicated)
+   HISTOIRE -- stylesheet
    Sections: Variables -> Reset -> Typography -> Animations ->
    Layout -> Components -> Utilities -> Visual Refinement Layer.
-   See CSS_CLEANUP_REPORT.md for the full change log.
+   Dead/duplicate rules removed and shared selector groups
+   de-duplicated on 2026-07-31.
    ================================================================ */
 
 /* ============================================================
@@ -1016,75 +1017,9 @@ header {
   color: #fff;
 }
 
-.orders-stats {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 14px;
-  margin-bottom: 26px;
-}
-
-.orders-stat {
-  background: var(--cream);
-  border: 1px solid var(--card-line);
-  border-radius: 14px;
-  padding: 16px 18px;
-}
-
-@media(max-width:640px) {
-  .orders-stats {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .orders-stats .orders-stat:nth-child(3) {
-    grid-column: 1/-1;
-  }
-}
-
-.order-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.order-customer .oc-meta {
-  font-size: 12.5px;
-  color: var(--text-soft);
-  margin-top: 2px;
-  line-height: 1.5;
-}
-
-.order-items {
-  font-size: 13px;
-  color: var(--text-soft);
-  line-height: 1.7;
-  margin-bottom: 12px;
-  padding-left: 2px;
-}
-
-.order-items .oi-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
 .order-date {
   font-size: 11.5px;
   color: var(--text-soft);
-}
-
-.cust-delete {
-  background: none;
-  border: none;
-  color: var(--text-soft);
-  cursor: pointer;
-  font-size: 15px;
-  transition: color .3s ease;
-}
-
-.cust-delete:hover {
-  color: #c0392b;
 }
 
 #toast {
@@ -1324,13 +1259,13 @@ header {
   margin-right: 2px;
 }
 
-.order-summary-card, .shipping-card {
+.order-summary-card {
   background: #ececec;
   border: none;
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 #checkout-page .order-summary-card {
@@ -1348,24 +1283,8 @@ header {
   color: #b9c2ba;
 }
 
-#checkout-page .co-item-subtotal {
-  color: #F3EDDD;
-}
-
 
 /* ---------- order summary, coupon & payment ---------- */
-
-.co-item-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.co-item-row:last-of-type {
-  border-bottom: none;
-}
 
 .co-item-thumb {
   width: 46px;
@@ -1389,35 +1308,12 @@ header {
   transform: scale(.24);
 }
 
-.co-item-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.co-item-meta {
-  font-size: 12px;
-  color: var(--text-soft);
-  margin-top: 2px;
-}
-
-.co-item-subtotal {
-  font-family: 'Jost';
-  font-weight: 600;
-  font-size: 13.5px;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
 .osc-row {
   display: flex;
   justify-content: space-between;
   font-size: 13.5px;
   color: var(--text-soft);
   padding: 5px 0;
-}
-
-.osc-total span:last-child {
-  color: #000000;
 }
 
 .coupon-row {
@@ -1429,49 +1325,6 @@ header {
   flex: 1;
 }
 
-.gift-wrap-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(10, 47, 29, .05);
-  border: 1px solid rgba(10, 47, 29, .18);
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-
-.gift-wrap-option input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  accent-color: #0A2F1D;
-  margin: 0;
-}
-
-.gift-wrap-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.gift-wrap-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.gift-wrap-text strong {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
-  font-size: 14.5px;
-  color: var(--ink);
-}
-
-.gift-wrap-text span {
-  font-family: 'Jost', sans-serif;
-  font-size: 12px;
-  color: var(--text-soft);
-}
-
 .payment-card {
   display: flex;
   align-items: center;
@@ -1481,7 +1334,7 @@ header {
   border-radius: 12px;
   padding: 12px 14px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .payment-icon {
@@ -1505,20 +1358,7 @@ header {
 .payment-name {
   font-family: 'Goldman', 'Cormorant Garamond', serif;
   font-size: 16px;
-  color: var(--ink);
-}
-
-.shipping-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13.5px;
-  padding: 6px 0;
-  color: var(--text-soft);
-}
-
-.shipping-row strong {
-  color: var(--ink);
-  font-weight: 600;
+  color: #0A2F1D;
 }
 
 .trust-grid {
@@ -1539,7 +1379,7 @@ header {
   border-radius: 10px;
   padding: 9px 11px;
   font-weight: 500;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .trust-item::first-letter {
@@ -2349,7 +2189,7 @@ h1,h2,h3 {
   color: var(--text-soft);
   margin-bottom: 16px;
   line-height: 1.5;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .cf-label {
@@ -2359,7 +2199,7 @@ h1,h2,h3 {
   text-transform: uppercase;
   color: var(--text-soft);
   margin-bottom: 12px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .cf-input {
@@ -2370,22 +2210,10 @@ h1,h2,h3 {
   border-radius: 12px;
   border: 2px solid #000000;
   background: #ffffff;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
   font-size: 16px;
   color: var(--ink);
   box-shadow: none;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
 }
 
 .cf-input::placeholder {
@@ -2398,10 +2226,8 @@ h1,h2,h3 {
   box-shadow: 0 0 0 3px rgba(0,0,0,.12);
 }
 
-.shipping-card,
 .confirm-details,
-.payment-card,
-.orders-stat {
+.payment-card {
   background: #ffffff;
   border: 1px solid #e2e2e2;
 }
@@ -2413,43 +2239,18 @@ h1,h2,h3 {
   color: #000000;
   font-weight: 700;
   margin-bottom: 8px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
-.co-item-name {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: 15.5px;
-  color: var(--ink);
-}
-
-.co-item-meta,
 .osc-row,
-.shipping-row,
 .trust-item,
 .cd-row,
 .order-date {
   color: var(--text-soft);
 }
 
-.co-item-subtotal,
-.shipping-row strong,
 .cd-row strong {
   color: var(--ink);
-}
-
-.payment-name {
-  color: #0A2F1D;
-}
-
-.osc-total {
-  border-top: 1px solid var(--line);
-  margin-top: 6px;
-  padding-top: 14px;
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--gold-deep);
-  font-family: 'Cormorant Garamond',serif;
-  border-top-color: rgba(212,175,55,.25);
 }
 
 .order-total-card {
@@ -2461,7 +2262,7 @@ h1,h2,h3 {
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #000000;
@@ -2493,21 +2294,6 @@ h1,h2,h3 {
   background: var(--gold-light);
 }
 
-.orders-stat .os-label {
-  font-size: 10.5px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-  margin-bottom: 6px;
-}
-
-.orders-stat .os-value {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--gold-deep);
-}
-
 .order-card {
   border: 1px solid var(--card-line);
   border-radius: 14px;
@@ -2526,10 +2312,6 @@ h1,h2,h3 {
   font-family: 'Cormorant Garamond',serif;
   font-size: 19px;
   color: var(--ink);
-}
-
-.order-customer .oc-meta, .order-items {
-  color: var(--text-soft);
 }
 
 .order-total {
@@ -2786,7 +2568,7 @@ footer {
 #checkout-page textarea,
 #checkout-page button,
 #checkout-page * {
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 @media(max-width:640px) {
@@ -3224,13 +3006,6 @@ footer {
   margin: 0;
 }
 
-.pp-qty-label {
-  font-size: 12.5px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-}
-
 @media(max-width:560px) {
   .ab-item {
     font-size: 11px;
@@ -3464,12 +3239,6 @@ footer {
   align-items: center;
   gap: 10px;
   width: 100%;
-}
-
-.sm-spark {
-  color: var(--gold);
-  font-size: 12px;
-  opacity: .85;
 }
 
 .side-menu-drawer .wd-header h3 {
@@ -4747,13 +4516,6 @@ textarea.cf-input-icon {
   color: #000;
 }
 
-.pack4-savings {
-  font-size: 12.5px;
-  color: #0A2F1D;
-  font-family: 'Jost', sans-serif;
-  margin: 0 0 16px;
-}
-
 .pack4-picker-item {
   display: flex;
   align-items: center;
@@ -6029,7 +5791,6 @@ textarea.cf-input-icon {
     grid-template-columns: 1fr 1fr auto auto;
   }
   .ad-order-summary .ad-order-cell-city,
-  .ad-order-summary .ad-order-cell-phone,
   .ad-order-summary .ad-order-cell-items {
     display: none;
   }
@@ -6162,115 +5923,6 @@ textarea.cf-input-icon {
   letter-spacing: .02em;
 }
 
-/* ---------- About HISTOIRE ---------- */
-.about-symphonie-wrap {
-  max-width: 780px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.about-symphonie-text {
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 15.5px;
-  line-height: 1.9;
-  color: var(--text-soft);
-  margin-bottom: 40px;
-}
-
-.about-symphonie-icons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 46px;
-}
-
-.about-symphonie-icon-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  max-width: 150px;
-}
-
-.about-symphonie-icon-badge {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 1px solid var(--lux-border-gold);
-  background: rgba(212,175,55,.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold-deep);
-}
-
-.about-symphonie-icon-badge svg { width: 24px; height: 24px; }
-
-.about-symphonie-icon-item span {
-  font-family: 'Jost', sans-serif;
-  font-size: 12px;
-  letter-spacing: .04em;
-  color: var(--ink);
-  font-weight: 500;
-}
-
-/* ---------- Why Choose HISTOIRE ---------- */
-.why-symphonie-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.why-symphonie-card {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 34px 24px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
-  transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .4s ease;
-}
-
-.why-symphonie-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 34px -14px rgba(212,175,55,.35);
-  border-color: rgba(212,175,55,.4);
-}
-
-.why-symphonie-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold-deep));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 18px;
-  color: #181000;
-  box-shadow: 0 8px 20px -8px rgba(212,175,55,.55);
-}
-
-.why-symphonie-icon svg { width: 24px; height: 24px; }
-
-.why-symphonie-card h4 {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
-  font-size: 17.5px;
-  color: var(--ink);
-  margin-bottom: 8px;
-  font-weight: 400;
-}
-
-.why-symphonie-card p {
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  color: var(--text-soft);
-  line-height: 1.6;
-}
-
 /* ---------- FAQ accordion ---------- */
 .faq-list {
   max-width: 780px;
@@ -6332,77 +5984,6 @@ textarea.cf-input-icon {
   font-size: 13.5px;
   line-height: 1.8;
   color: var(--text-soft);
-}
-
-/* ---------- Newsletter ---------- */
-.newsletter-section {
-  padding: 80px 0;
-  background: linear-gradient(150deg, var(--lux-bg-1), var(--lux-bg-2));
-  text-align: center;
-}
-
-.newsletter-section .lux-heading { color: #fff; }
-.newsletter-section .lux-eyebrow { color: var(--gold-light); }
-.newsletter-section .lux-eyebrow::before,
-.newsletter-section .lux-eyebrow::after { background: var(--gold-light); }
-
-.newsletter-text {
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 14.5px;
-  color: var(--lux-text-soft);
-  max-width: 480px;
-  margin: 0 auto 32px;
-  line-height: 1.7;
-}
-
-.newsletter-form {
-  display: flex;
-  max-width: 440px;
-  margin: 0 auto;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.newsletter-input {
-  flex: 1 1 240px;
-  padding: 14px 20px;
-  border-radius: 30px;
-  border: 1px solid var(--lux-border-gold);
-  background: rgba(255,255,255,.05);
-  color: #fff;
-  font-family: 'Jost', sans-serif;
-  font-size: 13.5px;
-  outline: none;
-}
-
-.newsletter-input::placeholder { color: var(--lux-text-soft); }
-.newsletter-input:focus { border-color: var(--gold); }
-
-.newsletter-submit {
-  padding: 14px 28px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold-deep));
-  color: #181000;
-  font-family: 'Jost', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform .3s ease;
-}
-
-.newsletter-submit:hover { transform: translateY(-2px); }
-
-.newsletter-msg {
-  margin-top: 14px;
-  font-family: 'Jost', sans-serif;
-  font-size: 12.5px;
-  color: var(--gold-light);
-  min-height: 16px;
 }
 
 /* ---------- Contact section ---------- */
@@ -6472,13 +6053,6 @@ textarea.cf-input-icon {
   font-size: 17px;
   color: var(--ink);
   line-height: 1.4;
-}
-
-.contact-hours-text {
-  font-family: 'Jost', sans-serif !important;
-  font-weight: 400;
-  font-size: 13px;
-  color: var(--text-soft);
 }
 
 .contact-card a { text-decoration: none; }
@@ -6551,16 +6125,12 @@ footer .footer-links-col h5 {
 
 /* ---------- responsive: luxury sections ---------- */
 @media (max-width: 900px) {
-  .why-symphonie-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 600px) {
   .lux-section { padding: 60px 0; }
-  .newsletter-section { padding: 56px 0; }
-  .why-symphonie-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr 1fr; }
-  .about-symphonie-icons { gap: 26px; }
   .footer-links-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
 }
 
@@ -6713,13 +6283,6 @@ footer .footer-links-col h5 {
   border-bottom: .5px solid #e8dcb0;
   padding-bottom: 1mm;
   margin-bottom: 1.5mm;
-}
-.ad-label-label {
-  font-size: 8.5px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: #6b7280;
-  margin-bottom: 1mm;
 }
 .ad-label-value {
   font-size: 13px;
@@ -7084,7 +6647,7 @@ footer .footer-links-col h5 {
   text-transform: uppercase;
   color: var(--text-soft);
   margin-bottom: 10px;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .review-stars-field { margin-bottom: 16px; }
@@ -7106,7 +6669,7 @@ footer .footer-links-col h5 {
 
 .review-textarea {
   resize: vertical;
-  font-family: 'Goldman', 'Jost', 'Cairo', sans-serif;
+  font-family: 'Goldman', 'Jost', sans-serif;
 }
 
 .review-optional-tag {

@@ -4784,29 +4784,6 @@ document.querySelectorAll('#faq-list .faq-item').forEach((item) => {
   });
 });
 
-/* ---------- Newsletter ---------- */
-const newsletterForm = document.getElementById('newsletter-form');
-if(newsletterForm){
-  newsletterForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = document.getElementById('newsletter-email');
-    const msg = document.getElementById('newsletter-msg');
-    const email = input.value.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if(!isValid){
-      msg.textContent = 'Veuillez entrer une adresse email valide.';
-      return;
-    }
-    try{
-      const list = JSON.parse(localStorage.getItem('aura-newsletter-subscribers') || '[]');
-      if(!list.includes(email)) list.push(email);
-      localStorage.setItem('aura-newsletter-subscribers', JSON.stringify(list));
-    }catch(e){}
-    msg.textContent = 'Merci ! Vous êtes inscrit(e) à notre newsletter.';
-    input.value = '';
-  });
-}
-
 /* ---------- Footer quick links ---------- */
 function scrollToSection(id){
   const el = document.getElementById(id);
