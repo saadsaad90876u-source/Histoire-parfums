@@ -33,8 +33,40 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=67bd40fbe2" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<!-- The splash-screen logo is the only image guaranteed to be the very
+     first thing painted on every visit (it's a fixed full-viewport
+     overlay), so it's preloaded with the highest fetch priority as the
+     LCP candidate. -->
+<link rel="preload" as="image" href="/symphonie-splash-logo.webp" fetchpriority="high">
+<script>
+// Give the actual hero/offer banner images (loaded dynamically from
+// Supabase by script.js, which only runs after the whole document is
+// parsed since it's deferred) a head start on returning visits: if we
+// already have last-known-good URLs cached in localStorage from a
+// previous visit, kick off <link rel=preload> for them right now,
+// synchronously, instead of waiting for script.js to run and create
+// the <img> tags itself. This can shave hundreds of ms off LCP on
+// repeat visits without changing anything about first-visit behavior.
+(function(){
+  try{
+    var filter = 'women'; // matches script.js's initial currentFilter default
+    function preload(url){
+      if(!url) return;
+      var l = document.createElement('link');
+      l.rel = 'preload'; l.as = 'image'; l.href = url; l.setAttribute('fetchpriority','high');
+      document.head.appendChild(l);
+    }
+    var hero = JSON.parse(localStorage.getItem('cache-aura-hero-banner-' + filter) || 'null');
+    if(hero && hero[0] && hero[0].url && hero[0].type !== 'video') preload(hero[0].url);
+    var pack4 = JSON.parse(localStorage.getItem('cache-pack4-badge-images') || 'null');
+    if(pack4 && pack4[filter]) preload(pack4[filter]);
+  }catch(err){ /* ignore - first visit or storage unavailable */ }
+})();
+</script>
 <script>
 // Self-healing check: if style.css failed to load, or loaded but somehow
 // didn't apply (rare network/CDN glitch), automatically retry once with
@@ -67,10 +99,10 @@ svg:not([width]) { width: 1em; height: 1em; }
   window.addEventListener('pageshow', function(e){ if(e.persisted) runCheck(); });
 })();
 </script>
-<link rel="icon" href="/symphonie-logo.png" type="image/png">
+<link rel="icon" href="/symphonie-favicon.png" type="image/png">
 </head>
 <body>
-<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="HISTOIRE PARFUMS" class="splash-logo"></div>
+<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="HISTOIRE PARFUMS" class="splash-logo" width="480" height="285" fetchpriority="high"></div>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
 
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
@@ -99,7 +131,7 @@ svg:not([width]) { width: 1em; height: 1em; }
     <button type="button" id="menu-toggle-btn" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
-    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.png" alt="HISTOIRE" class="logo-img"></button>
+    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="logo-img" width="202" height="120"></button>
     <div class="nav-icons">
       <button aria-label="Search" id="search-btn"><svg class="icon"><use href="#i-search"></use></svg></button>
       <button aria-label="Cart" id="cart-btn"><svg class="icon"><use href="#i-bag"></use></svg><span class="cart-badge" id="cart-badge-count" style="display:none;">0</span></button>
@@ -455,7 +487,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 <footer>
   <div class="container">
     <div class="footer-top">
-      <div class="footer-logo"><img src="/symphonie-logo.png" alt="HISTOIRE" class="footer-logo-img"></div>
+      <div class="footer-logo"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="footer-logo-img" width="202" height="120" loading="lazy" decoding="async"></div>
     </div>
 
     <div class="footer-links-grid">
@@ -1226,9 +1258,9 @@ svg:not([width]) { width: 1em; height: 1em; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
-<script src="/script.js" defer></script>
-<script src="/motion.js" defer></script>
+<script src="/script.js?v=af66c79f69" defer></script>
+<script src="/motion.js?v=2e2009ac0d" defer></script>
 </body>
 </html>
