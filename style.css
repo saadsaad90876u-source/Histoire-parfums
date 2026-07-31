@@ -255,7 +255,6 @@ header {
   z-index: 1000;
   backdrop-filter: blur(16px) saturate(160%);
   background: #0A2F1D;
-  border-bottom: 1px solid rgba(212,175,55,.3);
 }
 
 .nav-wrap {
