@@ -253,6 +253,7 @@ a {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
+  color: #0A2F1D;
 }
 
 header {
@@ -2764,7 +2765,7 @@ footer {
 }
 
 #checkout-page {
-  padding: 132px 20px 60px;
+  padding: 108px 20px 60px;
   min-height: 100vh;
   width: 100%;
   background: #F3EDDD;
@@ -2790,7 +2791,7 @@ footer {
 
 @media(max-width:640px) {
   #checkout-page {
-    padding: calc(env(safe-area-inset-top, 0px) + 132px) 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
+    padding: calc(env(safe-area-inset-top, 0px) + 108px) 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
   }
 }
 
@@ -2810,7 +2811,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
   padding: 6px 0;
   transition: color .25s ease;
 }

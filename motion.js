@@ -47,6 +47,24 @@
         });
     }
 
+    // The first two cards of whichever grid is currently showing (default
+    // shop grid on load, or the freshly-rebuilt grid after switching
+    // Femme/Homme) should welcome the visitor immediately instead of
+    // waiting for ScrollTrigger to decide they've been scrolled into view.
+    // This bypasses animateCardIn's scrollTrigger entirely for those two
+    // cards (marking dataset.mFadeIn up front so scanCards() below doesn't
+    // also attach the scroll-based version to them) and just plays the
+    // same fade/rise/scale immediately.
+    function animateFirstTwoIn(cards) {
+      cards.slice(0, 2).forEach((card) => {
+        if (card.dataset.mFadeIn) return;
+        card.dataset.mFadeIn = '1';
+        gsap.fromTo(card,
+          { opacity: 0, y: 36, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out', delay: 0.05 });
+      });
+    }
+
     /* ---------------- product card: stage parallax (moves independently of card) */
     /* Disabled: moving .pc-stage's own transform independently of the card's
        layout caused a visible white gap to open up beneath it during scroll
@@ -98,6 +116,9 @@
     }
 
     function scanCards() {
+      const shopGrid = document.getElementById('shop-grid');
+      const shopGridCards = shopGrid ? Array.prototype.slice.call(shopGrid.querySelectorAll('.product-card')) : [];
+      if (shopGridCards.length) animateFirstTwoIn(shopGridCards);
       document.querySelectorAll('.product-card').forEach((card) => {
         animateCardIn(card);
         animateParallax(card);
