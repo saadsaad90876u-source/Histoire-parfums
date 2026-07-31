@@ -939,11 +939,11 @@ header {
 }
 
 #checkout-btn {
-  background: #2f9e5c;
+  background: #000000;
   color: #fff;
 }
 #checkout-btn:hover {
-  background: #278650;
+  background: #1a1a1a;
 }
 
 #pack4-add-btn {
@@ -3455,7 +3455,7 @@ footer {
 }
 
 .side-menu-drawer .wd-header {
-  background: linear-gradient(155deg, #0b0b0d, #14120c 60%, #0b0b0d);
+  background: #0A2F1D;
   border-bottom: none;
   height: 80px;
   padding: 0 24px;
@@ -3529,7 +3529,7 @@ footer {
 }
 
 #cart-drawer .wd-header {
-  background: linear-gradient(155deg, #0b0b0d, #14120c 60%, #0b0b0d);
+  background: #0A2F1D;
   border-bottom: none;
   height: 80px;
   padding: 0 24px;
