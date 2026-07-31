@@ -16,7 +16,7 @@
   --gold-light: #f0dfa0;
   --gold-deep: #a5811f;
   --navy-dark: #050B1A;
-  --cream: #FFFFFF;
+  --cream: #E8DCC0;
   --ink: #0c1424;
   --paper: #ffffff;
   --line: #ffffff;
@@ -1762,7 +1762,7 @@ header {
    ============================================================ */
 
 body {
-  background: #FAF8F3;
+  background: #E8DCC0;
   color: var(--ink);
   font-family: 'Jost', sans-serif;
   font-weight: 400;
