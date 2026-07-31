@@ -17,7 +17,7 @@
   --gold-light: #f0dfa0;
   --gold-deep: #a5811f;
   --navy-dark: #050B1A;
-  --cream: #F3EDDD;
+  --cream: #FFFFFF;
   --ink: #0c1424;
   --paper: #ffffff;
   --line: #ffffff;
@@ -1276,7 +1276,7 @@ header {
 }
 
 #checkout-page .osc-title {
-  color: #F3EDDD;
+  color: #FFFFFF;
 }
 
 #checkout-page .osc-row {
@@ -1627,7 +1627,7 @@ header {
    ============================================================ */
 
 body {
-  background: #F3EDDD;
+  background: #FFFFFF;
   color: var(--ink);
   font-family: 'Jost', sans-serif;
   font-weight: 400;
@@ -1754,6 +1754,7 @@ h1,h2,h3 {
   padding: 0;
   overflow: hidden;
   background: #ffffff;
+  border: 1px solid rgba(10, 47, 29, .08);
   cursor: pointer;
   will-change: transform;
   transform: translateZ(0);
@@ -2149,7 +2150,7 @@ h1,h2,h3 {
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-  background: #F3EDDD;
+  background: #FFFFFF;
   border-radius: 0;
   padding: 76px 24px 32px;
   z-index: 3001;
@@ -2273,7 +2274,7 @@ h1,h2,h3 {
   border-top: 1px solid rgba(243,237,221,.2);
   margin-top: -14px;
   background: #0A2F1D;
-  color: #F3EDDD;
+  color: #FFFFFF;
 }
 
 .coupon-apply-btn {
@@ -2550,7 +2551,7 @@ footer {
   padding: 108px 20px 60px;
   min-height: 100vh;
   width: 100%;
-  background: #F3EDDD;
+  background: #FFFFFF;
   color: var(--ink);
 }
 
@@ -3284,7 +3285,7 @@ footer {
 #cart-drawer {
   width: 100vw;
   max-width: 100vw;
-  background: #F3EDDD;
+  background: #FFFFFF;
 }
 
 #cart-drawer .wd-header {
@@ -4277,7 +4278,7 @@ textarea.cf-input-icon {
   font-size: 15px;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: #F3EDDD;
+  color: #FFFFFF;
   margin-bottom: 18px;
 }
 
@@ -4285,7 +4286,7 @@ textarea.cf-input-icon {
   font-family: 'Jost', sans-serif;
   font-weight: 600;
   font-size: 13.5px;
-  color: #F3EDDD;
+  color: #FFFFFF;
   margin-top: 4px;
 }
 
@@ -5859,7 +5860,7 @@ textarea.cf-input-icon {
 
 .lux-section {
   padding: 90px 0;
-  background: #F3EDDD;
+  background: #FFFFFF;
 }
 
 #contact-section {
@@ -5869,11 +5870,11 @@ textarea.cf-input-icon {
 
 #faq-section {
   padding-bottom: 30px;
-  background: #F3EDDD;
+  background: #FFFFFF;
 }
 
 .lux-section-alt {
-  background: #F3EDDD;
+  background: #FFFFFF;
 }
 
 .lux-eyebrow {
