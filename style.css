@@ -3463,11 +3463,7 @@ footer {
 }
 
 .side-menu-drawer .wd-header::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  display: none;
 }
 
 .sm-header-mark {
@@ -3537,11 +3533,7 @@ footer {
 }
 
 #cart-drawer .wd-header::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  display: none;
 }
 
 #cart-drawer .wd-header h3 {
