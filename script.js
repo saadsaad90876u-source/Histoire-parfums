@@ -404,6 +404,19 @@ function renderShop(filter, skipScroll){
         </button>` : '');
     grid.style.opacity = '1';
     refreshScrollReveal(grid);
+    // The first two product cards should welcome the visitor immediately —
+    // rise into view as soon as the shop loads, instead of waiting for the
+    // visitor to scroll/touch the screen and cross the IntersectionObserver
+    // threshold. A short delay keeps the CSS transition visible (adding the
+    // class in the very same tick as the initial paint can make browsers
+    // skip straight to the end state instead of animating).
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        grid.querySelectorAll('.product-card.reveal:not(.active)').forEach((card, i) => {
+          if(i < 2) card.classList.add('active');
+        });
+      }, 60);
+    });
   }, 100);
   document.querySelectorAll('.sf-btn').forEach(b=>b.classList.toggle('active', b.dataset.f === filter));
   if(!skipScroll) window.scrollTo({top:0, behavior:'smooth'});
