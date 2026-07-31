@@ -2102,17 +2102,26 @@ h1,h2,h3 {
   padding: 13px 40px;
   border-radius: 12px;
   border: none;
-  background: none;
-  color: var(--ink);
+  color: #fff;
   font-family: 'Jost',sans-serif;
   font-size: 12.5px;
   letter-spacing: .16em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color .4s cubic-bezier(0.4,0,0.2,1);
+  transition: box-shadow .4s cubic-bezier(0.4,0,0.2,1), transform .3s ease;
   font-weight: 500;
   position: relative;
   isolation: isolate;
+}
+
+.sf-btn[data-f="men"] {
+  background: linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
+  color: #fff;
+}
+
+.sf-btn[data-f="women"] {
+  background: linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
+  color: #211510;
 }
 
 /* Two full-size color layers stacked behind the text. Only opacity is
@@ -2127,66 +2136,33 @@ h1,h2,h3 {
   border-radius: inherit;
   opacity: 0;
   background-repeat: no-repeat;
-  background-size: 250% 100%, 100% 100%;
-  transition: opacity .5s cubic-bezier(0.4,0,0.2,1);
+  background-size: 250% 100%;
+  background-image: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%);
+  background-position: -100% 0;
   pointer-events: none;
 }
 
-.sf-btn::before {
-  background-image:
-    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
-  background-position: -100% 0, 0 0;
-}
-
-.sf-btn::after {
-  background-image:
-    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
-  background-position: -100% 0, 0 0;
-}
-
-.sf-btn.active[data-f="men"]::before   { opacity: 1; }
-.sf-btn.active[data-f="women"]::before { opacity: 0; }
-.sf-btn.active[data-f="women"]::after  { opacity: 1; }
-.sf-btn.active[data-f="men"]::after    { opacity: 0; }
-
-.sf-btn.active[data-f="men"]::before {
-  animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1);
-}
-.sf-btn.active[data-f="women"]::after {
+.sf-btn.active::before {
+  opacity: 1;
   animation: sfSweep .5s cubic-bezier(0.4,0,0.2,1);
 }
 
 @keyframes sfSweep {
-  from { background-position: -100% 0, 0 0; }
-  to   { background-position: 150% 0, 0 0; }
+  from { background-position: -100% 0; }
+  to   { background-position: 150% 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sf-btn.active[data-f="men"]::before,
-  .sf-btn.active[data-f="women"]::after { animation: none; }
+  .sf-btn.active::before { animation: none; }
 }
 
 .sf-btn:hover {
-  border-color: var(--gold);
-  color: var(--gold-light);
+  transform: translateY(-1px);
 }
 
 .sf-btn.active {
-  border-color: transparent;
-  color: #fff;
   font-weight: 700;
-}
-
-.sf-btn.active[data-f="men"] {
-  background: linear-gradient(120deg, #343436, #7B7C7E 50%, #343436);
-  color: #fff;
-}
-
-.sf-btn.active[data-f="women"] {
-  background: linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
-  color: #211510;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.22);
 }
 
 .product-card .pc-fam, .product-card .desc {
