@@ -4725,7 +4725,8 @@ textarea.cf-input-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ececec;
+  background: rgba(10, 47, 29, .06);
+  border: 1px solid rgba(10, 47, 29, .14);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 8px;
