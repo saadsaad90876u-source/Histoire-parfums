@@ -1336,6 +1336,19 @@ header {
   border-radius: 12px 12px 0 0;
   margin-bottom: 0;
   padding-bottom: 12px;
+  background: #0A2F1D;
+}
+
+#checkout-page .osc-title {
+  color: #F3EDDD;
+}
+
+#checkout-page .osc-row {
+  color: #b9c2ba;
+}
+
+#checkout-page .co-item-subtotal {
+  color: #F3EDDD;
 }
 
 
@@ -1419,8 +1432,8 @@ header {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: color-mix(in srgb, var(--gold) 6%, transparent);
-  border: 1px solid rgba(212, 175, 55, .35);
+  background: rgba(10, 47, 29, .05);
+  border: 1px solid rgba(10, 47, 29, .18);
   border-radius: 12px;
   padding: 12px 14px;
   margin-bottom: 8px;
@@ -1431,7 +1444,7 @@ header {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  accent-color: var(--gold);
+  accent-color: #0A2F1D;
   margin: 0;
 }
 
@@ -2447,7 +2460,7 @@ h1,h2,h3 {
 }
 
 .payment-name {
-  color: #16a34a;
+  color: #0A2F1D;
 }
 
 .osc-total {
@@ -2478,8 +2491,10 @@ h1,h2,h3 {
 
 #checkout-page .order-total-card {
   border-radius: 0 0 12px 12px;
-  border-top: 1px solid #d5d5d5;
+  border-top: 1px solid rgba(243,237,221,.2);
   margin-top: -14px;
+  background: #0A2F1D;
+  color: #F3EDDD;
 }
 
 .coupon-apply-btn {
