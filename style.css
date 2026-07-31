@@ -158,6 +158,11 @@
 html {
   scroll-behavior: smooth;
   color-scheme: light;
+  overscroll-behavior-y: none;
+}
+
+body {
+  overscroll-behavior-y: none;
 }
 
 
@@ -212,6 +217,9 @@ a {
   border-bottom: 1px solid rgba(0,0,0,.12);
   display: flex;
   align-items: center;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .ab-track {
@@ -255,6 +263,9 @@ header {
   z-index: 1000;
   backdrop-filter: blur(16px) saturate(160%);
   background: #0A2F1D;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .nav-wrap {
