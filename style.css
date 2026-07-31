@@ -206,7 +206,7 @@ a {
   left: 0;
   right: 0;
   z-index: 4000;
-  height: 36px;
+  height: 32px;
   overflow: hidden;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.12);
@@ -249,7 +249,7 @@ a {
 
 header {
   position: fixed;
-  top: 36px;
+  top: 32px;
   left: 0;
   right: 0;
   z-index: 1000;
@@ -820,7 +820,7 @@ header {
 
 .wishlist-overlay {
   position: fixed;
-  top: 36px;
+  top: 32px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -1763,7 +1763,7 @@ header {
    ============================================================ */
 
 body {
-  background: #F4F0E8;
+  background: #FAF8F3;
   color: var(--ink);
   font-family: 'Jost', sans-serif;
   font-weight: 400;
@@ -2080,7 +2080,7 @@ h1,h2,h3 {
   border-radius: 12px;
   border: none;
   background: none;
-  color: var(--text-soft);
+  color: #F9F8F3;
   font-family: 'Jost',sans-serif;
   font-size: 12.5px;
   letter-spacing: .16em;
@@ -2178,7 +2178,7 @@ h1,h2,h3 {
   font-family: 'Jost', sans-serif;
   font-size: 21px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   color: #111111;
   text-align: center;
   line-height: 1.25;
@@ -2187,6 +2187,26 @@ h1,h2,h3 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.pc-rating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  margin: -2px 0 4px;
+}
+
+.pc-stars {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.pc-rating-value {
+  font-family: 'Jost', sans-serif;
+  font-size: 10.5px;
+  color: var(--text-soft);
 }
 
 .product-card .price {
@@ -2527,11 +2547,11 @@ h1,h2,h3 {
 
 .wishlist-drawer {
   position: fixed;
-  top: 36px;
+  top: 32px;
   right: 0;
   bottom: 0;
-  height: calc(100% - 36px);
-  height: calc(100dvh - 36px);
+  height: calc(100% - 32px);
+  height: calc(100dvh - 32px);
   width: 360px;
   max-width: 88vw;
   background: #ffffff;
@@ -3408,12 +3428,12 @@ footer {
 .side-menu-drawer {
   left: 0;
   right: auto;
-  top: 36px;
+  top: 32px;
   bottom: 0;
   width: 100vw;
   max-width: 100vw;
-  height: calc(100vh - 36px);
-  height: calc(100dvh - 36px);
+  height: calc(100vh - 32px);
+  height: calc(100dvh - 32px);
   transform: translateX(-100%);
   background: #fff;
   color: var(--ink);
@@ -4193,7 +4213,7 @@ textarea.cf-input-icon {
   letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #EFE6D0;
+  color: #F9F8F3;
 }
 
 .pack4-banner-title {
@@ -4301,7 +4321,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
-  color: #EFE6D0;
+  color: #F9F8F3;
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
