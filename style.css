@@ -1811,7 +1811,7 @@ h1,h2,h3 {
 }
 
 .shop-section {
-  padding: 22px 0 14px;
+  padding: 16px 0 14px;
   position: relative;
 }
 
@@ -2077,8 +2077,8 @@ h1,h2,h3 {
 }
 
 .shop-heading {
-  font-size: clamp(32px,4.5vw,46px);
-  margin-bottom: 13px;
+  font-size: clamp(27px,3.8vw,39px);
+  margin-bottom: 8px;
   color: #000000;
   font-family: 'Cinzel', 'Cormorant Garamond', serif;
   text-shadow: none;
@@ -2090,7 +2090,7 @@ h1,h2,h3 {
   gap: 4px;
   justify-content: center;
   width: fit-content;
-  margin: 0 auto 17px;
+  margin: 0 auto 12px;
   padding: 6px;
   border: none;
   border-radius: 12px;
