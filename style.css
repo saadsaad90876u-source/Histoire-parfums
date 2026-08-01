@@ -59,7 +59,7 @@
 .splash-logo {
   width: min(45vw, 240px);
   height: auto;
-  aspect-ratio: 650 / 376;
+  aspect-ratio: 324 / 188;
   display: block;
   opacity: 0;
   animation: splashLogoSequence 1.3s ease 0.5s forwards;
@@ -2537,7 +2537,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 320 / 185;
+  aspect-ratio: 560 / 324;
   display: block;
   margin: 0 auto;
 }
@@ -2545,7 +2545,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 320 / 185;
+  aspect-ratio: 560 / 324;
   display: block;
   margin: 0 auto;
 }
