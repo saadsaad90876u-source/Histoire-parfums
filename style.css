@@ -660,7 +660,7 @@ header {
 }
 
 .pc-body {
-  padding: 12px 16px 14px;
+  padding: 10px 16px 12px;
   border-left: 1px solid rgba(20,18,14,.16);
   border-right: 1px solid rgba(20,18,14,.16);
   border-bottom: 1px solid rgba(20,18,14,.16);
@@ -1922,8 +1922,8 @@ h1,h2,h3 {
   font-size: clamp(32px,4.56vw,47px);
   margin-bottom: 8px;
   color: #000000;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 375;
+  font-family: 'Poppins', 'Jost', sans-serif;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .02em;
   text-shadow: none;
@@ -2037,7 +2037,7 @@ h1,h2,h3 {
   align-items: center;
   justify-content: flex-start;
   gap: 4px;
-  margin: -2px 0 4px;
+  margin: -2px 0 2px;
 }
 
 .pc-stars {
@@ -2063,7 +2063,7 @@ h1,h2,h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
 }
 
 .pc-price-row {
@@ -2103,7 +2103,7 @@ h1,h2,h3 {
   display: flex;
   flex-direction: column;
   gap: 9px;
-  margin-top: 10px;
+  margin-top: 6px;
 }
 
 .product-card .pc-action-btn {
@@ -3060,7 +3060,7 @@ footer {
   }
 
   .pc-body {
-    padding: 12px 12px 14px;
+    padding: 8px 12px 10px;
   }
 
   .pc-fam {
@@ -3070,7 +3070,7 @@ footer {
 
   .product-card h3 {
     font-size: 16px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 
   .product-card .desc {
@@ -3092,12 +3092,12 @@ footer {
   }
 
   .product-card .pc-actions {
-    gap: 7px;
-    margin-top: 12px;
+    gap: 6px;
+    margin-top: 8px;
   }
 
   .product-card .pc-action-btn {
-    padding: 10px 12px;
+    padding: 9px 12px;
     font-size: 11px;
   }
 
@@ -4229,8 +4229,8 @@ textarea.cf-input-icon {
 
 @keyframes pack4CtaShine {
   0%   { transform: translateX(-150%) skewX(-20deg); }
-  16%  { transform: translateX(150%) skewX(-20deg); }
-  100% { transform: translateX(150%) skewX(-20deg); }
+  20%  { transform: translateX(280%) skewX(-20deg); }
+  100% { transform: translateX(280%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6032,7 +6032,11 @@ textarea.cf-input-icon {
 
 #contact-section {
   padding-top: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 12px;
+}
+
+#reviews-section {
+  padding-top: 18px;
 }
 
 #faq-section {
@@ -6613,7 +6617,7 @@ footer .footer-links-col h3 {
 }
 
 .testimonial-carousel-track {
-  min-height: 220px;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6624,7 +6628,7 @@ footer .footer-links-col h3 {
 
 .testimonial-skel {
   width: 100%;
-  height: 260px;
+  height: 600px;
   border-radius: 2px;
   background: linear-gradient(90deg, #f6f6f4 25%, #fbfbf9 50%, #f6f6f4 75%);
   background-size: 200% 100%;
@@ -6634,6 +6638,11 @@ footer .footer-links-col h3 {
 /* ---------- the luxury testimonial card itself ---------- */
 .testimonial-card {
   width: 100%;
+  height: 600px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 40px 42px 34px;
   background: linear-gradient(180deg, #ffffff 0%, #fdfbf4 100%);
@@ -6642,6 +6651,7 @@ footer .footer-links-col h3 {
   position: relative;
   opacity: 1;
   transform: translateY(0);
+  overflow: hidden;
   transition: opacity .45s ease, transform .45s ease;
 }
 
@@ -6696,6 +6706,12 @@ footer .footer-links-col h3 {
   color: var(--ink);
   max-width: 480px;
   margin: 0 auto 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 .testimonial-photo {
@@ -6705,6 +6721,7 @@ footer .footer-links-col h3 {
   overflow: hidden;
   margin: 0 auto 16px;
   border: 1px solid rgba(212,175,55,.4);
+  flex-shrink: 0;
 }
 .testimonial-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -6713,7 +6730,8 @@ footer .footer-links-col h3 {
   height: 1px;
   background: var(--emerald);
   opacity: .55;
-  margin: 0 auto 12px;
+  margin: auto auto 12px;
+  flex-shrink: 0;
 }
 
 .testimonial-name {
@@ -6818,7 +6836,9 @@ footer .footer-links-col h3 {
 }
 
 @media (max-width: 640px) {
-  .testimonial-card { padding: 30px 24px 26px; }
+  .testimonial-card { height: 560px; padding: 30px 24px 26px; }
+  .testimonial-carousel-track { height: 560px; }
+  .testimonial-skel { height: 560px; }
   .testimonial-card::before,
   .testimonial-card::after { width: 18px; height: 18px; }
   .testimonial-card::before { top: 7px; left: 7px; }
