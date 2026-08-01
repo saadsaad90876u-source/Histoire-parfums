@@ -864,7 +864,9 @@ header {
 }
 
 .wd-header h3 {
+  font-family: 'Jost', sans-serif;
   font-size: 21px;
+  text-transform: uppercase;
 }
 
 .wd-body {
@@ -3252,7 +3254,7 @@ footer {
 
 .side-menu-drawer .wd-header h3 {
   color: var(--emerald-light);
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 22px;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -3310,7 +3312,7 @@ footer {
 
 #cart-drawer .wd-header h3 {
   color: var(--emerald-light);
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Jost', sans-serif;
   font-size: 22px;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -3345,10 +3347,10 @@ footer {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #fffdf9;
+  background: #ffffff;
   border: 1px solid rgba(212,175,55,.22);
   border-radius: 20px;
-  padding: 16px 16px;
+  padding: 12.8px 16px;
   cursor: pointer;
   text-align: left;
   font-family: 'Jost', sans-serif;
@@ -3977,7 +3979,7 @@ textarea.cf-input-icon {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: .01em;
-  color: #50C878;
+  color: #FFFFFF;
   text-transform: uppercase;
 }
 
@@ -3994,7 +3996,7 @@ textarea.cf-input-icon {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 24px rgba(255,215,0,.65), 0 0 46px rgba(255,215,0,.35);
+  text-shadow: 0 0 12px rgba(255,215,0,.33), 0 0 23px rgba(255,215,0,.18);
   animation: pack4GoldShine 3.5s linear infinite;
 }
 
@@ -4071,7 +4073,7 @@ textarea.cf-input-icon {
   letter-spacing: .04em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 14px 18px;
+  padding: 12.6px 18px;
   border-radius: 999px;
   transition: transform .12s ease, box-shadow .25s ease, background .12s ease;
   position: relative;
@@ -4137,7 +4139,7 @@ textarea.cf-input-icon {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 24px rgba(255,215,0,.65), 0 0 46px rgba(255,215,0,.35);
+  text-shadow: 0 0 12px rgba(255,215,0,.33), 0 0 23px rgba(255,215,0,.18);
   animation: pack4GoldShine 3.5s linear infinite;
 }
 
