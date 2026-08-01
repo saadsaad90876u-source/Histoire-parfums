@@ -60,14 +60,6 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
-<!-- Static preload of the current Femme hero banner image, so Lighthouse's
-     preload scanner (and real browsers) can discover the LCP image directly
-     from the raw HTML instead of waiting for JS to fetch and inject it.
-     If the banner image is changed from the admin panel, update this href
-     to match the new image URL -- otherwise this just becomes a harmless
-     unused preload and the page still renders the correct (new) image via
-     the normal JS-driven banner logic. -->
-<link rel="preload" as="image" fetchpriority="high" href="https://kydrxvfarubaazemxqhw.supabase.co/storage/v1/object/public/product-images/banner/1785593294163-74wxmw.avif">
 <!-- Fonts and the main stylesheet are loaded non-blocking: the inline
      critical CSS above already covers the very first paint, so there is
      no need to hold up rendering while these download. The
@@ -151,7 +143,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 </header>
 
 <main id="shop-view">
-<section id="hero-banner">
+<section id="hero-banner" style="display:none;">
   <div class="hero-banner-frame" id="hero-banner-frame">
     <div id="hero-banner-content"></div>
   </div>
@@ -206,14 +198,14 @@ svg:not([width]) { width: 1em; height: 1em; }
   </div>
 </section>
 
-<section id="bottom-banner" class="reveal">
+<section id="bottom-banner" class="reveal" style="display:none;">
   <div class="hero-banner-frame" id="bottom-banner-frame">
     <div id="bottom-banner-content"></div>
   </div>
 </section>
 <input type="file" id="bottom-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
-<section id="bottom-banner-2" class="reveal">
+<section id="bottom-banner-2" class="reveal" style="display:none;">
   <div class="hero-banner-frame" id="bottom-banner-2-frame">
     <div id="bottom-banner-2-content"></div>
   </div>
@@ -613,7 +605,7 @@ svg:not([width]) { width: 1em; height: 1em; }
   <p id="tracking-lookup-error" style="display:none; color:#c0392b; font-size:13px; margin-bottom:16px;" data-i18n="trackingNotFound">No order found with this number.</p>
   <p id="tracking-order-number" style="color:var(--text-soft); font-size:13px; margin-bottom:20px;"></p>
   <div id="tracking-timeline" class="tracking-timeline"></div>
-  <section id="tracking-banner" style="margin-top:24px;">
+  <section id="tracking-banner" style="display:none; margin-top:24px;">
     <div class="hero-banner-frame" id="tracking-banner-frame">
       <div id="tracking-banner-content"></div>
     </div>
