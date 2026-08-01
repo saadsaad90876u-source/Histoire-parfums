@@ -2535,7 +2535,7 @@ footer {
 }
 
 .logo-img {
-  height: 22.5px;
+  height: 34px;
   width: auto;
   aspect-ratio: 402 / 146;
   display: block;
@@ -2545,7 +2545,7 @@ footer {
 }
 
 .footer-logo-img {
-  height: 16.2px;
+  height: 24px;
   width: auto;
   aspect-ratio: 402 / 146;
   display: block;
