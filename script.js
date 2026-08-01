@@ -115,9 +115,8 @@ const translations = {
     removeProductImageConfirm: "Supprimer cette image ?",
     checkoutError: "Veuillez remplir votre nom, téléphone et adresse.",
     addressLabel: "Adresse du domicile",
-    cityLabel: "Ville",
-    addressPh: "Adresse de livraison",
-    phonePh: "Numéro de téléphone",
+    addressPh: "Adresse",
+    phonePh: "Numero",
     checkoutSub: "Entrez vos coordonnées pour confirmer votre commande.",
     checkoutTitle: "Finaliser votre commande",
     pack4BannerTag: "Offre pack de 3 parfums",
@@ -218,7 +217,7 @@ const translations = {
     couponAppliedMsg: "Code promo appliqué avec succès",
     deliveryInfoTitle: "Informations de livraison",
     cityLabel: "Ville",
-    cityPh: "Ville",
+    cityPh: "ex. Casablanca",
     notesLabel: "Remarques (optionnel)",
     notesPh: "Quelque chose à préciser ?",
     paymentMethodTitle: "Mode de paiement",
@@ -354,7 +353,7 @@ function productCard(pRaw, category, idx){
     </div>
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
-      <h3>${p.name}</h3>
+      <h4>${p.name}</h4>
       <div class="pc-rating">
         <span class="pc-stars">★★★★★</span>
         <span class="pc-rating-value">(4.9)</span>
@@ -1737,8 +1736,10 @@ async function loadReviewsSection(){
   track.innerHTML = testimonialCardHtml(publicReviews[0]);
   renderTestimonialDots();
   const avg = publicReviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / publicReviews.length;
-  document.getElementById('reviews-summary-stars').innerHTML = reviewStarsHtml(Math.round(avg));
-  document.getElementById('reviews-summary-text').textContent = `${avg.toFixed(1)} sur 5 — basé sur ${publicReviews.length} avis`;
+  const summaryStarsEl = document.getElementById('reviews-summary-stars');
+  const summaryTextEl = document.getElementById('reviews-summary-text');
+  if(summaryStarsEl) summaryStarsEl.innerHTML = reviewStarsHtml(Math.round(avg));
+  if(summaryTextEl) summaryTextEl.textContent = `${avg.toFixed(1)} sur 5 — basé sur ${publicReviews.length} avis`;
   if(ratingLine) ratingLine.style.display = 'flex';
   if(carousel && !carousel.dataset.tBound){
     carousel.dataset.tBound = '1';
@@ -1786,26 +1787,11 @@ document.getElementById('review-star-picker').addEventListener('click', (e) => {
   });
 });
 
-let heic2anyLoadPromise = null;
-function loadHeic2any(){
-  if(typeof heic2any === 'function') return Promise.resolve();
-  if(heic2anyLoadPromise) return heic2anyLoadPromise;
-  heic2anyLoadPromise = new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-  return heic2anyLoadPromise;
-}
-
 async function convertHeicIfNeeded(file){
   if(!file) return file;
   const looksHeic = /image\/hei[cf]/i.test(file.type || '') || /\.(heic|heif)$/i.test(file.name || '');
   if(!looksHeic) return file;
   try{
-    await loadHeic2any();
     if(typeof heic2any !== 'function') return file;
     const result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
     const blob = Array.isArray(result) ? result[0] : result;
@@ -4798,6 +4784,29 @@ document.querySelectorAll('#faq-list .faq-item').forEach((item) => {
     }
   });
 });
+
+/* ---------- Newsletter ---------- */
+const newsletterForm = document.getElementById('newsletter-form');
+if(newsletterForm){
+  newsletterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('newsletter-email');
+    const msg = document.getElementById('newsletter-msg');
+    const email = input.value.trim();
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!isValid){
+      msg.textContent = 'Veuillez entrer une adresse email valide.';
+      return;
+    }
+    try{
+      const list = JSON.parse(localStorage.getItem('aura-newsletter-subscribers') || '[]');
+      if(!list.includes(email)) list.push(email);
+      localStorage.setItem('aura-newsletter-subscribers', JSON.stringify(list));
+    }catch(e){}
+    msg.textContent = 'Merci ! Vous êtes inscrit(e) à notre newsletter.';
+    input.value = '';
+  });
+}
 
 /* ---------- Footer quick links ---------- */
 function scrollToSection(id){
