@@ -59,7 +59,7 @@
 .splash-logo {
   width: min(45vw, 240px);
   height: auto;
-  aspect-ratio: 480 / 285;
+  aspect-ratio: 769 / 445;
   display: block;
   opacity: 0;
   animation: splashLogoSequence 1.3s ease 0.5s forwards;
@@ -1821,7 +1821,7 @@ h1,h2,h3 {
    renders instantly on every tap with no GPU layer warm-up delay. The scale
    "bubble" pop itself is driven directly by GSAP on touchstart/touchend. */
 .product-card.m-touch-active {
-  border-color: color-mix(in srgb, var(--emerald) 40%, var(--line));
+  border-color: rgba(10, 47, 29, .08);
 }
 
 
@@ -2138,14 +2138,14 @@ h1,h2,h3 {
   border: 1px solid #50C878;
   color: #fff;
   padding: 12px 14px;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.15), 0 0 0 1px rgba(80,200,120,.25), 0 6px 14px -6px rgba(80,200,120,.45);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.15), 0 0 0 1px rgba(80,200,120,.14), 0 4px 8px -6px rgba(80,200,120,.25);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .product-card .pc-action-cart:hover {
     background: #000;
     border-color: #6EE8A0;
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 0 1px rgba(80,200,120,.4), 0 8px 18px -6px rgba(80,200,120,.6);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 0 1px rgba(80,200,120,.22), 0 5px 10px -6px rgba(80,200,120,.32);
   }
 }
 
@@ -2506,7 +2506,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 202 / 120;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
 }
@@ -2514,7 +2514,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 202 / 120;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
 }
@@ -3846,7 +3846,7 @@ textarea.cf-input-icon {
   align-items: stretch;
   gap: 14px;
   background: var(--brand-green-gradient);
-  border: 2px solid #50C878;
+  border: 1.8px solid #50C878;
   box-shadow: inset 0 1px 1px rgba(255,255,255,.4), 0 0 0 1px rgba(80,200,120,.25), 0 8px 24px -10px rgba(80,200,120,.55);
   border-radius: 22px;
   padding: 22px 24px;
