@@ -2994,9 +2994,14 @@ async function uploadProductImage(file, opts){
     // instead (keeps most of AVIF's size benefit). If decode fails for
     // any reason (older browser), fall back to uploading the original
     // file untouched so the upload still succeeds.
+    //
+    // AVIF's codec is more efficient than WebP, so a small/already-
+    // optimized AVIF can end up *larger* after this WebP re-encode
+    // (e.g. a 4KB AVIF turning into a 95KB WebP). Only use the WebP
+    // result if it's actually smaller than the original file.
     try{ blob = await compressImageToBlob(sourceFile, 640, 0.8, true, 'image/webp'); }
     catch(err){ blob = null; }
-    if(!blob){ blob = sourceFile; avifRaw = true; }
+    if(!blob || blob.size >= sourceFile.size){ blob = sourceFile; avifRaw = true; }
   } else {
     blob = await compressImageToBlob(file, 640, 0.72, preserveTransparency);
   }
@@ -3405,7 +3410,10 @@ function createBannerController(cfg){
       let blob = null;
       try{ blob = await compressImageToBlob(sourceFile, 1600, 0.8, true, 'image/webp'); }
       catch(err){ blob = null; }
-      const avifRaw = !blob;
+      // AVIF compresses better than WebP, so a small/already-optimized
+      // AVIF can end up larger after this re-encode. Keep whichever is
+      // actually smaller instead of always taking the WebP result.
+      const avifRaw = !blob || blob.size >= sourceFile.size;
       if(avifRaw) blob = sourceFile;
       const ext = avifRaw ? 'avif' : 'webp';
       const contentType = avifRaw ? 'image/avif' : 'image/webp';
