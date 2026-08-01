@@ -171,33 +171,9 @@
     const heroContent = document.getElementById('hero-banner-content');
     if (heroContent) new MutationObserver(setupHero).observe(heroContent, { childList: true });
 
-    /* ---------------- pack banner CTA: one-time shine on first appearance -- */
-    /* This is the one spot where a shine sweep stays: "Découvrir le pack" is
-       a promotional CTA (not a regular product), so a single pass the moment
-       it enters view is a reasonable attention cue. It fires once per page
-       load and does not loop, unlike the old always-on sweep. */
-    function afterSplash(cb) {
-      cb();
-    }
-    function watchPackCtaShine() {
-      const cta = document.getElementById('pack4-banner-cta');
-      if (!cta || cta.dataset.mShineWatched) return;
-      cta.dataset.mShineWatched = '1';
-      afterSplash(() => {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              cta.classList.add('cta-shine-once');
-              io.disconnect();
-            }
-          });
-        }, { threshold: 0.4 });
-        io.observe(cta);
-      });
-    }
-    watchPackCtaShine();
-    const packBannerImage = document.getElementById('pack4-banner-image');
-    if (packBannerImage) new MutationObserver(watchPackCtaShine).observe(packBannerImage.parentElement || document.body, { childList: true, subtree: true });
+    /* ---------------- pack banner CTA shine now runs continuously via a
+       pure-CSS animation (see .pack4-banner-cta::after in style.css), so no
+       JS trigger is needed here anymore. -------------------------------- */
 
     /* ---------------- first two products: reveal right after splash ------- */
     /* Per request: the first two product cards (top of the shop grid) should

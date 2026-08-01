@@ -2128,17 +2128,17 @@ h1,h2,h3 {
   position: relative;
   overflow: hidden;
   background: #111;
-  border: 1px solid #50C878;
+  border: 1px solid rgba(212,175,55,.85);
   color: #fff;
   padding: 12px 14px;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.15), 0 0 0 1px rgba(80,200,120,.14), 0 4px 8px -6px rgba(80,200,120,.25);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.15), 0 0 0 1px rgba(212,175,55,.16), 0 4px 10px -6px rgba(212,175,55,.35), inset 0 0 14px rgba(212,175,55,.08);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .product-card .pc-action-cart:hover {
     background: #000;
-    border-color: #6EE8A0;
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 0 1px rgba(80,200,120,.22), 0 5px 10px -6px rgba(80,200,120,.32);
+    border-color: var(--gold-light);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.2), 0 0 0 1px rgba(212,175,55,.24), 0 5px 12px -6px rgba(212,175,55,.42), inset 0 0 16px rgba(240,223,160,.12);
   }
 }
 
@@ -3847,14 +3847,26 @@ textarea.cf-input-icon {
   display: flex;
   align-items: stretch;
   gap: 16px;
-  background: var(--brand-green-gradient);
+  background: linear-gradient(135deg, #146B45 0%, #0F5238 24%, #0B3F2C 52%, #082E22 78%, #0D4830 100%);
   border: 1.8px solid var(--gold);
   border-radius: 24px;
-  padding: 22px 24px;
+  padding: 18px 24px;
   margin: 0 auto 14px;
   max-width: 620px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.pack4-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 8% 0%, rgba(255, 221, 140, .16) 0%, transparent 45%),
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,.07) 48%, rgba(255,255,255,.14) 52%, rgba(255,255,255,.07) 56%, transparent 74%);
+  pointer-events: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -3895,38 +3907,6 @@ textarea.cf-input-icon {
   border: 1.5px solid rgba(212, 175, 55, .4);
   color: var(--emerald-light);
   opacity: .55;
-}
-
-.pack4-banner-shipping-badge {
-  position: absolute;
-  left: 8px;
-  bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(8, 46, 34, .85);
-  border: 1px solid rgba(212, 175, 55, .5);
-  border-radius: 999px;
-  padding: 6px 10px;
-  color: #fff;
-  font-family: 'Jost', sans-serif;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  white-space: nowrap;
-  backdrop-filter: blur(2px);
-}
-
-.pack4-banner-shipping-badge svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  color: #fff;
-}
-
-.pack4-banner-shipping-badge b {
-  color: var(--gold);
-  font-weight: 700;
 }
 
 .pack4-banner-image-placeholder svg {
@@ -4009,7 +3989,7 @@ textarea.cf-input-icon {
   flex-direction: column;
   align-items: center;
   line-height: 1.05;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .pack4-banner-heading-top {
@@ -4017,10 +3997,10 @@ textarea.cf-input-icon {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Poppins', 'Jost', sans-serif;
   font-size: 17px;
-  font-weight: 800;
-  letter-spacing: .01em;
+  font-weight: 700;
+  letter-spacing: 0;
   color: #FFFFFF;
   text-transform: uppercase;
 }
@@ -4041,10 +4021,10 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-heading-main {
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Poppins', 'Jost', sans-serif;
   font-size: 44px;
   font-weight: 800;
-  letter-spacing: .01em;
+  letter-spacing: 0;
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
@@ -4056,58 +4036,24 @@ textarea.cf-input-icon {
   text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
 }
 
-/* Shine sweep: a blended highlight band moved with transform only (GPU-composited),
-   instead of animating background-position (main-thread, not composited). */
-.pack4-banner-heading-main-wrap::after {
-  content: "";
-  position: absolute;
-  top: -75%;
-  left: 0;
-  width: 40%;
-  height: 250%;
-  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.95) 50%, transparent 100%);
-  transform: translateX(-180%) skewX(-20deg);
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
-/* Plays once each time the banner scrolls into view (see initHeadingShine
-   in script.js). A continuous infinite loop here was found to
-   intermittently freeze mid-sweep on some devices/browsers, so the
-   animation now runs as a short, self-contained one-shot instead. */
-.pack4-banner-heading-main-wrap.shine-play::after {
-  animation: pack4GoldShine 1.3s cubic-bezier(.3,0,.2,1) 1;
-}
-
-@keyframes pack4GoldShine {
-  0%   { transform: translateX(-180%) skewX(-20deg); }
-  100% { transform: translateX(280%) skewX(-20deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pack4-banner-heading-main-wrap::after {
-    animation: none;
-    display: none;
-  }
-}
 
 .pack4-banner-title {
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255,255,255,.82);
-  margin-bottom: 12px;
+  color: var(--emerald);
+  margin-bottom: 8px;
 }
 
 .pack4-banner-price-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  background: #f7f6f2;
+  gap: 6px;
+  background: #FFFFFF;
   border-radius: 18px;
-  padding: 16px 16px;
-  margin-bottom: 14px;
+  padding: 8px 16px;
+  margin-bottom: 10px;
   width: 100%;
 }
 
@@ -4162,7 +4108,7 @@ textarea.cf-input-icon {
   font-weight: 500;
   letter-spacing: .01em;
   border-radius: 999px;
-  padding: 8px 20px;
+  padding: 4px 20px;
 }
 
 .pack4-banner-savings b {
@@ -4229,9 +4175,9 @@ textarea.cf-input-icon {
   justify-content: center;
   gap: 20px;
   width: 100%;
-  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -8px 14px rgba(90,60,10,.18), 0 14px 28px -10px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.05);
-  border: 1px solid rgba(165,129,31,.5);
+  background: linear-gradient(155deg, #FFF3C4 0%, #FFD400 45%, #FFB300 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -8px 14px rgba(140,90,0,.16), 0 14px 30px -8px rgba(255,180,0,.45), 0 0 0 1px rgba(0,0,0,.05);
+  border: 1px solid rgba(230,170,0,.55);
   color: #0A3B2A;
   font-family: 'Jost', sans-serif;
   font-size: 16px;
@@ -4239,7 +4185,7 @@ textarea.cf-input-icon {
   letter-spacing: .06em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 12.6px 18px;
+  padding: 10px 18px;
   border-radius: 999px;
   transition: transform .12s ease, box-shadow .25s ease, background .18s ease, border-color .18s ease;
   position: relative;
@@ -4250,8 +4196,8 @@ textarea.cf-input-icon {
 
 .pack4-banner-cta:active {
   transform: scale(0.98);
-  background: linear-gradient(155deg, #e6d491, #C39F30 55%, #8f6c19 100%);
-  border-color: rgba(165,129,31,.7);
+  background: linear-gradient(155deg, #FFE9A0, #FFC300 55%, #E09E00 100%);
+  border-color: rgba(230,170,0,.75);
 }
 
 .pack4-banner-cta::before {
@@ -4266,6 +4212,7 @@ textarea.cf-input-icon {
   pointer-events: none;
 }
 
+/* Shine sweep: plays automatically on a loop, once every 6 seconds. */
 .pack4-banner-cta::after {
   content: "";
   position: absolute;
@@ -4273,25 +4220,21 @@ textarea.cf-input-icon {
   left: 0;
   width: 45%;
   height: 100%;
-  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.55) 50%, transparent 100%);
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.65) 50%, transparent 100%);
   transform: translateX(-150%) skewX(-20deg);
   pointer-events: none;
   will-change: transform;
-}
-
-/* Plays once, added by motion.js the moment the banner scrolls into view.
-   No repeat/infinite loop -- see the "one-time shine" note in motion.js. */
-.pack4-banner-cta.cta-shine-once::after {
-  animation: pack4CtaShine 1s ease-out 1;
+  animation: pack4CtaShine 6s ease-in-out infinite;
 }
 
 @keyframes pack4CtaShine {
   0%   { transform: translateX(-150%) skewX(-20deg); }
+  16%  { transform: translateX(150%) skewX(-20deg); }
   100% { transform: translateX(150%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pack4-banner-cta.cta-shine-once::after {
+  .pack4-banner-cta::after {
     animation: none;
   }
 }
@@ -4315,21 +4258,6 @@ textarea.cf-input-icon {
 
 .pack4-banner-cta span {
   white-space: nowrap;
-}
-
-.pack4-banner-cta-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  color: #0A3B2A;
-  flex-shrink: 0;
-}
-
-.pack4-banner-cta-icon svg {
-  width: 18px;
-  height: 18px;
 }
 
 .pack4-banner-cta-arrow {
@@ -4815,23 +4743,15 @@ textarea.cf-input-icon {
   .pack4-banner-heading-top { font-size: 12px; gap: 6px; }
   .pack4-heading-line { width: 14px; }
   .pack4-banner-heading-main { font-size: 25px; }
-  .pack4-banner-title { font-size: 10.5px; margin-bottom: 9px; }
-  .pack4-banner-price-box { padding: 10px 12px; gap: 8px; margin-bottom: 10px; }
+  .pack4-banner-title { font-size: 10.5px; margin-bottom: 6px; }
+  .pack4-banner-price-box { padding: 6px 12px; gap: 5px; margin-bottom: 8px; }
   .pack4-banner-price { gap: 10px; }
   .pack4-price-new { font-size: 30px; }
   .pack4-price-unit { font-size: 13px; }
   .pack4-price-sep { height: 20px; }
   .pack4-price-old { font-size: 13px; }
-  .pack4-banner-savings { font-size: 10.5px; padding: 5px 12px; }
-  .pack4-banner-benefits { gap: 4px; margin-bottom: 10px; }
-  .pack4-benefit-icon { width: 22px; height: 22px; }
-  .pack4-benefit-icon svg { width: 11px; height: 11px; }
-  .pack4-benefit-label { font-size: 8.5px; }
-  .pack4-banner-shipping-badge { font-size: 9px; padding: 5px 8px; gap: 4px; }
-  .pack4-banner-shipping-badge svg { width: 12px; height: 12px; }
-  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 11px 8px; gap: 8px; }
-  .pack4-banner-cta-icon { width: 14px; height: 14px; }
-  .pack4-banner-cta-icon svg { width: 14px; height: 14px; }
+  .pack4-banner-savings { font-size: 10.5px; padding: 3px 12px; }
+  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 9px 8px; gap: 8px; }
   .pack4-banner-cta-arrow { width: 18px; height: 18px; }
   .pack4-banner-cta-arrow svg { width: 10px; height: 10px; }
 }
