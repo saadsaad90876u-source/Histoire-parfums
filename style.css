@@ -3319,6 +3319,10 @@ footer {
   margin: 0;
 }
 
+.cart-count-wrap {
+  display: none;
+}
+
 #cart-drawer .wd-close {
   color: var(--emerald-light);
   background: rgba(255,255,255,.08);
@@ -3997,12 +4001,13 @@ textarea.cf-input-icon {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 12px rgba(255,215,0,.33), 0 0 23px rgba(255,215,0,.18);
-  animation: pack4GoldShine 3.5s linear infinite;
+  animation: pack4GoldShine 6s cubic-bezier(.45,0,.2,1) infinite;
 }
 
 @keyframes pack4GoldShine {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0%, 18%  { background-position: 200% 0; }
+  55%      { background-position: -200% 0; }
+  88%, 100% { background-position: -200% 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4140,7 +4145,7 @@ textarea.cf-input-icon {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 12px rgba(255,215,0,.33), 0 0 23px rgba(255,215,0,.18);
-  animation: pack4GoldShine 3.5s linear infinite;
+  animation: pack4GoldShine 6s cubic-bezier(.45,0,.2,1) infinite;
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
