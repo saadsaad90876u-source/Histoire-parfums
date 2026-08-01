@@ -3988,12 +3988,26 @@ textarea.cf-input-icon {
   letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #E8C65D;
-  background: linear-gradient(180deg, #FFF3C4 0%, #E8C65D 45%, #C79A2E 100%);
+  color: #FFD700;
+  background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 1px 2px rgba(0,0,0,.25), 0 0 18px rgba(232,198,93,.35);
+  text-shadow: 0 0 24px rgba(255,215,0,.65), 0 0 46px rgba(255,215,0,.35);
+  animation: pack4GoldShine 3.5s linear infinite;
+}
+
+@keyframes pack4GoldShine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack4-banner-heading-main {
+    animation: none;
+    background-position: 0 0;
+  }
 }
 
 .pack4-banner-title {
@@ -4117,12 +4131,14 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
-  color: #E8C65D;
-  background: linear-gradient(180deg, #FFF3C4 0%, #E8C65D 45%, #C79A2E 100%);
+  color: #FFD700;
+  background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 1px 2px rgba(0,0,0,.25), 0 0 18px rgba(232,198,93,.35);
+  text-shadow: 0 0 24px rgba(255,215,0,.65), 0 0 46px rgba(255,215,0,.35);
+  animation: pack4GoldShine 3.5s linear infinite;
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
