@@ -2193,15 +2193,13 @@ h1,h2,h3 {
   box-shadow: none;
   opacity: 0;
   visibility: hidden;
-  transition: opacity .4s cubic-bezier(.2,.8,.2,1), visibility .4s cubic-bezier(.2,.8,.2,1), transform .4s cubic-bezier(.2,.8,.2,1);
+  transition: opacity .4s cubic-bezier(.2,.8,.2,1), visibility .4s cubic-bezier(.2,.8,.2,1);
   border: none;
-  transform: translateX(24px);
 }
 
 .checkout-modal.open {
   opacity: 1;
   visibility: visible;
-  transform: translateX(0);
 }
 
 /* Confirm dialog (delete confirmations, etc.) must always sit above
@@ -3770,22 +3768,33 @@ footer {
 }
 
 .pp-review-card {
-  border: 1px solid rgba(20,18,14,.1);
-  border-radius: 12px;
-  padding: 16px 18px;
+  border: 1px solid rgba(20,18,14,.08);
+  border-radius: 14px;
+  padding: 18px 20px;
   background: #fff;
+  box-shadow: 0 4px 18px -12px rgba(20,18,14,.15);
 }
 
 .pp-review-photo {
   width: 100%;
   max-width: 160px;
   aspect-ratio: 1/1;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 12px;
+  border: 1.5px solid #50C878;
+  box-shadow: 0 6px 16px -8px rgba(20,18,14,.25);
 }
 
-.pp-review-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pp-review-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+}
 
 .pp-review-form {
   max-width: 420px;
@@ -3875,7 +3884,6 @@ textarea.cf-input-icon {
   gap: 14px;
   background: var(--brand-green-gradient);
   border: 1.8px solid #50C878;
-  box-shadow: inset 0 1px 1px rgba(255,255,255,.4), 0 0 0 1px rgba(80,200,120,.25), 0 8px 24px -10px rgba(80,200,120,.55);
   border-radius: 22px;
   padding: 22px 24px;
   margin: 0 0 14px;
@@ -3886,7 +3894,6 @@ textarea.cf-input-icon {
 @media (hover: hover) and (pointer: fine) {
   .pack4-banner:hover {
     transform: translateY(-2px);
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.5), 0 0 0 1px rgba(80,200,120,.35), 0 20px 40px -18px rgba(80,200,120,.5);
     border-color: #6EE8A0;
   }
 }
