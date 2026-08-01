@@ -166,22 +166,52 @@ svg:not([width]) { width: 1em; height: 1em; }
         </div>
         <button type="button" class="pack4-banner-image-edit" id="pack4-banner-image-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
         <input type="file" id="pack4-banner-image-input" accept="image/*,image/avif" hidden>
+        <div class="pack4-banner-shipping-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg>
+          <span><span data-i18n="pack4ShippingPlain">Livraison</span> <b data-i18n="pack4ShippingBold">Offerte</b></span>
+        </div>
       </div>
       <div class="pack4-banner-text">
         <div class="pack4-banner-heading">
-          <span class="pack4-banner-heading-top" data-i18n="pack4BannerHeadingTop">Offre pack de</span>
+          <span class="pack4-banner-heading-top">
+            <i class="pack4-heading-line"></i>
+            <span data-i18n="pack4BannerHeadingTop">Pack de</span>
+            <i class="pack4-heading-line"></i>
+          </span>
           <span class="pack4-banner-heading-main-wrap">
             <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>
           </span>
         </div>
-        <div class="pack4-banner-title" data-i18n="pack4BannerLabelPre">Choisissez votre pack</div>
-        <div class="pack4-banner-price">
-          <span class="pack4-price-new">195 DH</span>
-          <span class="pack4-price-sep"></span>
-          <span class="pack4-price-old">225 DH</span>
+        <div class="pack4-banner-title" data-i18n="pack4BannerLabelPre">Choisissez vos 3 parfums préférés</div>
+        <div class="pack4-banner-price-box">
+          <div class="pack4-banner-price">
+            <span class="pack4-price-new">195<span class="pack4-price-unit">DH</span></span>
+            <span class="pack4-price-sep"></span>
+            <span class="pack4-price-old">225 DH</span>
+          </div>
+          <div class="pack4-banner-savings"><span data-i18n="pack4SavingsPlain">Économisez</span> <b>30 DH</b></div>
+        </div>
+        <div class="pack4-banner-benefits">
+          <div class="pack4-benefit">
+            <span class="pack4-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18"/><path d="M12 8v13"/><path d="M12 8c-1.8 0-3.2-1.2-3.2-3S10.2 2 12 2s3.2 1 3.2 3-1.4 3-3.2 3z"/><path d="M12 8c1.8 0 3.2-1.2 3.2-3S13.8 2 12 2 8.8 3 8.8 5s1.4 3 3.2 3z"/></svg></span>
+            <span class="pack4-benefit-label"><span data-i18n="pack4Feat1a">3 parfums</span><span data-i18n="pack4Feat1b">au choix</span></span>
+          </div>
+          <i class="pack4-benefit-sep"></i>
+          <div class="pack4-benefit">
+            <span class="pack4-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18"/><path d="M12 8v13"/><path d="M12 8c-1.8 0-3.2-1.2-3.2-3S10.2 2 12 2s3.2 1 3.2 3-1.4 3-3.2 3z"/><path d="M12 8c1.8 0 3.2-1.2 3.2-3S13.8 2 12 2 8.8 3 8.8 5s1.4 3 3.2 3z"/></svg></span>
+            <span class="pack4-benefit-label"><span data-i18n="pack4Feat2a">Coffret</span><span data-i18n="pack4Feat2b">offert</span></span>
+          </div>
+          <i class="pack4-benefit-sep"></i>
+          <div class="pack4-benefit">
+            <span class="pack4-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18.5" r="1.6"/><circle cx="17.5" cy="18.5" r="1.6"/></svg></span>
+            <span class="pack4-benefit-label"><span data-i18n="pack4Feat3a">Livraison</span><span data-i18n="pack4Feat3b">rapide</span></span>
+          </div>
         </div>
         <div class="pack4-banner-cta" id="pack4-banner-cta">
-          <span data-i18n="pack4BannerCta">Découvrir le pack</span>
+          <span class="pack4-banner-cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          </span>
+          <span data-i18n="pack4BannerCta">Composer mon pack</span>
           <span class="pack4-banner-cta-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
               <line x1="4" y1="12" x2="19" y2="12"></line>

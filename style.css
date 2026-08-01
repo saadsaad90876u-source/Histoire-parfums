@@ -3846,12 +3846,13 @@ textarea.cf-input-icon {
 .pack4-banner {
   display: flex;
   align-items: stretch;
-  gap: 14px;
+  gap: 16px;
   background: var(--brand-green-gradient);
-  border: 1.8px solid #50C878;
-  border-radius: 22px;
+  border: 1.8px solid var(--gold);
+  border-radius: 24px;
   padding: 22px 24px;
-  margin: 0 0 14px;
+  margin: 0 auto 14px;
+  max-width: 620px;
   cursor: pointer;
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
@@ -3859,7 +3860,7 @@ textarea.cf-input-icon {
 @media (hover: hover) and (pointer: fine) {
   .pack4-banner:hover {
     transform: translateY(-2px);
-    border-color: #6EE8A0;
+    border-color: var(--gold-light);
   }
 }
 
@@ -3869,7 +3870,8 @@ textarea.cf-input-icon {
   min-width: 0;
   border-radius: 16px;
   overflow: hidden;
-  background: transparent;
+  background: linear-gradient(160deg, #0F5A40 0%, #0A3B2A 100%);
+  border: 1px solid rgba(212, 175, 55, .35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3891,8 +3893,40 @@ textarea.cf-input-icon {
   height: 40px;
   border-radius: 50%;
   border: 1.5px solid rgba(212, 175, 55, .4);
-  color: var(--emerald);
+  color: var(--emerald-light);
   opacity: .55;
+}
+
+.pack4-banner-shipping-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(8, 46, 34, .85);
+  border: 1px solid rgba(212, 175, 55, .5);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  backdrop-filter: blur(2px);
+}
+
+.pack4-banner-shipping-badge svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.pack4-banner-shipping-badge b {
+  color: var(--gold);
+  font-weight: 700;
 }
 
 .pack4-banner-image-placeholder svg {
@@ -3979,12 +4013,24 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-heading-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-family: 'Goldman', 'Jost', sans-serif;
   font-size: 17px;
   font-weight: 800;
   letter-spacing: .01em;
   color: #FFFFFF;
   text-transform: uppercase;
+}
+
+.pack4-heading-line {
+  display: block;
+  width: 26px;
+  height: 1px;
+  background: rgba(212, 175, 55, .55);
+  flex-shrink: 0;
 }
 
 .pack4-banner-heading-main-wrap {
@@ -3996,18 +4042,18 @@ textarea.cf-input-icon {
 
 .pack4-banner-heading-main {
   font-family: 'Goldman', 'Jost', sans-serif;
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 800;
   letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: #FFD700;
-  background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
+  color: var(--gold);
+  background: linear-gradient(100deg, #A9791F 0%, #D4AF37 20%, #F2D381 40%, #E8C468 50%, #F2D381 60%, #D4AF37 80%, #A9791F 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 3.6px rgba(255,215,0,.10), 0 0 6.9px rgba(255,215,0,.05);
+  text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
 }
 
 /* Shine sweep: a blended highlight band moved with transform only (GPU-composited),
@@ -4047,34 +4093,51 @@ textarea.cf-input-icon {
 
 .pack4-banner-title {
   font-family: 'Jost', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #50C878;
+  color: rgba(255,255,255,.82);
   margin-bottom: 12px;
+}
+
+.pack4-banner-price-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: #f7f6f2;
+  border-radius: 18px;
+  padding: 16px 16px;
+  margin-bottom: 14px;
+  width: 100%;
 }
 
 .pack4-banner-price {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  background: #f7f6f2;
-  border-radius: 14px;
-  padding: 10px 20px;
-  margin-bottom: 14px;
+  gap: 14px;
   width: 100%;
 }
 
 .pack4-price-new {
   font-family: 'Goldman', 'Jost', sans-serif;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 46px;
+  line-height: 1;
   color: #000;
+}
+
+.pack4-price-unit {
+  font-family: 'Jost', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #000;
+  margin-left: 2px;
 }
 
 .pack4-price-sep {
   width: 1px;
-  height: 18px;
+  height: 30px;
   background: rgba(10,46,115,.15);
   flex-shrink: 0;
 }
@@ -4082,10 +4145,82 @@ textarea.cf-input-icon {
 .pack4-price-old {
   font-family: 'Jost', sans-serif;
   color: var(--text-soft);
-  font-size: 14px;
+  font-size: 20px;
   text-decoration: line-through;
   text-decoration-color: var(--emerald-deep);
   text-decoration-thickness: 1px;
+}
+
+.pack4-banner-savings {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--brand-green-gradient);
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  border-radius: 999px;
+  padding: 8px 20px;
+}
+
+.pack4-banner-savings b {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.pack4-banner-benefits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.pack4-benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.pack4-benefit-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  color: #0A3B2A;
+  flex-shrink: 0;
+}
+
+.pack4-benefit-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.pack4-benefit-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pack4-benefit-sep {
+  display: block;
+  width: 1px;
+  align-self: stretch;
+  background: rgba(212, 175, 55, .3);
+  flex-shrink: 0;
 }
 
 .pack4-banner-cta {
@@ -4166,12 +4301,12 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
-  color: #FFD700;
-  background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
+  color: var(--gold);
+  background: linear-gradient(100deg, #A9791F 0%, #D4AF37 20%, #F2D381 40%, #E8C468 50%, #F2D381 60%, #D4AF37 80%, #A9791F 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 3.6px rgba(255,215,0,.10), 0 0 6.9px rgba(255,215,0,.05);
+  text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
@@ -4180,6 +4315,21 @@ textarea.cf-input-icon {
 
 .pack4-banner-cta span {
   white-space: nowrap;
+}
+
+.pack4-banner-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: #0A3B2A;
+  flex-shrink: 0;
+}
+
+.pack4-banner-cta-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .pack4-banner-cta-arrow {
@@ -4662,13 +4812,26 @@ textarea.cf-input-icon {
     gap: 8px;
   }
   .pack4-banner-heading { margin-bottom: 7px; }
-  .pack4-banner-heading-top { font-size: 12px; }
+  .pack4-banner-heading-top { font-size: 12px; gap: 6px; }
+  .pack4-heading-line { width: 14px; }
   .pack4-banner-heading-main { font-size: 25px; }
-  .pack4-banner-title { font-size: 11px; margin-bottom: 9px; }
-  .pack4-banner-price { padding: 8px 10px; gap: 8px; margin-bottom: 10px; }
-  .pack4-price-new { font-size: 18px; }
-  .pack4-price-old { font-size: 10.5px; }
-  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 11px 8px; gap: 12px; }
+  .pack4-banner-title { font-size: 10.5px; margin-bottom: 9px; }
+  .pack4-banner-price-box { padding: 10px 12px; gap: 8px; margin-bottom: 10px; }
+  .pack4-banner-price { gap: 10px; }
+  .pack4-price-new { font-size: 30px; }
+  .pack4-price-unit { font-size: 13px; }
+  .pack4-price-sep { height: 20px; }
+  .pack4-price-old { font-size: 13px; }
+  .pack4-banner-savings { font-size: 10.5px; padding: 5px 12px; }
+  .pack4-banner-benefits { gap: 4px; margin-bottom: 10px; }
+  .pack4-benefit-icon { width: 22px; height: 22px; }
+  .pack4-benefit-icon svg { width: 11px; height: 11px; }
+  .pack4-benefit-label { font-size: 8.5px; }
+  .pack4-banner-shipping-badge { font-size: 9px; padding: 5px 8px; gap: 4px; }
+  .pack4-banner-shipping-badge svg { width: 12px; height: 12px; }
+  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 11px 8px; gap: 8px; }
+  .pack4-banner-cta-icon { width: 14px; height: 14px; }
+  .pack4-banner-cta-icon svg { width: 14px; height: 14px; }
   .pack4-banner-cta-arrow { width: 18px; height: 18px; }
   .pack4-banner-cta-arrow svg { width: 10px; height: 10px; }
 }
