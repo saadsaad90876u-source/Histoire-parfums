@@ -3988,7 +3988,12 @@ textarea.cf-input-icon {
   letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #E8DCC0;
+  color: #E8C65D;
+  background: linear-gradient(180deg, #FFF3C4 0%, #E8C65D 45%, #C79A2E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 2px rgba(0,0,0,.25), 0 0 18px rgba(232,198,93,.35);
 }
 
 .pack4-banner-title {
@@ -4112,7 +4117,12 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
-  color: #E8DCC0;
+  color: #E8C65D;
+  background: linear-gradient(180deg, #FFF3C4 0%, #E8C65D 45%, #C79A2E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 2px rgba(0,0,0,.25), 0 0 18px rgba(232,198,93,.35);
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
