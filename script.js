@@ -874,6 +874,26 @@ async function kvSet(key, value){
   if(error) throw error;
 }
 
+// Deletes the underlying file from a Supabase Storage bucket given its public
+// URL (as returned by getPublicUrl). Safe to call with base64 data URLs or
+// non-Supabase URLs — it silently no-ops on anything it doesn't recognize,
+// so a storage cleanup failure never blocks the primary delete/save action.
+async function deleteStorageFile(bucket, publicUrl){
+  if(!supabaseClient || !publicUrl || typeof publicUrl !== 'string') return;
+  const marker = `/storage/v1/object/public/${bucket}/`;
+  const i = publicUrl.indexOf(marker);
+  if(i === -1) return; // not a Supabase Storage URL for this bucket (e.g. base64 fallback)
+  const path = publicUrl.slice(i + marker.length).split('?')[0];
+  if(!path) return;
+  try{
+    await supabaseClient.storage.from(bucket).remove([path]);
+  }catch(err){
+    // Non-critical: the DB/catalog record is already gone, which is what
+    // matters most to the shopper-facing site. Leftover file, if any, can
+    // be cleaned up later — we don't want this to interrupt the admin flow.
+  }
+}
+
 async function kvGet(key){
   if(!supabaseClient) throw new Error('Supabase not configured');
   const { data, error } = await supabaseClient
@@ -1077,9 +1097,11 @@ document.getElementById('pack4-banner-image-input').addEventListener('change', a
   const url = await uploadProductImage(file, { transparent: true });
   if(url){
     const gender = currentFilter === 'men' ? 'men' : 'women';
+    const oldUrl = pack4BadgeImageUrls[gender];
     pack4BadgeImageUrls[gender] = url;
     try{ await kvSet(PACK4_IMAGE_KEYS[gender], { url }); }
     catch(err){ if(isAdmin) showToast(t('toastStorageUnavailable')); }
+    if(oldUrl && oldUrl !== url) deleteStorageFile('product-images', oldUrl);
     renderPack4BadgeImage();
   }
 });
@@ -1121,7 +1143,9 @@ bottomBannerCtrl2.load();
 loadPack4BadgeImage();
 function renderHeroBanner(){ heroBannerCtrl.render(); bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
 function setBannerCategory(cat){
-  heroBannerCtrl.setCategory(cat);
+  // heroBannerCtrl intentionally NOT switched here anymore: the top banner
+  // is now unified across Femme/Homme instead of showing a different set
+  // per gender. It keeps whatever category it loaded with at page start.
   bottomBannerCtrl.setCategory(cat);
   bottomBannerCtrl2.setCategory(cat);
   trackingBannerCtrl.setCategory(cat);
@@ -1537,8 +1561,12 @@ async function approveReview(id){
 async function deleteReview(id){
   if(!supabaseClient) return false;
   try{
+    // Look up the image_url first so we can also remove the photo file from
+    // Storage — deleting only the row would leave it orphaned in the bucket.
+    const { data: reviewRow } = await supabaseClient.from('reviews').select('image_url').eq('id', id).maybeSingle();
     const { error } = await supabaseClient.from('reviews').delete().eq('id', id);
     if(error) throw error;
+    if(reviewRow && reviewRow.image_url) deleteStorageFile('review-images', reviewRow.image_url);
     return true;
   }catch(err){
     showToast(t('toastStorageUnavailable'));
@@ -2494,8 +2522,9 @@ function attachProductPageEvents(){
       askConfirm(t('removeProductImageConfirm'), async () => {
         const i = parseInt(btn.dataset.i, 10);
         const imgs = productImages(p).slice();
-        imgs.splice(i, 1);
+        const [removedUrl] = imgs.splice(i, 1);
         p.images = imgs;
+        if(removedUrl) deleteStorageFile('product-images', removedUrl);
         delete p.image;
         let cover = typeof p.cover === 'number' ? p.cover : 0;
         if(i < cover) cover--;
@@ -3338,8 +3367,12 @@ function createBannerController(cfg){
     showToast(t('bannerUploading'));
 
     if(state.inputMode === 'edit' && state.banners.length){
+      const oldItem = state.banners[state.activeIndex];
       const item = await processFile(files[0]);
-      if(item) state.banners[state.activeIndex] = item;
+      if(item){
+        state.banners[state.activeIndex] = item;
+        if(oldItem && oldItem.url && oldItem.url !== item.url) deleteStorageFile('product-images', oldItem.url);
+      }
     } else {
       for(const file of files){
         const item = await processFile(file);
@@ -3373,7 +3406,8 @@ function createBannerController(cfg){
     }
     if(e.target.closest('.hb-remove-btn')){
       askConfirm(t('removeBannerConfirm'), async () => {
-        state.banners.splice(state.activeIndex, 1);
+        const [removed] = state.banners.splice(state.activeIndex, 1);
+        if(removed && removed.url) deleteStorageFile('product-images', removed.url);
         if(state.activeIndex >= state.banners.length) state.activeIndex = Math.max(0, state.banners.length - 1);
         await save();
         render();
@@ -4726,7 +4760,8 @@ document.addEventListener('click', (e) => {
     const idx = Number(delBtn.dataset.idx);
     const list = category === 'men' ? men : women;
     askConfirm(t('deleteConfirmTemplate').replace('{name}', list[idx].name), () => {
-      list.splice(idx, 1);
+      const [removedProduct] = list.splice(idx, 1);
+      if(removedProduct) productImages(removedProduct).forEach(url => deleteStorageFile('product-images', url));
       saveCatalog();
       renderShop(currentFilter, true);
       if(typeof adRenderProductsPage === 'function' && document.getElementById('admin-dashboard-page').classList.contains('open')) adRenderProductsPage();
