@@ -354,7 +354,7 @@ function productCard(pRaw, category, idx){
     </div>
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
-      <h4>${p.name}</h4>
+      <h3>${p.name}</h3>
       <div class="pc-rating">
         <span class="pc-stars">★★★★★</span>
         <span class="pc-rating-value">(4.9)</span>
@@ -1786,11 +1786,26 @@ document.getElementById('review-star-picker').addEventListener('click', (e) => {
   });
 });
 
+let heic2anyLoadPromise = null;
+function loadHeic2any(){
+  if(typeof heic2any === 'function') return Promise.resolve();
+  if(heic2anyLoadPromise) return heic2anyLoadPromise;
+  heic2anyLoadPromise = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+  return heic2anyLoadPromise;
+}
+
 async function convertHeicIfNeeded(file){
   if(!file) return file;
   const looksHeic = /image\/hei[cf]/i.test(file.type || '') || /\.(heic|heif)$/i.test(file.name || '');
   if(!looksHeic) return file;
   try{
+    await loadHeic2any();
     if(typeof heic2any !== 'function') return file;
     const result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
     const blob = Array.isArray(result) ? result[0] : result;
@@ -3131,8 +3146,7 @@ function createBannerController(cfg){
                 // into it first — starving/delaying every product-card image
                 // on the page until the GIF finishes downloading.
                 const priorityAttr = (i === 0 && !isGifBanner) ? ' fetchpriority="high"' : '';
-                const srcsetAttr = (b.urlSmall && !isGifBanner) ? ` srcset="${b.urlSmall} 800w, ${b.url} 1600w" sizes="100vw"` : '';
-                return `<img src="${b.url}"${srcsetAttr} alt="HISTOIRE" loading="${i === 0 ? 'eager' : 'lazy'}"${priorityAttr}>`;
+                return `<img src="${b.url}" alt="HISTOIRE" loading="${i === 0 ? 'eager' : 'lazy'}"${priorityAttr}>`;
               })()}
         </div>`).join('');
 
@@ -3258,7 +3272,6 @@ function createBannerController(cfg){
     const isAnimWebp = !isVideo && !isGif && await isAnimatedWebp(file);
     const isAnimated = isGif || isAnimWebp;
     let url = null;
-    let urlSmall = null;
     // Measure dimensions from the original file up front so the frame can
     // be sized correctly on the very first paint (see render() below).
     const dims = isVideo ? await getVideoFileDimensions(file) : await getImageFileDimensions(file);
@@ -3305,25 +3318,6 @@ function createBannerController(cfg){
       }
     } else {
       const blob = await compressImageToBlob(file, 1600, 0.78);
-      // Second, smaller variant for phones: the hero banner renders as a
-      // ~100vw square, and on mobile that's ~390-430px wide (up to ~860px
-      // at 2x DPR) vs. up to ~1200px wide on desktop. Serving the same
-      // 1600px file to both means phones download 3-4x more image data
-      // than they can even display — this is what PageSpeed flags as
-      // "improve image delivery". srcset lets the browser pick.
-      const blobSmall = await compressImageToBlob(file, 800, 0.75);
-      if(blobSmall && supabaseClient){
-        try{
-          const filenameSmall = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-sm.jpg`;
-          const { error: errSmall } = await supabaseClient.storage
-            .from('product-images')
-            .upload(filenameSmall, blobSmall, { contentType: 'image/jpeg', upsert: true, cacheControl: '31536000' });
-          if(!errSmall){
-            const { data: dataSmall } = supabaseClient.storage.from('product-images').getPublicUrl(filenameSmall);
-            urlSmall = dataSmall.publicUrl;
-          }
-        }catch(err){ /* non-fatal: falls back to the single full-size url below */ }
-      }
       if(blob && supabaseClient){
         try{
           const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
@@ -3348,7 +3342,6 @@ function createBannerController(cfg){
 
     if(!url) return null;
     const item = { url, type: isVideo ? 'video' : 'image' };
-    if(urlSmall) item.urlSmall = urlSmall;
     if(dims && dims.width && dims.height){ item.width = dims.width; item.height = dims.height; }
     return item;
   }

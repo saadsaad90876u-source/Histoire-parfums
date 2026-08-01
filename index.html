@@ -10,13 +10,40 @@
    so there is no visual jump once the full CSS finishes loading --
    this is purely a safety net for the very first paint. */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: #FAF8F3; }
-body { background: #FAF8F3; color: #0c1424; font-family: sans-serif; }
+html { background: #FFFFFF; }
+body { background: #FFFFFF; color: #0c1424; font-family: sans-serif; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 svg:not([width]) { width: 1em; height: 1em; }
 </style>
+<script>
+// Improves LCP: the hero banner image is admin-managed content fetched
+// from Supabase at runtime, so it can't be hardcoded into the static
+// HTML. But the banner controller already caches the last-seen banner
+// URL in localStorage (see createBannerController in script.js) so the
+// page can paint instantly from cache on repeat visits. We read that
+// same cache here, synchronously, before anything else loads, and hint
+// the browser to start fetching that image immediately -- instead of
+// waiting for the full JS bundle to load, parse and run before the
+// browser even discovers the image exists.
+(function(){
+  try {
+    var raw = localStorage.getItem('cache-aura-hero-banner-women');
+    if (!raw) return;
+    var items = JSON.parse(raw);
+    var first = Array.isArray(items) ? items[0] : null;
+    if (first && first.url && first.type !== 'video') {
+      var link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = first.url;
+      link.fetchPriority = 'high';
+      document.head.appendChild(link);
+    }
+  } catch (e) { /* localStorage unavailable (private browsing) -- skip */ }
+})();
+</script>
 <meta name="color-scheme" content="light only">
-<meta name="theme-color" content="#FAF8F3">
+<meta name="theme-color" content="#FFFFFF">
 <title>HISTOIRE — Parfums de Luxe pour Homme et Femme</title>
 <meta name="description" content="HISTOIRE — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
 <meta name="keywords" content="parfum, parfums de luxe, HISTOIRE, parfum homme, parfum femme, boutique parfum Maroc">
@@ -33,40 +60,8 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=67bd40fbe2" id="main-stylesheet" onerror="window.__cssFailed=true;">
-<!-- The splash-screen logo is the only image guaranteed to be the very
-     first thing painted on every visit (it's a fixed full-viewport
-     overlay), so it's preloaded with the highest fetch priority as the
-     LCP candidate. -->
-<link rel="preload" as="image" href="/symphonie-splash-logo.webp" fetchpriority="high">
-<script>
-// Give the actual hero/offer banner images (loaded dynamically from
-// Supabase by script.js, which only runs after the whole document is
-// parsed since it's deferred) a head start on returning visits: if we
-// already have last-known-good URLs cached in localStorage from a
-// previous visit, kick off <link rel=preload> for them right now,
-// synchronously, instead of waiting for script.js to run and create
-// the <img> tags itself. This can shave hundreds of ms off LCP on
-// repeat visits without changing anything about first-visit behavior.
-(function(){
-  try{
-    var filter = 'women'; // matches script.js's initial currentFilter default
-    function preload(url){
-      if(!url) return;
-      var l = document.createElement('link');
-      l.rel = 'preload'; l.as = 'image'; l.href = url; l.setAttribute('fetchpriority','high');
-      document.head.appendChild(l);
-    }
-    var hero = JSON.parse(localStorage.getItem('cache-aura-hero-banner-' + filter) || 'null');
-    if(hero && hero[0] && hero[0].url && hero[0].type !== 'video') preload(hero[0].url);
-    var pack4 = JSON.parse(localStorage.getItem('cache-pack4-badge-images') || 'null');
-    if(pack4 && pack4[filter]) preload(pack4[filter]);
-  }catch(err){ /* ignore - first visit or storage unavailable */ }
-})();
-</script>
+<link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <script>
 // Self-healing check: if style.css failed to load, or loaded but somehow
 // didn't apply (rare network/CDN glitch), automatically retry once with
@@ -102,7 +97,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="icon" href="/symphonie-favicon.png" type="image/png">
 </head>
 <body>
-<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="HISTOIRE PARFUMS" class="splash-logo" width="480" height="285" fetchpriority="high"></div>
+<div id="splash-screen"><img src="/symphonie-splash-logo.png" alt="HISTOIRE PARFUMS" class="splash-logo" width="480" height="285"></div>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
 
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
@@ -131,7 +126,7 @@ svg:not([width]) { width: 1em; height: 1em; }
     <button type="button" id="menu-toggle-btn" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
-    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="logo-img" width="202" height="120"></button>
+    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.png" alt="HISTOIRE" class="logo-img" width="202" height="120"></button>
     <div class="nav-icons">
       <button aria-label="Search" id="search-btn"><svg class="icon"><use href="#i-search"></use></svg></button>
       <button aria-label="Cart" id="cart-btn"><svg class="icon"><use href="#i-bag"></use></svg><span class="cart-badge" id="cart-badge-count" style="display:none;">0</span></button>
@@ -139,8 +134,8 @@ svg:not([width]) { width: 1em; height: 1em; }
   </div>
 </header>
 
-<div id="shop-view">
-<section id="hero-banner">
+<main id="shop-view">
+<section id="hero-banner" style="display:none;">
   <div class="hero-banner-frame" id="hero-banner-frame">
     <div id="hero-banner-content"></div>
   </div>
@@ -287,11 +282,11 @@ svg:not([width]) { width: 1em; height: 1em; }
     <div class="contact-grid">
       <a class="contact-card reveal d1" href="https://wa.me/212712804966" target="_blank" rel="noopener">
         <div class="contact-card-icon contact-card-icon-wa"><svg viewBox="0 0 32 32" style="width:26px;height:26px;" fill="#fff"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.35.65 4.55 1.78 6.43L3 29l7.24-2.24a12.44 12.44 0 0 0 5.76 1.46c6.894 0 12.5-5.607 12.5-12.5S22.895 3 16.001 3zm0 22.6c-1.86 0-3.62-.5-5.14-1.4l-.37-.22-4.3 1.33 1.36-4.2-.24-.38a10.06 10.06 0 0 1-1.55-5.24c0-5.58 4.55-10.13 10.13-10.13 5.58 0 10.13 4.55 10.13 10.13.13 5.58-4.42 10.11-10 10.11zm5.55-7.58c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.68-1.65-.94-2.26-.25-.6-.5-.51-.68-.52-.18-.01-.38-.01-.58-.01-.2 0-.53.08-.8.38-.28.3-1.05 1.03-1.05 2.5 0 1.47 1.08 2.9 1.23 3.1.15.2 2.13 3.25 5.16 4.56.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.07-.13-.27-.2-.57-.35z"/></svg></div>
-        <h4>WhatsApp</h4>
+        <h3>WhatsApp</h3>
       </a>
       <a class="contact-card reveal d2" href="https://www.instagram.com/symphonie.parfums?igsh=cjY5aG91ZzZxM25l" target="_blank" rel="noopener">
         <div class="contact-card-icon contact-card-icon-ig"><svg viewBox="0 0 24 24" style="width:22px;height:22px;" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="#fff" stroke="none"/></svg></div>
-        <h4>Instagram</h4>
+        <h3>Instagram</h3>
       </a>
     </div>
   </div>
@@ -325,7 +320,7 @@ svg:not([width]) { width: 1em; height: 1em; }
     </div>
   </div>
 </section>
-</div>
+</main>
 
 <div class="modal-overlay" id="review-overlay"></div>
 <div class="checkout-modal review-modal" id="review-modal" style="text-align:left;">
@@ -487,19 +482,19 @@ svg:not([width]) { width: 1em; height: 1em; }
 <footer>
   <div class="container">
     <div class="footer-top">
-      <div class="footer-logo"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="footer-logo-img" width="202" height="120" loading="lazy" decoding="async"></div>
+      <div class="footer-logo"><img src="/symphonie-logo.png" alt="HISTOIRE" class="footer-logo-img" width="202" height="120" loading="lazy" decoding="async"></div>
     </div>
 
     <div class="footer-links-grid">
       <div class="footer-links-col">
-        <h5>Liens Rapides</h5>
+        <h3>Liens Rapides</h3>
         <button type="button" id="footer-link-men">Collection Homme</button>
         <button type="button" id="footer-link-women">Collection Femme</button>
         <button type="button" id="footer-link-faq">FAQ</button>
         <button type="button" id="footer-link-contact">Contact</button>
       </div>
       <div class="footer-links-col">
-        <h5>Politiques</h5>
+        <h3>Politiques</h3>
         <button type="button" id="footer-link-privacy">Politique de confidentialité</button>
         <button type="button" id="footer-link-terms">Conditions générales</button>
         <button type="button" id="footer-link-shipping">Politique de livraison</button>
@@ -1254,13 +1249,12 @@ svg:not([width]) { width: 1em; height: 1em; }
 <div id="ad-print-area" style="display:none;"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="/script.js?v=12a6bce5d9" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="/motion.js?v=2e2009ac0d" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+<script src="/script.js" defer></script>
+<script src="/motion.js" defer></script>
 </body>
 </html>
