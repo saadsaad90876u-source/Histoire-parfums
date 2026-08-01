@@ -59,7 +59,7 @@
 .splash-logo {
   width: min(45vw, 240px);
   height: auto;
-  aspect-ratio: 245 / 92;
+  aspect-ratio: 769 / 445;
   display: block;
   opacity: 0;
   animation: splashLogoSequence 1.3s ease 0.5s forwards;
@@ -2535,23 +2535,19 @@ footer {
 }
 
 .logo-img {
-  height: 34px;
+  height: 50px;
   width: auto;
-  aspect-ratio: 402 / 146;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
 }
 
 .footer-logo-img {
-  height: 24px;
+  height: 36px;
   width: auto;
-  aspect-ratio: 402 / 146;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
 }
 
 @media (prefers-reduced-motion: reduce) {
