@@ -4063,14 +4063,19 @@ textarea.cf-input-icon {
   transform: translateX(-180%) skewX(-20deg);
   mix-blend-mode: overlay;
   pointer-events: none;
-  will-change: transform;
-  animation: pack4GoldShine 6s cubic-bezier(.45,0,.2,1) infinite;
+}
+
+/* Plays once each time the banner scrolls into view (see initHeadingShine
+   in script.js). A continuous infinite loop here was found to
+   intermittently freeze mid-sweep on some devices/browsers, so the
+   animation now runs as a short, self-contained one-shot instead. */
+.pack4-banner-heading-main-wrap.shine-play::after {
+  animation: pack4GoldShine 1.3s cubic-bezier(.3,0,.2,1) 1;
 }
 
 @keyframes pack4GoldShine {
-  0%, 18%   { transform: translateX(-180%) skewX(-20deg); }
-  55%       { transform: translateX(280%) skewX(-20deg); }
-  88%, 100% { transform: translateX(280%) skewX(-20deg); }
+  0%   { transform: translateX(-180%) skewX(-20deg); }
+  100% { transform: translateX(280%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -69,6 +69,36 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
   refreshScrollReveal();
 }
 
+/* ============================================================
+   PACK4 BANNER HEADING SHINE -- plays once per entry into view
+   ------------------------------------------------------------
+   Toggles .shine-play on the heading wrap each time it enters/leaves
+   the viewport, so the CSS keyframe animation (see style.css) runs
+   as a short one-shot instead of an always-on infinite loop.
+   ============================================================ */
+function initHeadingShine(){
+  const wrap = document.querySelector('.pack4-banner-heading-main-wrap');
+  if(!wrap || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        wrap.classList.remove('shine-play');
+        // Force reflow so re-adding the class restarts the animation
+        // even if it's already been triggered before.
+        void wrap.offsetWidth;
+        wrap.classList.add('shine-play');
+      } else {
+        wrap.classList.remove('shine-play');
+      }
+    });
+  }, { threshold: 0.4 });
+  observer.observe(wrap);
+}
+document.addEventListener('DOMContentLoaded', initHeadingShine);
+if(document.readyState === 'interactive' || document.readyState === 'complete'){
+  initHeadingShine();
+}
+
 let wishlist = [];
 let cart = [];
 let checkoutOverrideItems = null; // when set, checkout uses only these items instead of the full cart (e.g. "Order Now" from a single product page)
