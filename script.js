@@ -2942,16 +2942,31 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
 async function uploadProductImage(file, opts){
   if(!file) return null;
   const preserveTransparency = !!(opts && opts.transparent);
-  const blob = await compressImageToBlob(file, 640, 0.72, preserveTransparency);
+  // Some OS file pickers report a generic/blank MIME type for .avif, so
+  // fall back to checking the filename extension too (same detection used
+  // for the banner uploads).
+  const isAvif = file.type === 'image/avif' || /\.avif$/i.test(file.name || '');
+  let blob;
+  if(isAvif){
+    // AVIF must be uploaded as-is: running it through the canvas compressor
+    // below would silently throw away the smaller file size that's the
+    // whole point of using AVIF, and canvas can't reliably decode/encode
+    // AVIF in every browser anyway. Wrap it so the Blob carries the correct
+    // MIME type even when the source File's reported type was blank/wrong.
+    blob = file.type === 'image/avif' ? file : new Blob([file], { type: 'image/avif' });
+  } else {
+    blob = await compressImageToBlob(file, 640, 0.72, preserveTransparency);
+  }
   if(!blob) return null;
   const isPng = blob.type === 'image/png';
   if(supabaseClient){
     try{
-      const ext = isPng ? 'png' : 'jpg';
+      const ext = isAvif ? 'avif' : (isPng ? 'png' : 'jpg');
+      const contentType = isAvif ? 'image/avif' : blob.type;
       const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error } = await supabaseClient.storage
         .from('product-images')
-        .upload(filename, blob, { contentType: blob.type, upsert: true, cacheControl: '31536000' });
+        .upload(filename, blob, { contentType, upsert: true, cacheControl: '31536000' });
       if(error) throw error;
       const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
       return data.publicUrl;
