@@ -3284,6 +3284,9 @@ function createBannerController(cfg){
     const isGif = file.type === 'image/gif';
     const isAnimWebp = !isVideo && !isGif && await isAnimatedWebp(file);
     const isAnimated = isGif || isAnimWebp;
+    // Some OS file pickers report a generic/blank MIME type for .avif, so
+    // fall back to checking the filename extension too.
+    const isAvif = !isVideo && (file.type === 'image/avif' || /\.avif$/i.test(file.name || ''));
     let url = null;
     // Measure dimensions from the original file up front so the frame can
     // be sized correctly on the very first paint (see render() below).
@@ -3303,12 +3306,15 @@ function createBannerController(cfg){
           showToast(t('toastImageUploadFailed'));
         }
       }
-    } else if(isAnimated){
-      // GIFs and animated WebPs must be uploaded as-is: running them through
-      // the canvas compressor below (which re-encodes to a single JPEG
-      // frame) would flatten the animation down to a still image.
-      const ext = isGif ? 'gif' : 'webp';
-      const contentType = isGif ? 'image/gif' : 'image/webp';
+    } else if(isAnimated || isAvif){
+      // GIFs, animated WebPs and AVIFs must be uploaded as-is: running them
+      // through the canvas compressor below (which re-encodes to a single
+      // JPEG) would flatten any animation to a still frame, and — for AVIF
+      // specifically — canvas can't even output that format, so it would
+      // silently throw away the smaller file size that's the whole point
+      // of using AVIF.
+      const ext = isGif ? 'gif' : (isAvif ? 'avif' : 'webp');
+      const contentType = isGif ? 'image/gif' : (isAvif ? 'image/avif' : 'image/webp');
       if(supabaseClient){
         try{
           const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
