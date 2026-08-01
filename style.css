@@ -4101,13 +4101,13 @@ textarea.cf-input-icon {
   justify-content: center;
   gap: 20px;
   width: 100%;
-  background: linear-gradient(155deg, #1E6B47 0%, #12503A 55%, #0A3B2A 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.25), 0 14px 28px -10px rgba(8,30,20,.55);
-  border: 1px solid rgba(212,175,55,.4);
-  color: #F4EEDD;
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 -8px 14px rgba(90,60,10,.18), 0 14px 28px -10px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.05);
+  border: 1px solid rgba(165,129,31,.5);
+  color: #0A3B2A;
   font-family: 'Jost', sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -4122,8 +4122,8 @@ textarea.cf-input-icon {
 
 .pack4-banner-cta:active {
   transform: scale(0.98);
-  background: linear-gradient(155deg, #175A3C, #0F4530 55%, #082E22 100%);
-  border-color: rgba(212,175,55,.6);
+  background: linear-gradient(155deg, #e6d491, #C39F30 55%, #8f6c19 100%);
+  border-color: rgba(165,129,31,.7);
 }
 
 .pack4-banner-cta::before {
@@ -4133,7 +4133,7 @@ textarea.cf-input-icon {
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,.4) 0%, rgba(255,255,255,0) 100%);
   border-radius: 999px 999px 40% 40% / 999px 999px 100% 100%;
   pointer-events: none;
 }
@@ -4145,7 +4145,7 @@ textarea.cf-input-icon {
   left: -150%;
   width: 45%;
   height: 100%;
-  background: linear-gradient(115deg, transparent 0%, rgba(212,175,55,.35) 50%, transparent 100%);
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.55) 50%, transparent 100%);
   transform: skewX(-20deg);
   pointer-events: none;
 }
@@ -4168,7 +4168,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta {
-  background: linear-gradient(155deg, #1E6B47 0%, #12503A 55%, #0A3B2A 100%);
+  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
@@ -4183,7 +4183,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
-  color: #fff;
+  color: #0A3B2A;
 }
 
 .pack4-banner-cta span {
@@ -4196,7 +4196,7 @@ textarea.cf-input-icon {
   justify-content: center;
   width: 22px;
   height: 22px;
-  color: #fff;
+  color: #0A3B2A;
   flex-shrink: 0;
 }
 
