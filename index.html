@@ -60,8 +60,17 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
+<!-- Fonts and the main stylesheet are loaded non-blocking: the inline
+     critical CSS above already covers the very first paint, so there is
+     no need to hold up rendering while these download. The
+     preload+rel-swap trick fetches them with high priority but without
+     blocking, then applies them the instant they arrive. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet';">
+<link rel="preload" as="style" href="/style.css" id="main-stylesheet" onload="this.onload=null;this.rel='stylesheet';" onerror="window.__cssFailed=true;">
+<noscript>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css">
+</noscript>
 <script>
 // Self-healing check: if style.css failed to load, or loaded but somehow
 // didn't apply (rare network/CDN glitch), automatically retry once with
@@ -78,7 +87,7 @@ svg:not([width]) { width: 1em; height: 1em; }
       if(cssIsBroken() && !sessionStorage.getItem('cssRetryDone')){
         sessionStorage.setItem('cssRetryDone', '1');
         var link = document.getElementById('main-stylesheet');
-        if(link){ link.href = '/style.css?retry=' + Date.now(); }
+        if(link){ link.rel = 'stylesheet'; link.href = '/style.css?retry=' + Date.now(); }
         setTimeout(function(){
           if(cssIsBroken()) location.reload();
         }, 800);
@@ -97,7 +106,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 <link rel="icon" href="/symphonie-favicon.png" type="image/png">
 </head>
 <body>
-<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="HISTOIRE PARFUMS" class="splash-logo" width="769" height="445"></div>
+<div id="splash-screen"><img src="/symphonie-splash-logo.webp" alt="HISTOIRE PARFUMS" class="splash-logo" width="650" height="376"></div>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
 
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
@@ -126,7 +135,7 @@ svg:not([width]) { width: 1em; height: 1em; }
     <button type="button" id="menu-toggle-btn" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
-    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="logo-img" width="769" height="445"></button>
+    <button type="button" class="logo logo-center" id="logo-link"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="logo-img" width="320" height="185"></button>
     <div class="nav-icons">
       <button aria-label="Search" id="search-btn"><svg class="icon"><use href="#i-search"></use></svg></button>
       <button aria-label="Cart" id="cart-btn"><svg class="icon"><use href="#i-bag"></use></svg><span class="cart-badge" id="cart-badge-count" style="display:none;">0</span></button>
@@ -162,7 +171,9 @@ svg:not([width]) { width: 1em; height: 1em; }
       <div class="pack4-banner-text">
         <div class="pack4-banner-heading">
           <span class="pack4-banner-heading-top" data-i18n="pack4BannerHeadingTop">Offre pack de</span>
-          <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>
+          <span class="pack4-banner-heading-main-wrap">
+            <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>
+          </span>
         </div>
         <div class="pack4-banner-title" data-i18n="pack4BannerLabelPre">Choisissez votre pack</div>
         <div class="pack4-banner-price">
@@ -477,7 +488,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 <footer>
   <div class="container">
     <div class="footer-top">
-      <div class="footer-logo"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="footer-logo-img" width="769" height="445" loading="lazy" decoding="async"></div>
+      <div class="footer-logo"><img src="/symphonie-logo.webp" alt="HISTOIRE" class="footer-logo-img" width="320" height="185" loading="lazy" decoding="async"></div>
     </div>
 
     <div class="footer-links-grid">
@@ -1247,7 +1258,7 @@ svg:not([width]) { width: 1em; height: 1em; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.5/JsBarcode.all.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
 <script src="/script.js" defer></script>
 <script src="/motion.js" defer></script>

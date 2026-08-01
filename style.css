@@ -59,7 +59,7 @@
 .splash-logo {
   width: min(45vw, 240px);
   height: auto;
-  aspect-ratio: 769 / 445;
+  aspect-ratio: 650 / 376;
   display: block;
   opacity: 0;
   animation: splashLogoSequence 1.3s ease 0.5s forwards;
@@ -113,14 +113,19 @@
    ============================================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.55s cubic-bezier(.22,.61,.36,1);
-  will-change: opacity, transform;
+  /* No transform/translate here on purpose: moving an element's visual
+     position after it's already occupied that space in the layout counts
+     as a layout shift (CLS), even though it's driven by a CSS transform
+     and not a real reflow. With dozens of ".reveal" elements across the
+     page (FAQ items, product cards, etc.) triggering as the page is
+     scrolled, that added up to a large CLS penalty. A pure opacity fade
+     keeps the same "reveal on scroll" feel without moving anything. */
+  transition: opacity 0.55s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity;
 }
 
 .reveal.active {
   opacity: 1;
-  transform: none;
 }
 
 .reveal.d1, .reveal.d2, .reveal.d3, .reveal.d4 { transition-delay: 0s; }
@@ -1836,7 +1841,7 @@ h1,h2,h3 {
   .product-card:hover::before {
     opacity: 1;
   }
-  .product-card:hover h4 {
+  .product-card:hover h3 {
     text-shadow: 0 0 14px color-mix(in srgb, var(--emerald) 45%, transparent);
   }
   .product-card:hover .price {
@@ -2532,7 +2537,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 769 / 445;
+  aspect-ratio: 320 / 185;
   display: block;
   margin: 0 auto;
 }
@@ -2540,7 +2545,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 769 / 445;
+  aspect-ratio: 320 / 185;
   display: block;
   margin: 0 auto;
 }
@@ -4022,6 +4027,13 @@ textarea.cf-input-icon {
   text-transform: uppercase;
 }
 
+.pack4-banner-heading-main-wrap {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  overflow: hidden;
+}
+
 .pack4-banner-heading-main {
   font-family: 'Goldman', 'Jost', sans-serif;
   font-size: 42px;
@@ -4029,26 +4041,42 @@ textarea.cf-input-icon {
   letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
+  display: block;
   color: #FFD700;
   background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
-  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 3.6px rgba(255,215,0,.10), 0 0 6.9px rgba(255,215,0,.05);
+}
+
+/* Shine sweep: a blended highlight band moved with transform only (GPU-composited),
+   instead of animating background-position (main-thread, not composited). */
+.pack4-banner-heading-main-wrap::after {
+  content: "";
+  position: absolute;
+  top: -75%;
+  left: 0;
+  width: 40%;
+  height: 250%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.95) 50%, transparent 100%);
+  transform: translateX(-180%) skewX(-20deg);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  will-change: transform;
   animation: pack4GoldShine 6s cubic-bezier(.45,0,.2,1) infinite;
 }
 
 @keyframes pack4GoldShine {
-  0%, 18%  { background-position: 200% 0; }
-  55%      { background-position: -200% 0; }
-  88%, 100% { background-position: -200% 0; }
+  0%, 18%   { transform: translateX(-180%) skewX(-20deg); }
+  55%       { transform: translateX(280%) skewX(-20deg); }
+  88%, 100% { transform: translateX(280%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pack4-banner-heading-main {
+  .pack4-banner-heading-main-wrap::after {
     animation: none;
-    background-position: 0 0;
+    display: none;
   }
 }
 
@@ -4142,12 +4170,13 @@ textarea.cf-input-icon {
   content: "";
   position: absolute;
   top: 0;
-  left: -150%;
+  left: 0;
   width: 45%;
   height: 100%;
   background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.55) 50%, transparent 100%);
-  transform: skewX(-20deg);
+  transform: translateX(-150%) skewX(-20deg);
   pointer-events: none;
+  will-change: transform;
 }
 
 /* Plays once, added by motion.js the moment the banner scrolls into view.
@@ -4157,8 +4186,8 @@ textarea.cf-input-icon {
 }
 
 @keyframes pack4CtaShine {
-  0%   { left: -150%; }
-  100% { left: 150%; }
+  0%   { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(150%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4174,12 +4203,10 @@ textarea.cf-input-icon {
 .pack4-banner.pack4-men .pack4-banner-heading-main {
   color: #FFD700;
   background: linear-gradient(100deg, #B8860B 0%, #FFD700 20%, #FFF9C4 40%, #FFEA00 50%, #FFF9C4 60%, #FFD700 80%, #B8860B 100%);
-  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 3.6px rgba(255,215,0,.10), 0 0 6.9px rgba(255,215,0,.05);
-  animation: pack4GoldShine 6s cubic-bezier(.45,0,.2,1) infinite;
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
@@ -6725,10 +6752,10 @@ footer .footer-links-col h3 {
   align-items: center;
   gap: 8px;
   padding: 12px 30px;
-  border: 1px solid var(--emerald-deep);
+  border: 1px solid #1F7A47;
   border-radius: 30px;
   background: transparent;
-  color: var(--emerald-deep);
+  color: #1F7A47;
   font-family: 'Jost', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -6738,7 +6765,7 @@ footer .footer-links-col h3 {
   transition: background .3s ease, color .3s ease;
 }
 .reviews-write-btn-outline:hover {
-  background: var(--emerald-deep);
+  background: #1F7A47;
   color: #fff;
 }
 

@@ -353,7 +353,7 @@ function productCard(pRaw, category, idx){
     </div>
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
-      <h4>${p.name}</h4>
+      <h3>${p.name}</h3>
       <div class="pc-rating">
         <span class="pc-stars">★★★★★</span>
         <span class="pc-rating-value">(4.9)</span>
@@ -2946,23 +2946,38 @@ async function uploadProductImage(file, opts){
   // fall back to checking the filename extension too (same detection used
   // for the banner uploads).
   const isAvif = file.type === 'image/avif' || /\.avif$/i.test(file.name || '');
-  let blob;
+  // Wrap AVIF files so the Blob/File carries the correct MIME type even
+  // when the source File's reported type was blank/wrong -- otherwise the
+  // data URL built below would be mistagged and fail to decode even
+  // though the underlying bytes are a perfectly valid image.
+  const sourceFile = (isAvif && file.type !== 'image/avif')
+    ? new File([file], file.name || 'photo.avif', { type: 'image/avif' })
+    : file;
+  let blob = null;
+  let avifRaw = false;
   if(isAvif){
-    // AVIF must be uploaded as-is: running it through the canvas compressor
-    // below would silently throw away the smaller file size that's the
-    // whole point of using AVIF, and canvas can't reliably decode/encode
-    // AVIF in every browser anyway. Wrap it so the Blob carries the correct
-    // MIME type even when the source File's reported type was blank/wrong.
-    blob = file.type === 'image/avif' ? file : new Blob([file], { type: 'image/avif' });
+    // Still resize AVIF uploads like every other format -- an admin photo
+    // can be several megapixels while the card only ever displays it at a
+    // few hundred px, so shipping it untouched wastes a lot of bandwidth.
+    // Canvas can decode AVIF in every current browser, it just can't
+    // *encode* it back out, so the resized result is re-saved as WebP
+    // instead (keeps most of AVIF's size benefit). If decode fails for
+    // any reason (older browser), fall back to uploading the original
+    // file untouched so the upload still succeeds.
+    try{ blob = await compressImageToBlob(sourceFile, 640, 0.8, true, 'image/webp'); }
+    catch(err){ blob = null; }
+    if(!blob){ blob = sourceFile; avifRaw = true; }
   } else {
     blob = await compressImageToBlob(file, 640, 0.72, preserveTransparency);
   }
   if(!blob) return null;
-  const isPng = blob.type === 'image/png';
+  let ext, contentType;
+  if(avifRaw){ ext = 'avif'; contentType = 'image/avif'; }
+  else if(blob.type === 'image/webp'){ ext = 'webp'; contentType = 'image/webp'; }
+  else if(blob.type === 'image/png'){ ext = 'png'; contentType = 'image/png'; }
+  else { ext = 'jpg'; contentType = 'image/jpeg'; }
   if(supabaseClient){
     try{
-      const ext = isAvif ? 'avif' : (isPng ? 'png' : 'jpg');
-      const contentType = isAvif ? 'image/avif' : blob.type;
       const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const { error } = await supabaseClient.storage
         .from('product-images')
@@ -3321,15 +3336,12 @@ function createBannerController(cfg){
           showToast(t('toastImageUploadFailed'));
         }
       }
-    } else if(isAnimated || isAvif){
-      // GIFs, animated WebPs and AVIFs must be uploaded as-is: running them
-      // through the canvas compressor below (which re-encodes to a single
-      // JPEG) would flatten any animation to a still frame, and — for AVIF
-      // specifically — canvas can't even output that format, so it would
-      // silently throw away the smaller file size that's the whole point
-      // of using AVIF.
-      const ext = isGif ? 'gif' : (isAvif ? 'avif' : 'webp');
-      const contentType = isGif ? 'image/gif' : (isAvif ? 'image/avif' : 'image/webp');
+    } else if(isAnimated){
+      // GIFs and animated WebPs must be uploaded as-is: running them
+      // through the canvas compressor below (which re-encodes to a
+      // single frame) would flatten the animation to a still image.
+      const ext = isGif ? 'gif' : 'webp';
+      const contentType = isGif ? 'image/gif' : 'image/webp';
       if(supabaseClient){
         try{
           const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -3348,6 +3360,43 @@ function createBannerController(cfg){
           const fr = new FileReader();
           fr.onload = () => resolve(fr.result);
           fr.readAsDataURL(file);
+        });
+      }
+    } else if(isAvif){
+      // Still resize AVIF banners like every other image format -- an
+      // admin photo can be several megapixels while the banner frame is
+      // much smaller, so shipping it untouched wastes a lot of bandwidth.
+      // Canvas can decode AVIF in every current browser, it just can't
+      // *encode* it back out, so the resized result is re-saved as WebP
+      // instead (keeps most of AVIF's size benefit). If decode fails for
+      // any reason (older browser), fall back to uploading the original
+      // file untouched so the upload still succeeds.
+      const sourceFile = file.type === 'image/avif' ? file : new File([file], file.name || 'banner.avif', { type: 'image/avif' });
+      let blob = null;
+      try{ blob = await compressImageToBlob(sourceFile, 1600, 0.8, true, 'image/webp'); }
+      catch(err){ blob = null; }
+      const avifRaw = !blob;
+      if(avifRaw) blob = sourceFile;
+      const ext = avifRaw ? 'avif' : 'webp';
+      const contentType = avifRaw ? 'image/avif' : 'image/webp';
+      if(supabaseClient){
+        try{
+          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+          const { error } = await supabaseClient.storage
+            .from('product-images')
+            .upload(filename, blob, { contentType, upsert: true, cacheControl: '31536000' });
+          if(error) throw error;
+          const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
+          url = data.publicUrl;
+        }catch(err){
+          showToast(t('toastImageUploadFailed'));
+        }
+      }
+      if(!url){
+        url = await new Promise((resolve) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(fr.result);
+          fr.readAsDataURL(blob);
         });
       }
     } else {
