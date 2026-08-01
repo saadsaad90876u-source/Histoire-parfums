@@ -177,14 +177,7 @@
        it enters view is a reasonable attention cue. It fires once per page
        load and does not loop, unlike the old always-on sweep. */
     function afterSplash(cb) {
-      const splash = document.getElementById('splash-screen');
-      if (!splash || splash.classList.contains('splash-done')) { cb(); return; }
-      const obs = new MutationObserver(() => {
-        if (splash.classList.contains('splash-done')) { obs.disconnect(); cb(); }
-      });
-      obs.observe(splash, { attributes: true, attributeFilter: ['class'] });
-      // Safety net in case the splash's own cleanup listener never fires.
-      setTimeout(() => { obs.disconnect(); cb(); }, 2200);
+      cb();
     }
     function watchPackCtaShine() {
       const cta = document.getElementById('pack4-banner-cta');
@@ -259,24 +252,4 @@
 
   if (document.readyState === 'complete') setTimeout(init, 0);
   else window.addEventListener('load', init);
-})();
-
-/* ==========================================================================
-   Luxury splash screen cleanup — the fade in/hold/fade out timing is fully
-   driven by the #splash-screen CSS animation (1.3s total). This just removes
-   the overlay from the DOM once that animation ends, so it never blocks
-   scrolling or taps on the homepage underneath. If reduced motion is set,
-   the CSS already hides #splash-screen immediately, so there is nothing to
-   clean up here in that case.
-   ========================================================================== */
-(function () {
-  const splash = document.getElementById('splash-screen');
-  const logo = splash ? splash.querySelector('.splash-logo') : null;
-  if (!splash || !logo) return;
-  logo.addEventListener('animationend', function () {
-    splash.classList.add('splash-done');
-  });
-  // Fallback in case this script runs late (e.g. deferred) and the
-  // animationend event already fired before the listener was attached.
-  setTimeout(function () { splash.classList.add('splash-done'); }, 1900);
 })();
