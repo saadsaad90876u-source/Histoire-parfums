@@ -42,11 +42,12 @@ function refreshScrollReveal(root){
     return;
   }
   if(!scrollRevealObserver){
-    scrollRevealObserver = new IntersectionObserver((entries, observer) => {
+    scrollRevealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if(entry.isIntersecting){
           entry.target.classList.add('active');
-          observer.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove('active');
         }
       });
     }, {
@@ -61,7 +62,7 @@ function refreshScrollReveal(root){
       rootMargin: '0px 0px -70px 0px'
     });
   }
-  scope.querySelectorAll('.reveal:not(.active)').forEach(el => scrollRevealObserver.observe(el));
+  scope.querySelectorAll('.reveal').forEach(el => scrollRevealObserver.observe(el));
 }
 document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());
 // In case this script runs after DOMContentLoaded already fired (e.g. deferred load timing).
@@ -328,8 +329,12 @@ function productCoverImage(p){
 }
 function productMedia(p){
   const cover = productCoverImage(p);
+  const fallback = `<div class="bottle mini-bottle" style="display:none;">
+        <div class="cap"></div><div class="neck"></div>
+        <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
+      </div>`;
   return cover
-    ? `<img src="${cover}" alt="${p.name}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:0;">`
+    ? `<img src="${cover}" alt="${p.name}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:0;" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">${fallback}`
     : `<div class="bottle mini-bottle">
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
