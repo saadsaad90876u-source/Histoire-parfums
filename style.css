@@ -3973,7 +3973,7 @@ textarea.cf-input-icon {
   font-size: 17px;
   font-weight: 800;
   letter-spacing: .01em;
-  color: var(--gold);
+  color: #50C878;
   text-transform: uppercase;
 }
 
@@ -3991,7 +3991,7 @@ textarea.cf-input-icon {
   font-family: 'Jost', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #e8e6df;
+  color: #50C878;
   margin-bottom: 12px;
 }
 
@@ -4036,7 +4036,11 @@ textarea.cf-input-icon {
   justify-content: center;
   gap: 20px;
   width: 100%;
-  background: linear-gradient(155deg, #E6C86A, #C89A2B 55%, #C89A2B);
+  background: linear-gradient(155deg, #7EE8A8 0%, #50C878 45%, #34A85E 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.55), inset 0 -10px 16px rgba(0,60,30,.25), 0 8px 20px rgba(80,200,120,.35);
+  border: 1px solid rgba(255,255,255,.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: #fff;
   font-family: 'Jost', sans-serif;
   font-size: 16px;
@@ -4055,7 +4059,19 @@ textarea.cf-input-icon {
 
 .pack4-banner-cta:active {
   transform: scale(0.98);
-  background: linear-gradient(155deg, #D9BB5E, #B3861F 55%, #B3861F);
+  background: linear-gradient(155deg, #6BD897, #3DB56A 45%, #2C9450 100%);
+}
+
+.pack4-banner-cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(180deg, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 999px 999px 40% 40% / 999px 999px 100% 100%;
+  pointer-events: none;
 }
 
 .pack4-banner-cta::after {
@@ -4088,7 +4104,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta {
-  background: linear-gradient(155deg, #E6C86A, #C89A2B 55%, #C89A2B);
+  background: linear-gradient(155deg, #7EE8A8 0%, #50C878 45%, #34A85E 100%);
 }
 
 .pack4-banner.pack4-men .pack4-banner-heading-main {
