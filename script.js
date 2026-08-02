@@ -1119,7 +1119,9 @@ const heroBannerCtrl = createBannerController({
   sectionId: 'hero-banner',
   contentId: 'hero-banner-content',
   inputId: 'hero-banner-input',
-  storageKey: 'aura-hero-banner'
+  storageKey: 'aura-hero-banner',
+  autoplay: true,
+  autoplayDelay: 5000
 });
 const bottomBannerCtrl = createBannerController({
   sectionId: 'bottom-banner',
@@ -3081,7 +3083,10 @@ function createBannerController(cfg){
     inputMode: 'add',
     sectionId: cfg.sectionId,
     contentId: cfg.contentId,
-    inputId: cfg.inputId
+    inputId: cfg.inputId,
+    autoplay: !!cfg.autoplay,
+    autoplayDelay: cfg.autoplayDelay || 5000,
+    autoplayTimer: null
   };
   // state.banners always reads/writes the array for the CURRENT category,
   // so all the existing logic below (push/splice/map/length) keeps working
@@ -3151,7 +3156,92 @@ function createBannerController(cfg){
   function goToSlide(i){
     if(!state.banners.length) return;
     state.activeIndex = (i + state.banners.length) % state.banners.length;
-    render();
+    const content = document.getElementById(state.contentId);
+    const track = content && content.querySelector('.hb-track');
+    // If the track is already in the DOM (normal navigation between slides
+    // of the same banner set), just slide it — this keeps the CSS
+    // transition on .hb-track intact for a buttery-smooth animation.
+    // Rebuilding the innerHTML every tick (like render() does) destroys and
+    // recreates the track each time, which skips the transition entirely
+    // and makes slides "jump" instead of gliding.
+    if(track){
+      track.style.transform = `translateX(${-state.activeIndex * 100}%)`;
+      applyActiveSlideEffects(content);
+    } else {
+      render();
+    }
+  }
+
+  // Keeps the frame's aspect ratio in sync with the newly-active slide and
+  // makes sure only the active slide's video is playing. Shared between the
+  // full render() (first paint / banner set changes) and the lightweight
+  // goToSlide() transform-only path (slide-to-slide navigation).
+  function applyActiveSlideEffects(content){
+    const frameEl = document.getElementById(`${state.sectionId}-frame`);
+    const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
+    const activeBanner = state.banners[state.activeIndex];
+    if(frameEl && activeSlide){
+      const media = activeSlide.querySelector('img, video');
+      const refreshScrollTrigger = () => {
+        requestAnimationFrame(() => {
+          if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        });
+      };
+      if(activeBanner && activeBanner.width && activeBanner.height){
+        frameEl.style.aspectRatio = `${activeBanner.width} / ${activeBanner.height}`;
+        refreshScrollTrigger();
+      } else if(media){
+        const applyRatio = () => {
+          const w = media.tagName === 'VIDEO' ? media.videoWidth : media.naturalWidth;
+          const h = media.tagName === 'VIDEO' ? media.videoHeight : media.naturalHeight;
+          if(w && h){
+            frameEl.style.aspectRatio = `${w} / ${h}`;
+            refreshScrollTrigger();
+          }
+        };
+        if(media.tagName === 'VIDEO'){
+          if(media.readyState >= 1) applyRatio();
+          else media.addEventListener('loadedmetadata', applyRatio, { once: true });
+        } else if(media.complete && media.naturalWidth){
+          applyRatio();
+        } else {
+          media.addEventListener('load', applyRatio, { once: true });
+        }
+      }
+    }
+
+    content.querySelectorAll('.hb-slide video').forEach((v, i) => {
+      v.muted = true;
+      v.defaultMuted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.removeAttribute('controls');
+      if(i === state.activeIndex){
+        const tryPlay = () => { v.play().catch(() => {}); };
+        if(v.readyState >= 2) tryPlay();
+        else v.addEventListener('loadeddata', tryPlay, { once: true });
+      } else {
+        v.pause();
+      }
+    });
+  }
+
+  function stopAutoplay(){
+    if(state.autoplayTimer){ clearInterval(state.autoplayTimer); state.autoplayTimer = null; }
+  }
+
+  function startAutoplay(){
+    stopAutoplay();
+    if(!state.autoplay || state.banners.length <= 1) return;
+    state.autoplayTimer = setInterval(() => {
+      goToSlide(state.activeIndex + 1);
+    }, state.autoplayDelay);
+  }
+
+  // Any manual interaction (swipe, dot, arrow) restarts the countdown so the
+  // banner doesn't jump to the next slide right after the user just picked one.
+  function restartAutoplay(){
+    startAutoplay();
   }
 
   function attachEvents(content){
@@ -3161,25 +3251,33 @@ function createBannerController(cfg){
       const threshold = 40;
       track.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX; deltaX = 0; dragging = true;
+        // Suspend the CSS transition while the finger is in control so the
+        // track tracks the touch 1:1 with zero lag, instead of visibly
+        // lagging behind while the .7s ease-out transition tries to catch up.
+        track.style.transition = 'none';
       }, { passive: true });
       track.addEventListener('touchmove', (e) => {
         if(!dragging) return;
         deltaX = e.touches[0].clientX - startX;
+        const base = -state.activeIndex * track.clientWidth;
+        track.style.transform = `translateX(${base + deltaX}px)`;
       }, { passive: true });
       track.addEventListener('touchend', () => {
         if(!dragging) return;
         dragging = false;
+        // Hand control back to the CSS transition for a smooth, eased
+        // snap into place — whether that's advancing/retreating a slide
+        // or springing back to the current one.
+        track.style.transition = '';
         if(deltaX > threshold) goToSlide(state.activeIndex - 1);
         else if(deltaX < -threshold) goToSlide(state.activeIndex + 1);
+        else { track.style.transform = `translateX(${-state.activeIndex * 100}%)`; restartAutoplay(); }
       });
     }
-    content.querySelectorAll('.hb-dot').forEach(dot => {
-      dot.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(parseInt(dot.dataset.i, 10)); });
-    });
     const prevBtn = content.querySelector('.hb-prev');
     const nextBtn = content.querySelector('.hb-next');
-    if(prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex - 1); });
-    if(nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex + 1); });
+    if(prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex - 1); restartAutoplay(); });
+    if(nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex + 1); restartAutoplay(); });
   }
 
   function render(){
@@ -3207,11 +3305,6 @@ function createBannerController(cfg){
               })()}
         </div>`).join('');
 
-      const dots = state.banners.length > 1 ? `
-        <div class="hb-dots">
-          ${state.banners.map((_, i) => `<button type="button" class="hb-dot${i === state.activeIndex ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}
-        </div>` : '';
-
       const arrows = state.banners.length > 1 ? `
         <button type="button" class="hb-arrow prev hb-prev" aria-label="Previous">‹</button>
         <button type="button" class="hb-arrow next hb-next" aria-label="Next">›</button>` : '';
@@ -3225,73 +3318,18 @@ function createBannerController(cfg){
           <button class="hb-admin-btn remove hb-remove-btn" type="button">${t('removeBannerBtn')}</button>
         </div>` : '';
 
-      content.innerHTML = `<div class="hb-track" style="transform:translateX(${-state.activeIndex * 100}%)">${slides}</div>${dots}${arrows}${adminControls}`;
+      content.innerHTML = `<div class="hb-track" style="transform:translateX(${-state.activeIndex * 100}%)">${slides}</div>${arrows}${adminControls}`;
 
       // Auto-size the frame's height to match the active slide's natural
       // dimensions (image, GIF or video) instead of forcing a fixed square —
       // this stops smaller/differently-shaped media from leaving empty space.
-      const frameEl = document.getElementById(`${state.sectionId}-frame`);
-      const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
-      const activeBanner = state.banners[state.activeIndex];
-      if(frameEl && activeSlide){
-        const media = activeSlide.querySelector('img, video');
-        const refreshScrollTrigger = () => {
-          requestAnimationFrame(() => {
-            if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-          });
-        };
-        // Preferred path: dimensions were captured once at upload time and
-        // saved alongside the banner. Apply them immediately, synchronously,
-        // on this very render — no waiting on the media to (re)load, so
-        // there's no visible flash/jump of the wrong crop on page load.
-        if(activeBanner && activeBanner.width && activeBanner.height){
-          frameEl.style.aspectRatio = `${activeBanner.width} / ${activeBanner.height}`;
-          refreshScrollTrigger();
-        } else if(media){
-          // Fallback for older banners saved before dimensions were stored:
-          // measure from the element itself once it loads.
-          const applyRatio = () => {
-            const w = media.tagName === 'VIDEO' ? media.videoWidth : media.naturalWidth;
-            const h = media.tagName === 'VIDEO' ? media.videoHeight : media.naturalHeight;
-            if(w && h){
-              frameEl.style.aspectRatio = `${w} / ${h}`;
-              refreshScrollTrigger();
-            }
-          };
-          if(media.tagName === 'VIDEO'){
-            if(media.readyState >= 1) applyRatio();
-            else media.addEventListener('loadedmetadata', applyRatio, { once: true });
-          } else if(media.complete && media.naturalWidth){
-            applyRatio();
-          } else {
-            media.addEventListener('load', applyRatio, { once: true });
-          }
-        }
-      }
-
-      // Only the active slide's video should play; keep the rest paused.
-      // Dynamically-inserted <video autoplay> is unreliable on some browsers
-      // (notably iOS Safari), so we explicitly kick off playback once ready.
-      content.querySelectorAll('.hb-slide video').forEach((v, i) => {
-        // Force these as JS properties (not just HTML attributes) so mobile
-        // browsers (notably iOS Safari / in-app webviews) never fall back
-        // to a tap-to-play affordance and always loop automatically.
-        v.muted = true;
-        v.defaultMuted = true;
-        v.loop = true;
-        v.playsInline = true;
-        v.removeAttribute('controls');
-        if(i === state.activeIndex){
-          const tryPlay = () => { v.play().catch(() => {}); };
-          if(v.readyState >= 2) tryPlay();
-          else v.addEventListener('loadeddata', tryPlay, { once: true });
-        } else {
-          v.pause();
-        }
-      });
+      // Also makes sure only the active slide's video is playing.
+      applyActiveSlideEffects(content);
 
       attachEvents(content);
+      startAutoplay();
     } else if(isAdmin){
+      stopAutoplay();
       section.style.display = 'block';
       const frameElEmpty = document.getElementById(`${state.sectionId}-frame`);
       if(frameElEmpty) frameElEmpty.style.aspectRatio = '';
@@ -3303,6 +3341,7 @@ function createBannerController(cfg){
           <span class="hb-cat-badge hb-cat-badge-empty">${t('bannerCategoryBadge').replace('{cat}', emptyCatLabel)}</span>
         </div>`;
     } else {
+      stopAutoplay();
       section.style.display = 'none';
       content.innerHTML = '';
     }
