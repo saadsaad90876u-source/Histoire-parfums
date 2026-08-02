@@ -1994,7 +1994,7 @@ h1,h2,h3 {
 
 .sf-btn[data-f="women"] {
   background: linear-gradient(120deg, #6B4A3D, #F7D2C2 50%, #6B4A3D);
-  color: #211510;
+  color: #fff;
 }
 
 /* Two full-size color layers stacked behind the text. Only opacity is
@@ -4084,11 +4084,13 @@ textarea.cf-input-icon {
   white-space: nowrap;
   display: block;
   color: var(--gold);
-  background: linear-gradient(100deg, #A9791F 0%, #D4AF37 20%, #F2D381 40%, #E8C468 50%, #F2D381 60%, #D4AF37 80%, #A9791F 100%);
+  /* Brighter, more even gold (no dark brown edge stops) so the text stays
+     luminous end-to-end against the dark green card instead of dimming
+     out toward the sides. */
+  background: linear-gradient(100deg, #D4AF37 0%, #F9E2A0 25%, #FFF6DA 50%, #F9E2A0 75%, #D4AF37 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
 }
 
 
@@ -4107,7 +4109,7 @@ textarea.cf-input-icon {
   gap: 6px;
   background: #FFFFFF;
   border-radius: 18px;
-  padding: 8px 16px;
+  padding: 7.6px 16px;
   margin-bottom: 10px;
   width: 100%;
 }
@@ -4292,19 +4294,6 @@ textarea.cf-input-icon {
   .pack4-banner-cta::after {
     animation: none;
   }
-}
-
-.pack4-banner.pack4-men .pack4-banner-cta {
-  background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
-}
-
-.pack4-banner.pack4-men .pack4-banner-heading-main {
-  color: var(--gold);
-  background: linear-gradient(100deg, #A9791F 0%, #D4AF37 20%, #F2D381 40%, #E8C468 50%, #F2D381 60%, #D4AF37 80%, #A9791F 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
@@ -4799,7 +4788,7 @@ textarea.cf-input-icon {
   .pack4-heading-line { width: 14px; }
   .pack4-banner-heading-main { font-size: 25px; }
   .pack4-banner-title { font-size: 10.5px; margin-bottom: 6px; }
-  .pack4-banner-price-box { padding: 6px 12px; gap: 5px; margin-bottom: 8px; }
+  .pack4-banner-price-box { padding: 5.7px 12px; gap: 5px; margin-bottom: 8px; }
   .pack4-banner-price { gap: 10px; }
   .pack4-price-new { font-size: 30px; }
   .pack4-price-unit { font-size: 13px; }
@@ -6702,7 +6691,7 @@ footer .footer-links-col h3 {
   padding: 32px 36px 27px;
   background: linear-gradient(180deg, #ffffff 0%, #fdfbf4 100%);
   border: 1px solid rgba(212,175,55,.22);
-  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 26px 60px -34px rgba(10,20,40,.35), 0 3px 14px rgba(10,20,40,.07);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -20px rgba(10,20,40,.18), 0 2px 8px rgba(10,20,40,.05);
   position: relative;
   opacity: 1;
   transform: translateY(0);

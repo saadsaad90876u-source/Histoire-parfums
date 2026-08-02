@@ -39,10 +39,18 @@
     function animateCardIn(card) {
       if (card.dataset.mFadeIn) return;
       card.dataset.mFadeIn = '1';
+      // Opacity is intentionally left out of this tween and out of the
+      // GSAP inline styles entirely: an inline style beats a CSS class in
+      // specificity, so if GSAP set opacity here it would permanently pin
+      // the card visible and silently defeat the repeating ".reveal"
+      // fade-in/out system below (which toggles the "active" class every
+      // time the card enters/leaves the viewport). Keeping opacity purely
+      // class-driven means the fade keeps replaying on every scroll pass,
+      // while GSAP still owns the one-time rise + scale flourish.
       gsap.fromTo(card,
-        { opacity: 0, y: 36, scale: 0.95 },
+        { y: 36, scale: 0.95 },
         {
-          opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
+          y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
           scrollTrigger: { trigger: card, start: 'top 85%', once: true }
         });
     }
