@@ -51,15 +51,15 @@ function refreshScrollReveal(root){
         }
       });
     }, {
-      threshold: 0,
-      // Small top margin still catches elements the user scrolls back up to,
-      // but the bottom margin is now negative: the element must actually be
-      // ~70px INSIDE the visible viewport (not just nearby/below it) before
-      // it reveals. This matches the later, more visible trigger point used
-      // by the GSAP ScrollTrigger animation on the product cards up top
-      // ('top 92%'), so the fade/rise is actually seen as you scroll to it,
-      // instead of firing silently 150px before it comes into view.
-      rootMargin: '0px 0px -70px 0px'
+      // threshold 0.15 -> element must already be ~15% visible before it
+      // reveals, and the -15% bottom rootMargin pulls the trigger line well
+      // up from the very bottom edge of the screen. Together this means the
+      // fade only plays once the element is genuinely on screen and visible
+      // to the eye, instead of firing the instant a sliver of it appears at
+      // the very bottom edge (which finished animating before the visitor
+      // actually scrolled far enough to see it).
+      threshold: 0.15,
+      rootMargin: '0px 0px -15% 0px'
     });
   }
   scope.querySelectorAll('.reveal').forEach(el => scrollRevealObserver.observe(el));

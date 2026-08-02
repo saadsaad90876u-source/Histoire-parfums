@@ -66,10 +66,9 @@ svg:not([width]) { width: 1em; height: 1em; }
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&family=Poppins:wght@700;800&display=swap" onload="this.onload=null;this.rel='stylesheet';">
-<link rel="preload" as="style" href="/style.css" id="main-stylesheet" onload="this.onload=null;this.rel='stylesheet';" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
 </noscript>
 <script>
 // Self-healing check: if style.css failed to load, or loaded but somehow
@@ -170,9 +169,7 @@ svg:not([width]) { width: 1em; height: 1em; }
       <div class="pack4-banner-text">
         <div class="pack4-banner-heading">
           <span class="pack4-banner-heading-top">
-            <i class="pack4-heading-line"></i>
             <span data-i18n="pack4BannerHeadingTop">Pack de</span>
-            <i class="pack4-heading-line"></i>
           </span>
           <span class="pack4-banner-heading-main-wrap">
             <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>

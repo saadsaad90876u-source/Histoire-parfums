@@ -43,7 +43,7 @@
         { opacity: 0, y: 36, scale: 0.95 },
         {
           opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
-          scrollTrigger: { trigger: card, start: 'top 92%', once: true }
+          scrollTrigger: { trigger: card, start: 'top 85%', once: true }
         });
     }
 

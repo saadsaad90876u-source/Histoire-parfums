@@ -216,7 +216,7 @@ a {
   letter-spacing: .12em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #0A2F1D;
+  color: var(--emerald);
   padding: 0 40px;
 }
 
@@ -1246,35 +1246,10 @@ header {
   overflow: hidden;
 }
 
-#checkout-page .order-summary-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 22%;
-  height: 100%;
-  background: linear-gradient(115deg,
-    transparent 0%,
-    rgba(255,255,255,.05) 30%,
-    rgba(255,255,255,.25) 50%,
-    rgba(255,255,255,.05) 70%,
-    transparent 100%);
-  transform: skewX(-20deg);
-  pointer-events: none;
-  animation: oscShine 4.5s ease-in-out infinite;
-}
-
 @keyframes oscShine {
   0%, 20%  { left: -150%; }
-  55%      { left: 150%; }
+  62%      { left: 150%; }
   100%     { left: 150%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #checkout-page .order-summary-card::after {
-    animation: none;
-    display: none;
-  }
 }
 
 #checkout-page .osc-title {
@@ -1965,19 +1940,22 @@ h1,h2,h3 {
 }
 
 .shop-heading {
-  font-size: clamp(27px,3.88vw,40px);
+  font-size: clamp(28px,3.6vw,42px);
   margin-bottom: 8px;
-  color: var(--gold);
-  background: linear-gradient(100deg, #A9791F 0%, #D4AF37 20%, #F2D381 40%, #E8C468 50%, #F2D381 60%, #D4AF37 80%, #A9791F 100%);
+  font-family: 'Cormorant Garamond', 'Jost', serif;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #0a0a0a;
+  /* Vertical gradient (not horizontal) so it stays even and clean no matter
+     how wide the word is -- light catching the top like glossy glass/piano
+     black, deepening to true black lower down. */
+  background: linear-gradient(180deg, #4a4a4a 0%, #141414 40%, #000000 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: 'Poppins', 'Jost', sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .02em;
-  text-shadow: 0 0 3.6px rgba(212,175,55,.12), 0 0 6.9px rgba(212,175,55,.06);
-  text-align: center;
+  text-shadow: 0 1px 0 rgba(255,255,255,.18), 0 3px 10px rgba(0,0,0,.22);
 }
 
 .shop-filters {
@@ -2325,6 +2303,36 @@ h1,h2,h3 {
   background: linear-gradient(155deg, #FFF3C4 0%, #FFD400 45%, #FFB300 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -6px 12px rgba(140,90,0,.14);
   color: #0A3B2A;
+  position: relative;
+  overflow: hidden;
+  align-items: flex-start;
+  padding-top: 22px;
+  padding-bottom: 6px;
+}
+
+#checkout-page .order-total-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 22%;
+  height: 100%;
+  background: linear-gradient(115deg,
+    transparent 0%,
+    rgba(255,255,255,.05) 30%,
+    rgba(255,255,255,.25) 50%,
+    rgba(255,255,255,.05) 70%,
+    transparent 100%);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  animation: oscShine 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #checkout-page .order-total-card::after {
+    animation: none;
+    display: none;
+  }
 }
 
 .coupon-apply-btn {
@@ -3931,10 +3939,6 @@ textarea.cf-input-icon {
   position: relative;
   flex: 1 1 44%;
   min-width: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  background: linear-gradient(160deg, #0F5A40 0%, #0A3B2A 100%);
-  border: 1px solid rgba(212, 175, 55, .35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4152,7 +4156,7 @@ textarea.cf-input-icon {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: var(--brand-green-gradient);
+  background: var(--emerald);
   color: #fff;
   font-family: 'Jost', sans-serif;
   font-size: 15px;
