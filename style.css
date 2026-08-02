@@ -73,19 +73,14 @@
    ============================================================ */
 .reveal {
   opacity: 0;
-  /* No transform/translate here on purpose: moving an element's visual
-     position after it's already occupied that space in the layout counts
-     as a layout shift (CLS), even though it's driven by a CSS transform
-     and not a real reflow. With dozens of ".reveal" elements across the
-     page (FAQ items, product cards, etc.) triggering as the page is
-     scrolled, that added up to a large CLS penalty. A pure opacity fade
-     keeps the same "reveal on scroll" feel without moving anything. */
-  transition: opacity 0.55s cubic-bezier(.22,.61,.36,1);
-  will-change: opacity;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
 }
 
 .reveal.active {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .reveal.d1, .reveal.d2, .reveal.d3, .reveal.d4 { transition-delay: 0s; }

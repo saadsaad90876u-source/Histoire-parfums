@@ -56,12 +56,13 @@ function refreshScrollReveal(root){
         }
       });
     }, {
-      // threshold 0.2 + a deeper -25% bottom rootMargin push the trigger
-      // line further up from the bottom edge, so the reveal only plays
-      // once the element is clearly, comfortably on screen -- not the
-      // instant a sliver of it peeks in at the very edge.
-      threshold: 0.2,
-      rootMargin: '0px 0px -25% 0px'
+      // threshold 0.15 + a -12% bottom rootMargin: trigger once the
+      // element is meaningfully on screen, without waiting so long
+      // (the previous -25%) that on shorter viewports / smaller items
+      // like FAQ rows the element could already be scrolled fully past
+      // the trigger zone before ever intersecting it.
+      threshold: 0.15,
+      rootMargin: '0px 0px -12% 0px'
     });
   }
   scope.querySelectorAll('.reveal:not(.active)').forEach(el => scrollRevealObserver.observe(el));
