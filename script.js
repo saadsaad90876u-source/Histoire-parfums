@@ -44,15 +44,13 @@ function refreshScrollReveal(root){
   if(!scrollRevealObserver){
     scrollRevealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        // Toggle on every crossing (not just the first) so the reveal
+        // replays each time the element re-enters the viewport, instead
+        // of firing once and then being left alone for good.
         if(entry.isIntersecting){
           entry.target.classList.add('active');
-          // Reveal once, then stop watching. Previously this kept observing
-          // and removed "active" again the moment the element scrolled back
-          // out of view -- so scrolling up and down rapidly toggled the
-          // animation on/off mid-transition, which is what caused the
-          // stutter/"stuck" feeling. Unobserving here makes every element
-          // reveal exactly once and then leaves it alone for good.
-          scrollRevealObserver.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove('active');
         }
       });
     }, {
