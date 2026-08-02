@@ -508,19 +508,64 @@ header {
 }
 
 .hb-track {
-  display: flex;
+  position: relative;
   width: 100%;
   height: 100%;
-  transition: transform .7s cubic-bezier(.16,1,.3,1);
   touch-action: pan-y;
-  will-change: transform;
 }
 
 .hb-slide {
-  position: relative;
-  flex: 0 0 100%;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  z-index: 0;
+  overflow: hidden;
+  transition: opacity 1200ms cubic-bezier(.22,.61,.36,1);
+  will-change: opacity;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.hb-slide.hb-active {
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Ken Burns: the slide's own media starts very slightly zoomed in and
+   offset by a few pixels, then eases back to its resting scale/position
+   as the slide becomes active — an almost imperceptible sense of depth,
+   not a visible pan. Kept on a separate transform transition from the
+   slide's opacity so the fade and the zoom can share the same cinematic
+   timing without fighting each other. */
+.hb-slide img,
+.hb-slide video {
+  transform: scale(1.03) translate3d(6px, -6px, 0);
+  transition: transform 1200ms cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+}
+
+.hb-slide.hb-active img,
+.hb-slide.hb-active video {
+  transform: scale(1) translate3d(0, 0, 0);
+}
+
+/* The slide that's fading OUT stays pinned at its resting scale/position —
+   only the incoming slide performs the zoom-in. This keeps the crossfade
+   a pure dissolve on the outgoing image while the incoming one breathes. */
+.hb-slide.hb-outgoing img,
+.hb-slide.hb-outgoing video {
+  transform: scale(1) translate3d(0, 0, 0) !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-slide { transition: none; }
+  .hb-slide img, .hb-slide video { transition: none; transform: none; }
 }
 
 .hb-dots {
