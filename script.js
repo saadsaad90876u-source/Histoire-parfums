@@ -3095,7 +3095,8 @@ function createBannerController(cfg){
     inputId: cfg.inputId,
     autoplay: !!cfg.autoplay,
     autoplayDelay: cfg.autoplayDelay || 5000,
-    autoplayTimer: null
+    autoplayTimer: null,
+    pendingWrapReset: null
   };
   // state.banners always reads/writes the array for the CURRENT category,
   // so all the existing logic below (push/splice/map/length) keeps working
@@ -3162,50 +3163,70 @@ function createBannerController(cfg){
     catch(err){ if(isAdmin) showToast(t('toastStorageUnavailable')); }
   }
 
+  // With clone slides in the DOM (see render()), the real slide at logical
+  // index i sits at physical track position i+1 — position 0 is a clone of
+  // the last slide (for smooth backward wrap) and the very last position is
+  // a clone of the first slide (for smooth forward wrap). With only one
+  // banner there's nothing to loop, so no clones/offset are used.
+  function trackOffset(){
+    return state.banners.length > 1 ? 1 : 0;
+  }
+
   function goToSlide(i){
     const len = state.banners.length;
     if(!len) return;
+    const prevIndex = state.activeIndex;
     const nextIndex = (i + len) % len;
     const content = document.getElementById(state.contentId);
     const track = content && content.querySelector('.hb-track');
-    const prevIndex = state.activeIndex;
-
-    state.activeIndex = nextIndex;
 
     if(!track){
+      state.activeIndex = nextIndex;
       render();
       return;
     }
 
-    // Crossfade + Ken Burns: swap which slide carries the "active"
-    // (opacity:1, resting scale) class. Both the outgoing and incoming
-    // slide are absolutely stacked on top of each other and transition
-    // simultaneously via CSS (see .hb-slide / .hb-slide.hb-active), with
-    // zero horizontal/vertical movement of the slides themselves — only
-    // the incoming slide's own image/video eases from a subtle 103% zoom
-    // down to 100% (see below), while the outgoing one stays pinned.
-    track.querySelectorAll('.hb-slide').forEach((slideEl) => {
-      const isActive = parseInt(slideEl.dataset.i, 10) === nextIndex;
-      slideEl.classList.toggle('hb-active', isActive);
-    });
+    const wrapForward = len > 1 && prevIndex === len - 1 && nextIndex === 0;
+    const wrapBackward = len > 1 && prevIndex === 0 && nextIndex === len - 1;
 
-    if(prevIndex !== nextIndex){
-      const outgoingSlide = content.querySelector(`.hb-slide[data-i="${prevIndex}"]`);
-      if(outgoingSlide){
-        // Pin the outgoing slide's media at its resting scale/position
-        // while it fades out, so the Ken Burns zoom only ever plays on
-        // the slide that's coming in — the outgoing image simply
-        // dissolves without any movement of its own.
-        outgoingSlide.classList.add('hb-outgoing');
-        const cleanup = () => outgoingSlide.classList.remove('hb-outgoing');
-        outgoingSlide.addEventListener('transitionend', cleanup, { once: true });
-        // Safety net in case transitionend never fires (e.g. tab
-        // backgrounded mid-transition), so the class doesn't get stuck.
-        setTimeout(cleanup, 1400);
-      }
-    }
-
+    state.activeIndex = nextIndex;
     applyActiveSlideEffects(content);
+
+    if(wrapForward){
+      // Animate one step past the last real slide onto the appended clone
+      // of slide 0 (visually identical) — this keeps the motion going
+      // left continuously instead of snapping backward across the set.
+      track.style.transform = `translateX(${-(len + 1) * 100}%)`;
+      armWrapReset(track, content, `translateX(${-(0 + trackOffset()) * 100}%)`);
+    } else if(wrapBackward){
+      // Animate one step before the first real slide onto the prepended
+      // clone of the last slide, then silently re-anchor to the real one.
+      track.style.transform = 'translateX(0%)';
+      armWrapReset(track, content, `translateX(${-(len - 1 + trackOffset()) * 100}%)`);
+    } else {
+      track.style.transform = `translateX(${-(nextIndex + trackOffset()) * 100}%)`;
+    }
+  }
+
+  // After the visible transition onto a clone slide finishes, instantly
+  // (no transition) re-anchor the track to the matching real slide, which
+  // looks identical so the swap is invisible — this is what makes the loop
+  // feel infinite instead of ever "rewinding" backward.
+  function armWrapReset(track, content, resetTransform){
+    if(state.pendingWrapReset) track.removeEventListener('transitionend', state.pendingWrapReset);
+    const onEnd = (e) => {
+      if(e.target !== track || e.propertyName !== 'transform') return;
+      track.removeEventListener('transitionend', onEnd);
+      state.pendingWrapReset = null;
+      track.style.transition = 'none';
+      track.style.transform = resetTransform;
+      // Force a reflow so the browser applies the jump before transitions
+      // are turned back on, otherwise it would animate the "reset" too.
+      void track.offsetWidth;
+      track.style.transition = '';
+    };
+    state.pendingWrapReset = onEnd;
+    track.addEventListener('transitionend', onEnd);
   }
 
   // Keeps the frame's aspect ratio in sync with the newly-active slide and
@@ -3214,7 +3235,7 @@ function createBannerController(cfg){
   // goToSlide() transform-only path (slide-to-slide navigation).
   function applyActiveSlideEffects(content){
     const frameEl = document.getElementById(`${state.sectionId}-frame`);
-    const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
+    const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]:not([data-clone])`);
     const activeBanner = state.banners[state.activeIndex];
     if(frameEl && activeSlide){
       const media = activeSlide.querySelector('img, video');
@@ -3288,25 +3309,31 @@ function createBannerController(cfg){
   function attachEvents(content){
     const track = content.querySelector('.hb-track');
     if(track){
-      // Swipe is detected (for manual navigation) but never visually
-      // "dragged" — the slide never follows the finger and there is no
-      // horizontal movement at all. On release, a swipe past the
-      // threshold simply triggers the same opacity crossfade used by the
-      // arrows/autoplay.
-      let startX = 0, startY = 0, deltaX = 0, dragging = false;
+      let startX = 0, deltaX = 0, dragging = false;
       const threshold = 40;
       track.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX; startY = e.touches[0].clientY; deltaX = 0; dragging = true;
+        startX = e.touches[0].clientX; deltaX = 0; dragging = true;
+        // Suspend the CSS transition while the finger is in control so the
+        // track tracks the touch 1:1 with zero lag, instead of visibly
+        // lagging behind while the .7s ease-out transition tries to catch up.
+        track.style.transition = 'none';
       }, { passive: true });
       track.addEventListener('touchmove', (e) => {
         if(!dragging) return;
         deltaX = e.touches[0].clientX - startX;
+        const base = -(state.activeIndex + trackOffset()) * track.clientWidth;
+        track.style.transform = `translateX(${base + deltaX}px)`;
       }, { passive: true });
       track.addEventListener('touchend', () => {
         if(!dragging) return;
         dragging = false;
-        if(deltaX > threshold){ goToSlide(state.activeIndex - 1); restartAutoplay(); }
-        else if(deltaX < -threshold){ goToSlide(state.activeIndex + 1); restartAutoplay(); }
+        // Hand control back to the CSS transition for a smooth, eased
+        // snap into place — whether that's advancing/retreating a slide
+        // or springing back to the current one.
+        track.style.transition = '';
+        if(deltaX > threshold) goToSlide(state.activeIndex - 1);
+        else if(deltaX < -threshold) goToSlide(state.activeIndex + 1);
+        else { track.style.transform = `translateX(${-(state.activeIndex + trackOffset()) * 100}%)`; restartAutoplay(); }
       });
     }
     const prevBtn = content.querySelector('.hb-prev');
@@ -3324,8 +3351,8 @@ function createBannerController(cfg){
     if(state.banners.length){
       section.style.display = 'block';
 
-      const buildSlide = (b, i) => `
-        <div class="hb-slide${i === state.activeIndex ? ' hb-active' : ''}" data-i="${i}">
+      const buildSlide = (b, i, extraAttr) => `
+        <div class="hb-slide" data-i="${i}"${extraAttr || ''}${extraAttr ? ' aria-hidden="true"' : ''}>
           ${b.type === 'video'
             ? `<video src="${b.url}" muted loop playsinline webkit-playsinline preload="auto"${i === state.activeIndex ? ' autoplay' : ''}></video>`
             : (() => {
@@ -3340,10 +3367,19 @@ function createBannerController(cfg){
               })()}
         </div>`;
 
-      // All slides are stacked directly on top of each other (see .hb-slide
-      // in style.css) and cross-fade purely via opacity — no clones, no
-      // horizontal track, no transform of any kind.
       const slides = state.banners.map((b, i) => buildSlide(b, i)).join('');
+
+      // Two extra "clone" slides (hidden from all normal lookups via
+      // data-clone) bookend the real ones so autoplay/swipe can keep
+      // sliding in one direction forever. Once the transition lands on a
+      // clone, goToSlide() silently re-anchors the track to the matching
+      // real slide (which looks pixel-identical) — see armWrapReset().
+      const cloneLast = state.banners.length > 1
+        ? buildSlide(state.banners[state.banners.length - 1], state.banners.length - 1, ' data-clone="last"')
+        : '';
+      const cloneFirst = state.banners.length > 1
+        ? buildSlide(state.banners[0], 0, ' data-clone="first"')
+        : '';
 
       const arrows = state.banners.length > 1 ? `
         <button type="button" class="hb-arrow prev hb-prev" aria-label="Previous">‹</button>
@@ -3358,7 +3394,7 @@ function createBannerController(cfg){
           <button class="hb-admin-btn remove hb-remove-btn" type="button">${t('removeBannerBtn')}</button>
         </div>` : '';
 
-      content.innerHTML = `<div class="hb-track">${slides}</div>${arrows}${adminControls}`;
+      content.innerHTML = `<div class="hb-track" style="transform:translateX(${-(state.activeIndex + trackOffset()) * 100}%)">${cloneLast}${slides}${cloneFirst}</div>${arrows}${adminControls}`;
 
       // Auto-size the frame's height to match the active slide's natural
       // dimensions (image, GIF or video) instead of forcing a fixed square —
