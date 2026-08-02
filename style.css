@@ -981,7 +981,7 @@ header {
 }
 
 .qty-num {
-  font-size: 13px;
+  font-size: 16px;
   min-width: 12px;
   width: 26px;
   text-align: center;
@@ -3725,7 +3725,7 @@ footer {
 }
 
 .pp-qty-stepper .qty-num {
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 600;
   min-width: 14px;
   color: var(--ink);
@@ -4480,12 +4480,7 @@ textarea.cf-input-icon {
   background: #fbfaf6;
   color: var(--ink);
   font-family: 'Jost', sans-serif;
-  font-size: 14px;
-  outline: none;
-  transition: border-color .3s ease;
-}
-
-.pack4-picker-search-input:focus {
+  font-size: 16px;
   border-color: var(--emerald);
 }
 
@@ -4719,7 +4714,7 @@ textarea.cf-input-icon {
 .pack4-qty-num {
   font-family: 'Jost', sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink);
   border: none;
   background: none;
@@ -5179,7 +5174,7 @@ textarea.cf-input-icon {
   background: none;
   outline: none;
   font-family: 'Jost', sans-serif;
-  font-size: 13.5px;
+  font-size: 16px;
   width: 100%;
   color: #fff;
 }
