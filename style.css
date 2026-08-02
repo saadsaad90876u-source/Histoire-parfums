@@ -2297,7 +2297,7 @@ h1,h2,h3 {
   overflow-y: auto;
   background: #FFFFFF;
   border-radius: 0;
-  padding: calc(env(safe-area-inset-top, 0px) + 88px) 24px 32px;
+  padding: calc(env(safe-area-inset-top, 0px) + 100px) 24px 32px;
   z-index: 3001;
   box-shadow: none;
   opacity: 0;
@@ -6792,7 +6792,7 @@ footer .footer-links-col h3 {
 }
 
 .testimonial-carousel-track {
-  height: 480px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6803,7 +6803,7 @@ footer .footer-links-col h3 {
 
 .testimonial-skel {
   width: 100%;
-  height: 480px;
+  height: 400px;
   border-radius: 2px;
   background: linear-gradient(90deg, #f6f6f4 25%, #fbfbf9 50%, #f6f6f4 75%);
   background-size: 200% 100%;
@@ -6813,16 +6813,17 @@ footer .footer-links-col h3 {
 /* ---------- the luxury testimonial card itself ---------- */
 .testimonial-card {
   width: 100%;
-  height: 480px;
+  height: 400px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 32px 36px 27px;
-  background: linear-gradient(180deg, #ffffff 0%, #fdfbf4 100%);
-  border: 1px solid rgba(212,175,55,.22);
-  box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -20px rgba(10,20,40,.18), 0 2px 8px rgba(10,20,40,.05);
+  padding: 28px 32px 22px;
+  background: #ffffff;
+  border: 1px solid rgba(10, 47, 29, .07);
+  border-radius: 24px;
+  box-shadow: 0 24px 48px -28px rgba(10, 47, 29, .28), 0 2px 10px rgba(10, 20, 40, .04);
   position: relative;
   opacity: 1;
   transform: translateY(0);
@@ -6830,35 +6831,24 @@ footer .footer-links-col h3 {
   transition: opacity .45s ease, transform .45s ease;
 }
 
-.testimonial-card::before,
-.testimonial-card::after {
+/* Slim emerald accent bar along the top, instead of the old bracket-corner
+   "certificate" motif -- reads as a clean modern card, not a vintage frame. */
+.testimonial-card::before {
   content: "";
   position: absolute;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--gold);
-  opacity: .65;
-  pointer-events: none;
-}
-.testimonial-card::before {
-  top: 9px;
-  left: 9px;
-  border-right: none;
-  border-bottom: none;
-}
-.testimonial-card::after {
-  bottom: 9px;
-  right: 9px;
-  border-left: none;
-  border-top: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--emerald-deep) 0%, var(--emerald) 50%, var(--emerald-deep) 100%);
 }
 
 .testimonial-quote-mark {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 54px;
+  font-size: 44px;
   line-height: 1;
   color: var(--emerald);
-  opacity: .55;
+  opacity: .35;
   margin-bottom: 0;
 }
 
@@ -6890,22 +6880,24 @@ footer .footer-links-col h3 {
 }
 
 .testimonial-photo {
-  width: 92px;
-  height: 92px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   overflow: hidden;
   margin: 0 auto 16px;
-  border: 1px solid rgba(212,175,55,.4);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1.5px rgba(80, 200, 120, .45), 0 8px 20px -10px rgba(10, 47, 29, .3);
   flex-shrink: 0;
 }
 .testimonial-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .testimonial-divider {
-  width: 34px;
-  height: 1px;
+  width: 40px;
+  height: 2px;
+  border-radius: 2px;
   background: var(--emerald);
-  opacity: .55;
-  margin: auto auto 12px;
+  opacity: .5;
+  margin: auto auto 14px;
   flex-shrink: 0;
 }
 
@@ -7011,13 +7003,9 @@ footer .footer-links-col h3 {
 }
 
 @media (max-width: 640px) {
-  .testimonial-card { height: 448px; padding: 24px 19px 21px; }
-  .testimonial-carousel-track { height: 448px; }
-  .testimonial-skel { height: 448px; }
-  .testimonial-card::before,
-  .testimonial-card::after { width: 18px; height: 18px; }
-  .testimonial-card::before { top: 7px; left: 7px; }
-  .testimonial-card::after { bottom: 7px; right: 7px; }
+  .testimonial-card { height: 380px; padding: 32px 22px 24px; }
+  .testimonial-carousel-track { height: 380px; }
+  .testimonial-skel { height: 380px; }
   .testimonial-quote-mark { font-size: 36px; }
 }
 
