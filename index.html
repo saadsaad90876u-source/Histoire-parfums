@@ -125,12 +125,24 @@ document.documentElement.style.overflow = 'hidden';
     <button type="button" class="ws-enter-btn" id="ws-enter-btn">Entrer</button>
   </div>
 </div>
+<audio id="ws-enter-sound" src="/welcome-chime.mp3" preload="auto"></audio>
 <script>
 (function () {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
+  var sound = document.getElementById('ws-enter-sound');
   if (!screen || !btn) return;
   btn.addEventListener('click', function () {
+    if (sound) {
+      // play() returns a promise that rejects if the browser blocks it for
+      // any reason -- swallow that instead of letting it throw, so a blocked
+      // sound never breaks the screen from closing.
+      try {
+        sound.currentTime = 0;
+        var p = sound.play();
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+    }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
     // Remove from the DOM once the fade/slide-up transition finishes,
