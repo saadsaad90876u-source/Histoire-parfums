@@ -43,14 +43,22 @@ function refreshScrollReveal(root){
   }
   if(!scrollRevealObserver){
     scrollRevealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // Toggle on every crossing (not just the first) so the reveal
-        // replays each time the element re-enters the viewport, instead
-        // of firing once and then being left alone for good.
+      // When many elements are already on screen at the moment they start
+      // being observed (e.g. switching Femme/Homme doesn't scroll the
+      // page, so every card in the new grid is already visible), they'd
+      // all fire in the same callback batch and reveal in the same
+      // instant. A tiny incremental delay per entry in that batch turns
+      // that into a proper cascading reveal instead.
+      entries.forEach((entry, i) => {
         if(entry.isIntersecting){
-          entry.target.classList.add('active');
-        } else {
-          entry.target.classList.remove('active');
+          setTimeout(() => entry.target.classList.add('active'), i * 55);
+          // Reveal once, then stop watching. Previously this kept observing
+          // and removed "active" again the moment the element scrolled back
+          // out of view -- so scrolling up and down rapidly toggled the
+          // animation on/off mid-transition, which is what caused the
+          // stutter/"stuck" feeling. Unobserving here makes every element
+          // reveal exactly once and then leaves it alone for good.
+          scrollRevealObserver.unobserve(entry.target);
         }
       });
     }, {
