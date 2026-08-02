@@ -19,9 +19,10 @@ svg:not([width]) { width: 1em; height: 1em; }
   inset: 0;
   z-index: 999999;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  background: linear-gradient(160deg, #6FCB9F 0%, #3FA76D 55%, #2E8B57 100%);
+  padding-bottom: 35vh;
+  background: #0a1c12 url('/welcome-bg.webp') center center / cover no-repeat;
   overflow: hidden;
 }
 </style>
@@ -77,6 +78,7 @@ document.documentElement.style.overflow = 'hidden';
      no need to hold up rendering while these download. The
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
+<link rel="preload" as="image" fetchpriority="high" href="/welcome-bg.webp">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Goldman:wght@400;700&family=Poppins:wght@700;800&display=swap" onload="this.onload=null;this.rel='stylesheet';">
 <link rel="stylesheet" href="/style.css" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
@@ -125,22 +127,48 @@ document.documentElement.style.overflow = 'hidden';
     <button type="button" class="ws-enter-btn" id="ws-enter-btn">Entrer</button>
   </div>
 </div>
-<audio id="ws-enter-sound" src="/welcome-chime.mp3" preload="auto"></audio>
 <script>
 (function () {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
-  var sound = document.getElementById('ws-enter-sound');
   if (!screen || !btn) return;
+
+  // Web Audio API instead of a plain <audio> element: the sound file is
+  // fetched and decoded into memory ahead of time (as soon as the page
+  // loads), so pressing "Entrer" just starts an already-decoded buffer --
+  // no seek/buffering/decode work happens on the click itself, which is
+  // what was causing the fraction-of-a-second delay before.
+  var audioCtx = null;
+  var audioBuffer = null;
+  var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (AudioContextClass) {
+    try {
+      audioCtx = new AudioContextClass();
+      fetch('/welcome-chime.mp3')
+        .then(function (res) { return res.arrayBuffer(); })
+        .then(function (data) { return audioCtx.decodeAudioData(data); })
+        .then(function (buffer) { audioBuffer = buffer; })
+        .catch(function () {});
+    } catch (e) { audioCtx = null; }
+  }
+
   btn.addEventListener('click', function () {
-    if (sound) {
-      // play() returns a promise that rejects if the browser blocks it for
-      // any reason -- swallow that instead of letting it throw, so a blocked
-      // sound never breaks the screen from closing.
+    if (audioCtx && audioBuffer) {
       try {
-        sound.currentTime = 0;
-        var p = sound.play();
-        if (p && p.catch) p.catch(function () {});
+        // Some browsers keep the AudioContext suspended until a user
+        // gesture -- this click is that gesture, so resume() (if needed)
+        // then play immediately with zero scheduling delay.
+        var startNow = function () {
+          var src = audioCtx.createBufferSource();
+          src.buffer = audioBuffer;
+          src.connect(audioCtx.destination);
+          src.start(0);
+        };
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume().then(startNow);
+        } else {
+          startNow();
+        }
       } catch (e) {}
     }
     screen.classList.add('ws-leaving');
