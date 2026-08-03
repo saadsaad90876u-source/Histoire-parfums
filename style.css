@@ -1912,7 +1912,7 @@ h1,h2,h3 {
   padding: 0;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid rgba(10, 47, 29, .08);
+  border: 1.5px solid rgba(10, 47, 29, .22);
   cursor: pointer;
   will-change: transform;
   transform: translateZ(0);
@@ -1972,7 +1972,7 @@ h1,h2,h3 {
    renders instantly on every tap with no GPU layer warm-up delay. The scale
    "bubble" pop itself is driven directly by GSAP on touchstart/touchend. */
 .product-card.m-touch-active {
-  border-color: rgba(10, 47, 29, .08);
+  border-color: rgba(10, 47, 29, .22);
 }
 
 
