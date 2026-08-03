@@ -2051,8 +2051,19 @@ h1,h2,h3 {
   }
 }
 
+/* Touch equivalent of the hover shine above — triggered from JS when the
+   product card is touched (see script.js), since touch devices have no
+   hover state to hook into. */
+.pc-stage.pc-shine-active::after {
+  animation: pcStageShine 1s ease-in-out 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pc-stage::after { animation: none; }
+  .pc-stage::after,
+  .pc-stage.pc-shine-active::after,
+  .product-card:hover .pc-stage::after {
+    animation: none;
+  }
 }
 
 .product-card .pc-fam {

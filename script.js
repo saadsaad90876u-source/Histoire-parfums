@@ -2927,6 +2927,30 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// Desktop shows the product-photo shine on :hover (see .pc-stage::after in
+// style.css), but a finger has no hover state -- without this, mobile
+// visitors (the majority here) would never see it at all. This mirrors
+// the same effect for touch: touching anywhere on the product card plays
+// the shine on that card's photo once via the .pc-shine-active class,
+// which is removed again once the sweep finishes so it's ready to replay
+// on the next touch.
+document.addEventListener('touchstart', (e) => {
+  const card = e.target.closest('.product-card');
+  const stage = card && card.querySelector('.pc-stage');
+  if(!stage) return;
+  stage.classList.remove('pc-shine-active');
+  // Force a reflow so re-adding the class restarts the CSS animation
+  // even if the previous sweep hadn't finished yet.
+  void stage.offsetWidth;
+  stage.classList.add('pc-shine-active');
+}, { passive: true });
+
+document.addEventListener('animationend', (e) => {
+  if(e.animationName === 'pcStageShine'){
+    e.target.closest('.pc-stage')?.classList.remove('pc-shine-active');
+  }
+});
+
 function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceFormat){
   maxDim = maxDim || 640;
   quality = quality || 0.72;
