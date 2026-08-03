@@ -2314,11 +2314,11 @@ document.getElementById('pack4-banner-btn').addEventListener('click', () => open
 document.getElementById('pack4-modal-close').addEventListener('click', () => closePack4Modal());
 document.getElementById('pack4-overlay').addEventListener('click', () => closePack4Modal());
 
-// The rotating gold frame around the pack4 banner is now pure CSS (see
-// .pack4-ring / .pack4-ring-spin / @keyframes pack4-ring-spin in
-// style.css) -- a static masked ring shape with a spinning conic-gradient
-// fill underneath it, so no JS sizing/animation loop is needed here
-// anymore.
+// The rotating gold border around the pack4 banner is now pure CSS: the
+// border's paint source is a spinning conic-gradient (see .pack4-banner's
+// background/@property --pack4-angle/@keyframes pack4-border-spin in
+// style.css) instead of a solid color, so it's the actual border itself
+// that appears to rotate -- no overlay element and no JS needed here.
 
 document.getElementById('pack4-slots').addEventListener('click', (e) => {
   const removeBtn = e.target.closest('.pack4-slot-remove');
