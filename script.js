@@ -2314,6 +2314,56 @@ document.getElementById('pack4-banner-btn').addEventListener('click', () => open
 document.getElementById('pack4-modal-close').addEventListener('click', () => closePack4Modal());
 document.getElementById('pack4-overlay').addEventListener('click', () => closePack4Modal());
 
+// Measures the pack4 banner card and sizes/positions the SVG ring's rect
+// to trace its actual rounded-rect outline exactly, then computes that
+// rect's true perimeter so the CSS stroke-dashoffset animation (see
+// .pack4-ring-rect in style.css) travels the comet-like highlight around
+// it at one constant, undistorted speed. Re-run on resize/orientation
+// change since the card's width (and therefore its shape) changes across
+// breakpoints while the border-radius itself stays a fixed 24px.
+function layoutPack4Ring(){
+  const wrap = document.getElementById('pack4-banner-btn');
+  const svg = wrap && wrap.querySelector('.pack4-ring');
+  const rectEl = svg && svg.querySelector('.pack4-ring-rect');
+  if(!wrap || !svg || !rectEl) return;
+  const w = wrap.offsetWidth, h = wrap.offsetHeight;
+  if(!w || !h) return;
+
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+  const strokeWidth = 2.2;
+  const inset = strokeWidth / 2;
+  const cardRadius = 24; // matches .pack4-banner's border-radius at every breakpoint
+  const rx = Math.max(0, Math.min(cardRadius - inset, Math.min(w, h) / 2 - inset));
+  const rw = Math.max(0, w - strokeWidth);
+  const rh = Math.max(0, h - strokeWidth);
+
+  rectEl.setAttribute('x', inset);
+  rectEl.setAttribute('y', inset);
+  rectEl.setAttribute('width', rw);
+  rectEl.setAttribute('height', rh);
+  rectEl.setAttribute('rx', rx);
+  rectEl.setAttribute('ry', rx);
+  rectEl.setAttribute('stroke-width', strokeWidth);
+
+  // Perimeter of a rounded rect = the 4 straight edges (each shortened by
+  // the two corner radii they meet) plus the 4 corner arcs, which together
+  // form one full circle of radius rx.
+  const straight = 2 * Math.max(0, rw - 2 * rx) + 2 * Math.max(0, rh - 2 * rx);
+  const curved = 2 * Math.PI * rx;
+  const perimeter = Math.max(1, straight + curved);
+
+  const cometLength = perimeter * 0.15;
+  rectEl.style.strokeDasharray = `${cometLength} ${Math.max(1, perimeter - cometLength)}`;
+  rectEl.style.setProperty('--pack4-ring-perimeter', perimeter);
+}
+layoutPack4Ring();
+window.addEventListener('DOMContentLoaded', layoutPack4Ring);
+window.addEventListener('resize', () => { clearTimeout(window.__pack4RingResizeT); window.__pack4RingResizeT = setTimeout(layoutPack4Ring, 120); });
+if('ResizeObserver' in window){
+  new ResizeObserver(() => layoutPack4Ring()).observe(document.getElementById('pack4-banner-btn'));
+}
+
 document.getElementById('pack4-slots').addEventListener('click', (e) => {
   const removeBtn = e.target.closest('.pack4-slot-remove');
   if(removeBtn){
@@ -2631,8 +2681,11 @@ function productPageTemplate(pRaw, category, idx){
   const images = productImages(p);
   const coverIdx = (typeof pRaw.cover === 'number') ? pRaw.cover : 0;
 
+  const backBtnHtml = `<button type="button" class="pp-back-float" id="pp-back" aria-label="${t('backToShopBtn')}">←</button>`;
+
   const gallery = images.length ? `
     <div class="pp-gallery">
+      ${backBtnHtml}
       <div class="pp-track" id="pp-track">
         ${images.map((url, i) => `<div class="pp-slide"><img src="${url}" alt="${p.name}" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`).join('')}
       </div>
@@ -2641,6 +2694,7 @@ function productPageTemplate(pRaw, category, idx){
     </div>
     ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img src="${url}" alt="${p.name} miniature ${i + 1}" loading="lazy"></button>`).join('')}</div>` : ''}` : `
     <div class="pp-gallery pp-gallery-placeholder">
+      ${backBtnHtml}
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
@@ -2666,7 +2720,6 @@ function productPageTemplate(pRaw, category, idx){
     </div>` : '';
 
   return `
-    <button type="button" class="pp-back" id="pp-back">← ${t('backToShopBtn')}</button>
     <div class="pp-layout">
       <div class="pp-media">
         ${gallery}

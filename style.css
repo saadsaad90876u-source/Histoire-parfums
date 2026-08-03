@@ -100,15 +100,12 @@
   padding: 0 24px;
 }
 
-.ws-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
-  font-size: clamp(40px, 10vw, 77px);
-  letter-spacing: 0.16em;
-  color: #FFFFFF;
-  line-height: 1;
+.ws-logo {
+  width: clamp(150px, 34vw, 220px);
+  height: auto;
   margin: 0 0 18px;
   opacity: 0;
+  filter: drop-shadow(0 2px 18px rgba(0,0,0,.45));
   animation: wsFadeIn 1.1s ease 0.2s forwards;
 }
 
@@ -125,9 +122,11 @@
 }
 
 .ws-enter-btn {
+  position: relative;
+  overflow: hidden;
   font-family: 'Cormorant Garamond', serif;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16.5px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: #D7B67C;
@@ -142,19 +141,29 @@
   transition: background .35s ease, border-color .35s ease, transform .25s ease, letter-spacing .35s ease;
 }
 
-/* Gold light sweep, plays once across the button label after it fades in.
-   Applied to an inner span (not the button itself) so the sweep's
-   background-clip:text trick doesn't interfere with the button's own
-   background/border. */
+/* Gold light sweep, plays once across the whole button (border included)
+   after it fades in -- a light band on a ::after overlay clipped to the
+   button's own rounded shape via overflow:hidden, rather than the old
+   background-clip:text trick which only lit up the glyphs of the word
+   "Entrer" and left the frame around it untouched. */
+.ws-enter-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgba(255,255,255,.10) 44%,
+    rgba(251,235,196,.65) 50%,
+    rgba(255,255,255,.10) 56%,
+    transparent 70%);
+  transform: translateX(-130%);
+  animation: wsBtnSweep 1.6s ease 2.1s 1 forwards;
+  pointer-events: none;
+}
+
 .ws-enter-label {
   display: inline-block;
-  background-image: linear-gradient(115deg, #D7B67C 40%, #D7B67C 44%, #FBEBC4 50%, #D7B67C 56%, #D7B67C 60%);
-  background-size: 300% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: wsGoldSweep 1.6s ease 2.1s 1 forwards;
+  position: relative;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -174,10 +183,9 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Gold sweep, plays once (used by the enter button's label — see .ws-enter-label). */
-@keyframes wsGoldSweep {
-  0%   { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+/* Gold sweep, plays once (used by the enter button's ::after overlay). */
+@keyframes wsBtnSweep {
+  to { transform: translateX(130%); }
 }
 
 #welcome-screen.ws-leaving {
@@ -187,9 +195,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ws-title, .ws-subtitle, .ws-enter-btn {
+  .ws-logo, .ws-subtitle, .ws-enter-btn {
     animation: none;
     opacity: 1;
+  }
+  .ws-enter-btn::after {
+    animation: none;
+    display: none;
   }
   #welcome-screen {
     transition: opacity 0.3s ease;
@@ -2758,7 +2770,7 @@ footer {
 }
 
 #product-page {
-  padding: 120px 20px 60px;
+  padding: 112px 20px 60px;
   min-height: 100vh;
   background: var(--cream, #fff);
   color: var(--ink);
@@ -2848,24 +2860,39 @@ footer {
    COMPONENTS — FULL PRODUCT DETAIL PAGE
    ============================================================ */
 
-.pp-back {
-  background: none;
+/* Floats over the top-left corner of the product image itself instead of
+   sitting in its own row above it — this is what lets the image sit
+   flush against the header with no gap, while the back action stays just
+   as reachable, now as a quiet, slightly-dimmed circular affordance that
+   reads on top of any photo (light or dark). */
+.pp-back-float {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
-  font-family: 'Jost', sans-serif;
-  font-size: 13px;
-  letter-spacing: .05em;
-  color: var(--text-soft);
+  background: rgba(10,20,15,.34);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 14px;
-  padding: 6px 0;
-  transition: color .25s ease;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  transition: background .25s ease, transform .2s ease;
 }
 
-.pp-back:hover {
-  color: var(--emerald-deep);
+.pp-back-float:hover {
+  background: rgba(10,20,15,.52);
+}
+
+.pp-back-float:active {
+  transform: scale(.94);
 }
 
 .pp-layout {
@@ -2897,7 +2924,7 @@ footer {
   }
 
   .pp-media {
-    position: static;
+    position: relative;
   }
 
   .pp-gallery {
@@ -3366,7 +3393,7 @@ footer {
   }
 
   #product-page {
-    padding: 110px 12px 50px;
+    padding: 112px 12px 50px;
   }
 
   .pp-gallery {
@@ -3671,6 +3698,8 @@ footer {
 
 .sm-icon-wa {
   color: #25D366;
+  width: 25px;
+  height: 25px;
 }
 
 .side-menu-item .icon {
@@ -4144,39 +4173,42 @@ textarea.cf-input-icon {
   pointer-events: none;
 }
 
-/* A soft point of gold light continuously orbits the card's border — a
-   classic "premium" ring effect made with a rotating conic-gradient that's
-   masked down to a thin outline (the transparent center never covers the
-   card's content). Sits on top of the static gold border, so the frame
-   always reads as gold even between passes of the highlight. */
-.pack4-banner::after {
-  content: "";
+/* A soft point of gold light continuously travels around the card's
+   border. This used to be a rotating conic-gradient, but a conic-gradient
+   sweeps by *angle* from the box's center -- on a wide, non-square card
+   like this one, equal angle steps cover very unequal stretches of the
+   actual border, so the highlight visibly warped, sped up/slowed down
+   unevenly around the corners, and at some angles even seemed to cut
+   diagonally across the card instead of hugging its edge.
+   An SVG rect stroke animated with stroke-dashoffset instead travels by
+   actual path *length*, so it glides around the real rounded-rect
+   perimeter at one constant speed no matter the card's aspect ratio --
+   see layoutPack4Ring() in script.js, which measures the card and sets
+   the rect's geometry + the --pack4-ring-perimeter length used below. */
+.pack4-ring {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  padding: 1.8px;
-  background: conic-gradient(from 0deg,
-    transparent 0deg,
-    transparent 250deg,
-    rgba(255,255,255,.95) 292deg,
-    var(--gold-light) 312deg,
-    var(--gold) 330deg,
-    transparent 356deg,
-    transparent 360deg);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  animation: pack4RingSpin 6s linear infinite;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  overflow: visible;
+  z-index: 1;
 }
 
-@keyframes pack4RingSpin {
-  to { transform: rotate(360deg); }
+.pack4-ring-rect {
+  fill: none;
+  stroke: var(--gold-light);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(255, 225, 150, .6));
+  animation: pack4RingTravel 6s linear infinite;
+}
+
+@keyframes pack4RingTravel {
+  to { stroke-dashoffset: calc(var(--pack4-ring-perimeter, 900) * -1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pack4-banner::after { animation: none; }
+  .pack4-ring-rect { animation: none; }
 }
 
 @media (hover: hover) and (pointer: fine) {
