@@ -3201,7 +3201,7 @@ function createBannerController(cfg){
         outgoingSlide.addEventListener('transitionend', cleanup, { once: true });
         // Safety net in case transitionend never fires (e.g. tab
         // backgrounded mid-transition), so the class doesn't get stuck.
-        setTimeout(cleanup, 1400);
+        setTimeout(cleanup, 1800);
       }
     }
 
