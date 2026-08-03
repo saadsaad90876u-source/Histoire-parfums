@@ -1256,7 +1256,7 @@ header {
 }
 
 .cart-toast-title {
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 13.5px;
   font-weight: 700;
   color: #fdfaf1;
@@ -1413,7 +1413,7 @@ header {
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 #checkout-page .order-summary-card {
@@ -1490,7 +1490,7 @@ header {
   border-radius: 12px;
   padding: 12px 14px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .payment-icon {
@@ -1512,7 +1512,7 @@ header {
 }
 
 .payment-name {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
   color: #0A2F1D;
 }
@@ -1535,7 +1535,7 @@ header {
   border-radius: 10px;
   padding: 9px 11px;
   font-weight: 500;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .trust-item::first-letter {
@@ -2038,13 +2038,17 @@ h1,h2,h3 {
   pointer-events: none;
   z-index: 2;
   will-change: transform;
-  animation: pcStageShine 5.5s ease-in-out infinite;
 }
 
 @keyframes pcStageShine {
   0%   { transform: translateX(-160%) skewX(-20deg); }
-  30%  { transform: translateX(320%) skewX(-20deg); }
   100% { transform: translateX(320%) skewX(-20deg); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .pc-stage::after {
+    animation: pcStageShine 1s ease-in-out 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2390,7 +2394,7 @@ h1,h2,h3 {
   font-size: 24px;
   margin-bottom: 6px;
   color: #000000;
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
 }
 
 .checkout-sub {
@@ -2398,7 +2402,7 @@ h1,h2,h3 {
   color: var(--text-soft);
   margin-bottom: 16px;
   line-height: 1.5;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .cf-label {
@@ -2408,7 +2412,7 @@ h1,h2,h3 {
   text-transform: uppercase;
   color: var(--text-soft);
   margin-bottom: 12px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .cf-input {
@@ -2419,7 +2423,7 @@ h1,h2,h3 {
   border-radius: 12px;
   border: 2px solid #000000;
   background: #ffffff;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 16px;
   color: var(--ink);
   box-shadow: none;
@@ -2448,7 +2452,7 @@ h1,h2,h3 {
   color: #000000;
   font-weight: 700;
   margin-bottom: 8px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .osc-row,
@@ -2471,7 +2475,7 @@ h1,h2,h3 {
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 14px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #000000;
@@ -3240,7 +3244,7 @@ footer {
 }
 
 .pp-notes-title {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 12px;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -4392,7 +4396,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-price-new {
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 700;
   font-size: 46px;
   line-height: 1;
@@ -4555,7 +4559,7 @@ textarea.cf-input-icon {
   transform: translateX(-150%) skewX(-20deg);
   pointer-events: none;
   will-change: transform;
-  animation: pack4CtaShine 6s ease-in-out infinite;
+  animation: pack4CtaShine 6s ease-in-out 3;
 }
 
 @keyframes pack4CtaShine {
@@ -4591,7 +4595,7 @@ textarea.cf-input-icon {
 .pack4-banner-cta-arrow svg {
   width: 13px;
   height: 13px;
-  animation: pack4ArrowNudge 1.1s ease-in-out infinite;
+  animation: pack4ArrowNudge 1.1s ease-in-out 4;
 }
 
 @keyframes pack4ArrowNudge {
@@ -4748,7 +4752,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-card-heading {
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-weight: 700;
   font-size: 15px;
   letter-spacing: .06em;
@@ -4975,7 +4979,7 @@ textarea.cf-input-icon {
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 8px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .pack4-price-row .label {
@@ -6599,7 +6603,7 @@ footer .footer-links-col h3 {
 }
 
 .policy-modal-body h4 {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 15px;
   color: var(--ink);
   margin: 18px 0 8px;
@@ -6728,7 +6732,7 @@ footer .footer-links-col h3 {
   margin-bottom: 4mm;
 }
 .ad-label-brand {
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 17px;
   font-weight: 700;
   letter-spacing: .1em;
@@ -6893,7 +6897,7 @@ footer .footer-links-col h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Goldman', 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 15px;
   font-weight: 700;
 }
@@ -7157,7 +7161,7 @@ footer .footer-links-col h3 {
   text-transform: uppercase;
   color: var(--text-soft);
   margin-bottom: 10px;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .review-stars-field { margin-bottom: 16px; }
@@ -7179,7 +7183,7 @@ footer .footer-links-col h3 {
 
 .review-textarea {
   resize: vertical;
-  font-family: 'Goldman', 'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
 
 .review-optional-tag {
