@@ -2314,91 +2314,11 @@ document.getElementById('pack4-banner-btn').addEventListener('click', () => open
 document.getElementById('pack4-modal-close').addEventListener('click', () => closePack4Modal());
 document.getElementById('pack4-overlay').addEventListener('click', () => closePack4Modal());
 
-// Measures the pack4 banner card and sizes/positions the SVG ring's rect
-// to trace its actual rounded-rect outline exactly, then computes that
-// rect's true perimeter so the comet-like gold highlight travels around
-// it at one constant, undistorted speed. Re-run on resize/orientation
-// change since the card's width (and therefore its shape) changes across
-// breakpoints while the border-radius itself stays a fixed 24px.
-//
-// The highlight's motion is driven from a plain requestAnimationFrame
-// loop (pack4RingTick below) rather than a CSS @keyframes animation.
-// A CSS animation whose keyframe target depends on a custom property
-// (calc(var(--pack4-ring-perimeter)*-1)) only gets resolved once, when
-// the animation starts; if that property is then updated later (which
-// happens here, since ResizeObserver's guaranteed first callback fires
-// a moment after page load, after the animation has already begun),
-// browsers don't reliably re-resolve it -- in testing it would snap
-// straight to the old end value and freeze there instead of looping,
-// which is exactly the stuck/warped look this was reported to have.
-// Driving it from JS sidesteps that entirely: every frame just reads
-// the current perimeter and elapsed time and sets stroke-dashoffset
-// directly, so a mid-flight resize simply continues smoothly with the
-// new measurements instead of corrupting the animation.
-let pack4RingPerimeter = 0;
-let pack4RingStart = null;
-const PACK4_RING_PERIOD_MS = 6000; // one full lap every 6s, matches prior CSS duration
-
-function layoutPack4Ring(){
-  const wrap = document.getElementById('pack4-banner-btn');
-  const svg = wrap && wrap.querySelector('.pack4-ring');
-  const rectEl = svg && svg.querySelector('.pack4-ring-rect');
-  if(!wrap || !svg || !rectEl) return;
-  const w = wrap.offsetWidth, h = wrap.offsetHeight;
-  if(!w || !h) return;
-
-  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-
-  const strokeWidth = 2.2;
-  const inset = strokeWidth / 2;
-  const cardRadius = 24; // matches .pack4-banner's border-radius at every breakpoint
-  const rx = Math.max(0, Math.min(cardRadius - inset, Math.min(w, h) / 2 - inset));
-  const rw = Math.max(0, w - strokeWidth);
-  const rh = Math.max(0, h - strokeWidth);
-
-  rectEl.setAttribute('x', inset);
-  rectEl.setAttribute('y', inset);
-  rectEl.setAttribute('width', rw);
-  rectEl.setAttribute('height', rh);
-  rectEl.setAttribute('rx', rx);
-  rectEl.setAttribute('ry', rx);
-  rectEl.setAttribute('stroke-width', strokeWidth);
-
-  // Perimeter of a rounded rect = the 4 straight edges (each shortened by
-  // the two corner radii they meet) plus the 4 corner arcs, which together
-  // form one full circle of radius rx.
-  const straight = 2 * Math.max(0, rw - 2 * rx) + 2 * Math.max(0, rh - 2 * rx);
-  const curved = 2 * Math.PI * rx;
-  const perimeter = Math.max(1, straight + curved);
-
-  const cometLength = perimeter * 0.15;
-  rectEl.style.strokeDasharray = `${cometLength} ${Math.max(1, perimeter - cometLength)}`;
-  pack4RingPerimeter = perimeter;
-}
-
-function pack4RingTick(now){
-  const wrap = document.getElementById('pack4-banner-btn');
-  const rectEl = wrap && wrap.querySelector('.pack4-ring-rect');
-  if(rectEl && pack4RingPerimeter > 0){
-    if(pack4RingStart === null) pack4RingStart = now;
-    const elapsed = (now - pack4RingStart) % PACK4_RING_PERIOD_MS;
-    const progress = elapsed / PACK4_RING_PERIOD_MS; // 0 -> 1, one lap
-    rectEl.style.strokeDashoffset = String(-progress * pack4RingPerimeter);
-  }
-  window.requestAnimationFrame(pack4RingTick);
-}
-
-const pack4PrefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-layoutPack4Ring();
-window.addEventListener('DOMContentLoaded', layoutPack4Ring);
-window.addEventListener('resize', () => { clearTimeout(window.__pack4RingResizeT); window.__pack4RingResizeT = setTimeout(layoutPack4Ring, 120); });
-if('ResizeObserver' in window){
-  new ResizeObserver(() => layoutPack4Ring()).observe(document.getElementById('pack4-banner-btn'));
-}
-if(!pack4PrefersReducedMotion){
-  window.requestAnimationFrame(pack4RingTick);
-}
+// The rotating gold frame around the pack4 banner is now pure CSS (see
+// .pack4-ring / .pack4-ring-spin / @keyframes pack4-ring-spin in
+// style.css) -- a static masked ring shape with a spinning conic-gradient
+// fill underneath it, so no JS sizing/animation loop is needed here
+// anymore.
 
 document.getElementById('pack4-slots').addEventListener('click', (e) => {
   const removeBtn = e.target.closest('.pack4-slot-remove');

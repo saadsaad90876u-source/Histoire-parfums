@@ -4172,36 +4172,58 @@ textarea.cf-input-icon {
   pointer-events: none;
 }
 
-/* A soft point of gold light continuously travels around the card's
-   border. This used to be a rotating conic-gradient, but a conic-gradient
-   sweeps by *angle* from the box's center -- on a wide, non-square card
-   like this one, equal angle steps cover very unequal stretches of the
-   actual border, so the highlight visibly warped, sped up/slowed down
-   unevenly around the corners, and at some angles even seemed to cut
-   diagonally across the card instead of hugging its edge.
-   An SVG rect stroke animated with stroke-dashoffset instead travels by
-   actual path *length*, so it glides around the real rounded-rect
-   perimeter at one constant speed no matter the card's aspect ratio --
-   see layoutPack4Ring() in script.js, which measures the card and sets
-   the rect's geometry + the --pack4-ring-perimeter length used below. */
+/* The gold frame itself appears to rotate, rather than a single point of
+   light travelling around it. This is two layers:
+   - .pack4-ring is the RING SHAPE: an absolutely-positioned box the same
+     size as the card, with `padding` equal to the border thickness and a
+     mask that subtracts its own content-box from itself (content-box
+     mask + mask-composite: exclude/xor), leaving only a thin strip
+     exactly as wide as the border. This shape is completely static and
+     never moves, so nothing can ever bleed inward into the card -- this
+     is what fixed the earlier bug where a rotating conic-gradient border
+     visibly "entered" the card (a plain rotating conic-gradient sweeps by
+     angle from the box's center, so on a wide, non-square card like this
+     one it doesn't stay flush with the actual edge and can cut across
+     the interior at some angles/corners).
+   - .pack4-ring-spin is the GOLD FILL: a conic-gradient much larger than
+     the card, centered on it, that just spins in place with a plain
+     `transform: rotate`. Because it's clipped by the static ring shape
+     above, only the colour underneath the border-width strip is ever
+     visible, so the fill can rotate freely while always staying exactly
+     on the frame. */
 .pack4-ring {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  border-radius: inherit;
+  padding: 1.8px; /* matches .pack4-banner's border width */
+  overflow: hidden;
   pointer-events: none;
-  overflow: visible;
   z-index: 1;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
 }
 
-.pack4-ring-rect {
-  fill: none;
-  stroke: var(--gold-light);
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 4px rgba(255, 225, 150, .6));
-  /* Motion is driven frame-by-frame from JS (pack4RingTick in script.js),
-     not a CSS @keyframes animation -- see the comment above
-     layoutPack4Ring() in script.js for why. */
+.pack4-ring-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  background: conic-gradient(from 0deg,
+    var(--gold) 0deg, var(--gold-light) 90deg, var(--gold) 180deg,
+    var(--gold-light) 270deg, var(--gold) 360deg);
+  filter: drop-shadow(0 0 3px rgba(255, 225, 150, .5));
+  animation: pack4-ring-spin 6s linear infinite;
+}
+
+@keyframes pack4-ring-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack4-ring-spin { animation: none; }
 }
 
 @media (hover: hover) and (pointer: fine) {
