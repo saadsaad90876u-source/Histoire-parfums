@@ -1340,7 +1340,7 @@ function genOrderNumber(){
    This lets a customer close the site after checkout and, next time they
    open the tracking screen, immediately see their past order(s) and tap
    one to see its status instead of having to remember/retype the code. */
-const MY_ORDERS_KEY = 'symphonie-my-orders';
+const MY_ORDERS_KEY = 'histoire-my-orders';
 function getMyOrders(){
   try{
     const list = JSON.parse(localStorage.getItem(MY_ORDERS_KEY) || '[]');
@@ -3770,7 +3770,7 @@ function closeAboutModal(fromPopstate){
 }
 
 /* ---------- "Derrière la Marque" (brand owner) — admin-editable ---------- */
-const FOUNDER_KEY = 'symphonie-founder-info';
+const FOUNDER_KEY = 'histoire-founder-info';
 let founderInfo = { photoUrl: null, bio: '' };
 
 function renderFounderInfo(){
