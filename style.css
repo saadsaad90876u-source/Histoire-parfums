@@ -4199,15 +4199,9 @@ textarea.cf-input-icon {
   stroke: var(--gold-light);
   stroke-linecap: round;
   filter: drop-shadow(0 0 4px rgba(255, 225, 150, .6));
-  animation: pack4RingTravel 6s linear infinite;
-}
-
-@keyframes pack4RingTravel {
-  to { stroke-dashoffset: calc(var(--pack4-ring-perimeter, 900) * -1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pack4-ring-rect { animation: none; }
+  /* Motion is driven frame-by-frame from JS (pack4RingTick in script.js),
+     not a CSS @keyframes animation -- see the comment above
+     layoutPack4Ring() in script.js for why. */
 }
 
 @media (hover: hover) and (pointer: fine) {
