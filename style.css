@@ -2825,7 +2825,7 @@ footer {
 
 @media(max-width:640px) {
   #checkout-page {
-    padding: calc(env(safe-area-inset-top, 0px) + 108px) 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
+    padding: 112px 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
   }
 }
 
@@ -2925,6 +2925,7 @@ footer {
 
   .pp-media {
     position: relative;
+    top: 0;
   }
 
   .pp-gallery {
@@ -3697,9 +3698,7 @@ footer {
 }
 
 .sm-icon-wa {
-  color: #25D366;
-  width: 25px;
-  height: 25px;
+  color: var(--emerald-deep);
 }
 
 .side-menu-item .icon {
