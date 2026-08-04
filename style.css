@@ -4606,7 +4606,7 @@ textarea.cf-input-icon {
 .pack4-banner-cta-arrow svg {
   width: 13px;
   height: 13px;
-  animation: pack4ArrowNudge 1.1s ease-in-out 4;
+  animation: pack4ArrowNudge 1.1s ease-in-out infinite;
 }
 
 @keyframes pack4ArrowNudge {
