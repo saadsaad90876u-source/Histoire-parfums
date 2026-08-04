@@ -152,23 +152,24 @@ document.documentElement.style.overflow = 'hidden';
     } catch (e) { audioCtx = null; }
   }
 
-  btn.addEventListener('click', function () {
+  var fired = false;
+  function handleEnter() {
+    if (fired) return;
+    fired = true;
+
     if (audioCtx && audioBuffer) {
       try {
-        // Some browsers keep the AudioContext suspended until a user
-        // gesture -- this click is that gesture, so resume() (if needed)
-        // then play immediately with zero scheduling delay.
-        var startNow = function () {
-          var src = audioCtx.createBufferSource();
-          src.buffer = audioBuffer;
-          src.connect(audioCtx.destination);
-          src.start(0);
-        };
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume().then(startNow);
-        } else {
-          startNow();
-        }
+        // Fire resume() and start() together instead of chaining
+        // (resume().then(startNow)) -- awaiting the promise before
+        // starting was the fraction-of-a-second delay: resume() takes
+        // real, measurable time on iOS. Calling both immediately lets
+        // the source begin playing the instant the context actually
+        // resumes, with no extra wait bolted on top.
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+        var src = audioCtx.createBufferSource();
+        src.buffer = audioBuffer;
+        src.connect(audioCtx.destination);
+        src.start(0);
       } catch (e) {}
     }
     screen.classList.add('ws-leaving');
@@ -184,7 +185,16 @@ document.documentElement.style.overflow = 'hidden';
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
-  });
+  }
+
+  // touchstart fires the instant a finger touches the screen -- "click"
+  // only fires after touchstart -> touchend on top of that, which is
+  // exactly the kind of small-but-real gap a person can feel as lag.
+  // Both listeners are kept (touchstart for touch devices, click for
+  // mouse/keyboard/assistive tech); the `fired` guard above stops the
+  // click that follows a touchstart from running everything twice.
+  btn.addEventListener('touchstart', handleEnter, { passive: true });
+  btn.addEventListener('click', handleEnter);
 })();
 </script>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
@@ -573,7 +583,7 @@ document.documentElement.style.overflow = 'hidden';
 <footer>
   <div class="container">
     <div class="footer-top">
-      <div class="footer-logo"><img src="/histoire-logo.webp" alt="HISTOIRE" class="footer-logo-img" width="769" height="445" loading="lazy" decoding="async"></div>
+      <div class="footer-logo"><img class="seq-lazy footer-logo-img" data-src="/histoire-logo.webp" alt="HISTOIRE" width="769" height="445" decoding="async"></div>
     </div>
 
     <div class="footer-links-grid">

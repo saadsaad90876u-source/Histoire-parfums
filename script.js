@@ -79,6 +79,67 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
   refreshScrollReveal();
 }
 
+// ---------- Sequential, page-order image loading ----------
+// The high-priority images (first product row, hero banner, pack4 card)
+// already load immediately/in parallel via loading="eager" -- that's
+// intentional, they're few and small, and the user should see something
+// right away. Every other image on the site ("seq-lazy") is deliberately
+// held back and fed into a strict one-at-a-time queue instead: image #2
+// doesn't start downloading until image #1 has finished, and so on, in
+// the exact order those images appear in the page. Without this, a fast
+// scroll (or several sections rendering at once) can fire off a dozen
+// lazy images in parallel, and they all fight over the same limited
+// mobile bandwidth -- so ironically the one a visitor is actually
+// looking at can end up slower, not faster. Feeding them through one at
+// a time in page order means whichever image comes first always finishes
+// first, instead of an unpredictable free-for-all.
+//
+// How an image opts in: instead of `src="url"`, give it
+// `class="seq-lazy" data-src="url"` (no `loading="lazy"` needed --  this
+// queue replaces that). A MutationObserver picks up every seq-lazy image
+// as soon as it's added to the page (covers dynamically-rendered content
+// like product cards, reviews, banners...) and an initial scan on load
+// covers anything already in the HTML (like the footer logo).
+const seqImageQueue = [];
+let seqImageLoading = false;
+
+function seqProcessQueue(){
+  if(seqImageLoading) return;
+  const next = seqImageQueue.shift();
+  if(!next) return;
+  const src = next.dataset.src;
+  if(!src){ seqProcessQueue(); return; }
+  seqImageLoading = true;
+  const finish = () => { seqImageLoading = false; seqProcessQueue(); };
+  next.addEventListener('load', finish, { once: true });
+  next.addEventListener('error', finish, { once: true });
+  next.removeAttribute('data-src');
+  next.src = src;
+}
+
+function seqEnqueueImages(root){
+  (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-queued])').forEach(img => {
+    img.setAttribute('data-seq-queued', '1');
+    seqImageQueue.push(img);
+  });
+  seqProcessQueue();
+}
+
+new MutationObserver((mutations) => {
+  for(const m of mutations){
+    for(const node of m.addedNodes){
+      if(node.nodeType !== 1) continue;
+      if(node.matches && node.matches('img.seq-lazy[data-src]')) seqEnqueueImages(node.parentNode || document);
+      else if(node.querySelector && node.querySelector('img.seq-lazy[data-src]')) seqEnqueueImages(node);
+    }
+  }
+}).observe(document.body, { childList: true, subtree: true });
+
+document.addEventListener('DOMContentLoaded', () => seqEnqueueImages());
+if(document.readyState === 'interactive' || document.readyState === 'complete'){
+  seqEnqueueImages();
+}
+
 
 let wishlist = [];
 let cart = [];
@@ -336,14 +397,26 @@ function productCoverImage(p){
   const idx = (typeof p.cover === 'number' && p.cover >= 0 && p.cover < imgs.length) ? p.cover : 0;
   return imgs[idx];
 }
-function productMedia(p){
+function productMedia(p, idx){
   const cover = productCoverImage(p);
   const fallback = `<div class="bottle mini-bottle" style="display:none;">
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
       </div>`;
+  // The first row of cards is always on-screen the instant the shop grid
+  // renders -- "lazy" loading was giving them the same low network
+  // priority as images far down the page the visitor may never scroll
+  // to, which is exactly backwards for cards that are never actually
+  // off-screen. Loading them eagerly with high priority lets the browser
+  // fetch them immediately instead of queuing them behind lower-priority
+  // work, so the real photo has the best chance of being ready by the
+  // time the welcome screen is dismissed.
+  const eager = typeof idx === 'number' && idx < 4;
+  const srcAttrs = eager
+    ? `src="${cover}" loading="eager" fetchpriority="high"`
+    : `class="seq-lazy" data-src="${cover}"`;
   return cover
-    ? `<img src="${cover}" alt="${p.name}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:0;" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">${fallback}`
+    ? `<img ${srcAttrs} alt="${p.name}" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:0;" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">${fallback}`
     : `<div class="bottle mini-bottle">
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
@@ -352,7 +425,7 @@ function productMedia(p){
 
 function productCard(pRaw, category, idx){
   const p = localizedProduct(pRaw);
-  const media = productMedia(p);
+  const media = productMedia(p, idx);
   const adminControls = isAdmin ? `
     <div class="admin-controls">
       <button class="admin-edit-btn" data-category="${category}" data-idx="${idx}" aria-label="Edit product">✎</button>
@@ -567,7 +640,7 @@ function renderCartDrawer(){
     const p = ref ? (ref.category === 'men' ? men : women)[ref.idx] : null;
     const cover = c.image || (p ? productCoverImage(p) : null);
     const thumb = cover
-      ? `<img src="${cover}" alt="${c.displayName || c.name}">`
+      ? `<img class="seq-lazy" data-src="${cover}" alt="${c.displayName || c.name}" decoding="async">`
       : `<div class="bottle mini-bottle" style="transform:scale(.5);"><div class="cap"></div><div class="neck"></div><div class="body" style="background:${p ? bottleColors[p.tone] : bottleColors.royal}"><div class="label">${p ? p.label : ''}</div></div></div>`;
     return `
     <div class="wishlist-item" data-name="${c.name}">
@@ -928,6 +1001,34 @@ const CATALOG_KEY = 'aura-catalog-v1';
 
 let storageAvailable = true;
 
+// A browser-local mirror of the last successfully loaded catalog (real
+// product photos included). Reading this is synchronous and instant --
+// no network round trip -- so on repeat visits we can paint real photos
+// immediately instead of the placeholder bottle shapes while Supabase is
+// still being contacted. Supabase remains the source of truth; this is
+// only ever used to avoid a blank/placeholder flash, and gets silently
+// refreshed every time a real fetch succeeds.
+const CATALOG_LOCAL_CACHE_KEY = 'histoire-catalog-cache-v1';
+
+function readCatalogLocalCache(){
+  try{
+    const raw = localStorage.getItem(CATALOG_LOCAL_CACHE_KEY);
+    if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(data && Array.isArray(data.men) && Array.isArray(data.women)) return data;
+  }catch(err){}
+  return null;
+}
+
+function writeCatalogLocalCache(data){
+  try{
+    localStorage.setItem(CATALOG_LOCAL_CACHE_KEY, JSON.stringify({ men: data.men, women: data.women }));
+  }catch(err){
+    // Storage full/unavailable (e.g. private browsing) -- non-critical,
+    // just means the next visit won't have an instant-paint cache.
+  }
+}
+
 function showToast(message){
   const t = document.getElementById('toast');
   t.textContent = message;
@@ -955,6 +1056,7 @@ async function saveCatalog(){
   }
   try{
     await kvSet(CATALOG_KEY, {men, women});
+    writeCatalogLocalCache({ men, women });
   }catch(err){
     storageAvailable = false;
     if(isAdmin) showToast(t('toastStorageUnavailable'));
@@ -970,17 +1072,29 @@ async function normalizeProductRatingsOnce(){
   women.forEach(p => { p.reviews = 360; p.rating = 4.9; });
   try{
     await kvSet(CATALOG_KEY, {men, women});
+    writeCatalogLocalCache({ men, women });
     await kvSet('reviews-normalized-v1', { done: true });
   }catch(err){}
 }
 
 async function loadCatalog(){
+  // Instant paint from last visit's real data (if any), synchronously,
+  // before Supabase has even been contacted -- this is what removes the
+  // placeholder-bottle flash on repeat visits.
+  const cached = readCatalogLocalCache();
+  if(cached){
+    men.length = 0; men.push(...cached.men);
+    women.length = 0; women.push(...cached.women);
+    renderShop(currentFilter, true);
+  }
+
   const fetchTask = (async () => {
     try{
       const data = await kvGet(CATALOG_KEY);
       if(data){
         if(Array.isArray(data.men)){ men.length = 0; men.push(...data.men); }
         if(Array.isArray(data.women)){ women.length = 0; women.push(...data.women); }
+        writeCatalogLocalCache({ men, women });
       } else if(storageAvailable){
         await kvSet(CATALOG_KEY, {men, women});
       }
@@ -1130,7 +1244,8 @@ const heroBannerCtrl = createBannerController({
   inputId: 'hero-banner-input',
   storageKey: 'aura-hero-banner',
   autoplay: true,
-  autoplayDelay: 6000
+  autoplayDelay: 6000,
+  priority: true
 });
 const bottomBannerCtrl = createBannerController({
   sectionId: 'bottom-banner',
@@ -1207,7 +1322,7 @@ function featuredProductCard(p, idx){
   return `<div class="featured-product-card reveal ${revealDelayClass}" data-idx="${idx}">
     <div class="featured-product-media">
       ${adminControls}
-      <img src="${p.image || ''}" alt="${p.name}">
+      <img class="seq-lazy" data-src="${p.image || ''}" alt="${p.name}" decoding="async">
     </div>
     <div class="featured-product-name">${p.name}</div>
     <div class="featured-product-price">${p.price} DH</div>
@@ -1610,7 +1725,7 @@ function reviewFormatDate(iso){
 }
 
 function testimonialCardHtml(r){
-  const img = r.image_url ? `<div class="testimonial-photo"><img src="${r.image_url}" alt="Photo de ${(r.customer_name || '').replace(/</g, '&lt;')}" loading="lazy"></div>` : '';
+  const img = r.image_url ? `<div class="testimonial-photo"><img class="seq-lazy" data-src="${r.image_url}" alt="Photo de ${(r.customer_name || '').replace(/</g, '&lt;')}"></div>` : '';
   return `
     <div class="testimonial-card">
       <div class="testimonial-quote-mark" aria-hidden="true">&ldquo;</div>
@@ -1625,7 +1740,7 @@ function testimonialCardHtml(r){
 
 /* ---------- per-product reviews (product page) ---------- */
 function ppReviewCardHtml(r){
-  const img = r.image_url ? `<div class="pp-review-photo"><img src="${r.image_url}" alt="" loading="lazy"></div>` : '';
+  const img = r.image_url ? `<div class="pp-review-photo"><img class="seq-lazy" data-src="${r.image_url}" alt=""></div>` : '';
   return `
     <div class="pp-review-card">
       <div class="ad-review-head">
@@ -2643,12 +2758,12 @@ function productPageTemplate(pRaw, category, idx){
     <div class="pp-gallery">
       ${backBtnHtml}
       <div class="pp-track" id="pp-track">
-        ${images.map((url, i) => `<div class="pp-slide"><img src="${url}" alt="${p.name}" loading="${i === 0 ? 'eager' : 'lazy'}"></div>`).join('')}
+        ${images.map((url, i) => `<div class="pp-slide"><img class="seq-lazy" data-src="${url}" alt="${p.name}"></div>`).join('')}
       </div>
       ${images.length > 1 ? `<div class="pp-dots">${images.map((_, i) => `<button type="button" class="pp-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : ''}
       ${images.length > 1 ? `<button type="button" class="pp-arrow prev" id="pp-prev" aria-label="Previous">‹</button><button type="button" class="pp-arrow next" id="pp-next" aria-label="Next">›</button>` : ''}
     </div>
-    ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img src="${url}" alt="${p.name} miniature ${i + 1}" loading="lazy"></button>`).join('')}</div>` : ''}` : `
+    ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
     <div class="pp-gallery pp-gallery-placeholder">
       ${backBtnHtml}
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
@@ -3128,7 +3243,8 @@ function createBannerController(cfg){
     inputId: cfg.inputId,
     autoplay: !!cfg.autoplay,
     autoplayDelay: cfg.autoplayDelay || 5000,
-    autoplayTimer: null
+    autoplayTimer: null,
+    priority: !!cfg.priority
   };
   // state.banners always reads/writes the array for the CURRENT category,
   // so all the existing logic below (push/splice/map/length) keeps working
@@ -3368,8 +3484,16 @@ function createBannerController(cfg){
                 // so marking it "high" tells the browser to pour bandwidth
                 // into it first — starving/delaying every product-card image
                 // on the page until the GIF finishes downloading.
-                const priorityAttr = (i === 0 && !isGifBanner) ? ' fetchpriority="high"' : '';
-                return `<img src="${b.url}" alt="HISTOIRE" loading="${i === 0 ? 'eager' : 'lazy'}"${priorityAttr}>`;
+                // Also only the hero banner (state.priority) gets this at
+                // all -- banners further down the page and the tracking-page
+                // banner are never the first thing visible, so they should
+                // never compete with the top banner / first product row for
+                // bandwidth. They stay lazy regardless of slide index.
+                const isPriorityEligible = state.priority && i === 0;
+                if(isPriorityEligible && !isGifBanner){
+                  return `<img src="${b.url}" alt="HISTOIRE" loading="eager" fetchpriority="high">`;
+                }
+                return `<img class="seq-lazy" data-src="${b.url}" alt="HISTOIRE">`;
               })()}
         </div>`;
 
