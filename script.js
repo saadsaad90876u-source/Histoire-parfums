@@ -1277,11 +1277,13 @@ bottomBannerCtrl2.load();
 // fetch — second priority on the page, ahead of the product grid.
 loadPack4BadgeImage();
 function renderHeroBanner(){ heroBannerCtrl.render(); bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
-// All homepage/tracking banners are now unified across Femme/Homme — none
-// of them switch content when the gender filter changes anymore. Each
-// controller simply keeps whatever category it loaded with at page start.
+// The top (hero) banner is shared/unified across Femme and Homme on
+// purpose — it never switches when the gender filter changes. The bottom
+// banners are the opposite: each gender keeps its own separate banner,
+// so switching the filter needs to actually swap their content back in.
 function setBannerCategory(cat){
-  // intentionally left empty
+  bottomBannerCtrl.setCategory(cat);
+  bottomBannerCtrl2.setCategory(cat);
 }
 
 const catalogReady = loadCatalog();
