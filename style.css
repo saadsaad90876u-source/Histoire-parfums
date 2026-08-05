@@ -81,7 +81,7 @@
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 42vh;
-  background: #14100E url('/welcome-bg.webp') center center / cover no-repeat;
+  background: #14100E url('/welcome-bg.webp?v=2') center center / cover no-repeat;
   overflow: hidden;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
