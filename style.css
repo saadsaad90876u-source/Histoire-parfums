@@ -80,20 +80,22 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 42vh;
-  background: #14100E url('/welcome-bg.webp?v=2') center center / cover no-repeat;
+  padding-bottom: 35vh;
+  background: #14100E url('/welcome-bg.webp') center center / cover no-repeat;
   overflow: hidden;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Light neutral scrim across the bottom third, just to keep the photo
-   from feeling too flat/bright there -- the glass card behind the
-   text/button now carries the real contrast job. */
+/* Warm oxblood tint over the source photo so its green cast reads as
+   part of the Maison Histoire palette instead of clashing with it. */
 #welcome-screen::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.28) 75%, rgba(0,0,0,.4) 100%);
+  background:
+    linear-gradient(180deg, rgba(20,16,14,.25) 0%, rgba(20,16,14,.7) 100%),
+    radial-gradient(circle at 60% 15%, rgba(166,135,74,.30) 0%, rgba(122,31,43,.28) 38%, rgba(20,16,14,.6) 72%);
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
@@ -101,6 +103,8 @@
   content: "";
   position: absolute;
   inset: 0;
+  background: rgba(78,17,25,.22);
+  mix-blend-mode: color;
   pointer-events: none;
 }
 
@@ -115,27 +119,21 @@
 }
 
 .ws-content {
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
   text-align: center;
-  padding: 24px 24px 40vh;
-  background: rgba(15,11,9,.58);
+  padding: 0 24px;
 }
 
 .ws-logo {
   width: clamp(150px, 34vw, 220px);
   height: auto;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   opacity: 0;
-  filter: drop-shadow(0 2px 14px rgba(0,0,0,.4));
-}
-
-.ws-content.is-ready .ws-logo {
+  filter: drop-shadow(0 2px 18px rgba(0,0,0,.45));
   animation: wsFadeIn 1.1s ease 0.2s forwards;
 }
 
@@ -145,13 +143,9 @@
   font-size: clamp(12px, 2.3vw, 15px);
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: #F4EEE4;
-  text-shadow: 0 1px 6px rgba(0,0,0,.5);
+  color: #C7A876;
   opacity: 0;
-  margin: 0 0 26px;
-}
-
-.ws-content.is-ready .ws-subtitle {
+  margin: 0 0 30px;
   animation: wsFadeIn 1.1s ease 0.55s forwards;
 }
 
@@ -159,24 +153,20 @@
   position: relative;
   overflow: hidden;
   font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.2em;
+  font-weight: 500;
+  font-size: 16.5px;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #241A0F;
-  background: linear-gradient(180deg, #E9CE97 0%, #C7A055 100%);
-  border: 1px solid #E9CE97;
+  color: #C7A876;
+  background: rgba(0,0,0,.18);
+  border: 1px solid #B99A63;
   border-radius: 999px;
-  width: clamp(150px, 36vw, 220px);
-  padding: 12px 14px;
+  width: clamp(193px, 47vw, 286px);
+  padding: 16px 17px;
   cursor: pointer;
   opacity: 0;
-  box-shadow: 0 3px 14px rgba(0,0,0,.35);
-  transition: background .35s ease, border-color .35s ease, transform .25s ease, letter-spacing .35s ease;
-}
-
-.ws-content.is-ready .ws-enter-btn {
   animation: wsFadeIn 1.1s ease 0.9s forwards;
+  transition: background .35s ease, border-color .35s ease, transform .25s ease, letter-spacing .35s ease;
 }
 
 /* Gold light sweep, plays once across the whole button (border included)
@@ -190,9 +180,9 @@
   inset: 0;
   background: linear-gradient(115deg,
     transparent 30%,
-    rgba(255,255,255,.15) 44%,
-    rgba(255,255,255,.55) 50%,
-    rgba(255,255,255,.15) 56%,
+    rgba(255,255,255,.10) 44%,
+    rgba(251,235,196,.65) 50%,
+    rgba(255,255,255,.10) 56%,
     transparent 70%);
   transform: translateX(-130%);
   animation: wsBtnSweep 1.6s ease 2.1s 1 forwards;
@@ -206,8 +196,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .ws-enter-btn:hover {
-    background: linear-gradient(180deg, #F2DCAA 0%, #D4AF64 100%);
-    border-color: #F2DCAA;
+    background: rgba(245,217,139,.14);
+    border-color: #D8C49B;
     letter-spacing: 0.3em;
   }
 }
@@ -2790,7 +2780,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 750 / 458;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
 }
@@ -2798,7 +2788,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 750 / 458;
+  aspect-ratio: 769 / 445;
   display: block;
   margin: 0 auto;
 }
