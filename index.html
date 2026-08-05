@@ -140,6 +140,7 @@ document.documentElement.style.overflow = 'hidden';
   // what was causing the fraction-of-a-second delay before.
   var audioCtx = null;
   var audioBuffer = null;
+  var wantsChime = false; // true once the user has actually tapped Enter
   var AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (AudioContextClass) {
     try {
@@ -147,30 +148,45 @@ document.documentElement.style.overflow = 'hidden';
       fetch('/welcome-chime.mp3')
         .then(function (res) { return res.arrayBuffer(); })
         .then(function (data) { return audioCtx.decodeAudioData(data); })
-        .then(function (buffer) { audioBuffer = buffer; })
+        .then(function (buffer) {
+          audioBuffer = buffer;
+          // Decoding can finish AFTER the tap if the network/device is
+          // slow. If the user already tapped Enter by then, play it now
+          // -- resume() was already called synchronously inside the tap
+          // (see handleEnter), so the context is already unlocked and
+          // starting a source here, slightly later, is still allowed.
+          if (wantsChime) playChime();
+        })
         .catch(function () {});
     } catch (e) { audioCtx = null; }
+  }
+
+  function playChime() {
+    if (!audioCtx || !audioBuffer) return;
+    try {
+      var src = audioCtx.createBufferSource();
+      src.buffer = audioBuffer;
+      src.connect(audioCtx.destination);
+      src.start(0);
+    } catch (e) {}
   }
 
   var fired = false;
   function handleEnter() {
     if (fired) return;
     fired = true;
+    wantsChime = true;
 
-    if (audioCtx && audioBuffer) {
-      try {
-        // Fire resume() and start() together instead of chaining
-        // (resume().then(startNow)) -- awaiting the promise before
-        // starting was the fraction-of-a-second delay: resume() takes
-        // real, measurable time on iOS. Calling both immediately lets
-        // the source begin playing the instant the context actually
-        // resumes, with no extra wait bolted on top.
-        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-        var src = audioCtx.createBufferSource();
-        src.buffer = audioBuffer;
-        src.connect(audioCtx.destination);
-        src.start(0);
-      } catch (e) {}
+    if (audioCtx) {
+      // This MUST run synchronously inside the tap/click handler -- iOS
+      // Safari only allows unlocking an AudioContext during the actual
+      // user gesture. Doing this unconditionally (even if the chime
+      // hasn't finished decoding yet) is what was missing before: the
+      // old code only called resume() once a buffer already existed,
+      // so on a quick tap the context never got unlocked at all and no
+      // later attempt to play it could work.
+      if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+      if (audioBuffer) playChime();
     }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
