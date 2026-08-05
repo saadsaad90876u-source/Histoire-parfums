@@ -2947,11 +2947,19 @@ function openProductPage(name, pushHistory, preserveQty){
   }
   currentProductPage = ref;
   if(!preserveQty) ppQty = 1;
-  renderProductPage();
   document.getElementById('shop-view').style.display = 'none';
   const coEl = document.getElementById('checkout-page');
   if(coEl) coEl.style.display = 'none';
+  // Make the product-page container visible BEFORE rendering its content
+  // and starting the scroll-reveal IntersectionObserver below. Observing
+  // ".reveal" elements while their container is still display:none gives
+  // them no layout box to measure, so anything already inside the initial
+  // viewport (like the price row) is wrongly treated as "not visible yet"
+  // -- some browsers (notably Safari) then only re-check intersection on
+  // an actual scroll/resize event, not automatically once display flips
+  // to block a moment later. Flipping display first avoids that entirely.
   document.getElementById('product-page').style.display = 'block';
+  renderProductPage();
   window.scrollTo({ top: 0, behavior: 'auto' });
   if(pushHistory !== false){
     try{ history.pushState({ ppName: name }, '', '/product/' + slugify(name)); }catch(err){}
