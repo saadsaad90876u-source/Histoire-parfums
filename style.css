@@ -115,18 +115,16 @@
 }
 
 .ws-content {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   text-align: center;
-  padding: 32px 28px 28px;
+  padding: 24px 24px 40vh;
   background: rgba(15,11,9,.58);
-  border-radius: 20px;
-  border: 1px solid rgba(199,168,118,.25);
-  box-shadow: 0 8px 32px rgba(0,0,0,.35);
-  max-width: 90vw;
 }
 
 .ws-logo {
