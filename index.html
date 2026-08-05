@@ -139,7 +139,17 @@ document.documentElement.style.overflow = 'hidden';
   var content = document.getElementById('ws-content');
   var img = document.getElementById('ws-logo-img');
   if (!content || !img) return;
-  function reveal() { content.classList.add('is-ready'); }
+  function reveal() {
+    // Force a layout flush before adding the class -- on some WebKit
+    // versions, a class-driven animation added purely from a JS
+    // callback (as opposed to being present at initial paint) can sit
+    // un-rendered until something else forces the compositor to
+    // re-evaluate the layer (e.g. a pinch-zoom). Reading offsetHeight
+    // forces that recalculation synchronously so the animation always
+    // starts painting right away.
+    void content.offsetHeight;
+    content.classList.add('is-ready');
+  }
   if (img.complete && img.naturalWidth > 0) {
     if (img.decode) { img.decode().then(reveal).catch(reveal); } else { reveal(); }
   } else {
