@@ -2160,6 +2160,18 @@ function setAdminUI(){
 document.getElementById('logo-link').addEventListener('click', (e) => {
   e.preventDefault();
   if(isAdmin) return;
+  // Previously this only scrolled to top -- it never actually closed
+  // whatever sub-page/modal was open (product page, checkout, the pack4
+  // modal, ...), so the URL was left pointing at e.g. /product/xxx even
+  // after the visitor was back looking at the home page. That stale URL
+  // is exactly what a refresh (or routeInitialLoad() below) then reads
+  // and reopens. Explicitly closing everything here keeps the URL and
+  // what's actually on screen in sync, the same way the browser's own
+  // back button already does via the popstate handler above.
+  closeTrackingModal(true); closeAboutModal(true); closeFounderModal(true);
+  closeSideMenu(true); closeProductPage(true); closeCheckoutPage(true);
+  closePack4Modal(true); closeAdminLoginModal(true); closeAdminDashboardPage(true);
+  try{ history.pushState({}, '', '/'); }catch(err){}
   try{ window.scrollTo({ top: 0, behavior: 'smooth' }); }catch(err){}
 });
 
