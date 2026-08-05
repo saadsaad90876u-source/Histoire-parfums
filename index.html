@@ -171,23 +171,32 @@ document.documentElement.style.overflow = 'hidden';
     } catch (e) {}
   }
 
+  // iOS/WebKit only grants "user activation" (required to unlock Web
+  // Audio) on a specific set of trusted events -- click, mouseup,
+  // touchend, some keydown presses -- and explicitly NOT on touchstart.
+  // Calling resume() from touchstart (as the previous version did)
+  // never actually unlocks audio on real iOS Safari/Chrome; it just
+  // fails silently, since no error is thrown and the state briefly
+  // *looks* like it changed. That's why the chime played inside
+  // Instagram's in-app browser (which doesn't enforce this the same
+  // way) but never in real Safari or Chrome on iPhone.
+  //
+  // So audio unlock has to be triggered by touchend/click specifically,
+  // kept separate from the screen transition below (which stays on
+  // touchstart for the instant, no-lag feel).
+  var unlocked = false;
+  function unlockAudio() {
+    if (unlocked || !audioCtx) return;
+    unlocked = true;
+    wantsChime = true;
+    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+    if (audioBuffer) playChime();
+  }
+
   var fired = false;
   function handleEnter() {
     if (fired) return;
     fired = true;
-    wantsChime = true;
-
-    if (audioCtx) {
-      // This MUST run synchronously inside the tap/click handler -- iOS
-      // Safari only allows unlocking an AudioContext during the actual
-      // user gesture. Doing this unconditionally (even if the chime
-      // hasn't finished decoding yet) is what was missing before: the
-      // old code only called resume() once a buffer already existed,
-      // so on a quick tap the context never got unlocked at all and no
-      // later attempt to play it could work.
-      if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-      if (audioBuffer) playChime();
-    }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
     // Remove from the DOM once the fade/slide-up transition finishes,
@@ -224,7 +233,16 @@ document.documentElement.style.overflow = 'hidden';
     e.preventDefault();
     handleEnter();
   }, { passive: false });
-  btn.addEventListener('click', handleEnter);
+  // touchend still fires normally even though touchstart called
+  // preventDefault() above (that only cancels the follow-up synthetic
+  // mouse/click events, not touchend itself) -- so this reliably fires
+  // right after touchstart on a normal tap, and is one of the events
+  // WebKit actually counts as user activation for unlocking audio.
+  btn.addEventListener('touchend', unlockAudio, { passive: true });
+  btn.addEventListener('click', function () {
+    unlockAudio();
+    handleEnter();
+  });
 })();
 </script>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
