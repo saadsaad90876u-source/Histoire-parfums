@@ -3005,12 +3005,16 @@ window.addEventListener('popstate', (e) => {
     });
     return;
   } else if(path === '/offre'){
-    history.replaceState({ pack4: true }, '', path);
-    window.addEventListener('DOMContentLoaded', () => openPack4Modal(false));
+    // Previously this auto-opened the pack offer on load whenever the
+    // browser's address bar still showed /offre from an earlier visit
+    // (pushState leaves that in the URL even after navigating away).
+    // The store should always land on the home page first, so we just
+    // clean the URL back to '/' instead of reopening the offer.
+    history.replaceState({}, '', '/');
     return;
   } else if(path === '/checkout'){
-    history.replaceState({ checkout: true }, '', path);
-    window.addEventListener('DOMContentLoaded', () => openCheckoutPage(false));
+    // Same reasoning as /offre above -- always land on home first.
+    history.replaceState({}, '', '/');
     return;
   }
 })();
