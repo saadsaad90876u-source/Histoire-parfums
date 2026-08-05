@@ -86,16 +86,10 @@
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Warm oxblood tint over the source photo so its green cast reads as
-   part of the Maison Histoire palette instead of clashing with it. */
 #welcome-screen::before {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(20,16,14,.25) 0%, rgba(20,16,14,.7) 100%),
-    radial-gradient(circle at 60% 15%, rgba(166,135,74,.30) 0%, rgba(122,31,43,.28) 38%, rgba(20,16,14,.6) 72%);
-  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
@@ -103,8 +97,6 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(78,17,25,.22);
-  mix-blend-mode: color;
   pointer-events: none;
 }
 
