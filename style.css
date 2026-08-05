@@ -80,16 +80,20 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 35vh;
+  padding-bottom: 42vh;
   background: #14100E url('/welcome-bg.webp') center center / cover no-repeat;
   overflow: hidden;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
+/* Neutral dark scrim behind the text/button only -- no color tint on
+   the photo itself, just a soft shadow so the gold text stays readable
+   wherever it sits on the image. */
 #welcome-screen::before {
   content: "";
   position: absolute;
   inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.45) 68%, rgba(0,0,0,.62) 100%);
   pointer-events: none;
 }
 
@@ -146,15 +150,15 @@
   overflow: hidden;
   font-family: 'Fraunces', serif;
   font-weight: 500;
-  font-size: 16.5px;
-  letter-spacing: 0.24em;
+  font-size: 14px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #C7A876;
   background: rgba(0,0,0,.18);
   border: 1px solid #B99A63;
   border-radius: 999px;
-  width: clamp(193px, 47vw, 286px);
-  padding: 16px 17px;
+  width: clamp(150px, 36vw, 220px);
+  padding: 11px 14px;
   cursor: pointer;
   opacity: 0;
   animation: wsFadeIn 1.1s ease 0.9s forwards;
