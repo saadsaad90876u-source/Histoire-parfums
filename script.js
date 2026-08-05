@@ -2429,7 +2429,7 @@ function openPack4Modal(pushHistory, preserveSelection, lockedGender){
   document.getElementById('pack4-modal').classList.add('open');
   document.getElementById('pack4-overlay').classList.add('open');
   if(pushHistory !== false){
-    try{ history.pushState({ pack4: true }, '', '/offre'); }catch(err){}
+    try{ history.pushState({ pack4: true }, '', '/pack-parfums'); }catch(err){}
   }
 }
 function closePack4Modal(fromPopstate){
@@ -3004,7 +3004,7 @@ window.addEventListener('popstate', (e) => {
       // simply stay on the home page — nothing to open.
     });
     return;
-  } else if(path === '/offre'){
+  } else if(path === '/pack-parfums' || path === '/offre'){
     // Previously this auto-opened the pack offer on load whenever the
     // browser's address bar still showed /offre from an earlier visit
     // (pushState leaves that in the URL even after navigating away).
