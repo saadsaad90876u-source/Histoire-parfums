@@ -122,12 +122,36 @@ document.documentElement.style.overflow = 'hidden';
 <body>
 <div id="welcome-screen">
   <div class="ws-glow"></div>
-  <div class="ws-content">
-    <img class="ws-logo" src="/histoire-logo.webp?v=4" alt="HISTOIRE" width="750" height="458">
+  <div class="ws-content" id="ws-content">
+    <img class="ws-logo" src="/histoire-logo.webp?v=4" alt="HISTOIRE" width="750" height="458" id="ws-logo-img">
     <p class="ws-subtitle">Explorez la Collection</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Entrer</span></button>
   </div>
 </div>
+<script>
+(function () {
+  // Only reveal the welcome-screen text/logo/button once the logo image
+  // has actually finished downloading AND decoding -- starting the
+  // fade-in before that can let the browser paint an incomplete/empty
+  // frame of the image for a moment (shows as a bare box), which then
+  // "pops" once the real pixels are ready. Waiting for decode() removes
+  // that flash entirely, on slow connections too.
+  var content = document.getElementById('ws-content');
+  var img = document.getElementById('ws-logo-img');
+  if (!content || !img) return;
+  function reveal() { content.classList.add('is-ready'); }
+  if (img.complete && img.naturalWidth > 0) {
+    if (img.decode) { img.decode().then(reveal).catch(reveal); } else { reveal(); }
+  } else {
+    img.addEventListener('load', function () {
+      if (img.decode) { img.decode().then(reveal).catch(reveal); } else { reveal(); }
+    });
+    img.addEventListener('error', reveal);
+  }
+  // Safety net in case none of the above fire for some reason.
+  setTimeout(reveal, 2500);
+})();
+</script>
 <script>
 (function () {
   var screen = document.getElementById('welcome-screen');
