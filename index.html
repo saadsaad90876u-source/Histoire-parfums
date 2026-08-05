@@ -79,7 +79,6 @@ document.documentElement.style.overflow = 'hidden';
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
 <link rel="preload" as="image" fetchpriority="high" href="/welcome-bg.webp">
-<link rel="preload" as="audio" href="/welcome-chime.mp3">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
 <link rel="stylesheet" href="/style.css?v=2" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
@@ -127,33 +126,12 @@ document.documentElement.style.overflow = 'hidden';
     <p class="ws-subtitle">Explorez la Collection</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Entrer</span></button>
   </div>
-  <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
 <script>
 (function () {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
-
-  // Plain <audio> element instead of the Web Audio API: on iOS,
-  // AudioContext.resume() carries its own real, measurable startup
-  // latency (this is a device/OS-level thing, separate from whether the
-  // file itself has finished downloading) -- that's what was causing the
-  // ~1s gap even after the sound file was already preloaded. A regular
-  // <audio> element's .play() doesn't go through that same "wake up the
-  // context" step, so it starts much closer to instantly when called
-  // directly inside the tap.
-  var chime = document.getElementById('ws-chime');
-  var unlocked = false;
-  function unlockAudio() {
-    if (unlocked || !chime) return;
-    unlocked = true;
-    try {
-      chime.currentTime = 0;
-      var p = chime.play();
-      if (p && p.catch) p.catch(function () {});
-    } catch (e) {}
-  }
 
   var fired = false;
   function handleEnter() {
@@ -195,16 +173,7 @@ document.documentElement.style.overflow = 'hidden';
     e.preventDefault();
     handleEnter();
   }, { passive: false });
-  // touchend still fires normally even though touchstart called
-  // preventDefault() above (that only cancels the follow-up synthetic
-  // mouse/click events, not touchend itself) -- so this reliably fires
-  // right after touchstart on a normal tap, and is one of the events
-  // WebKit actually counts as user activation for unlocking audio.
-  btn.addEventListener('touchend', unlockAudio, { passive: true });
-  btn.addEventListener('click', function () {
-    unlockAudio();
-    handleEnter();
-  });
+  btn.addEventListener('click', handleEnter);
 })();
 </script>
 <h1 class="sr-only">HISTOIRE — Parfums de Luxe pour Homme et Femme</h1>
