@@ -451,6 +451,12 @@ header {
   height: 22px;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .support-wrap {
   position: relative;
   margin-left: 10px;
