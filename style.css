@@ -421,7 +421,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 64px;
   padding: 0 24px;
   direction: ltr;
   overflow: hidden;
@@ -429,7 +429,7 @@ header {
 
 .logo {
   font-family: 'Fraunces',serif;
-  font-size: 24px;
+  font-size: 19px;
   letter-spacing: .3em;
   font-weight: 600;
   background: none;
@@ -538,7 +538,7 @@ header {
 
 
 #shop-view {
-  padding: 120px 0 0;
+  padding: 104px 0 0;
 }
 
 #bottom-banner {
@@ -651,8 +651,8 @@ header {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -661,10 +661,10 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
   z-index: 3;
-  opacity: 1;
+  opacity: .8;
   transition: opacity .25s ease, background .25s ease;
 }
 
@@ -678,6 +678,7 @@ header {
 
 .hb-arrow:hover {
   background: var(--emerald);
+  opacity: 1;
 }
 
 .hero-banner-placeholder svg {
@@ -2813,7 +2814,7 @@ footer {
 }
 
 #product-page {
-  padding: 112px 20px 60px;
+  padding: 96px 20px 60px;
   min-height: 100vh;
   background: var(--cream, #F4EEE4);
   color: var(--ink);
@@ -2868,7 +2869,7 @@ footer {
 
 @media(max-width:640px) {
   #checkout-page {
-    padding: 112px 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
+    padding: 96px 18px calc(env(safe-area-inset-bottom, 0px) + 40px);
   }
 }
 
@@ -3374,7 +3375,7 @@ footer {
 
 
   #shop-view {
-    padding: 110px 0 0;
+    padding: 94px 0 0;
   }
 
   .hero-banner-frame {
@@ -3438,7 +3439,7 @@ footer {
   }
 
   #product-page {
-    padding: 112px 12px 50px;
+    padding: 96px 12px 50px;
   }
 
   .pp-gallery {
