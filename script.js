@@ -728,6 +728,29 @@ function closeCartDrawer(){
 document.getElementById('cart-btn').addEventListener('click', openCartDrawer);
 document.getElementById('cart-close').addEventListener('click', closeCartDrawer);
 document.getElementById('cart-overlay').addEventListener('click', closeCartDrawer);
+
+// Tapping the "Pack Découverte" line inside the cart re-opens the 3-perfume
+// builder with the same 3 perfumes still selected, instead of doing nothing
+// (regular product rows in the cart are intentionally not clickable -- see
+// the early "#cart-items" return above -- but the pack is a multi-step
+// selection the visitor may want to revisit/edit, not a single product).
+// The names are re-parsed from the cart line itself (rather than trusting
+// whatever pack4Selection currently holds in memory) so this also works
+// correctly after a page reload, when the cart is restored from
+// localStorage but pack4Selection has reset to empty.
+document.getElementById('cart-items').addEventListener('click', (e) => {
+  if(e.target.closest('.wi-remove') || e.target.closest('.qty-stepper')) return;
+  const row = e.target.closest('.wishlist-item');
+  if(!row) return;
+  const c = cart.find(x => x.name === row.dataset.name);
+  if(!c || c.family !== t('pack4CartFamily')) return;
+  const prefix = t('pack4CartFamily') + ' — ';
+  const names = c.name.startsWith(prefix) ? c.name.slice(prefix.length).split(', ') : [];
+  pack4Selection = [names[0] || null, names[1] || null, names[2] || null];
+  pack4Qty = c.qty;
+  closeCartDrawer();
+  openPack4Modal(true, true);
+});
 document.getElementById('checkout-btn').addEventListener('click', () => {
   if(cart.length === 0) return;
   checkoutOverrideItems = null;
@@ -797,22 +820,7 @@ function closeCheckoutPage(fromPopstate){
     try{ history.pushState({}, '', '/'); }catch(err){}
   }
 }
-document.getElementById('checkout-modal-close').addEventListener('click', () => {
-  if(checkoutOrigin === 'pack4'){
-    checkoutOrigin = null;
-    closeCheckoutPage(true);
-    openPack4Modal(true, true);
-    return;
-  }
-  if(checkoutOrigin && checkoutOrigin.type === 'product' && checkoutOrigin.name){
-    const name = checkoutOrigin.name;
-    checkoutOrigin = null;
-    closeCheckoutPage(true);
-    openProductPage(name, true, true);
-    return;
-  }
-  closeCheckoutPage();
-});
+document.getElementById('checkout-modal-close').addEventListener('click', () => history.back());
 
 document.getElementById('coupon-apply-btn').addEventListener('click', async () => {
   const code = document.getElementById('coupon-input').value.trim();
@@ -2631,7 +2639,7 @@ function attachProductPageEvents(){
   }
 
   const backBtn = document.getElementById('pp-back');
-  if(backBtn) backBtn.addEventListener('click', () => closeProductPage());
+  if(backBtn) backBtn.addEventListener('click', () => history.back());
 
   const addCartBtn = document.getElementById('pp-add-cart');
   if(addCartBtn) addCartBtn.addEventListener('click', () => {
