@@ -3642,7 +3642,7 @@ footer {
 .side-menu-drawer .wd-header {
   background: var(--brand-green-gradient);
   border-bottom: none;
-  height: 80px;
+  height: 64px;
   padding: 0 24px;
   position: relative;
 }
@@ -3706,7 +3706,7 @@ footer {
 #cart-drawer .wd-header {
   background: var(--brand-green-gradient);
   border-bottom: none;
-  height: 80px;
+  height: 64px;
   padding: 0 24px;
   position: relative;
 }
