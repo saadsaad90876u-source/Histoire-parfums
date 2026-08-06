@@ -204,11 +204,36 @@ document.documentElement.style.overflow = 'hidden';
     <button type="button" id="menu-toggle-btn" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
+    <div class="support-wrap">
+      <button type="button" id="support-toggle-btn" aria-label="Service client" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v-1a8 8 0 0 1 16 0v1"/><path d="M2 15.5a2.5 2.5 0 0 1 2.5-2.5H6v6H4.5A2.5 2.5 0 0 1 2 16.5v-1z"/><path d="M22 15.5a2.5 2.5 0 0 0-2.5-2.5H18v6h1.5a2.5 2.5 0 0 0 2.5-2.5v-1z"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>
+      </button>
+    </div>
     <button type="button" class="logo logo-center" id="logo-link"><img src="/histoire-logo.webp" alt="HISTOIRE" class="logo-img" width="769" height="445"></button>
     <div class="nav-icons">
       <button aria-label="Search" id="search-btn"><svg class="icon"><use href="#i-search"></use></svg></button>
       <button aria-label="Cart" id="cart-btn"><svg class="icon"><use href="#i-bag"></use></svg><span class="cart-badge" id="cart-badge-count" style="display:none;">0</span></button>
     </div>
+  </div>
+  <div class="support-popover" id="support-popover">
+    <a href="https://wa.me/212712804966" target="_blank" rel="noopener" class="support-popover-item support-popover-wa">
+      <svg viewBox="0 0 24 24" style="width:19px;height:19px;fill:currentColor;"><path d="M12 2.1c-5.5 0-10 4.5-10 10 0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10s-4.5-9.8-10-9.8zm0 18.1c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3c-.9-1.4-1.4-3-1.4-4.7 0-4.6 3.8-8.4 8.4-8.4s8.3 3.7 8.3 8.4-3.7 8.5-8.2 8.5zm4.6-6.3c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8.9-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+    <a href="https://www.instagram.com/histoire.parfums?igsh=N3dsZjMweDNzNzRw&amp;utm_source=qr" target="_blank" rel="noopener" class="support-popover-item support-popover-ig">
+      <svg viewBox="0 0 24 24" style="width:19px;height:19px;">
+        <defs>
+          <linearGradient id="igGradientHeader" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFDD55"/>
+            <stop offset="35%" stop-color="#FF543E"/>
+            <stop offset="70%" stop-color="#C837AB"/>
+            <stop offset="100%" stop-color="#7000FF"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#igGradientHeader)" d="M12 2c-2.7 0-3.05.01-4.12.06-1.06.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.16-.56.55-.9 1.11-1.16 1.77-.25.64-.42 1.37-.47 2.43C2 8.95 2 9.3 2 12s.01 3.05.06 4.12c.05 1.06.22 1.79.47 2.43.26.66.6 1.22 1.16 1.77.55.56 1.11.9 1.77 1.16.64.25 1.37.42 2.43.47C8.95 22 9.3 22 12 22s3.05-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.16.56-.55.9-1.11 1.16-1.77.25-.64.42-1.37.47-2.43.05-1.07.06-1.42.06-4.12s-.01-3.05-.06-4.12c-.05-1.06-.22-1.79-.47-2.43-.26-.66-.6-1.22-1.16-1.77-.55-.56-1.11-.9-1.77-1.16-.64-.25-1.37-.42-2.43-.47C15.05 2.01 14.7 2 12 2zm0 1.8c2.65 0 2.97.01 4.02.06.97.04 1.5.2 1.85.34.46.18.79.39 1.14.74.35.35.56.68.74 1.14.14.35.3.88.34 1.85.05 1.05.06 1.37.06 4.02s-.01 2.97-.06 4.02c-.04.97-.2 1.5-.34 1.85-.18.46-.39.79-.74 1.14-.35.35-.68.56-1.14.74-.35.14-.88.3-1.85.34-1.05.05-1.37.06-4.02.06s-2.97-.01-4.02-.06c-.97-.04-1.5-.2-1.85-.34-.46-.18-.79-.39-1.14-.74-.35-.35-.56-.68-.74-1.14-.14-.35-.3-.88-.34-1.85-.05-1.05-.06-1.37-.06-4.02s.01-2.97.06-4.02c.04-.97.2-1.5.34-1.85.18-.46.39-.79.74-1.14.35-.35.68-.56 1.14-.74.35-.14.88-.3 1.85-.34C9.03 3.81 9.35 3.8 12 3.8zm0 3.06A5.14 5.14 0 1 0 12 17.14 5.14 5.14 0 0 0 12 6.86zm0 8.48a3.34 3.34 0 1 1 0-6.68 3.34 3.34 0 0 1 0 6.68zm5.34-8.68a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/>
+      </svg>
+      <span>Instagram</span>
+    </a>
   </div>
 </header>
 
@@ -903,7 +928,7 @@ document.documentElement.style.overflow = 'hidden';
     <div class="pack4-card">
       <div class="pack4-card-heading" data-i18n="pack4CardHeading">Composez votre pack</div>
       <div class="pack4-slots" id="pack4-slots"></div>
-      <div class="pack4-card-shipping" data-i18n="pack4CardShipping">Livraison gratuite.</div>
+      <div class="pack4-card-shipping"><svg class="pack4-shipping-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span data-i18n="pack4CardShipping">Livraison gratuite.</span></div>
     </div>
   </div>
 

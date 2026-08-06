@@ -451,6 +451,78 @@ header {
   height: 22px;
 }
 
+.support-wrap {
+  position: relative;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+#support-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F4EEE4;
+}
+
+#support-toggle-btn svg {
+  width: 21px;
+  height: 21px;
+}
+
+.support-popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #F4EEE4;
+  border-radius: 14px;
+  padding: 8px;
+  min-width: 172px;
+  box-shadow: 0 12px 30px -8px rgba(0,0,0,.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  z-index: 1200;
+}
+
+.support-popover.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.support-popover-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  color: var(--ink);
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+
+.support-popover-item:hover {
+  background: rgba(89,23,34,.08);
+}
+
+.support-popover-wa {
+  color: #25D366;
+}
+
+.support-popover-wa span {
+  color: var(--ink);
+}
+
 .logo span {
   color: var(--gold);
 }
@@ -4809,6 +4881,14 @@ textarea.cf-input-icon {
   font-size: 13.5px;
   color: #FBF8F2;
   margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pack4-shipping-icon {
+  flex-shrink: 0;
 }
 
 .pack4-slots {
