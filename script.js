@@ -1413,10 +1413,14 @@ document.getElementById('featured-form').addEventListener('submit', async (e) =>
     featuredProducts.push({ name, price, gender, image: newImage || '' });
   } else {
     const p = featuredProducts[idx];
+    const oldImage = p.image;
     p.name = name;
     p.price = price;
     p.gender = gender;
-    if(newImage) p.image = newImage;
+    if(newImage){
+      p.image = newImage;
+      if(oldImage && oldImage !== newImage) deleteStorageFile('product-images', oldImage);
+    }
   }
 
   await saveFeaturedProducts();
@@ -1439,9 +1443,11 @@ document.addEventListener('click', (e) => {
   if(delBtn){
     const idx = Number(delBtn.dataset.idx);
     askConfirm(t('deleteConfirmTemplate').replace('{name}', featuredProducts[idx].name), () => {
+      const removedImage = featuredProducts[idx].image;
       featuredProducts.splice(idx, 1);
       saveFeaturedProducts();
       renderFeaturedProducts();
+      if(removedImage) deleteStorageFile('product-images', removedImage);
     });
     return;
   }
@@ -4121,11 +4127,13 @@ document.getElementById('founder-photo-input').addEventListener('change', async 
   const file = e.target.files && e.target.files[0];
   e.target.value = '';
   if(!file) return;
+  const oldUrl = founderInfo.photoUrl;
   const url = await uploadProductImage(file);
   if(url){
     founderInfo.photoUrl = url;
     renderFounderInfo();
     await saveFounderInfo();
+    if(oldUrl && oldUrl !== url) deleteStorageFile('product-images', oldUrl);
     showToast('Photo mise à jour.');
   }
 });
