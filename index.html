@@ -707,6 +707,7 @@ document.documentElement.style.overflow = 'hidden';
   <p id="tracking-lookup-error" style="display:none; color:#c0392b; font-size:13px; margin-bottom:16px;" data-i18n="trackingNotFound">No order found with this number.</p>
   <p id="tracking-order-number" style="color:var(--text-soft); font-size:13px; margin-bottom:20px;"></p>
   <div id="tracking-timeline" class="tracking-timeline"></div>
+  <div id="tracking-cancel-wrap" style="display:none; margin-top:18px;"></div>
   <section id="tracking-banner" style="display:none; margin-top:24px;">
     <div class="hero-banner-frame" id="tracking-banner-frame">
       <div id="tracking-banner-content"></div>
@@ -1209,6 +1210,10 @@ document.documentElement.style.overflow = 'hidden';
           <button type="button" class="ad-print-selected-btn" id="ad-print-selected-btn" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
             Imprimer étiquettes sélectionnées (<span id="ad-print-selected-count">0</span>)
+          </button>
+          <button type="button" class="ad-delete-selected-btn" id="ad-delete-selected-btn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Supprimer sélection (<span id="ad-delete-selected-count">0</span>)
           </button>
         </div>
 

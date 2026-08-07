@@ -332,6 +332,13 @@ const translations = {
     trackingLookupBtn: "Suivre",
     trackingNotFound: "Aucune commande trouvée avec ce numéro.",
     trackingMineLabel: "Mes commandes précédentes",
+    trackingCancelBtn: "Annuler la commande",
+    trackingCancelConfirmMsg: "Voulez-vous vraiment annuler cette commande ? Cette action est irréversible.",
+    trackingCancelConfirmYes: "Oui, annuler",
+    trackingCancelConfirmNo: "Non, garder ma commande",
+    trackingCancelSuccess: "Votre commande a bien été annulée.",
+    trackingCancelError: "Impossible d'annuler la commande pour le moment. Contactez-nous sur WhatsApp.",
+    trackingCancelUnavailable: "Cette commande ne peut plus être annulée en ligne, elle est déjà en cours d'expédition ou de livraison. Contactez-nous sur WhatsApp.",
     editBannerBtn: "Modifier",
     freeShippingBar: "Livraison gratuite à partir de 195 DH",
     removeBannerBtn: "Supprimer",
@@ -341,6 +348,7 @@ const translations = {
     removeBannerConfirm: "Supprimer la bannière ? Cette action est irréversible.",
     deleteCustomerTemplate: 'Supprimer le client "{name}" ? Cette action est irréversible.',
     deleteOrderTemplate: 'Supprimer la commande de "{name}" ? Cette action est irréversible.',
+    deleteSelectedOrdersTemplate: 'Supprimer les {count} commandes sélectionnées ? Cette action est irréversible.',
     orderItemsLabel: "Articles"
   },
 };
@@ -1590,6 +1598,26 @@ async function fetchOrderByNumber(orderNumber){
     return data;
   }catch(err){
     return null;
+  }
+}
+
+// Lets a guest cancel their own order from the tracking screen, without the
+// "orders" table needing to be writable by the public. Mirrors the same
+// trust model already used by get_order_by_number above (knowing the exact
+// order number is treated as proof of ownership -- there's no login system
+// on this storefront). The matching `cancel_order_by_number` SQL function
+// (security definer) additionally refuses to cancel an order that's already
+// shipped/delivered/cancelled, so this can't be used to reopen or tamper
+// with an order past that point -- see cancel-order-function.sql.
+async function cancelOrderByNumber(orderNumber){
+  if(!supabaseClient) return false;
+  try{
+    const { data, error } = await supabaseClient
+      .rpc('cancel_order_by_number', { p_order_number: orderNumber });
+    if(error) throw error;
+    return data === true;
+  }catch(err){
+    return false;
   }
 }
 
@@ -3842,10 +3870,60 @@ function renderTrackingTimeline(status){
   }).join('');
 }
 
+function renderTrackingCancelArea(order, orderNumber){
+  const wrap = document.getElementById('tracking-cancel-wrap');
+  if(!wrap) return;
+  const cancellable = ['pending', 'confirmed', 'preparing'].includes(order.status);
+  if(!cancellable){
+    wrap.style.display = 'none';
+    wrap.innerHTML = '';
+    return;
+  }
+  wrap.style.display = 'block';
+  wrap.innerHTML = `
+    <button type="button" id="tracking-cancel-btn" class="tracking-cancel-btn">${t('trackingCancelBtn')}</button>
+    <div id="tracking-cancel-confirm" class="tracking-cancel-confirm" style="display:none;">
+      <p>${t('trackingCancelConfirmMsg')}</p>
+      <div class="tracking-cancel-confirm-actions">
+        <button type="button" id="tracking-cancel-confirm-no" class="tracking-cancel-confirm-no">${t('trackingCancelConfirmNo')}</button>
+        <button type="button" id="tracking-cancel-confirm-yes" class="tracking-cancel-confirm-yes">${t('trackingCancelConfirmYes')}</button>
+      </div>
+    </div>
+  `;
+  const btn = document.getElementById('tracking-cancel-btn');
+  const confirmBox = document.getElementById('tracking-cancel-confirm');
+  btn.addEventListener('click', () => {
+    // First tap only reveals the "are you sure?" step -- nothing is
+    // cancelled yet, so an accidental tap here costs nothing.
+    btn.style.display = 'none';
+    confirmBox.style.display = 'block';
+  });
+  document.getElementById('tracking-cancel-confirm-no').addEventListener('click', () => {
+    confirmBox.style.display = 'none';
+    btn.style.display = '';
+  });
+  document.getElementById('tracking-cancel-confirm-yes').addEventListener('click', async () => {
+    const yesBtn = document.getElementById('tracking-cancel-confirm-yes');
+    const noBtn = document.getElementById('tracking-cancel-confirm-no');
+    yesBtn.disabled = true;
+    noBtn.disabled = true;
+    const ok = await cancelOrderByNumber(orderNumber);
+    if(ok){
+      showToast(t('trackingCancelSuccess'));
+      lookupAndRenderOrder(orderNumber);
+    } else {
+      showToast(order.status === 'shipped' || order.status === 'delivered' ? t('trackingCancelUnavailable') : t('trackingCancelError'));
+      yesBtn.disabled = false;
+      noBtn.disabled = false;
+    }
+  });
+}
+
 async function lookupAndRenderOrder(orderNumber){
   const errorEl = document.getElementById('tracking-lookup-error');
   errorEl.style.display = 'none';
   document.getElementById('tracking-timeline').innerHTML = `<div class="skeleton" style="height:180px;"></div>`;
+  document.getElementById('tracking-cancel-wrap').style.display = 'none';
   const order = await fetchOrderByNumber(orderNumber);
   if(!order){
     document.getElementById('tracking-timeline').innerHTML = '';
@@ -3855,6 +3933,7 @@ async function lookupAndRenderOrder(orderNumber){
   }
   document.getElementById('tracking-order-number').textContent = 'Order #' + orderNumber;
   renderTrackingTimeline(order.status);
+  renderTrackingCancelArea(order, orderNumber);
 }
 
 function renderMyOrdersList(myOrders, activeOrderNumber){
@@ -4747,6 +4826,10 @@ function adUpdatePrintSelectedUI(){
   const countEl = document.getElementById('ad-print-selected-count');
   countEl.textContent = adSelectedOrderIds.size;
   btn.disabled = adSelectedOrderIds.size === 0;
+  const delBtn = document.getElementById('ad-delete-selected-btn');
+  const delCountEl = document.getElementById('ad-delete-selected-count');
+  delCountEl.textContent = adSelectedOrderIds.size;
+  delBtn.disabled = adSelectedOrderIds.size === 0;
   const visibleIds = adFilteredOrders().map(o => o.id);
   const allChecked = visibleIds.length > 0 && visibleIds.every(id => adSelectedOrderIds.has(id));
   document.getElementById('ad-orders-select-all').checked = allChecked;
@@ -4767,6 +4850,35 @@ document.getElementById('ad-orders-select-all').addEventListener('change', (e) =
   adUpdatePrintSelectedUI();
 });
 document.getElementById('ad-print-selected-btn').addEventListener('click', adPrintSelectedLabels);
+
+async function adDeleteSelectedOrders(){
+  const ids = Array.from(adSelectedOrderIds);
+  if(!ids.length) return;
+  askConfirm(t('deleteSelectedOrdersTemplate').replace('{count}', ids.length), async () => {
+    const btn = document.getElementById('ad-delete-selected-btn');
+    btn.disabled = true;
+    // Delete one by one (rather than a single bulk query) so a failure on
+    // one row -- e.g. a stale id, or a momentary network hiccup -- doesn't
+    // silently block the rest; whatever succeeds gets removed from view
+    // and whatever didn't stays selected so the admin can just retry.
+    const stillSelected = new Set();
+    for(const id of ids){
+      const ok = await deleteOrder(id);
+      if(ok){
+        customers = customers.filter(c => c.id !== id);
+        adSelectedOrderIds.delete(id);
+      } else {
+        stillSelected.add(id);
+      }
+    }
+    adSelectedOrderIds = stillSelected;
+    adRenderOrdersPage();
+    adRenderDashboardStats();
+    adUpdatePrintSelectedUI();
+    if(stillSelected.size) showToast(t('toastStorageUnavailable'));
+  });
+}
+document.getElementById('ad-delete-selected-btn').addEventListener('click', adDeleteSelectedOrders);
 
 /* ---------- notification sound ---------- */
 function adPlayNotifSound(){
