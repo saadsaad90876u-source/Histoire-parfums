@@ -157,20 +157,21 @@
   position: relative;
   overflow: hidden;
   font-family: 'Fraunces', serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16.5px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #C7A876;
-  background: rgba(0,0,0,.18);
-  border: 1px solid #B99A63;
+  color: #2E1608;
+  background: linear-gradient(155deg, #F0E0B8 0%, #D8C49B 30%, #B99A63 65%, #8A6D3A 100%);
+  border: none;
   border-radius: 999px;
   width: clamp(160px, 32vw, 224px);
-  padding: 12px 17px;
+  padding: 13px 17px;
   cursor: pointer;
   opacity: 0;
+  box-shadow: 0 12px 26px -10px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.55);
   animation: wsFadeIn 1.1s ease 0.9s forwards;
-  transition: background .35s ease, border-color .35s ease, transform .25s ease, letter-spacing .35s ease;
+  transition: box-shadow .35s ease, transform .25s ease, letter-spacing .35s ease, filter .35s ease;
 }
 
 /* Gold light sweep, plays once across the whole button (border included)
@@ -184,9 +185,9 @@
   inset: 0;
   background: linear-gradient(115deg,
     transparent 30%,
-    rgba(255,255,255,.10) 44%,
-    rgba(251,235,196,.65) 50%,
-    rgba(255,255,255,.10) 56%,
+    rgba(255,255,255,.15) 44%,
+    rgba(255,255,255,.85) 50%,
+    rgba(255,255,255,.15) 56%,
     transparent 70%);
   transform: translateX(-130%);
   animation: wsBtnSweep 1.6s ease 2.1s 1 forwards;
@@ -200,9 +201,10 @@
 
 @media (hover: hover) and (pointer: fine) {
   .ws-enter-btn:hover {
-    background: rgba(245,217,139,.14);
-    border-color: #D8C49B;
+    filter: brightness(1.08);
     letter-spacing: 0.3em;
+    box-shadow: 0 16px 32px -10px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.6);
+    transform: translateY(-1px);
   }
 }
 
