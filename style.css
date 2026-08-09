@@ -118,6 +118,24 @@
   pointer-events: none;
 }
 
+/* Same light-sweep effect as the Entrer button's ::after (see
+   .ws-enter-btn::after below), but scaled up to travel across the whole
+   splash screen once, behind the logo/text/button. */
+.ws-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 42%,
+    rgba(255,255,255,.05) 47%,
+    rgba(255,255,255,.22) 50%,
+    rgba(255,255,255,.05) 53%,
+    transparent 58%);
+  transform: translateX(-130%);
+  will-change: transform;
+  animation: wsBtnSweep 2.2s ease 1.6s 1 forwards;
+  pointer-events: none;
+}
+
 .ws-content {
   position: relative;
   z-index: 1;
@@ -233,6 +251,10 @@
     opacity: 1;
   }
   .ws-enter-btn::after {
+    animation: none;
+    display: none;
+  }
+  .ws-sheen {
     animation: none;
     display: none;
   }
