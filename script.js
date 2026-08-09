@@ -1093,6 +1093,36 @@ async function normalizeProductRatingsOnce(){
   }catch(err){}
 }
 
+// Every product previously got the exact same 4.9 rating (see
+// normalizeProductRatingsOnce above) -- identical ratings across an
+// entire catalog reads as fake to a careful shopper rather than
+// reassuring. This spreads them out a bit instead, staying within
+// 4.5-5.0 so nothing ever looks anything less than excellent. The rating
+// is derived deterministically from the product's name (a simple hash)
+// rather than Math.random(), so it stays the same on every reload/visit
+// instead of visibly changing each time -- a rating that flickers
+// between visits would look even more obviously fake than a uniform one.
+function seededRatingFromName(name){
+  let hash = 0;
+  for(let i = 0; i < name.length; i++){ hash = (hash * 31 + name.charCodeAt(i)) >>> 0; }
+  const step = hash % 6; // 0..5 -> 4.5, 4.6, 4.7, 4.8, 4.9, 5.0
+  return Math.round((4.5 + step / 10) * 10) / 10;
+}
+
+async function varyProductRatingsOnce(){
+  try{
+    const flag = await kvGet('reviews-varied-v1');
+    if(flag) return;
+  }catch(err){ return; }
+  men.forEach(p => { p.rating = seededRatingFromName(p.name); });
+  women.forEach(p => { p.rating = seededRatingFromName(p.name); });
+  try{
+    await kvSet(CATALOG_KEY, {men, women});
+    writeCatalogLocalCache({ men, women });
+    await kvSet('reviews-varied-v1', { done: true });
+  }catch(err){}
+}
+
 async function loadCatalog(){
   // Instant paint from last visit's real data (if any), synchronously,
   // before Supabase has even been contacted -- this is what removes the
@@ -1115,6 +1145,7 @@ async function loadCatalog(){
         await kvSet(CATALOG_KEY, {men, women});
       }
       await normalizeProductRatingsOnce();
+      await varyProductRatingsOnce();
     }catch(err){
       storageAvailable = false;
     }
@@ -3122,10 +3153,17 @@ document.addEventListener('touchstart', (e) => {
   const stage = card && card.querySelector('.pc-stage');
   if(!stage) return;
   stage.classList.remove('pc-shine-active');
-  // Force a reflow so re-adding the class restarts the CSS animation
-  // even if the previous sweep hadn't finished yet.
-  void stage.offsetWidth;
-  stage.classList.add('pc-shine-active');
+  // Restart the CSS animation via requestAnimationFrame instead of a
+  // synchronous "read offsetWidth to force reflow" trick. That forced
+  // layout used to run synchronously inside the touchstart handler --
+  // right at the exact moment iOS Safari decides whether this touch is
+  // the start of a scroll gesture -- and could make the page stutter or
+  // briefly freeze when a finger simply brushed a card while starting to
+  // scroll (not tapping it). requestAnimationFrame defers the reflow to
+  // the next paint instead, so it never blocks the scroll gesture itself.
+  requestAnimationFrame(() => {
+    stage.classList.add('pc-shine-active');
+  });
 }, { passive: true });
 
 document.addEventListener('animationend', (e) => {
@@ -3818,6 +3856,7 @@ function openAdminModal(mode, category, idx){
   document.getElementById('admin-idx').value = (idx === undefined || idx === null) ? '' : idx;
   document.getElementById('admin-cat-select').value = category || 'men';
   document.getElementById('admin-pinned').checked = false;
+  document.getElementById('admin-rating').value = '';
 
   if(mode === 'edit'){
     const list = category === 'men' ? men : women;
@@ -3826,6 +3865,7 @@ function openAdminModal(mode, category, idx){
     document.getElementById('admin-name').value = p.name;
     document.getElementById('admin-desc').value = p.desc;
     document.getElementById('admin-price').value = p.price;
+    document.getElementById('admin-rating').value = (typeof p.rating === 'number') ? p.rating : '';
     document.getElementById('admin-family').value = p.family || '';
     document.getElementById('admin-size').value = p.size || '';
     document.getElementById('admin-notes-top').value = p.notesTop || '';
@@ -5197,6 +5237,8 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
   const name = document.getElementById('admin-name').value.trim();
   const desc = document.getElementById('admin-desc').value.trim();
   const price = Number(document.getElementById('admin-price').value);
+  const ratingInputRaw = document.getElementById('admin-rating').value;
+  const ratingInput = ratingInputRaw === '' ? null : Math.round(Math.max(4, Math.min(5, Number(ratingInputRaw))) * 10) / 10;
   const familyInput = document.getElementById('admin-family').value.trim();
   const sizeInput = document.getElementById('admin-size').value.trim();
   const notesTop = document.getElementById('admin-notes-top').value.trim();
@@ -5212,7 +5254,7 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
     list.push({
       name, desc, price,
       family: familyInput || (newCategory === 'men' ? "Homme · Nouveau" : "Femme · Nouveau"),
-      reviews: 360, rating: 4.9, tone: 'royal', label: name.split(' ').slice(-1)[0].toUpperCase(),
+      reviews: 360, rating: (ratingInput !== null ? ratingInput : seededRatingFromName(name)), tone: 'royal', label: name.split(' ').slice(-1)[0].toUpperCase(),
       size: sizeInput || '100ml · EDP',
       notesTop, notesHeart, notesBase,
       images: newImage ? [newImage] : [],
@@ -5231,6 +5273,7 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
     product.notesHeart = notesHeart;
     product.notesBase = notesBase;
     product.pinned = pinned;
+    if(ratingInput !== null) product.rating = ratingInput;
     if(newImage){
       const imgs = productImages(product);
       imgs.unshift(newImage);

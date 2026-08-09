@@ -25,10 +25,33 @@ svg:not([width]) { width: 1em; height: 1em; }
   background: #0a1c12 url('/welcome-bg.webp') center center / cover no-repeat;
   overflow: hidden;
 }
+/* Repeat visits within the same tab/session skip the splash entirely --
+   see the sessionStorage check in the script right below, which adds
+   this class to <html> before the browser paints anything. Setting
+   display:none here (rather than in script.js, which loads much later)
+   is what prevents any flash of the splash screen on repeat page loads. */
+.ws-skip #welcome-screen { display: none !important; }
 </style>
 <script>
-// Prevent the page behind the welcome screen from scrolling while it's up.
-document.documentElement.style.overflow = 'hidden';
+// Show the splash once per browser tab/session, not on every single page
+// load -- most visitors arrive from Instagram links and may open the
+// site several times in the same session, and re-watching the same
+// intro animation every time is just friction, not a feature. Closing
+// the tab (or the in-app browser) and coming back later starts a new
+// session, so it still greets first-time-this-session visitors as
+// before. This must run synchronously, before <body> (and therefore
+// #welcome-screen) is even parsed, or it would flash on for a frame and
+// then disappear instead of never appearing at all.
+try {
+  if (sessionStorage.getItem('wsShown') === '1') {
+    document.documentElement.classList.add('ws-skip');
+  } else {
+    document.documentElement.style.overflow = 'hidden';
+  }
+} catch (e) {
+  document.documentElement.style.overflow = 'hidden';
+}
+
 // Improves LCP: the hero banner image is admin-managed content fetched
 // from Supabase at runtime, so it can't be hardcoded into the static
 // HTML. But the banner controller already caches the last-seen banner
@@ -138,6 +161,7 @@ document.documentElement.style.overflow = 'hidden';
   function handleEnter() {
     if (fired) return;
     fired = true;
+    try { sessionStorage.setItem('wsShown', '1'); } catch (e) {}
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
     // Remove from the DOM once the fade/slide-up transition finishes,
@@ -282,7 +306,7 @@ document.documentElement.style.overflow = 'hidden';
             <span class="pack4-price-old">225 DH</span>
           </div>
         </div>
-        <div class="pack4-banner-savings" data-i18n="pack4BannerShipping">Livraison gratuite</div>
+        <div class="pack4-banner-savings"><svg class="pack4-shipping-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span data-i18n="pack4BannerShipping">Livraison gratuite</span></div>
         <div class="pack4-banner-cta" id="pack4-banner-cta">
           <span data-i18n="pack4BannerCta">Composer mon pack</span>
           <span class="pack4-banner-cta-arrow">
@@ -1025,6 +1049,9 @@ document.documentElement.style.overflow = 'hidden';
     </label>
     <label class="cf-label"><span data-i18n="priceLabel">Price (DH)</span>
       <input type="number" id="admin-price" class="cf-input" min="1" required>
+    </label>
+    <label class="cf-label"><span>Note (4.0 – 5.0)</span>
+      <input type="number" id="admin-rating" class="cf-input" min="4" max="5" step="0.1" placeholder="4.9">
     </label>
     <label class="cf-label"><span data-i18n="familyLabel">Category line (e.g. Homme · Aromatique)</span>
       <input type="text" id="admin-family" class="cf-input" placeholder="Homme · Aromatique">
