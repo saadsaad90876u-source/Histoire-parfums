@@ -160,22 +160,56 @@ try {
   if (!screen || !btn) return;
 
   var fired = false;
-  // Plain <audio> element rather than the Web Audio API: on iOS,
-  // AudioContext.resume() carries its own real, measurable startup
-  // latency that's independent of whether the file itself has finished
-  // downloading -- a plain <audio>.play() called directly inside the tap
-  // doesn't go through that "wake up the context" step, so it starts
-  // much closer to instantly.
   var chime = document.getElementById('ws-chime');
   var unlocked = false;
+
+  // The <audio>.play() approach still has a real, felt cold-start delay
+  // on first playback (roughly the ~1s that was reported): even with
+  // preload="auto" the file has finished *downloading*, but the browser
+  // hasn't necessarily finished *decoding* the mp3 or spinning up its
+  // audio output pipeline yet, and both of those happen only once play()
+  // is actually called. Web Audio fixes this by doing the expensive part
+  // (fetch + decode into raw PCM) ahead of time, on page load, while the
+  // welcome screen is just sitting there -- so by the time the finger
+  // actually touches the button, all that's left to do is hand an
+  // already-decoded buffer to the sound card, which is effectively
+  // instant. The AudioContext is created immediately too (in 'suspended'
+  // state); creating it doesn't require a user gesture, only resuming it
+  // does, so that cost is paid up front as well.
+  var AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var audioCtx = AudioCtx ? new AudioCtx() : null;
+  var audioBuffer = null;
+  if (audioCtx && chime) {
+    fetch(chime.currentSrc || chime.src)
+      .then(function (r) { return r.arrayBuffer(); })
+      .then(function (data) { return audioCtx.decodeAudioData(data); })
+      .then(function (buf) { audioBuffer = buf; })
+      .catch(function () {});
+  }
+
   function unlockAudio() {
-    if (unlocked || !chime) return;
+    if (unlocked) return;
     unlocked = true;
-    try {
-      chime.currentTime = 0;
-      var p = chime.play();
-      if (p && p.catch) p.catch(function () {});
-    } catch (e) {}
+    // Fast path: buffer already decoded -> near-instant playback.
+    if (audioCtx && audioBuffer) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var src = audioCtx.createBufferSource();
+        src.buffer = audioBuffer;
+        src.connect(audioCtx.destination);
+        src.start(0);
+        return;
+      } catch (e) {}
+    }
+    // Fallback: decode wasn't ready yet (slow connection) or Web Audio
+    // isn't supported -- use the plain <audio> element instead.
+    if (chime) {
+      try {
+        chime.currentTime = 0;
+        var p = chime.play();
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+    }
   }
 
   function handleEnter() {
@@ -204,6 +238,14 @@ try {
   // mouse/keyboard/assistive tech); the `fired` guard above stops the
   // click that follows a touchstart from running everything twice.
   //
+  // Audio is fired FIRST, synchronously, as the very first line of the
+  // touchstart handler -- before preventDefault() and before
+  // handleEnter() -- so the sound is tied to the moment the finger lands,
+  // not to any animation or navigation that happens afterwards. Modern
+  // WebKit/iOS Safari does grant user-activation on touchstart itself
+  // (not just touchend/click) as long as .play() is called synchronously
+  // inside the handler, which is exactly what unlockAudio() does.
+  //
   // preventDefault() on touchstart (passive:false, not passive:true) is
   // required here: handleEnter() immediately adds "ws-leaving", which
   // sets pointer-events:none on the whole overlay right away so the shop
@@ -215,17 +257,14 @@ try {
   // unintentionally. Calling preventDefault() on touchstart tells the
   // browser not to synthesize that follow-up mouse/click sequence at all.
   btn.addEventListener('touchstart', function (e) {
+    unlockAudio();
     e.preventDefault();
     handleEnter();
   }, { passive: false });
-  // iOS/WebKit only grants "user activation" (required to unlock audio
-  // playback) on specific trusted events -- click, mouseup, touchend,
-  // some keydown presses -- and explicitly NOT on touchstart. touchend
-  // still fires normally here even though touchstart called
-  // preventDefault() above (that only cancels the follow-up synthetic
-  // mouse/click events, not touchend itself), so this reliably fires
-  // right after touchstart on a normal tap.
-  btn.addEventListener('touchend', unlockAudio, { passive: true });
+  // click covers mouse/keyboard/assistive-tech activation (desktop, or any
+  // touch device where touchstart didn't fire for some reason). The
+  // `unlocked` guard inside unlockAudio() stops this from re-triggering
+  // the sound after a touch interaction already played it.
   btn.addEventListener('click', function () {
     unlockAudio();
     handleEnter();
