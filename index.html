@@ -102,7 +102,7 @@ try {
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
 <link rel="preload" as="image" fetchpriority="high" href="/welcome-bg.webp">
-<link rel="preload" as="audio" href="/welcome-chime.mp3">
+<link rel="preload" as="fetch" href="/welcome-chime.mp3" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
 <link rel="stylesheet" href="/style.css?v=2" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
@@ -151,13 +151,21 @@ try {
     <p class="ws-subtitle">Explorez la Collection</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Entrer</span></button>
   </div>
-  <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
+  <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
 </div>
 <script>
 (function () {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
+  // Repeat visits within the same session hide #welcome-screen via CSS
+  // (see .ws-skip in the <style> above) but leave it in the DOM -- so
+  // without this check, every single page load in the session would
+  // still create an AudioContext and download+decode the chime for a
+  // button that will never be shown or touched. Bail out immediately.
+  try {
+    if (sessionStorage.getItem('wsShown') === '1') return;
+  } catch (e) {}
 
   var fired = false;
   var chime = document.getElementById('ws-chime');
@@ -190,26 +198,37 @@ try {
   function unlockAudio() {
     if (unlocked) return;
     unlocked = true;
-    // Fast path: buffer already decoded -> near-instant playback.
-    if (audioCtx && audioBuffer) {
-      try {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        var src = audioCtx.createBufferSource();
-        src.buffer = audioBuffer;
-        src.connect(audioCtx.destination);
-        src.start(0);
-        return;
-      } catch (e) {}
-    }
-    // Fallback: decode wasn't ready yet (slow connection) or Web Audio
-    // isn't supported -- use the plain <audio> element instead.
-    if (chime) {
+    function fallbackToAudioElement() {
+      if (!chime) return;
       try {
         chime.currentTime = 0;
         var p = chime.play();
         if (p && p.catch) p.catch(function () {});
       } catch (e) {}
     }
+    // Fast path: buffer already decoded -> near-instant playback.
+    if (audioCtx && audioBuffer) {
+      try {
+        var src = audioCtx.createBufferSource();
+        src.buffer = audioBuffer;
+        src.connect(audioCtx.destination);
+        if (audioCtx.state === 'suspended') {
+          // resume() is async and can, rarely, be rejected by the
+          // browser -- without catching that, the sound would just
+          // silently never play with no fallback engaged. Falling back
+          // to the plain <audio> element here is safe even though
+          // src.start(0) below has already been scheduled: a suspended
+          // context never advances its clock, so that scheduled source
+          // simply never produces sound if resume() never succeeds.
+          audioCtx.resume().catch(fallbackToAudioElement);
+        }
+        src.start(0);
+        return;
+      } catch (e) {}
+    }
+    // Fallback: decode wasn't ready yet (slow connection) or Web Audio
+    // isn't supported -- use the plain <audio> element instead.
+    fallbackToAudioElement();
   }
 
   function handleEnter() {
@@ -495,6 +514,29 @@ try {
         <div class="contact-card-icon contact-card-icon-ig"><svg viewBox="0 0 24 24" style="width:18px;height:18px;" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="#fff" stroke="none"/></svg></div>
         <h3>Instagram</h3>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="lux-section" id="trust-section">
+  <div class="container">
+    <div class="pp-trust-grid pp-trust-grid-standalone">
+      <div class="pp-trust-item reveal d1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+        <div><strong data-i18n="trustDeliveryTitle">Livraison 1-4j</strong><span data-i18n="trustDeliverySub">Partout au Maroc</span></div>
+      </div>
+      <div class="pp-trust-item reveal d2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/></svg>
+        <div><strong data-i18n="trustCertifiedTitle">Qualité certifiée</strong><span data-i18n="trustCertifiedSub">Parfums de qualité</span></div>
+      </div>
+      <div class="pp-trust-item reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        <div><strong data-i18n="trustPaymentTitle">Paiement</strong><span data-i18n="trustPaymentSub">À la livraison</span></div>
+      </div>
+      <div class="pp-trust-item reveal d4">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-10-9.2C.5 7.8 2.5 4 6.5 4c2.3 0 4 1.3 5.5 3.3C13.5 5.3 15.2 4 17.5 4c4 0 6 3.8 4.5 7.3-2.5 4.6-10 9.2-10 9.2z"/></svg>
+        <div><strong data-i18n="trustSupportTitle">Service client</strong><span data-i18n="trustSupportSub">À votre écoute</span></div>
+      </div>
     </div>
   </div>
 </section>

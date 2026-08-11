@@ -280,6 +280,7 @@ const translations = {
     noOrdersFound: "Aucune commande trouvée.",
     loadingText: "Chargement...",
     toastImageUploadFailed: "Échec de l'envoi de l'image — une version compressée sera utilisée à la place.",
+    toastLargeAnimatedImage: "Image animée volumineuse envoyée telle quelle (non compressée) pour préserver l'animation.",
     qtyLabel: "Qté",
     orderSummaryTitle: "Résumé de la commande",
     deliveryFee: "Frais de livraison",
@@ -851,7 +852,7 @@ document.getElementById('coupon-apply-btn').addEventListener('click', async () =
 });
 
 function isValidMoroccanPhone(phone){
-  const digits = phone.replace(/\s+/g, '');
+  const digits = phone.replace(/[\s\-.()]+/g, '');
   return /^(\+212|0)([5-7]\d{8})$/.test(digits);
 }
 
@@ -3216,6 +3217,44 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
 async function uploadProductImage(file, opts){
   if(!file) return null;
   const preserveTransparency = !!(opts && opts.transparent);
+  // GIF and WebP are the two formats a browser will actually animate
+  // inside a plain <img> tag (used for the big product photo). Canvas
+  // has no concept of animation though -- compressImageToBlob() below
+  // draws a single frame onto a <canvas> and re-encodes *that*, so
+  // running an animated file through it would silently flatten it down
+  // to one still frame. Detect that case up front and skip compression
+  // entirely for it: the original animated bytes are uploaded as-is, so
+  // the animation survives. (A *static* GIF/WebP loses the resize step
+  // this way too -- there's no way to tell the two apart without fully
+  // parsing the file for multiple frames -- but that only costs a bit of
+  // extra bandwidth on a still image, versus silently breaking every
+  // animated one, which is the far worse failure mode here.)
+  const isGifOrWebp = /^image\/(gif|webp)$/i.test(file.type || '') || /\.(gif|webp)$/i.test(file.name || '');
+  if(isGifOrWebp){
+    // Large GIFs in particular can be several MB -- warn the admin so an
+    // unexpectedly slow page load doesn't look like a bug later.
+    if(file.size > 6 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
+    const contentType = /^image\/gif$/i.test(file.type || '') || /\.gif$/i.test(file.name || '') ? 'image/gif' : 'image/webp';
+    const ext = contentType === 'image/gif' ? 'gif' : 'webp';
+    if(supabaseClient){
+      try{
+        const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error } = await supabaseClient.storage
+          .from('product-images')
+          .upload(filename, file, { contentType, upsert: true, cacheControl: '31536000' });
+        if(error) throw error;
+        const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
+        return data.publicUrl;
+      }catch(err){
+        if(isAdmin) showToast(t('toastImageUploadFailed'));
+      }
+    }
+    return new Promise((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.readAsDataURL(file);
+    });
+  }
   // Some OS file pickers report a generic/blank MIME type for .avif, so
   // fall back to checking the filename extension too (same detection used
   // for the banner uploads).
