@@ -79,27 +79,29 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
   refreshScrollReveal();
 }
 
-// ---------- Sequential, page-order image loading ----------
+// ---------- Sequential, viewport-gated image loading ----------
 // The high-priority images (first product row, hero banner, pack4 card)
 // already load immediately/in parallel via loading="eager" -- that's
 // intentional, they're few and small, and the user should see something
-// right away. Every other image on the site ("seq-lazy") is deliberately
-// held back and fed into a strict one-at-a-time queue instead: image #2
-// doesn't start downloading until image #1 has finished, and so on, in
-// the exact order those images appear in the page. Without this, a fast
-// scroll (or several sections rendering at once) can fire off a dozen
-// lazy images in parallel, and they all fight over the same limited
-// mobile bandwidth -- so ironically the one a visitor is actually
-// looking at can end up slower, not faster. Feeding them through one at
-// a time in page order means whichever image comes first always finishes
-// first, instead of an unpredictable free-for-all.
+// right away. Every other image on the site ("seq-lazy") only starts
+// downloading once it actually scrolls near the viewport (an
+// IntersectionObserver gates that), and even then goes through a strict
+// one-at-a-time queue: whichever seq-lazy element enters view first
+// finishes downloading first, instead of a dozen firing in parallel and
+// fighting over the same limited mobile bandwidth.
+//
+// The viewport gate matters for more than just perceived speed: without
+// it, every product photo/video/testimonial on the whole page still gets
+// downloaded in the background even if the visitor never scrolls that
+// far -- which is pure wasted bandwidth (and, on a metered host like
+// Supabase Storage, wasted egress quota) for content nobody ever saw.
 //
 // How an image opts in: instead of `src="url"`, give it
-// `class="seq-lazy" data-src="url"` (no `loading="lazy"` needed --  this
-// queue replaces that). A MutationObserver picks up every seq-lazy image
+// `class="seq-lazy" data-src="url"` (no `loading="lazy"` needed -- this
+// queue replaces that). A MutationObserver hands every seq-lazy element,
 // as soon as it's added to the page (covers dynamically-rendered content
-// like product cards, reviews, banners...) and an initial scan on load
-// covers anything already in the HTML (like the footer logo).
+// like product cards, reviews, banners...), off to the IntersectionObserver
+// below; an initial scan on load covers anything already in the HTML.
 const seqImageQueue = [];
 let seqImageLoading = false;
 
@@ -111,26 +113,57 @@ function seqProcessQueue(){
   if(!src){ seqProcessQueue(); return; }
   seqImageLoading = true;
   const finish = () => { seqImageLoading = false; seqProcessQueue(); };
-  next.addEventListener('load', finish, { once: true });
+  // <img> signals "done" with a 'load' event, but <video>/<audio> never
+  // fire 'load' at all -- their equivalent is 'loadeddata'. Using 'load'
+  // unconditionally here would mean seqImageLoading never resets once a
+  // video enters the queue, permanently stalling every image/video after
+  // it on the page.
+  next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', finish, { once: true });
   next.addEventListener('error', finish, { once: true });
   next.removeAttribute('data-src');
   next.src = src;
 }
 
-function seqEnqueueImages(root){
-  (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-queued])').forEach(img => {
-    img.setAttribute('data-seq-queued', '1');
-    seqImageQueue.push(img);
+// rootMargin extends the "counts as near the viewport" zone by 600px in
+// every direction, so content one screen-height below the fold (or the
+// very next slide in a horizontal carousel like the product gallery)
+// starts loading a little before the visitor actually reaches it,
+// instead of only starting the instant it's already on screen.
+const seqIO = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    const el = entry.target;
+    seqIO.unobserve(el);
+    if(el.hasAttribute('data-seq-queued')) return;
+    el.setAttribute('data-seq-queued', '1');
+    seqImageQueue.push(el);
+    seqProcessQueue();
   });
-  seqProcessQueue();
+}, { rootMargin: '600px 0px' }) : null;
+
+function seqEnqueueImages(root){
+  const els = (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-observed]), video.seq-lazy[data-src]:not([data-seq-observed])');
+  els.forEach(el => {
+    el.setAttribute('data-seq-observed', '1');
+    // No IntersectionObserver support (very old browser) -- fall back to
+    // the old "load everything eventually" behavior rather than never
+    // loading images at all.
+    if(!seqIO){
+      el.setAttribute('data-seq-queued', '1');
+      seqImageQueue.push(el);
+      return;
+    }
+    seqIO.observe(el);
+  });
+  if(!seqIO) seqProcessQueue();
 }
 
 new MutationObserver((mutations) => {
   for(const m of mutations){
     for(const node of m.addedNodes){
       if(node.nodeType !== 1) continue;
-      if(node.matches && node.matches('img.seq-lazy[data-src]')) seqEnqueueImages(node.parentNode || document);
-      else if(node.querySelector && node.querySelector('img.seq-lazy[data-src]')) seqEnqueueImages(node);
+      if(node.matches && node.matches('img.seq-lazy[data-src], video.seq-lazy[data-src]')) seqEnqueueImages(node.parentNode || document);
+      else if(node.querySelector && node.querySelector('img.seq-lazy[data-src], video.seq-lazy[data-src]')) seqEnqueueImages(node);
     }
   }
 }).observe(document.body, { childList: true, subtree: true });
@@ -400,11 +433,25 @@ function productImages(p){
   if(p.image) return [p.image];
   return [];
 }
+// Product-page slides can be short .mp4 clips (see uploadProductImage) --
+// this is the single shared check used everywhere that needs to tell a
+// video slide apart from a photo slide.
+function isVideoUrl(url){
+  return /\.mp4(\?|#|$)/i.test(url || '') || /^data:video\//i.test(url || '');
+}
 function productCoverImage(p){
   const imgs = productImages(p);
   if(!imgs.length) return null;
-  const idx = (typeof p.cover === 'number' && p.cover >= 0 && p.cover < imgs.length) ? p.cover : 0;
-  return imgs[idx];
+  // The cover image is what shows up on the shop grid / homepage card, and
+  // videos are only meant to appear inside the product page gallery (never
+  // the homepage) -- so the cover must always resolve to an actual photo.
+  // If the stored cover index happens to point at a video (e.g. it was the
+  // only slide uploaded so far), fall back to the first non-video slide
+  // instead of showing a broken <img src="...mp4"> on the shop card.
+  const idx = (typeof p.cover === 'number' && p.cover >= 0 && p.cover < imgs.length && !isVideoUrl(imgs[p.cover]))
+    ? p.cover
+    : imgs.findIndex(u => !isVideoUrl(u));
+  return idx === -1 ? null : imgs[idx];
 }
 function productMedia(p, idx){
   const cover = productCoverImage(p);
@@ -1712,7 +1759,7 @@ async function fetchAllReviewsAdmin(){
 
 async function uploadReviewImage(file){
   if(!file) return null;
-  const blob = await compressImageToBlob(file, 640, 0.78, false, 'image/webp');
+  const blob = await compressImageToBlob(file, 560, 0.68, false, 'image/webp');
   if(!blob) return null;
   const ext = blob.type === 'image/webp' ? 'webp' : (blob.type === 'image/png' ? 'png' : 'jpg');
   if(supabaseClient){
@@ -2821,9 +2868,9 @@ function attachProductPageEvents(){
       }
     });
   }
+  const trackEl = document.getElementById('pp-track');
+  if(trackEl) syncPpSlideVideos(trackEl.querySelectorAll('.pp-slide'));
 }
-
-let ppActiveIndex = 0;
 function goToPpSlide(i){
   const track = document.getElementById('pp-track');
   if(!track) return;
@@ -2833,6 +2880,34 @@ function goToPpSlide(i){
   track.style.transform = `translateX(${-ppActiveIndex * 100}%)`;
   document.querySelectorAll('.pp-dot').forEach((d, idx) => d.classList.toggle('active', idx === ppActiveIndex));
   document.querySelectorAll('.pp-thumb').forEach((th, idx) => th.classList.toggle('active', idx === ppActiveIndex));
+  syncPpSlideVideos(slides);
+}
+// Only the video the shopper is currently looking at should ever be
+// playing -- swiping away pauses/rewinds it (so it starts from the
+// beginning again next time) and the newly-active slide's video starts
+// itself. Without this every video in the gallery would just autoplay
+// and run simultaneously in the background as soon as its data loaded.
+function syncPpSlideVideos(slides){
+  slides.forEach((slide, idx) => {
+    const v = slide.querySelector('video');
+    if(!v) return;
+    if(idx === ppActiveIndex){
+      // The video is seq-lazy, so at the moment this runs it may not even
+      // have a real "src" yet (still just data-src, waiting its turn in
+      // the sequential loading queue) -- readyState would be 0 forever in
+      // that case and a single play() call now would fail silently with
+      // nothing to retry it. Calling play() both now (covers the case
+      // where it's already loaded) and again on 'loadeddata' (covers the
+      // case where the queue assigns the real src a moment later) handles
+      // both orders without needing to know which one applies.
+      const tryPlay = () => { v.play().catch(() => {}); };
+      tryPlay();
+      v.addEventListener('loadeddata', tryPlay, { once: true });
+    }else{
+      v.pause();
+      try{ v.currentTime = 0; }catch(e){}
+    }
+  });
 }
 
 function productPageTemplate(pRaw, category, idx){
@@ -2846,12 +2921,16 @@ function productPageTemplate(pRaw, category, idx){
     <div class="pp-gallery">
       ${backBtnHtml}
       <div class="pp-track" id="pp-track">
-        ${images.map((url, i) => `<div class="pp-slide"><img class="seq-lazy" data-src="${url}" alt="${p.name}"></div>`).join('')}
+        ${images.map((url, i) => isVideoUrl(url)
+          ? `<div class="pp-slide pp-slide-video"><video class="seq-lazy" data-src="${url}" loop playsinline webkit-playsinline preload="none" aria-label="${p.name}"></video></div>`
+          : `<div class="pp-slide"><img class="seq-lazy" data-src="${url}" alt="${p.name}"></div>`).join('')}
       </div>
       ${images.length > 1 ? `<div class="pp-dots">${images.map((_, i) => `<button type="button" class="pp-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : ''}
       ${images.length > 1 ? `<button type="button" class="pp-arrow prev" id="pp-prev" aria-label="Previous">‹</button><button type="button" class="pp-arrow next" id="pp-next" aria-label="Next">›</button>` : ''}
     </div>
-    ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
+    ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => isVideoUrl(url)
+      ? `<button type="button" class="pp-thumb pp-thumb-video${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir vidéo ${i + 1}"><video class="seq-lazy" data-src="${url}" muted playsinline preload="none"></video><span class="pp-thumb-play-badge">▶</span></button>`
+      : `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
     <div class="pp-gallery pp-gallery-placeholder">
       ${backBtnHtml}
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
@@ -2863,14 +2942,17 @@ function productPageTemplate(pRaw, category, idx){
   const adminGallery = isAdmin ? `
     <div class="pp-admin-gallery">
       <div class="pp-admin-thumbs">
-        ${images.map((url, i) => `
+        ${images.map((url, i) => {
+          const vid = isVideoUrl(url);
+          return `
           <div class="pp-admin-thumb${i === coverIdx ? ' is-cover' : ''}">
-            <img src="${url}" alt="">
+            ${vid ? `<video src="${url}" muted playsinline></video>` : `<img src="${url}" alt="">`}
             ${i === coverIdx
               ? `<span class="pp-cover-badge">${t('coverImageBadge')}</span>`
-              : `<button type="button" class="pp-set-cover" data-i="${i}">${t('setCoverBtn')}</button>`}
+              : (vid ? '' : `<button type="button" class="pp-set-cover" data-i="${i}">${t('setCoverBtn')}</button>`)}
             <button type="button" class="pp-remove-img" data-i="${i}" aria-label="Remove image">✕</button>
-          </div>`).join('')}
+          </div>`;
+        }).join('')}
         <button type="button" class="pp-admin-add-thumb" id="pp-add-images-btn">
           <span>+</span>
           <span>${t('addProductImagesBtn')}</span>
@@ -3217,6 +3299,37 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
 async function uploadProductImage(file, opts){
   if(!file) return null;
   const preserveTransparency = !!(opts && opts.transparent);
+  // Short product-demo clips: the gallery on the product page renders
+  // these as an actual <video> slide (see productPageTemplate) instead
+  // of a photo. They obviously can't go through compressImageToBlob at
+  // all (that's canvas-based, images only), so this branch uploads the
+  // raw file directly, same idea as the GIF/WebP branch below.
+  const isVideo = /^video\//i.test(file.type || '') || /\.mp4$/i.test(file.name || '');
+  if(isVideo){
+    if(file.size > 20 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
+    if(supabaseClient){
+      try{
+        const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
+        const { error } = await supabaseClient.storage
+          .from('product-images')
+          .upload(filename, file, { contentType: 'video/mp4', upsert: true, cacheControl: '31536000' });
+        if(error) throw error;
+        const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
+        return data.publicUrl;
+      }catch(err){
+        if(isAdmin) showToast(t('toastImageUploadFailed'));
+        return null;
+      }
+    }
+    // No Supabase configured (local/offline preview) -- fall back to a
+    // data: URL, same escape hatch the image branches below use. isVideoUrl()
+    // already recognizes "data:video/..." so this still renders correctly.
+    return new Promise((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.readAsDataURL(file);
+    });
+  }
   // GIF and WebP are the two formats a browser will actually animate
   // inside a plain <img> tag (used for the big product photo). Canvas
   // has no concept of animation though -- compressImageToBlob() below
@@ -3282,11 +3395,11 @@ async function uploadProductImage(file, opts){
     // optimized AVIF can end up *larger* after this WebP re-encode
     // (e.g. a 4KB AVIF turning into a 95KB WebP). Only use the WebP
     // result if it's actually smaller than the original file.
-    try{ blob = await compressImageToBlob(sourceFile, 640, 0.8, true, 'image/webp'); }
+    try{ blob = await compressImageToBlob(sourceFile, 560, 0.7, true, 'image/webp'); }
     catch(err){ blob = null; }
     if(!blob || blob.size >= sourceFile.size){ blob = sourceFile; avifRaw = true; }
   } else {
-    blob = await compressImageToBlob(file, 640, 0.72, preserveTransparency);
+    blob = await compressImageToBlob(file, 560, 0.65, preserveTransparency);
   }
   if(!blob) return null;
   let ext, contentType;
@@ -3768,7 +3881,7 @@ function createBannerController(cfg){
       // file untouched so the upload still succeeds.
       const sourceFile = file.type === 'image/avif' ? file : new File([file], file.name || 'banner.avif', { type: 'image/avif' });
       let blob = null;
-      try{ blob = await compressImageToBlob(sourceFile, 1600, 0.8, true, 'image/webp'); }
+      try{ blob = await compressImageToBlob(sourceFile, 1280, 0.72, true, 'image/webp'); }
       catch(err){ blob = null; }
       // AVIF compresses better than WebP, so a small/already-optimized
       // AVIF can end up larger after this re-encode. Keep whichever is
@@ -3798,7 +3911,7 @@ function createBannerController(cfg){
         });
       }
     } else {
-      const blob = await compressImageToBlob(file, 1600, 0.78);
+      const blob = await compressImageToBlob(file, 1280, 0.7);
       if(blob && supabaseClient){
         try{
           const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
