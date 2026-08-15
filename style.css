@@ -1540,7 +1540,7 @@ header {
   border-radius: 12px 12px 0 0;
   margin-bottom: 0;
   padding-bottom: 12px;
-  background: var(--brand-green-gradient);
+  background: #000000;
   position: relative;
   overflow: hidden;
 }
@@ -2936,7 +2936,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 845 / 642;
+  aspect-ratio: 778 / 307;
   display: block;
   margin: 0 auto;
 }
@@ -2944,7 +2944,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 845 / 642;
+  aspect-ratio: 778 / 307;
   display: block;
   margin: 0 auto;
 }
