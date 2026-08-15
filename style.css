@@ -11,17 +11,18 @@
    ============================================================ */
 :root {
   --css-loaded-check: "ok";
-  /* ---- Maison Histoire — archive-noir palette ----
-     Signature: oxblood wax-seal red + antique brass on warm ink & bone.
-     Replaces the previous royal-blue / gold / emerald jewel-tone scheme. */
-  --royal: #7A1F2B;            /* was royal blue -> oxblood (primary signature) */
-  --royal-deep: #4E1119;
-  --gold: #A6874A;             /* was bright gold -> muted antique brass */
+  /* ---- Maison Histoire — noir & brass palette ----
+     Signature: antique brass on warm ink & bone. Replaces the previous
+     oxblood/wax-seal red scheme (2026-08-15) and, before that, the
+     original royal-blue / gold / emerald jewel-tone scheme. */
+  --royal: #7A6236;            /* was royal blue, then oxblood -> antique brass (primary signature) */
+  --royal-deep: #2E2412;
+  --gold: #A6874A;             /* muted antique brass */
   --gold-light: #D8C49B;
   --gold-deep: #7A6236;
-  --emerald: #A6404C;          /* was emerald green -> oxblood-light (kept var name for compatibility) */
-  --emerald-light: #C97C86;
-  --emerald-deep: #591722;
+  --emerald: #7A6236;          /* was emerald green, then oxblood -> antique brass (kept var name for compatibility) */
+  --emerald-light: #D8C49B;
+  --emerald-deep: #4E3D1F;
   --navy-dark: #14100E;        /* was near-black navy -> warm ink */
   --cream: #F4EEE4;            /* was pure white -> warm bone */
   --ink: #201A16;              /* body text -> warm charcoal */
@@ -29,7 +30,7 @@
   --line: #E4DAC8;             /* was cool grey hairline -> warm hairline */
   --card-line: #E4DAC8;
   --text-soft: #6E6255;
-  --brand-green-gradient: linear-gradient(135deg, #7A1F2B 0%, #591722 55%, #3E0F17 100%);
+  --brand-green-gradient: linear-gradient(135deg, #7A6236 0%, #4E3D1F 55%, #241C11 100%);
   --radius: 3px;               /* soft rounded -> sharp archival/editorial corners */
   --shadow: 0 20px 50px -20px rgba(20,16,12,0.28);
   --lux-bg-1: #14100E;
@@ -42,8 +43,8 @@
   --lux-text-soft: #B9AC98;
   --lux-shadow-warm: 0 30px 70px -28px rgba(166,135,74,.24), 0 40px 90px -40px rgba(0,0,0,.65);
   /* new tokens for the signature wax-seal motif */
-  --seal: #7A1F2B;
-  --seal-deep: #4E1119;
+  --seal: #7A6236;
+  --seal-deep: #2E2412;
 }
 
 /* ============================================================
@@ -154,7 +155,7 @@
 
 .ws-logo {
   display: block;
-  width: clamp(150px, 34vw, 220px);
+  width: clamp(127.5px, 28.9vw, 187px);
   height: auto;
 }
 
@@ -406,7 +407,7 @@ a {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
-  color: #3E0F17;
+  color: #241C11;
 }
 
 header {
@@ -788,7 +789,7 @@ header {
 }
 
 .hb-admin-btn.remove:hover {
-  background: #A6404C;
+  background: #7A6236;
   color: #F4EEE4;
 }
 
@@ -946,8 +947,8 @@ header {
 }
 
 .admin-del-btn:hover {
-  background: #A6404C;
-  border-color: #A6404C;
+  background: #7A6236;
+  border-color: #7A6236;
   color: #F4EEE4;
 }
 
@@ -1387,7 +1388,7 @@ header {
 .cart-toast-sub {
   font-family: 'Work Sans', sans-serif;
   font-size: 11.5px;
-  color: var(--emerald-light, #C97C86);
+  color: var(--emerald-light, #D8C49B);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -1623,7 +1624,7 @@ header {
   border-radius: 10px;
   background: linear-gradient(155deg, var(--emerald-light) 0%, var(--emerald) 55%, var(--emerald-deep) 100%);
   border: none;
-  color: #2E0B12;
+  color: #14100A;
 }
 .payment-icon svg {
   width: 22px;
@@ -1634,7 +1635,7 @@ header {
 .payment-name {
   font-family: 'Fraunces', serif;
   font-size: 16px;
-  color: #3E0F17;
+  color: #241C11;
 }
 
 .trust-grid {
@@ -1727,7 +1728,7 @@ header {
 
 .status-confirmed {
   background: #d6e4ff;
-  color: #A6404C;
+  color: #7A6236;
 }
 
 .status-preparing {
@@ -2678,7 +2679,7 @@ h1,h2,h3 {
   margin-top: -14px;
   background: linear-gradient(155deg, #EFDFC0 0%, #C7A251 45%, #A6874A 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -6px 12px rgba(122,98,54,.14);
-  color: #3E0F17;
+  color: #241C11;
   position: relative;
   overflow: hidden;
   align-items: flex-start;
@@ -2934,7 +2935,7 @@ footer {
 }
 
 .logo-img {
-  height: 50px;
+  height: 42.5px;
   width: auto;
   aspect-ratio: 778 / 307;
   display: block;
@@ -2942,7 +2943,7 @@ footer {
 }
 
 .footer-logo-img {
-  height: 36px;
+  height: 30.6px;
   width: auto;
   aspect-ratio: 778 / 307;
   display: block;
@@ -3038,7 +3039,7 @@ footer {
 #checkout-page .cf-field-icon {
   background: linear-gradient(155deg, var(--emerald-light) 0%, var(--emerald) 55%, var(--emerald-deep) 100%);
   border: none;
-  color: #2E0B12;
+  color: #14100A;
 }
 
 #checkout-page .trust-item {
@@ -3510,7 +3511,7 @@ footer {
   font-weight: 400;
   color: #9C8F7C;
   text-decoration: line-through;
-  text-decoration-color: #A6404C;
+  text-decoration-color: #7A6236;
   text-decoration-thickness: 1px;
 }
 
@@ -4273,7 +4274,7 @@ footer {
   border-radius: 12px;
   overflow: hidden;
   margin-top: 12px;
-  border: 1.5px solid #A6404C;
+  border: 1.5px solid #7A6236;
   box-shadow: 0 6px 16px -8px rgba(20,18,14,.25);
 }
 
@@ -4391,7 +4392,7 @@ textarea.cf-input-icon {
      a rotating gradient as its paint source, so there's only ever one
      frame and it can never appear as a separate strip or bleed inward. */
   background:
-    linear-gradient(135deg, #591722 0%, #4E1119 24%, #3E0F17 52%, #2E0B12 78%, #4E1119 100%) padding-box,
+    linear-gradient(135deg, #4E3D1F 0%, #2E2412 24%, #241C11 52%, #14100A 78%, #2E2412 100%) padding-box,
     conic-gradient(from var(--pack4-angle, 0deg),
       var(--gold) 0deg, var(--gold-light) 90deg, var(--gold) 180deg,
       var(--gold-light) 270deg, var(--gold) 360deg) border-box;
@@ -4696,7 +4697,7 @@ textarea.cf-input-icon {
   height: 30px;
   border-radius: 50%;
   background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
-  color: #3E0F17;
+  color: #241C11;
   flex-shrink: 0;
 }
 
@@ -4967,7 +4968,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-card {
-  background: linear-gradient(155deg, #C97C86 0%, #A6404C 45%, #591722 100%);
+  background: linear-gradient(155deg, #D8C49B 0%, #7A6236 45%, #4E3D1F 100%);
   border-radius: 20px;
   padding: 24px 16px 22px;
   margin: 18px 0 16px;
@@ -6605,7 +6606,7 @@ textarea.cf-input-icon {
   font-size: 12px;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: #3E0F17;
+  color: #241C11;
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -7382,10 +7383,10 @@ footer .footer-links-col h3 {
   align-items: center;
   gap: 8px;
   padding: 12px 30px;
-  border: 1px solid #591722;
+  border: 1px solid #4E3D1F;
   border-radius: 30px;
   background: transparent;
-  color: #591722;
+  color: #4E3D1F;
   font-family: 'Work Sans', sans-serif;
   font-size: 11px;
   font-weight: 600;
@@ -7395,7 +7396,7 @@ footer .footer-links-col h3 {
   transition: background .3s ease, color .3s ease;
 }
 .reviews-write-btn-outline:hover {
-  background: #591722;
+  background: #4E3D1F;
   color: #F4EEE4;
 }
 
