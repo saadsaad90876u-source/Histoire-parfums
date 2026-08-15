@@ -81,20 +81,20 @@
   align-items: center;
   justify-content: center;
   padding-bottom: 4vh;
-  background: #14100E url('/welcome-bg.webp') center center / cover no-repeat;
+  background: #000000 url('/welcome-bg.webp') center center / cover no-repeat;
   overflow: hidden;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Warm oxblood tint over the source photo so its green cast reads as
-   part of the Maison Histoire palette instead of clashing with it. */
+/* Black tint over the source photo -- was oxblood/maroon, now matches
+   the black header/splash palette instead of the old red theme. */
 #welcome-screen::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(20,16,14,.12) 0%, rgba(20,16,14,.32) 100%),
-    radial-gradient(circle at 60% 15%, rgba(166,135,74,.30) 0%, rgba(122,31,43,.28) 38%, rgba(20,16,14,.6) 72%);
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.55) 100%),
+    radial-gradient(circle at 60% 15%, rgba(166,135,74,.30) 0%, rgba(0,0,0,.45) 38%, rgba(0,0,0,.75) 72%);
   mix-blend-mode: multiply;
   pointer-events: none;
 }
@@ -103,7 +103,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(78,17,25,.22);
+  background: rgba(0,0,0,.35);
   mix-blend-mode: color;
   pointer-events: none;
 }
@@ -416,7 +416,7 @@ header {
   right: 0;
   z-index: 1000;
   backdrop-filter: blur(16px) saturate(160%);
-  background: var(--brand-green-gradient);
+  background: #000000;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: transform;
@@ -2908,7 +2908,7 @@ h1,h2,h3 {
 }
 
 footer {
-  background: var(--brand-green-gradient);
+  background: #000000;
   color: #B9AC98;
   padding: 60px 0 26px;
   margin-top: 20px;
@@ -2936,7 +2936,7 @@ footer {
 .logo-img {
   height: 50px;
   width: auto;
-  aspect-ratio: 769 / 445;
+  aspect-ratio: 845 / 642;
   display: block;
   margin: 0 auto;
 }
@@ -2944,7 +2944,7 @@ footer {
 .footer-logo-img {
   height: 36px;
   width: auto;
-  aspect-ratio: 769 / 445;
+  aspect-ratio: 845 / 642;
   display: block;
   margin: 0 auto;
 }
@@ -3739,7 +3739,7 @@ footer {
 }
 
 .side-menu-drawer .wd-header {
-  background: var(--brand-green-gradient);
+  background: #000000;
   border-bottom: none;
   height: 64px;
   padding: 0 24px;
@@ -3803,7 +3803,7 @@ footer {
 }
 
 #cart-drawer .wd-header {
-  background: var(--brand-green-gradient);
+  background: #000000;
   border-bottom: none;
   height: 64px;
   padding: 0 24px;
