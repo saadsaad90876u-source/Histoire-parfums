@@ -1195,7 +1195,7 @@ header {
   border-radius: 14px;
   border: none;
   cursor: pointer;
-  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
+  background: #000000;
   color: #FBF8F2;
   font-family: 'Work Sans';
   font-size: 15px;
@@ -1206,15 +1206,15 @@ header {
 }
 
 .checkout-btn:hover {
-  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
+  background: #1C1512;
 }
 
 #checkout-btn {
-  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
+  background: #000000;
   color: #F4EEE4;
 }
 #checkout-btn:hover {
-  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
+  background: #1C1512;
 }
 
 #pack4-add-btn {
@@ -4102,7 +4102,7 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--seal);
+  background: #000000;
   color: #F4EEE4;
   border: none;
   border-radius: var(--radius);
@@ -4118,7 +4118,7 @@ footer {
 }
 
 .pp-order-btn:hover {
-  background: var(--seal-deep);
+  background: #1C1512;
 }
 
 @media(max-width:480px) {
