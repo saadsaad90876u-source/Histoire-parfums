@@ -417,7 +417,7 @@ header {
   right: 0;
   z-index: 1000;
   backdrop-filter: blur(16px) saturate(160%);
-  background: #000000;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: transform;
@@ -3740,7 +3740,7 @@ footer {
 }
 
 .side-menu-drawer .wd-header {
-  background: #000000;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   border-bottom: none;
   height: 64px;
   padding: 0 24px;
@@ -3804,7 +3804,7 @@ footer {
 }
 
 #cart-drawer .wd-header {
-  background: #000000;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   border-bottom: none;
   height: 64px;
   padding: 0 24px;
@@ -4392,7 +4392,7 @@ textarea.cf-input-icon {
      a rotating gradient as its paint source, so there's only ever one
      frame and it can never appear as a separate strip or bleed inward. */
   background:
-    linear-gradient(135deg, #4E3D1F 0%, #2E2412 24%, #241C11 52%, #14100A 78%, #2E2412 100%) padding-box,
+    linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%) padding-box,
     conic-gradient(from var(--pack4-angle, 0deg),
       var(--gold) 0deg, var(--gold-light) 90deg, var(--gold) 180deg,
       var(--gold-light) 270deg, var(--gold) 360deg) border-box;
