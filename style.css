@@ -1071,7 +1071,7 @@ header {
   margin-bottom: 6px;
 }
 
-.instagram-btn, .facebook-btn, .tiktok-btn {
+.instagram-btn, .facebook-btn, .tiktok-btn, .whatsapp-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1081,7 +1081,7 @@ header {
   transition: opacity .3s ease, transform .3s ease;
 }
 
-.instagram-btn:hover, .facebook-btn:hover, .tiktok-btn:hover {
+.instagram-btn:hover, .facebook-btn:hover, .tiktok-btn:hover, .whatsapp-btn:hover {
   opacity: .8;
   transform: scale(1.08);
 }
@@ -4681,8 +4681,8 @@ textarea.cf-input-icon {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: var(--emerald);
-  color: #F4EEE4;
+  background: linear-gradient(155deg, #E8F0C0 0%, #D6DFA0 30%, #9CAE55 65%, #5C6B2E 100%);
+  color: #1E2410;
   font-family: 'Work Sans', sans-serif;
   font-size: 15px;
   font-weight: 500;
@@ -4693,7 +4693,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-savings b {
-  color: var(--gold);
+  color: #1E2410;
   font-weight: 700;
 }
 
@@ -4761,7 +4761,7 @@ textarea.cf-input-icon {
   gap: 12px;
   width: 85%;
   margin: 0 auto;
-  background: linear-gradient(155deg, #F0E0B8 0%, #D8C49B 30%, #B99A63 65%, #7A6236 100%);
+  background: #D8C49B;
   color: #2E1608;
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
@@ -4830,7 +4830,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
-  color: #2E1608;
+  color: #000000;
 }
 
 .pack4-banner-cta span {
@@ -4843,7 +4843,7 @@ textarea.cf-input-icon {
   justify-content: center;
   width: 22px;
   height: 22px;
-  color: #2E1608;
+  color: #000000;
   flex-shrink: 0;
 }
 
@@ -4911,7 +4911,7 @@ textarea.cf-input-icon {
   transition: border-color .3s ease, color .3s ease,
               box-shadow .4s cubic-bezier(0.4,0,0.2,1),
               background .4s cubic-bezier(0.4,0,0.2,1);
-  font-weight: 600;
+  font-weight: 800;
   position: relative;
   isolation: isolate;
 }
@@ -6853,7 +6853,7 @@ footer .footer-links-col a {
 }
 
 footer .footer-links-col h3 {
-  color: #F4EEE4;
+  color: #D8C49B;
 }
 
 /* ---------- Policy modal body text ---------- */
