@@ -1195,7 +1195,7 @@ header {
   border-radius: 14px;
   border: none;
   cursor: pointer;
-  background: #150F0C;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   color: #FBF8F2;
   font-family: 'Work Sans';
   font-size: 15px;
@@ -1206,15 +1206,15 @@ header {
 }
 
 .checkout-btn:hover {
-  background: #1C1512;
+  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
 }
 
 #checkout-btn {
-  background: #150F0C;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   color: #F4EEE4;
 }
 #checkout-btn:hover {
-  background: #1C1512;
+  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
 }
 
 #pack4-add-btn {
@@ -1228,11 +1228,11 @@ header {
   transition: background .25s ease, color .25s ease;
 }
 #pack4-add-btn:not(:disabled) {
-  background: #211A15;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   color: #F4EEE4;
 }
 #pack4-add-btn:not(:disabled):hover {
-  background: #1C1512;
+  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
 }
 #pack4-add-btn:disabled {
   background: #EFE7D8;
@@ -2532,7 +2532,7 @@ h1,h2,h3 {
 .product-card .pc-action-cart {
   position: relative;
   overflow: hidden;
-  background: #211A15;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   border: 1px solid rgba(166,135,74,.7);
   color: #F4EEE4;
   padding: 9px 14px;
@@ -2541,7 +2541,7 @@ h1,h2,h3 {
 
 @media (hover: hover) and (pointer: fine) {
   .product-card .pc-action-cart:hover {
-    background: #1C1512;
+    background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
     border-color: var(--gold-light);
     box-shadow: none;
   }
@@ -2909,8 +2909,8 @@ h1,h2,h3 {
 }
 
 footer {
-  background: #000000;
-  color: #B9AC98;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
+  color: #F4EEE4;
   padding: 60px 0 26px;
   margin-top: 20px;
   box-shadow: 0 -1px 0 rgba(166,135,74,.3) inset;
@@ -4073,7 +4073,7 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #211A15;
+  background: linear-gradient(155deg, #8C6B32 0%, #7A6236 45%, #2E2412 100%);
   color: #F4EEE4;
   border: none;
   border-radius: 14px;
@@ -4088,7 +4088,7 @@ footer {
 }
 
 .pp-cart-btn:hover {
-  background: #1C1512;
+  background: linear-gradient(155deg, #7A6236 0%, #4E3D1F 45%, #14100A 100%);
 }
 
 .pp-cart-btn .icon {
@@ -4592,7 +4592,7 @@ textarea.cf-input-icon {
   font-family: 'Work Sans', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: var(--emerald);
+  color: #FBF8F2;
   margin-bottom: 8px;
 }
 
@@ -6814,15 +6814,15 @@ textarea.cf-input-icon {
 }
 
 footer .footer-links-col button:hover,
-footer .footer-links-col a:hover { color: var(--gold-light); }
+footer .footer-links-col a:hover { color: #FFFFFF; }
 
 footer .footer-links-col button,
 footer .footer-links-col a {
-  color: #B9AC98;
+  color: #F4EEE4;
 }
 
 footer .footer-links-col h3 {
-  color: var(--emerald);
+  color: #F4EEE4;
 }
 
 /* ---------- Policy modal body text ---------- */
