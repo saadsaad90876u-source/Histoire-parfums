@@ -2464,7 +2464,7 @@ h1,h2,h3 {
 }
 
 .pc-stars {
-  color: #D8C49B;
+  color: #8A6D3A;
   font-size: 10px;
   letter-spacing: 1px;
 }
@@ -4625,14 +4625,13 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: var(--gold);
-  /* Brighter, more even gold (no dark brown edge stops) so the text stays
-     luminous end-to-end against the dark green card instead of dimming
-     out toward the sides. */
-  background: linear-gradient(100deg, #A6874A 0%, #D8C49B 25%, #F0E0B8 50%, #D8C49B 75%, #A6874A 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #F0E0B8;
+  /* Flat, uniform brightness across the whole word — no gradient dimming
+     toward the edges. */
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: initial;
 }
 
 
@@ -4779,8 +4778,8 @@ textarea.cf-input-icon {
   gap: 12px;
   width: 85%;
   margin: 0 auto;
-  background: #D8C49B;
-  color: #2E1608;
+  background: linear-gradient(120deg, #6E5A46, #F7D2C2 50%, #6E5A46);
+  color: #201A16;
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
   font-weight: 800;
@@ -4795,6 +4794,11 @@ textarea.cf-input-icon {
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+.pack4-banner.pack4-men .pack4-banner-cta {
+  background: linear-gradient(120deg, #2A2420, #7A6F60 50%, #2A2420);
+  color: #F4EEE4;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -4848,7 +4852,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta-arrow {
-  color: #000000;
+  color: #F4EEE4;
 }
 
 .pack4-banner-cta span {
@@ -4861,7 +4865,7 @@ textarea.cf-input-icon {
   justify-content: center;
   width: 22px;
   height: 22px;
-  color: #000000;
+  color: #201A16;
   flex-shrink: 0;
 }
 
@@ -6655,7 +6659,7 @@ textarea.cf-input-icon {
   font-size: 12px;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: #1E2410;
+  color: var(--emerald);
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -7183,7 +7187,7 @@ footer .footer-links-col h3 {
 /* Shared star glyphs (also used by the admin moderation panel) */
 .review-card-stars { display: flex; gap: 2px; font-size: 15px; margin-bottom: 12px; }
 .review-star { color: #E4DAC8; }
-.review-star.filled { color: #D8C49B; }
+.review-star.filled { color: #8A6D3A; }
 .review-card-text {
   font-family: 'Fraunces', serif;
   font-size: 16.5px;
@@ -7223,7 +7227,7 @@ footer .footer-links-col h3 {
 
 .testimonial-rating-stars { display: flex; gap: 2px; font-size: 12px; }
 .testimonial-rating-stars .review-star { color: #E6DCC8; }
-.testimonial-rating-stars .review-star.filled { color: #D8C49B; }
+.testimonial-rating-stars .review-star.filled { color: #8A6D3A; }
 .testimonial-rating-text {
   font-size: 11.5px;
   letter-spacing: .05em;
@@ -7307,7 +7311,7 @@ footer .footer-links-col h3 {
   margin-bottom: 14px;
 }
 .testimonial-stars .review-star { color: #E6DCC8; }
-.testimonial-stars .review-star.filled { color: #D8C49B; }
+.testimonial-stars .review-star.filled { color: #8A6D3A; }
 
 .testimonial-text {
   font-family: 'Fraunces', serif;
@@ -7484,7 +7488,7 @@ footer .footer-links-col h3 {
   transition: color .15s ease, transform .15s ease;
 }
 .review-star-btn:hover { transform: scale(1.12); }
-.review-star-btn.active { color: #D8C49B; }
+.review-star-btn.active { color: #8A6D3A; }
 
 .review-textarea {
   resize: vertical;
