@@ -4759,13 +4759,13 @@ textarea.cf-input-icon {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
   background: linear-gradient(155deg, #F0E0B8 0%, #D8C49B 30%, #B99A63 65%, #7A6236 100%);
   color: #2E1608;
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: .04em;
   text-transform: uppercase;
   white-space: nowrap;
