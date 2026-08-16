@@ -15,6 +15,24 @@
      Signature: antique brass on warm ink & bone. Replaces the previous
      oxblood/wax-seal red scheme (2026-08-15) and, before that, the
      original royal-blue / gold / emerald jewel-tone scheme. */
+  /* ---- Unified olive-green system (single source of truth) ----
+     Every green surface in the storefront (header, footer, drawers,
+     product-card CTAs, pack banner, admin sidebar) is built from these
+     6 tones only — no other ad-hoc green hex values should be introduced
+     elsewhere in this file:
+       --green-light   #7A8C3E  lightest stop of the default gradient
+       --green         #5C6B2E  PRIMARY brand green
+       --green-lightest#D6DFA0  pale olive, used for light badges/text
+       --green-mid-dark#333D14  middle stop of the hover/darker gradient
+       --green-dark    #1E2410  deep anchor, darkest default stop
+       --green-darkest #10160A  darkest stop of the hover/darker gradient */
+  --green-light: #7A8C3E;
+  --green: #5C6B2E;
+  --green-lightest: #D6DFA0;
+  --green-mid-dark: #333D14;
+  --green-dark: #1E2410;
+  --green-darkest: #10160A;
+
   --royal: #5C6B2E;            /* was royal blue, then oxblood -> antique brass (primary signature) */
   --royal-deep: #1E2410;
   --gold: #8A9A46;             /* muted antique brass */
@@ -30,7 +48,7 @@
   --line: #E4DAC8;             /* was cool grey hairline -> warm hairline */
   --card-line: #E4DAC8;
   --text-soft: #6E6255;
-  --brand-green-gradient: linear-gradient(135deg, #5C6B2E 0%, #333D14 55%, #1A2410 100%);
+  --brand-green-gradient: linear-gradient(135deg, #5C6B2E 0%, #333D14 55%, #1E2410 100%);
   --radius: 3px;               /* soft rounded -> sharp archival/editorial corners */
   --shadow: 0 20px 50px -20px rgba(20,16,12,0.28);
   --lux-bg-1: #14100E;
@@ -165,7 +183,7 @@
   font-size: clamp(12px, 2.3vw, 15px);
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: #C7A876;
+  color: #D8C49B;
   opacity: 0;
   margin: 0 0 30px;
   animation: wsFadeIn 1.1s ease 0.55s forwards;
@@ -407,7 +425,7 @@ a {
   width: 15px;
   height: 15px;
   flex-shrink: 0;
-  color: #1A2410;
+  color: #1E2410;
 }
 
 header {
@@ -1635,7 +1653,7 @@ header {
 .payment-name {
   font-family: 'Fraunces', serif;
   font-size: 16px;
-  color: #1A2410;
+  color: #1E2410;
 }
 
 .trust-grid {
@@ -2707,9 +2725,9 @@ h1,h2,h3 {
   border-radius: 0 0 12px 12px;
   border-top: 1px solid rgba(138,154,70,.4);
   margin-top: -14px;
-  background: linear-gradient(155deg, #E4EEB8 0%, #A8BB55 45%, #8A9A46 100%);
+  background: linear-gradient(155deg, #D6DFA0 0%, #7A8C3E 50%, #5C6B2E 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -6px 12px rgba(92,107,46,.14);
-  color: #1A2410;
+  color: #1E2410;
   position: relative;
   overflow: hidden;
   align-items: flex-start;
@@ -2939,7 +2957,7 @@ h1,h2,h3 {
 }
 
 footer {
-  background: linear-gradient(155deg, #7A8C3E 0%, #5C6B2E 45%, #1E2410 100%);
+  background: linear-gradient(180deg, #5C6B2E 0%, #333D14 100%);
   color: #F4EEE4;
   padding: 60px 0 26px;
   margin-top: 20px;
@@ -4422,7 +4440,7 @@ textarea.cf-input-icon {
      a rotating gradient as its paint source, so there's only ever one
      frame and it can never appear as a separate strip or bleed inward. */
   background:
-    linear-gradient(155deg, #7A8C3E 0%, #5C6B2E 45%, #1E2410 100%) padding-box,
+    linear-gradient(155deg, #9CAE55 0%, #7A8C3E 45%, #5C6B2E 100%) padding-box,
     conic-gradient(from var(--pack4-angle, 0deg),
       var(--gold) 0deg, var(--gold-light) 90deg, var(--gold) 180deg,
       var(--gold-light) 270deg, var(--gold) 360deg) border-box;
@@ -4727,7 +4745,7 @@ textarea.cf-input-icon {
   height: 30px;
   border-radius: 50%;
   background: linear-gradient(155deg, var(--gold-light) 0%, var(--gold) 55%, var(--gold-deep) 100%);
-  color: #1A2410;
+  color: #1E2410;
   flex-shrink: 0;
 }
 
@@ -6637,7 +6655,7 @@ textarea.cf-input-icon {
   font-size: 12px;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: #1A2410;
+  color: #1E2410;
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -7165,7 +7183,7 @@ footer .footer-links-col h3 {
 /* Shared star glyphs (also used by the admin moderation panel) */
 .review-card-stars { display: flex; gap: 2px; font-size: 15px; margin-bottom: 12px; }
 .review-star { color: #E4DAC8; }
-.review-star.filled { color: var(--emerald); }
+.review-star.filled { color: #D8C49B; }
 .review-card-text {
   font-family: 'Fraunces', serif;
   font-size: 16.5px;
@@ -7205,7 +7223,7 @@ footer .footer-links-col h3 {
 
 .testimonial-rating-stars { display: flex; gap: 2px; font-size: 12px; }
 .testimonial-rating-stars .review-star { color: #E6DCC8; }
-.testimonial-rating-stars .review-star.filled { color: var(--emerald-deep); }
+.testimonial-rating-stars .review-star.filled { color: #D8C49B; }
 .testimonial-rating-text {
   font-size: 11.5px;
   letter-spacing: .05em;
@@ -7289,7 +7307,7 @@ footer .footer-links-col h3 {
   margin-bottom: 14px;
 }
 .testimonial-stars .review-star { color: #E6DCC8; }
-.testimonial-stars .review-star.filled { color: var(--emerald); }
+.testimonial-stars .review-star.filled { color: #D8C49B; }
 
 .testimonial-text {
   font-family: 'Fraunces', serif;
@@ -7466,7 +7484,7 @@ footer .footer-links-col h3 {
   transition: color .15s ease, transform .15s ease;
 }
 .review-star-btn:hover { transform: scale(1.12); }
-.review-star-btn.active { color: var(--emerald); }
+.review-star-btn.active { color: #D8C49B; }
 
 .review-textarea {
   resize: vertical;
