@@ -4759,7 +4759,8 @@ textarea.cf-input-icon {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   background: linear-gradient(155deg, #F0E0B8 0%, #D8C49B 30%, #B99A63 65%, #7A6236 100%);
   color: #2E1608;
   font-family: 'Work Sans', sans-serif;
