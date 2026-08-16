@@ -492,7 +492,7 @@ function productCard(pRaw, category, idx){
   const revealDelayClass = `d${(idx % 4) + 1}`;
   // Premium sale layout: fixed "was" price shown on every card, per request.
   const oldPrice = 75;
-  return `<div class="product-card reveal ${revealDelayClass} ${p.pinned ? 'product-card-pinned' : ''}" data-name="${p.name}" style="animation-delay:${delay}s;">
+  return `<div class="product-card reveal ${revealDelayClass} ${p.pinned ? 'product-card-pinned' : ''}" data-name="${p.name}" data-category="${category}" style="animation-delay:${delay}s;">
     ${adminControls}
     ${pinBadge}
     <div class="pc-stage">
@@ -515,7 +515,7 @@ function productCard(pRaw, category, idx){
         </div>
       </div>
       <div class="pc-actions">
-        <button class="add-cart pc-action-btn pc-action-cart" data-name="${p.name}" data-price="${p.price}" data-family="${p.family}">${t('addToCartBtn')}</button>
+        <button class="add-cart pc-action-btn pc-action-cart" data-name="${p.name}" data-price="${p.price}" data-family="${p.family}" data-category="${category}">${t('addToCartBtn')}</button>
       </div>
     </div>
   </div>`;
