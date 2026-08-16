@@ -4758,7 +4758,7 @@ textarea.cf-input-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 12px;
   width: 100%;
   background: linear-gradient(155deg, #F0E0B8 0%, #D8C49B 30%, #B99A63 65%, #7A6236 100%);
   color: #2E1608;
@@ -4768,7 +4768,7 @@ textarea.cf-input-icon {
   letter-spacing: .04em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 10px 18px;
+  padding: 10px 10px;
   border: none;
   border-radius: 14px;
   transition: transform .12s ease, filter .18s ease;
@@ -5330,7 +5330,7 @@ textarea.cf-input-icon {
   .pack4-price-sep { height: 20px; }
   .pack4-price-old { font-size: 13px; }
   .pack4-banner-savings { font-size: 10.5px; padding: 3px 12px; margin-bottom: 8px; }
-  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 9px 8px; gap: 8px; }
+  .pack4-banner-cta { font-size: 10.5px; letter-spacing: 0; padding: 9px 6px; gap: 6px; }
   .pack4-banner-cta-arrow { width: 18px; height: 18px; }
   .pack4-banner-cta-arrow svg { width: 10px; height: 10px; }
 }
