@@ -4406,7 +4406,7 @@ textarea.cf-input-icon {
   gap: 16px;
   border: 1.8px solid transparent;
   border-radius: 24px;
-  padding: 18px 24px;
+  padding: 18px 14px;
   margin: 0 auto 14px;
   max-width: 620px;
   cursor: pointer;
@@ -5315,7 +5315,7 @@ textarea.cf-input-icon {
 
 @media(max-width: 480px) {
   .pack4-banner {
-    padding: 14px 12px;
+    padding: 14px 8px;
     gap: 8px;
   }
   .pack4-banner-heading { margin-bottom: 7px; }
