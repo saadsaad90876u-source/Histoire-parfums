@@ -532,7 +532,7 @@ function renderShop(filter, skipScroll){
   const m = meta[filter] || meta.men;
   currentFilter = filter;
   if(typeof setBannerCategory === 'function') setBannerCategory(filter);
-  if(typeof renderPack4BadgeImage === 'function') renderPack4BadgeImage();
+  if(typeof renderPack4BadgeImage === 'function') renderPack4BadgeImage(true);
   document.getElementById('shop-heading').textContent = filter === 'women' ? t('womenCollection') : t('menCollection');
   const grid = document.getElementById('shop-grid');
   grid.style.opacity = '0';
@@ -1221,7 +1221,7 @@ const PACK4_IMAGE_KEYS = { women: 'aura-pack4-badge-image-women', men: 'aura-pac
 const LEGACY_PACK4_IMAGE_KEY = 'aura-pack4-badge-image';
 let pack4BadgeImageUrls = { women: null, men: null };
 
-function renderPack4BadgeImage(){
+function renderPack4BadgeImage(animate){
   const img = document.getElementById('pack4-banner-img');
   const placeholder = document.getElementById('pack4-banner-image-placeholder');
   const editBtn = document.getElementById('pack4-banner-image-edit');
@@ -1238,6 +1238,11 @@ function renderPack4BadgeImage(){
     if(placeholder) placeholder.style.display = 'flex';
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
+  if(animate && img.style.display !== 'none'){
+    img.classList.remove('pack4-img-pop');
+    void img.offsetWidth; // force reflow so the animation restarts every time
+    img.classList.add('pack4-img-pop');
+  }
 }
 
 function preloadImage(url){
