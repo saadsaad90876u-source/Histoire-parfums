@@ -1242,6 +1242,13 @@ function renderPack4BadgeImage(animate){
     img.classList.remove('pack4-img-pop');
     void img.offsetWidth; // force reflow so the animation restarts every time
     img.classList.add('pack4-img-pop');
+    if(bannerEl){
+      bannerEl.classList.add('pack4-popping');
+      // Matches the .pack4ImgPop animation duration (0.6s) so the card's
+      // rounded-corner clipping is restored right as the image settles
+      // back to its resting scale, not before.
+      setTimeout(() => bannerEl.classList.remove('pack4-popping'), 650);
+    }
   }
 }
 

@@ -2464,7 +2464,7 @@ h1,h2,h3 {
 }
 
 .pc-stars {
-  color: #8C6B10;
+  color: #D4AF37;
   font-size: 10px;
   letter-spacing: 1px;
 }
@@ -4461,6 +4461,14 @@ textarea.cf-input-icon {
   .pack4-banner { animation: none; }
 }
 
+/* Temporarily let content overflow the card's rounded frame while the
+   product image is mid-bounce, so the pop-up peak isn't clipped by the
+   card edges. Restored to the normal clipped state as soon as the
+   animation ends (see triggerPack4ImgPop in script.js). */
+.pack4-banner.pack4-popping {
+  overflow: visible;
+}
+
 .pack4-banner::before {
   content: "";
   position: absolute;
@@ -4641,15 +4649,12 @@ textarea.cf-input-icon {
   white-space: nowrap;
   display: block;
   color: #F0E0B8;
-  /* Vertical (top-to-bottom) gradient for a subtle embossed/metallic depth —
-     every letter keeps the same brightness relative to its neighbours
-     (unlike a horizontal gradient), it's just lit from above like pressed
-     metal, plus a soft shadow underneath to lift it off the card. */
-  background: linear-gradient(180deg, #FBF3DD 0%, #F0E0B8 45%, #C9AD74 100%);
+  /* Same gold family as before, now as a simple two-tone gradient running
+     from a darker shade to a lighter shade of the same hue. */
+  background: linear-gradient(90deg, #A88224 0%, #F0E0B8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 3px 8px rgba(30,36,16,.35);
 }
 
 
@@ -4804,7 +4809,7 @@ textarea.cf-input-icon {
   letter-spacing: .04em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 10px 10px;
+  padding: 7px 10px;
   border: none;
   border-radius: 14px;
   transition: transform .12s ease, filter .18s ease;
@@ -4812,11 +4817,30 @@ textarea.cf-input-icon {
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 0 rgba(247,210,194,.55);
+  animation: pack4CtaPulse 2.4s ease-in-out 1s infinite;
+}
+
+/* Soft expanding ring pulse, same effect as the welcome screen's Entrer
+   button, tinted to match each gender's button color. */
+@keyframes pack4CtaPulse {
+  0%, 100% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 0 rgba(247,210,194,.55); }
+  50% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.4), 0 0 0 9px rgba(247,210,194,0); }
+}
+
+@keyframes pack4CtaPulseMen {
+  0%, 100% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 0 rgba(122,111,96,.55); }
+  50% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 9px rgba(122,111,96,0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pack4-banner-cta { animation: none; }
 }
 
 .pack4-banner.pack4-men .pack4-banner-cta {
   background: linear-gradient(120deg, #2A2420, #7A6F60 50%, #2A2420);
   color: #F4EEE4;
+  animation: pack4CtaPulseMen 2.4s ease-in-out 1s infinite;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -7205,7 +7229,7 @@ footer .footer-links-col h3 {
 /* Shared star glyphs (also used by the admin moderation panel) */
 .review-card-stars { display: flex; gap: 2px; font-size: 15px; margin-bottom: 12px; }
 .review-star { color: #E4DAC8; }
-.review-star.filled { color: #8C6B10; }
+.review-star.filled { color: #D4AF37; }
 .review-card-text {
   font-family: 'Fraunces', serif;
   font-size: 16.5px;
@@ -7245,7 +7269,7 @@ footer .footer-links-col h3 {
 
 .testimonial-rating-stars { display: flex; gap: 2px; font-size: 12px; }
 .testimonial-rating-stars .review-star { color: #E6DCC8; }
-.testimonial-rating-stars .review-star.filled { color: #8C6B10; }
+.testimonial-rating-stars .review-star.filled { color: #D4AF37; }
 .testimonial-rating-text {
   font-size: 11.5px;
   letter-spacing: .05em;
@@ -7329,7 +7353,7 @@ footer .footer-links-col h3 {
   margin-bottom: 14px;
 }
 .testimonial-stars .review-star { color: #E6DCC8; }
-.testimonial-stars .review-star.filled { color: #8C6B10; }
+.testimonial-stars .review-star.filled { color: #D4AF37; }
 
 .testimonial-text {
   font-family: 'Fraunces', serif;
@@ -7506,7 +7530,7 @@ footer .footer-links-col h3 {
   transition: color .15s ease, transform .15s ease;
 }
 .review-star-btn:hover { transform: scale(1.12); }
-.review-star-btn.active { color: #8C6B10; }
+.review-star-btn.active { color: #D4AF37; }
 
 .review-textarea {
   resize: vertical;
