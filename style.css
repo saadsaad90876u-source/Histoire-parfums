@@ -4440,7 +4440,7 @@ textarea.cf-input-icon {
      a rotating gradient as its paint source, so there's only ever one
      frame and it can never appear as a separate strip or bleed inward. */
   background:
-    linear-gradient(155deg, #9CAE55 0%, #7A8C3E 45%, #5C6B2E 100%) padding-box,
+    linear-gradient(155deg, #B8CC6E 0%, #7A8C3E 45%, #3E4A22 100%) padding-box,
     conic-gradient(from var(--pack4-angle, 0deg),
       var(--gold) 0deg, var(--gold-light) 90deg, var(--gold) 180deg,
       var(--gold-light) 270deg, var(--gold) 360deg) border-box;
