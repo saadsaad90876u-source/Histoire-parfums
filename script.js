@@ -51,7 +51,11 @@ function refreshScrollReveal(root){
       // that into a proper cascading reveal instead.
       entries.forEach((entry, i) => {
         if(entry.isIntersecting){
-          setTimeout(() => entry.target.classList.add('active'), i * 55);
+          // Cap the stagger so a big batch (fast flick-scroll crossing many
+          // elements' threshold in one callback) can't compound into a
+          // multi-second queue -- past a handful of items the extra delay
+          // reads as the page being "stuck" rather than a nice cascade.
+          setTimeout(() => entry.target.classList.add('active'), Math.min(i, 8) * 55);
           // Reveal once, then stop watching. Previously this kept observing
           // and removed "active" again the moment the element scrolled back
           // out of view -- so scrolling up and down rapidly toggled the
@@ -71,7 +75,21 @@ function refreshScrollReveal(root){
       rootMargin: '0px 0px -12% 0px'
     });
   }
-  scope.querySelectorAll('.reveal:not(.active)').forEach(el => scrollRevealObserver.observe(el));
+  scope.querySelectorAll('.reveal:not(.active)').forEach(el => {
+    scrollRevealObserver.observe(el);
+    // Safety net: if this element is somehow never marked "active" (an
+    // IntersectionObserver edge case, a re-render race condition, the
+    // element sitting just outside every threshold check, etc.), force it
+    // visible after 4s regardless. Without this, a rare miss left the
+    // card permanently stuck in its pre-reveal state -- translated down
+    // and half-transparent -- which is exactly the "slides down and
+    // freezes there, looking faded" symptom. A real reveal (triggered by
+    // the observer) always happens well before 4s, so this timer normally
+    // never does anything; it only kicks in as a last-resort fallback.
+    if(el.dataset.revealFallback) return;
+    el.dataset.revealFallback = '1';
+    setTimeout(() => el.classList.add('active'), 4000);
+  });
 }
 document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());
 // In case this script runs after DOMContentLoaded already fired (e.g. deferred load timing).
@@ -112,7 +130,22 @@ function seqProcessQueue(){
   const src = next.dataset.src;
   if(!src){ seqProcessQueue(); return; }
   seqImageLoading = true;
-  const finish = () => { seqImageLoading = false; seqProcessQueue(); };
+  let settled = false;
+  const finish = () => {
+    if(settled) return;
+    settled = true;
+    clearTimeout(watchdog);
+    seqImageLoading = false;
+    seqProcessQueue();
+  };
+  // Watchdog: if a single image/video hangs (slow network, stalled
+  // connection, or a load/error event that never fires for some edge
+  // case) the strict one-at-a-time queue would otherwise stall forever,
+  // silently blocking every product photo below it from ever appearing
+  // -- which is exactly what causes the feed to seem "stuck" mid-scroll.
+  // Forcing the queue to move on after 6s means one bad request can
+  // never freeze the rest of the page.
+  const watchdog = setTimeout(finish, 6000);
   // <img> signals "done" with a 'load' event, but <video>/<audio> never
   // fire 'load' at all -- their equivalent is 'loadeddata'. Using 'load'
   // unconditionally here would mean seqImageLoading never resets once a
@@ -1244,10 +1277,10 @@ function renderPack4BadgeImage(animate){
     img.classList.add('pack4-img-pop');
     if(bannerEl){
       bannerEl.classList.add('pack4-popping');
-      // Matches the .pack4ImgPop animation duration (0.6s) so the card's
+      // Matches the .pack4ImgPop animation duration (1.1s) so the card's
       // rounded-corner clipping is restored right as the image settles
       // back to its resting scale, not before.
-      setTimeout(() => bannerEl.classList.remove('pack4-popping'), 650);
+      setTimeout(() => bannerEl.classList.remove('pack4-popping'), 1150);
     }
   }
 }

@@ -4503,13 +4503,15 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-img.pack4-img-pop {
-  animation: pack4ImgPop .6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: pack4ImgPop 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes pack4ImgPop {
-  0%   { transform: scale(0.3); opacity: 0; }
-  55%  { transform: scale(1.28); opacity: 1; }
-  75%  { transform: scale(1.05); }
+  0%   { transform: scale(0.2); opacity: 0; }
+  38%  { transform: scale(1.38); opacity: 1; }
+  55%  { transform: scale(0.9); }
+  70%  { transform: scale(1.2); }
+  85%  { transform: scale(1.0); }
   100% { transform: scale(1.12); }
 }
 
@@ -4650,11 +4652,15 @@ textarea.cf-input-icon {
   display: block;
   color: #F0E0B8;
   /* Same gold family as before, now as a simple two-tone gradient running
-     from a darker shade to a lighter shade of the same hue. */
-  background: linear-gradient(90deg, #A88224 0%, #F0E0B8 100%);
+     from a darker shade to a lighter shade of the same hue. The dark end
+     is deepened further and a soft dark shadow is added underneath so the
+     dark portion stays legible against the card's mid-tone green instead
+     of nearly disappearing into it. */
+  background: linear-gradient(90deg, #4A3510 0%, #F0E0B8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 6px rgba(20,16,6,.55);
 }
 
 
@@ -4829,8 +4835,8 @@ textarea.cf-input-icon {
 }
 
 @keyframes pack4CtaPulseMen {
-  0%, 100% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 0 rgba(122,111,96,.55); }
-  50% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 9px rgba(122,111,96,0); }
+  0%, 100% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 0 rgba(244,238,228,.65); }
+  50% { box-shadow: 0 12px 26px -10px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25), 0 0 0 10px rgba(244,238,228,0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
