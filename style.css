@@ -2126,6 +2126,21 @@ h1,h2,h3 {
   box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
 
+/* Fix: the shorthand "transition" above lists opacity but not transform,
+   which silently overrides (not merges with) the .reveal system's own
+   "opacity, transform" transition -- CSS shorthand always replaces every
+   sub-property it's responsible for, even ones it doesn't mention, once a
+   rule of equal-or-higher specificity comes later in the file. The result
+   was cards fading in but skipping their slide-up entirely (opacity
+   animated, transform snapped instantly). This more specific selector
+   (two classes + :not()) restores the transform transition, but only
+   while the card is still mid-reveal -- once .active lands, this stops
+   matching and the plain .product-card rule above governs hover/etc.
+   again exactly as before. */
+.product-card.reveal:not(.active) {
+  transition: box-shadow .5s cubic-bezier(.22,.61,.36,1), border-color .5s cubic-bezier(.22,.61,.36,1), opacity 0.55s cubic-bezier(.22,.61,.36,1), transform 0.55s cubic-bezier(.22,.61,.36,1);
+}
+
 /* ============================================================
    LUXURY CARD LAYER -- additive only.
    Every color below is derived from the site's existing primary
@@ -4169,6 +4184,16 @@ footer {
   background: #1C1512;
 }
 
+/* Fix: same shorthand-override issue as the other cards above -- this
+   transition doesn't mention opacity or transform at all, so this button
+   never had any reveal animation (it just snapped straight to visible,
+   no fade, no slide). Scoped to the pre-active state only, so the
+   button's own hover transition (background .25s ease) still applies
+   normally once revealed. */
+.pp-order-btn.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+}
+
 @media(max-width:480px) {
   .trust-grid {
     grid-template-columns: 1fr;
@@ -4447,6 +4472,16 @@ textarea.cf-input-icon {
   animation: pack4-border-spin 6s linear infinite;
 }
 
+/* Fix: same shorthand-override issue as .product-card/.contact-card --
+   this transition doesn't mention opacity, so the offer banner's own
+   .reveal fade never played (only a fast .25s slide, no fade). Scoped to
+   the pre-active state only, so the card's own hover transition
+   (transform .25s ease, box-shadow .25s ease) still applies normally
+   once revealed. */
+.pack4-banner.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+}
+
 @property --pack4-angle {
   syntax: '<angle>';
   inherits: false;
@@ -4682,7 +4717,7 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: #F4EEE4;
+  color: #D8C49B; /* same champagne gold as the cart badge (.cart-badge) */
 }
 
 
@@ -6847,6 +6882,16 @@ textarea.cf-input-icon {
   background: #F4EEE4;
   box-shadow: 0 2px 8px rgba(0,0,0,.05);
   transition: transform .35s ease, box-shadow .35s ease;
+}
+
+/* Fix: same shorthand-override issue as .product-card above -- this
+   transition doesn't mention opacity, so it silently killed the
+   .reveal fade (only the slide half worked, and even that ran at .35s
+   instead of the intended .7s). Scoped to the pre-active state only, so
+   the card's own hover transition (transform .35s ease, box-shadow .35s
+   ease) still applies normally once revealed. */
+.contact-card.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
 .contact-card:hover {
