@@ -2126,6 +2126,21 @@ h1,h2,h3 {
   box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
 
+/* Fix: the shorthand "transition" above lists opacity but not transform,
+   which silently overrides (not merges with) the .reveal system's own
+   "opacity, transform" transition -- CSS shorthand always replaces every
+   sub-property it's responsible for, even ones it doesn't mention, once a
+   rule of equal-or-higher specificity comes later in the file. The result
+   was cards fading in but skipping their slide-up entirely (opacity
+   animated, transform snapped instantly). This more specific selector
+   (two classes + :not()) restores the transform transition, but only
+   while the card is still mid-reveal -- once .active lands, this stops
+   matching and the plain .product-card rule above governs hover/etc.
+   again exactly as before. */
+.product-card.reveal:not(.active) {
+  transition: box-shadow .5s cubic-bezier(.22,.61,.36,1), border-color .5s cubic-bezier(.22,.61,.36,1), opacity 0.55s cubic-bezier(.22,.61,.36,1), transform 0.55s cubic-bezier(.22,.61,.36,1);
+}
+
 /* ============================================================
    LUXURY CARD LAYER -- additive only.
    Every color below is derived from the site's existing primary
@@ -4169,6 +4184,16 @@ footer {
   background: #1C1512;
 }
 
+/* Fix: same shorthand-override issue as the other cards above -- this
+   transition doesn't mention opacity or transform at all, so this button
+   never had any reveal animation (it just snapped straight to visible,
+   no fade, no slide). Scoped to the pre-active state only, so the
+   button's own hover transition (background .25s ease) still applies
+   normally once revealed. */
+.pp-order-btn.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+}
+
 @media(max-width:480px) {
   .trust-grid {
     grid-template-columns: 1fr;
@@ -4447,6 +4472,16 @@ textarea.cf-input-icon {
   animation: pack4-border-spin 6s linear infinite;
 }
 
+/* Fix: same shorthand-override issue as .product-card/.contact-card --
+   this transition doesn't mention opacity, so the offer banner's own
+   .reveal fade never played (only a fast .25s slide, no fade). Scoped to
+   the pre-active state only, so the card's own hover transition
+   (transform .25s ease, box-shadow .25s ease) still applies normally
+   once revealed. */
+.pack4-banner.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+}
+
 @property --pack4-angle {
   syntax: '<angle>';
   inherits: false;
@@ -4508,9 +4543,16 @@ textarea.cf-input-icon {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.65) 50%, transparent 60%);
+  /* The lit band now spans the gradient's full width (0% -> 100%, like
+     .sf-btn's own sweep) instead of being squeezed into a narrow 40-60%
+     slice. A narrow band covers only a small fraction of the total
+     travel distance, so most of the 1s used to sound like a full second
+     was actually empty runway before/after a near-instant flash across
+     the photo. Widening the band is what actually slows the visible
+     sweep down, rather than just stretching more empty time around it. */
+  background-image: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.65) 50%, transparent 100%);
   background-repeat: no-repeat;
-  background-size: 300% 100%;
+  background-size: 250% 100%;
   background-position: -100% 0;
   -webkit-mask-image: var(--pack4-shine-mask, none);
   -webkit-mask-source-type: alpha; /* older WebKit defaults prefixed masks to luminance; force alpha */
@@ -4529,7 +4571,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-image.pack4-shine-active::after {
-  animation: pack4ImageShine 1s ease-in-out 1;
+  animation: pack4ImageShine 1.4s ease-in-out 1;
 }
 
 @keyframes pack4ImageShine {
@@ -4682,7 +4724,19 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: #F4EEE4;
+  /* Pulled from the card's own spinning gold border (#8A6D3A / #F0E0B8)
+     instead of the cart badge's flatter #D8C49B, so it reads as part of
+     the same metal rather than a plain tan sitting on top of green. The
+     lighter, warmer highlight stop (#F0E0B8) is used as the solid fill
+     -- against the card's green gradient this has much stronger contrast
+     than #D8C49B did, so it no longer sinks into the background. The
+     dark shadow underneath is what actually does the "luxury" work: it
+     carves the letters out from the green (light or dark patches of the
+     gradient alike) the way foil-stamped text is pressed into a surface,
+     giving depth without needing any motion or gradient animation that
+     could still wash out depending on what's behind it. */
+  color: #F0E0B8;
+  text-shadow: 0 2px 3px rgba(20,14,4,.5);
 }
 
 
@@ -6847,6 +6901,16 @@ textarea.cf-input-icon {
   background: #F4EEE4;
   box-shadow: 0 2px 8px rgba(0,0,0,.05);
   transition: transform .35s ease, box-shadow .35s ease;
+}
+
+/* Fix: same shorthand-override issue as .product-card above -- this
+   transition doesn't mention opacity, so it silently killed the
+   .reveal fade (only the slide half worked, and even that ran at .35s
+   instead of the intended .7s). Scoped to the pre-active state only, so
+   the card's own hover transition (transform .35s ease, box-shadow .35s
+   ease) still applies normally once revealed. */
+.contact-card.reveal:not(.active) {
+  transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
 .contact-card:hover {
