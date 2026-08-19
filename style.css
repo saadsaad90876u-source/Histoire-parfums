@@ -4724,7 +4724,19 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: #D8C49B; /* same champagne gold as the cart badge (.cart-badge) */
+  /* Pulled from the card's own spinning gold border (#8A6D3A / #F0E0B8)
+     instead of the cart badge's flatter #D8C49B, so it reads as part of
+     the same metal rather than a plain tan sitting on top of green. The
+     lighter, warmer highlight stop (#F0E0B8) is used as the solid fill
+     -- against the card's green gradient this has much stronger contrast
+     than #D8C49B did, so it no longer sinks into the background. The
+     dark shadow underneath is what actually does the "luxury" work: it
+     carves the letters out from the green (light or dark patches of the
+     gradient alike) the way foil-stamped text is pressed into a surface,
+     giving depth without needing any motion or gradient animation that
+     could still wash out depending on what's behind it. */
+  color: #F0E0B8;
+  text-shadow: 0 1px 0 rgba(40,28,10,.5), 0 3px 10px rgba(20,14,4,.45);
 }
 
 
