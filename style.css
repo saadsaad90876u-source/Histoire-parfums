@@ -4717,7 +4717,14 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  color: #D8C49B; /* same champagne gold as the cart badge (.cart-badge) */
+  color: #F7D2C2; /* shiny pink highlight from .sf-btn[data-f="women"]'s gradient */
+}
+
+/* Homme: swap to the shiny metallic-grey highlight from
+   .sf-btn[data-f="men"]'s gradient, so "3 parfums" always matches
+   whichever gender toggle (Femme/Homme) is currently active. */
+.pack4-banner.pack4-men .pack4-banner-heading-main {
+  color: #7A6F60;
 }
 
 
