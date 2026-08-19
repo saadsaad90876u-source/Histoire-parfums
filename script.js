@@ -561,11 +561,11 @@ const meta = {
 
 let currentFilter = 'women';
 let shopRenderTimer = null;
-function renderShop(filter, skipScroll){
+function renderShop(filter, skipScroll, playPack4Shine){
   const m = meta[filter] || meta.men;
   currentFilter = filter;
   if(typeof setBannerCategory === 'function') setBannerCategory(filter);
-  if(typeof renderPack4BadgeImage === 'function') renderPack4BadgeImage(true);
+  if(typeof renderPack4BadgeImage === 'function') renderPack4BadgeImage(playPack4Shine);
   document.getElementById('shop-heading').textContent = filter === 'women' ? t('womenCollection') : t('menCollection');
   const grid = document.getElementById('shop-grid');
   grid.style.opacity = '0';
@@ -613,7 +613,7 @@ document.querySelectorAll('.sf-btn, .nav-filter').forEach(btn=>{
   btn.addEventListener('click', (e)=>{
     e.preventDefault();
     if(btn.classList.contains('sf-btn') && btn.dataset.f === currentFilter) return;
-    renderShop(btn.dataset.f, true);
+    renderShop(btn.dataset.f, true, true);
   });
 });
 
@@ -1254,11 +1254,12 @@ const PACK4_IMAGE_KEYS = { women: 'aura-pack4-badge-image-women', men: 'aura-pac
 const LEGACY_PACK4_IMAGE_KEY = 'aura-pack4-badge-image';
 let pack4BadgeImageUrls = { women: null, men: null };
 
-function renderPack4BadgeImage(animate){
+function renderPack4BadgeImage(playShine){
   const img = document.getElementById('pack4-banner-img');
   const placeholder = document.getElementById('pack4-banner-image-placeholder');
   const editBtn = document.getElementById('pack4-banner-image-edit');
   const bannerEl = document.getElementById('pack4-banner-btn');
+  const imageWrap = document.getElementById('pack4-banner-image');
   if(bannerEl) bannerEl.classList.toggle('pack4-men', currentFilter === 'men');
   if(!img) return;
   const url = pack4BadgeImageUrls[currentFilter];
@@ -1266,22 +1267,24 @@ function renderPack4BadgeImage(animate){
     img.src = url;
     img.style.display = 'block';
     if(placeholder) placeholder.style.display = 'none';
+    // Keep the shine overlay's mask pointed at the exact same image the
+    // user is currently seeing, so the sweep clips to that photo's own
+    // silhouette (see .pack4-banner-image::after in style.css). Without
+    // this, the shine would just be a plain rectangle over the whole box.
+    if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${url}")`);
   } else {
     img.style.display = 'none';
     if(placeholder) placeholder.style.display = 'flex';
+    if(imageWrap) imageWrap.style.removeProperty('--pack4-shine-mask');
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
-  if(animate && img.style.display !== 'none'){
-    img.classList.remove('pack4-img-pop');
-    void img.offsetWidth; // force reflow so the animation restarts every time
-    img.classList.add('pack4-img-pop');
-    if(bannerEl){
-      bannerEl.classList.add('pack4-popping');
-      // Matches the .pack4ImgPop animation duration (1.1s) so the card's
-      // rounded-corner clipping is restored right as the image settles
-      // back to its resting scale, not before.
-      setTimeout(() => bannerEl.classList.remove('pack4-popping'), 1150);
-    }
+  if(playShine && imageWrap && img.style.display !== 'none'){
+    // Remove-then-reflow-then-add is required to replay the animation on
+    // every switch: toggling a class that's already present doesn't
+    // restart a CSS animation, only adding a class that wasn't there does.
+    imageWrap.classList.remove('pack4-shine-active');
+    void imageWrap.offsetWidth;
+    imageWrap.classList.add('pack4-shine-active');
   }
 }
 
