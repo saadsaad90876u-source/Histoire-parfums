@@ -4543,9 +4543,16 @@ textarea.cf-input-icon {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.65) 50%, transparent 60%);
+  /* The lit band now spans the gradient's full width (0% -> 100%, like
+     .sf-btn's own sweep) instead of being squeezed into a narrow 40-60%
+     slice. A narrow band covers only a small fraction of the total
+     travel distance, so most of the 1s used to sound like a full second
+     was actually empty runway before/after a near-instant flash across
+     the photo. Widening the band is what actually slows the visible
+     sweep down, rather than just stretching more empty time around it. */
+  background-image: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.65) 50%, transparent 100%);
   background-repeat: no-repeat;
-  background-size: 300% 100%;
+  background-size: 250% 100%;
   background-position: -100% 0;
   -webkit-mask-image: var(--pack4-shine-mask, none);
   -webkit-mask-source-type: alpha; /* older WebKit defaults prefixed masks to luminance; force alpha */
@@ -4564,7 +4571,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-banner-image.pack4-shine-active::after {
-  animation: pack4ImageShine 1s ease-in-out 1;
+  animation: pack4ImageShine 1.4s ease-in-out 1;
 }
 
 @keyframes pack4ImageShine {
@@ -4717,52 +4724,7 @@ textarea.cf-input-icon {
   text-transform: uppercase;
   white-space: nowrap;
   display: block;
-  /* Two background layers, both clipped to the letter shapes: the
-     bottom one is the exact same static gradient as
-     .sf-btn[data-f="women"]'s button fill, and the top one is the exact
-     same white diagonal sweep gradient used by .sf-btn::before. Fusing
-     them into one element's background (rather than a separate overlay,
-     which isn't possible once background-clip:text is in play) is what
-     lets both be clipped identically to the text -- it reproduces the
-     same color, same sweep gradient/angle/width, and same one-shot
-     timing as the Femme/Homme buttons, just applied to glyphs instead
-     of a button's solid box. */
-  background-image:
-    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #6E5A46, #F7D2C2 50%, #6E5A46);
-  background-size: 250% 100%, 100% 100%;
-  background-repeat: no-repeat, no-repeat;
-  background-position: -100% 0, 0 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/* Homme: exact same gradient as .sf-btn[data-f="men"]'s background. */
-.pack4-banner.pack4-men .pack4-banner-heading-main {
-  background-image:
-    linear-gradient(115deg, transparent 0%, rgba(255,255,255,.4) 50%, transparent 100%),
-    linear-gradient(120deg, #2A2420, #7A6F60 50%, #2A2420);
-  background-size: 250% 100%, 100% 100%;
-  background-repeat: no-repeat, no-repeat;
-}
-
-/* One-shot sweep, only the top (white) layer moves -- same duration and
-   easing as .sf-btn's sfSweep. JS (see renderPack4BadgeImage) adds this
-   class on page load and replays it on every Femme/Homme switch, exactly
-   when .sf-btn's own sweep replays for whichever button becomes active. */
-.pack4-banner-heading-main.pack4-heading-shine {
-  animation: pack4HeadingSweep .5s cubic-bezier(0.4,0,0.2,1);
-}
-
-@keyframes pack4HeadingSweep {
-  from { background-position: -100% 0, 0 0; }
-  to   { background-position: 200% 0, 0 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pack4-banner-heading-main.pack4-heading-shine { animation: none; }
+  color: #D8C49B; /* same champagne gold as the cart badge (.cart-badge) */
 }
 
 

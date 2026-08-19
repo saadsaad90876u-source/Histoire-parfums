@@ -1278,18 +1278,6 @@ function renderPack4BadgeImage(playShine){
     if(imageWrap) imageWrap.style.removeProperty('--pack4-shine-mask');
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
-  const headingMain = bannerEl ? bannerEl.querySelector('.pack4-banner-heading-main') : null;
-  if(headingMain){
-    // Same remove-then-reflow-then-add trick as the image shine above,
-    // needed to *replay* the CSS animation on every gender switch (a
-    // still-present class won't restart it). Runs on every renderShop
-    // call (including initial load) so it mirrors .sf-btn's own sweep,
-    // which likewise plays once on load and again each time a button
-    // becomes newly .active.
-    headingMain.classList.remove('pack4-heading-shine');
-    void headingMain.offsetWidth;
-    headingMain.classList.add('pack4-heading-shine');
-  }
   if(playShine && imageWrap && img.style.display !== 'none'){
     // Remove-then-reflow-then-add is required to replay the animation on
     // every switch: toggling a class that's already present doesn't
