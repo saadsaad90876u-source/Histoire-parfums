@@ -22,7 +22,11 @@ svg:not([width]) { width: 1em; height: 1em; }
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 35vh;
-  background: #000000 url('/welcome-bg.webp') center center / cover no-repeat;
+  background:
+    radial-gradient(ellipse 90% 70% at 6% 4%, rgba(216,228,150,.68) 0%, rgba(138,154,70,.36) 22%, transparent 52%),
+    linear-gradient(128deg, transparent 28%, rgba(180,196,110,.26) 45%, transparent 64%),
+    linear-gradient(155deg, rgba(160,176,90,.22) 0%, transparent 42%),
+    linear-gradient(160deg, #232b13 0%, #10140a 45%, #050603 100%);
   overflow: hidden;
 }
 /* Repeat visits within the same tab/session skip the splash entirely --
@@ -101,10 +105,9 @@ try {
      no need to hold up rendering while these download. The
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
-<link rel="preload" as="image" fetchpriority="high" href="/welcome-bg.webp">
 <link rel="preload" as="fetch" href="/welcome-chime.mp3" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
-<link rel="stylesheet" href="/style.css?v=11" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=12" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
@@ -144,10 +147,45 @@ try {
 </head>
 <body>
 <div id="welcome-screen">
+  <!-- Same real header + announcement bar as the shop page (see #announcement-bar
+       and <header> below), duplicated at the top of the splash screen. This is a
+       plain visual copy -- these buttons aren't wired to the menu/search/cart
+       logic that runs on the real header once the shop is visible, since none of
+       that state (cart contents, menu panel, etc.) exists yet before "Entrer" is
+       pressed. -->
+  <div id="welcome-announcement-bar" class="ws-header-copy">
+    <div class="ab-track">
+      <div class="ab-group">
+        <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span>Livraison gratuite à partir de 195 DH</span></span>
+      </div>
+      <div class="ab-group" aria-hidden="true">
+        <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span>Livraison gratuite à partir de 195 DH</span></span>
+      </div>
+    </div>
+  </div>
+  <header class="ws-header-copy">
+    <div class="nav-wrap">
+      <div class="nav-left">
+        <button type="button" aria-label="Menu" tabindex="-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <div class="support-wrap">
+          <button type="button" aria-label="Service client" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v-1a8 8 0 0 1 16 0v1"/><path d="M2 15.5a2.5 2.5 0 0 1 2.5-2.5H6v6H4.5A2.5 2.5 0 0 1 2 16.5v-1z"/><path d="M22 15.5a2.5 2.5 0 0 0-2.5-2.5H18v6h1.5a2.5 2.5 0 0 0 2.5-2.5v-1z"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>
+          </button>
+        </div>
+      </div>
+      <button type="button" class="logo logo-center" tabindex="-1"><img src="/histoire-logo.webp" alt="HISTOIRE" class="logo-img" width="778" height="307"></button>
+      <div class="nav-icons">
+        <button aria-label="Search" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+        <button aria-label="Cart" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M1.5 2h2.6l2.1 12.4a2 2 0 0 0 2 1.6h9.9a2 2 0 0 0 2-1.6L22 6.5H5"/></svg></button>
+      </div>
+    </div>
+  </header>
   <div class="ws-glow"></div>
+  <div class="ws-shimmer"></div>
   <div class="ws-sheen" aria-hidden="true"></div>
   <div class="ws-content">
-    <div class="ws-logo-wrap"><img class="ws-logo" src="/histoire-logo.webp" alt="HISTOIRE" width="778" height="307"></div>
     <p class="ws-subtitle">Explorez la Collection</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Entrer</span></button>
   </div>
@@ -1511,7 +1549,7 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
-<script src="/script.js?v=11" defer></script>
-<script src="/motion.js?v=11" defer></script>
+<script src="/script.js?v=12" defer></script>
+<script src="/motion.js?v=12" defer></script>
 </body>
 </html>

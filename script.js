@@ -80,15 +80,57 @@ function refreshScrollReveal(root){
     // Safety net: if this element is somehow never marked "active" (an
     // IntersectionObserver edge case, a re-render race condition, the
     // element sitting just outside every threshold check, etc.), force it
-    // visible after 4s regardless. Without this, a rare miss left the
+    // visible eventually regardless. Without this, a rare miss left the
     // card permanently stuck in its pre-reveal state -- translated down
     // and half-transparent -- which is exactly the "slides down and
-    // freezes there, looking faded" symptom. A real reveal (triggered by
-    // the observer) always happens well before 4s, so this timer normally
-    // never does anything; it only kicks in as a last-resort fallback.
+    // freezes there, looking faded" symptom.
+    //
+    // This used to fire after a flat 4s from when observation started,
+    // which sounds safe but isn't: refreshScrollReveal() observes every
+    // .reveal element on the page right at load, including ones far
+    // below the fold (FAQ, contact, etc.). Any visitor who spends more
+    // than 4s reading the top of the page before scrolling down -- which
+    // is most visitors -- would have those far-off sections silently
+    // force-activated in the background by this timer before ever
+    // scrolling near them, so by the time they actually arrived there
+    // was nothing left to reveal. That's why sections could appear to
+    // "already be revealed" before being reached.
+    //
+    // Fix: only arm this fallback once the element is actually near the
+    // viewport (a generous 60% margin below/above), using the *same*
+    // observer machinery rather than a second one, so a section sitting
+    // far down the page doesn't start its countdown until there's a
+    // realistic chance the user is about to scroll it into view.
     if(el.dataset.revealFallback) return;
     el.dataset.revealFallback = '1';
-    setTimeout(() => el.classList.add('active'), 4000);
+    // Keep observing (don't unobserve on the first near-hit) and only
+    // actually arm the 4s timer while the element is continuously near.
+    // This guards against a real-world race: at the moment the page
+    // first loads, images/fonts/async product data haven't finished
+    // loading yet, so the document can be transiently *shorter* than its
+    // final height -- making a far-off section like FAQ or Contact look
+    // "near" for a brief instant, arming the fallback too early. Once the
+    // rest of the page loads in and pushes that section back down where
+    // it belongs, this cancels the stale timer instead of letting it fire
+    // anyway, so the section doesn't reveal itself before the user
+    // actually scrolls near it.
+    let fallbackTimer = null;
+    const armWhenNear = new IntersectionObserver((nearEntries) => {
+      nearEntries.forEach(nearEntry => {
+        if(nearEntry.isIntersecting){
+          if(!fallbackTimer){
+            fallbackTimer = setTimeout(() => {
+              nearEntry.target.classList.add('active');
+              armWhenNear.disconnect();
+            }, 4000);
+          }
+        } else if(fallbackTimer){
+          clearTimeout(fallbackTimer);
+          fallbackTimer = null;
+        }
+      });
+    }, { threshold: 0, rootMargin: '60% 0px 60% 0px' });
+    armWhenNear.observe(el);
   });
 }
 document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());

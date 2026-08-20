@@ -100,9 +100,69 @@
   align-items: center;
   justify-content: center;
   padding-bottom: 4vh;
-  background: #000000 url('/welcome-bg.webp') center center / cover no-repeat;
+  /* Pure-CSS stand-in for the old welcome-bg.webp photo: a dark green
+     base with a bright glow in the top-left (like the original photo's
+     highlight) and a couple of large, soft diagonal bands sweeping
+     across it to suggest the same curved light streaks, instead of a
+     photographic background. .ws-shimmer below adds the "glossy"
+     movement on top of this. */
+  background:
+    radial-gradient(ellipse 90% 70% at 6% 4%, rgba(216,228,150,.68) 0%, rgba(138,154,70,.36) 22%, transparent 52%),
+    linear-gradient(128deg, transparent 28%, rgba(180,196,110,.26) 45%, transparent 64%),
+    linear-gradient(155deg, rgba(160,176,90,.22) 0%, transparent 42%),
+    linear-gradient(160deg, #232b13 0%, #10140a 45%, #050603 100%);
   overflow: hidden;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+}
+
+/* Slow, continuous glossy shimmer -- separate from the one-shot .ws-sheen
+   sweep below, which only plays once on load. This one loops gently for
+   as long as the splash screen is up, so the background itself reads as
+   polished/reflective rather than a flat gradient. */
+.ws-shimmer {
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg,
+    transparent 40%,
+    rgba(255,255,255,.08) 47%,
+    rgba(255,255,255,.24) 50%,
+    rgba(255,255,255,.08) 53%,
+    transparent 60%);
+  background-size: 200% 200%;
+  animation: wsShimmerDrift 5s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+@keyframes wsShimmerDrift {
+  0%, 100% { transform: translate(-8%, -8%) rotate(0deg); }
+  50%      { transform: translate(8%, 8%) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-shimmer { animation: none; }
+}
+
+/* Visual copies of the real #announcement-bar / <header> shown on top of
+   the splash screen (see the markup at the top of #welcome-screen). The
+   header tag selector further down already makes any <header> element
+   fixed/styled the same way as the real one, so only the announcement
+   bar needs its own rule here since it uses a different id (kept
+   different on purpose, to avoid a duplicate #announcement-bar id
+   colliding with the real one and confusing code that queries it by
+   id once the shop page underneath is interacted with). */
+#welcome-announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4000;
+  height: 32px;
+  overflow: hidden;
+  background: #F4EEE4;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  display: flex;
+  align-items: center;
 }
 
 /* Black tint over the source photo -- was oxblood/maroon, now matches
