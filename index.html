@@ -147,41 +147,12 @@ try {
 </head>
 <body>
 <div id="welcome-screen">
-  <!-- Same real header + announcement bar as the shop page (see #announcement-bar
-       and <header> below), duplicated at the top of the splash screen. This is a
-       plain visual copy -- these buttons aren't wired to the menu/search/cart
-       logic that runs on the real header once the shop is visible, since none of
-       that state (cart contents, menu panel, etc.) exists yet before "Entrer" is
-       pressed. -->
-  <div id="welcome-announcement-bar" class="ws-header-copy">
-    <div class="ab-track">
-      <div class="ab-group">
-        <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span>Livraison gratuite à partir de 195 DH</span></span>
-      </div>
-      <div class="ab-group" aria-hidden="true">
-        <span class="ab-item"><svg class="ab-truck-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="10"/><path d="M16 10h3l3 3v4h-6z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg><span>Livraison gratuite à partir de 195 DH</span></span>
-      </div>
-    </div>
-  </div>
-  <header class="ws-header-copy">
-    <div class="nav-wrap">
-      <div class="nav-left">
-        <button type="button" aria-label="Menu" tabindex="-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        </button>
-        <div class="support-wrap">
-          <button type="button" aria-label="Service client" tabindex="-1">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v-1a8 8 0 0 1 16 0v1"/><path d="M2 15.5a2.5 2.5 0 0 1 2.5-2.5H6v6H4.5A2.5 2.5 0 0 1 2 16.5v-1z"/><path d="M22 15.5a2.5 2.5 0 0 0-2.5-2.5H18v6h1.5a2.5 2.5 0 0 0 2.5-2.5v-1z"/><path d="M20 19a4 4 0 0 1-4 3h-2"/></svg>
-          </button>
-        </div>
-      </div>
-      <button type="button" class="logo logo-center" tabindex="-1"><img src="/histoire-logo.webp" alt="HISTOIRE" class="logo-img" width="778" height="307"></button>
-      <div class="nav-icons">
-        <button aria-label="Search" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
-        <button aria-label="Cart" tabindex="-1"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M1.5 2h2.6l2.1 12.4a2 2 0 0 0 2 1.6h9.9a2 2 0 0 0 2-1.6L22 6.5H5"/></svg></button>
-      </div>
-    </div>
-  </header>
+  <!-- No duplicate header/announcement-bar here anymore: the real
+       #announcement-bar and <header> further down in the page (shared
+       with the shop view) are given a higher z-index than this splash
+       screen (see style.css), so they render on top of it, in their
+       exact real position and colors, and never move when the splash
+       fades out -- because they were never inside it to begin with. -->
   <div class="ws-glow"></div>
   <div class="ws-shimmer"></div>
   <div class="ws-sheen" aria-hidden="true"></div>
