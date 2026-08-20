@@ -7902,3 +7902,34 @@ footer .footer-links-col h3 {
     font-size: 12px;
   }
 }
+
+/* Variant used when the circles sit inside the dark welcome/splash
+   screen (above "Explorez la Collection") instead of the light
+   homepage -- same shapes, just re-colored for a dark background. */
+.ws-pack-circles {
+  padding: 0 0 26px;
+  opacity: 0;
+  animation: wsFadeIn 1.1s ease 0.4s forwards;
+}
+
+.ws-pack-circles .pack-circle-img-wrap {
+  border-color: #D8C49B;
+  background: rgba(216,196,155,.12);
+}
+
+.ws-pack-circles .pack-circle-label {
+  color: #EFE7D2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ws-pack-circles .pack-circle-item:hover .pack-circle-img-wrap {
+    border-color: #EFE7D2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-pack-circles {
+    animation: none;
+    opacity: 1;
+  }
+}

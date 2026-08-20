@@ -39,6 +39,16 @@
   paintCircleImages();
 
   function goToFilter(pf) {
+    // The circles now live inside #welcome-screen (above "Explorez la
+    // Collection"), so if the splash hasn't been dismissed yet, close it
+    // first -- otherwise the filter/scroll below would happen behind the
+    // still-visible overlay and the person would see nothing change.
+    if (typeof window.wsDismiss === 'function') {
+      var splash = document.getElementById('welcome-screen');
+      if (splash && document.body.contains(splash)) {
+        window.wsDismiss();
+      }
+    }
     var btn = document.querySelector('.sf-btn[data-f="' + pf + '"]');
     if (btn) btn.click();
     if (typeof scrollToSection === 'function') {

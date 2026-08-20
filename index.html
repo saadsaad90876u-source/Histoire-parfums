@@ -157,6 +157,22 @@ try {
   <div class="ws-shimmer"></div>
   <div class="ws-sheen" aria-hidden="true"></div>
   <div class="ws-content">
+    <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
+      <div class="pack-circles-row">
+        <button type="button" class="pack-circle-item" id="pack-circle-femme" data-pf="women" aria-label="Pack Femme">
+          <span class="pack-circle-img-wrap">
+            <img class="pack-circle-img" id="pack-circle-img-femme" src="" alt="Pack Femme">
+          </span>
+          <span class="pack-circle-label">Pack Femme</span>
+        </button>
+        <button type="button" class="pack-circle-item" id="pack-circle-homme" data-pf="men" aria-label="Pack Homme">
+          <span class="pack-circle-img-wrap">
+            <img class="pack-circle-img" id="pack-circle-img-homme" src="" alt="Pack Homme">
+          </span>
+          <span class="pack-circle-label">Pack Homme</span>
+        </button>
+      </div>
+    </section>
     <p class="ws-subtitle">Explorez la Collection</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Entrer</span></button>
   </div>
@@ -258,6 +274,10 @@ try {
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
   }
+  // Exposed so the Pack Femme/Homme circles (now living inside this
+  // splash screen) can dismiss it themselves when tapped, instead of
+  // filtering the shop underneath while the overlay still hides it.
+  window.wsDismiss = handleEnter;
 
   // touchstart fires the instant a finger touches the screen -- "click"
   // only fires after touchstart -> touchend on top of that, which is
@@ -363,25 +383,6 @@ try {
 </header>
 
 <main id="shop-view">
-<section class="pack-circles-section" id="pack-circles-section">
-  <div class="container">
-    <div class="pack-circles-row">
-      <button type="button" class="pack-circle-item" id="pack-circle-femme" data-pf="women" aria-label="Pack Femme">
-        <span class="pack-circle-img-wrap">
-          <img class="pack-circle-img" id="pack-circle-img-femme" src="" alt="Pack Femme">
-        </span>
-        <span class="pack-circle-label">Pack Femme</span>
-      </button>
-      <button type="button" class="pack-circle-item" id="pack-circle-homme" data-pf="men" aria-label="Pack Homme">
-        <span class="pack-circle-img-wrap">
-          <img class="pack-circle-img" id="pack-circle-img-homme" src="" alt="Pack Homme">
-        </span>
-        <span class="pack-circle-label">Pack Homme</span>
-      </button>
-    </div>
-  </div>
-</section>
-
 <section id="hero-banner" style="display:none;">
   <div class="hero-banner-frame" id="hero-banner-frame">
     <div id="hero-banner-content"></div>
