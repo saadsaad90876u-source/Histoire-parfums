@@ -101,110 +101,34 @@
      section so it fully covers the page content underneath. */
   z-index: 900;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 4vh;
-  /* Pure-CSS stand-in for the old welcome-bg.webp photo: a dark green
-     base with a bright glow in the top-left (like the original photo's
-     highlight) and a couple of large, soft diagonal bands sweeping
-     across it to suggest the same curved light streaks, instead of a
-     photographic background. .ws-shimmer below adds the "glossy"
-     movement on top of this. */
-  background:
-    radial-gradient(ellipse 90% 70% at 6% 4%, rgba(216,228,150,.68) 0%, rgba(138,154,70,.36) 22%, transparent 52%),
-    linear-gradient(128deg, transparent 28%, rgba(180,196,110,.26) 45%, transparent 64%),
-    linear-gradient(155deg, rgba(160,176,90,.22) 0%, transparent 42%),
-    linear-gradient(160deg, #232b13 0%, #10140a 45%, #050603 100%);
-  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  /* Not centered anymore: the real <footer> (moved in here while the
+     splash is up, not a copy -- see the script below) is now a flex
+     child too, so the layout just flows top-to-bottom and, on short
+     screens where the content plus the footer don't both fit, this
+     scrolls internally rather than clipping either one. */
+  justify-content: flex-start;
+  /* Clears the fixed announcement bar (32px) + header (64px) above it,
+     same 96px used site-wide for the same reason (see shop-section
+     etc.), so the pack circles never start out hidden underneath them. */
+  padding-top: 96px;
+  /* Plain white splash page -- no green tint, no dark overlay, no
+     background photo/gradient stand-in. */
+  background: #FFFFFF;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Slow, continuous glossy shimmer -- separate from the one-shot .ws-sheen
-   sweep below, which only plays once on load. This one loops gently for
-   as long as the splash screen is up, so the background itself reads as
-   polished/reflective rather than a flat gradient. */
-.ws-shimmer {
-  position: absolute;
-  inset: -20%;
-  background: linear-gradient(115deg,
-    transparent 40%,
-    rgba(255,255,255,.08) 47%,
-    rgba(255,255,255,.24) 50%,
-    rgba(255,255,255,.08) 53%,
-    transparent 60%);
-  background-size: 200% 200%;
-  animation: wsShimmerDrift 5s ease-in-out infinite;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-@keyframes wsShimmerDrift {
-  0%, 100% { transform: translate(-8%, -8%) rotate(0deg); }
-  50%      { transform: translate(8%, 8%) rotate(0deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ws-shimmer { animation: none; }
-}
-
-/* Black tint over the source photo -- was oxblood/maroon, now matches
-   the black header/splash palette instead of the old red theme. */
-#welcome-screen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.55) 100%),
-    radial-gradient(circle at 60% 15%, rgba(138,154,70,.30) 0%, rgba(0,0,0,.45) 38%, rgba(0,0,0,.75) 72%);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-#welcome-screen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.35);
-  mix-blend-mode: color;
-  pointer-events: none;
-}
-
-/* Soft, very gentle light bloom in the middle of the screen -- depth
-   without any texture/noise/grain, kept subtle so it reads as light,
-   not as a decoration. */
-.ws-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.056) 0%, rgba(255,255,255,.02) 32%, rgba(255,255,255,0) 62%);
-  pointer-events: none;
-}
-
-/* Same light-sweep effect as the Entrer button's ::after (see
-   .ws-enter-btn::after below), but scaled up to travel across the whole
-   splash screen once, behind the logo/text/button. */
-.ws-sheen {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg,
-    transparent 42%,
-    rgba(255,255,255,.05) 47%,
-    rgba(255,255,255,.22) 50%,
-    rgba(255,255,255,.05) 53%,
-    transparent 58%);
-  transform: translateX(-130%);
-  will-change: transform;
-  animation: wsBtnSweep 2.2s ease 1.6s 1 forwards;
-  pointer-events: none;
-}
-
 .ws-content {
-  position: relative;
-  z-index: 1;
+  flex: 1 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 0 24px;
+  justify-content: center;
+  padding: 24px 24px 40px;
 }
 
 .ws-logo-wrap {
@@ -225,7 +149,7 @@
   font-size: clamp(12px, 2.3vw, 15px);
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: #D8C49B;
+  color: var(--green, #5C6B2E);
   opacity: 0;
   margin: 0 0 30px;
   animation: wsFadeIn 1.1s ease 0.55s forwards;
@@ -275,11 +199,6 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Gold light sweep, still used by the full-screen .ws-sheen overlay. */
-@keyframes wsBtnSweep {
-  to { transform: translateX(130%); }
-}
-
 /* Soft expanding ring pulse on the Entrer button, looping to draw the eye
    without needing constant motion elsewhere on the screen. */
 @keyframes wsPulse {
@@ -292,14 +211,17 @@
   pointer-events: none;
 }
 
+/* Kept in the DOM (never removed) instead of being deleted outright, so
+   pressing the browser's Back button can bring the splash back exactly
+   as it was -- see the popstate handling in the script below. */
+#welcome-screen.ws-hidden {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ws-logo-wrap, .ws-subtitle, .ws-enter-btn {
     animation: none;
     opacity: 1;
-  }
-  .ws-sheen {
-    animation: none;
-    display: none;
   }
   #welcome-screen {
     transition: opacity 0.3s ease;
@@ -7903,28 +7825,13 @@ footer .footer-links-col h3 {
   }
 }
 
-/* Variant used when the circles sit inside the dark welcome/splash
-   screen (above "Explorez la Collection") instead of the light
-   homepage -- same shapes, just re-colored for a dark background. */
+/* Circles sitting inside the (now plain white) welcome/splash screen --
+   same shapes as the homepage version; no dark-background recoloring
+   needed anymore since the splash background is white too. */
 .ws-pack-circles {
   padding: 0 0 26px;
   opacity: 0;
   animation: wsFadeIn 1.1s ease 0.4s forwards;
-}
-
-.ws-pack-circles .pack-circle-img-wrap {
-  border-color: #D8C49B;
-  background: rgba(216,196,155,.12);
-}
-
-.ws-pack-circles .pack-circle-label {
-  color: #EFE7D2;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .ws-pack-circles .pack-circle-item:hover .pack-circle-img-wrap {
-    border-color: #EFE7D2;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

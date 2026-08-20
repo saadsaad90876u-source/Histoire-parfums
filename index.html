@@ -19,14 +19,10 @@ svg:not([width]) { width: 1em; height: 1em; }
   inset: 0;
   z-index: 999999;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 35vh;
-  background:
-    radial-gradient(ellipse 90% 70% at 6% 4%, rgba(216,228,150,.68) 0%, rgba(138,154,70,.36) 22%, transparent 52%),
-    linear-gradient(128deg, transparent 28%, rgba(180,196,110,.26) 45%, transparent 64%),
-    linear-gradient(155deg, rgba(160,176,90,.22) 0%, transparent 42%),
-    linear-gradient(160deg, #232b13 0%, #10140a 45%, #050603 100%);
+  padding-bottom: 4vh;
+  background: #FFFFFF;
   overflow: hidden;
 }
 /* Repeat visits within the same tab/session skip the splash entirely --
@@ -153,9 +149,6 @@ try {
        screen (see style.css), so they render on top of it, in their
        exact real position and colors, and never move when the splash
        fades out -- because they were never inside it to begin with. -->
-  <div class="ws-glow"></div>
-  <div class="ws-shimmer"></div>
-  <div class="ws-sheen" aria-hidden="true"></div>
   <div class="ws-content">
     <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
       <div class="pack-circles-row">
@@ -195,6 +188,28 @@ try {
   var fired = false;
   var chime = document.getElementById('ws-chime');
   var unlocked = false;
+
+  // The real, single <footer> element (logo, links, social icons,
+  // copyright) shared with the bottom of the shop page -- moved into
+  // the splash screen while it's up, and moved straight back to its
+  // original spot in the page the moment the visitor enters. It is
+  // never duplicated: at any given moment it lives in exactly one of
+  // the two places.
+  var footer = document.querySelector('footer');
+  var footerAnchor = null;
+  if (footer) {
+    footerAnchor = document.createComment('footer-original-position');
+    footer.parentNode.insertBefore(footerAnchor, footer);
+    screen.appendChild(footer);
+  }
+  function moveFooterToSplash() {
+    if (footer && footer.parentNode !== screen) screen.appendChild(footer);
+  }
+  function restoreFooter() {
+    if (footer && footerAnchor && footer.parentNode === screen) {
+      footerAnchor.parentNode.insertBefore(footer, footerAnchor.nextSibling);
+    }
+  }
 
   // The <audio>.play() approach still has a real, felt cold-start delay
   // on first playback (roughly the ~1s that was reported): even with
@@ -256,20 +271,37 @@ try {
     fallbackToAudioElement();
   }
 
-  function handleEnter() {
+  // true while the splash is the thing on screen; false once the visitor
+  // has entered the shop. Also used by the popstate handler below to
+  // decide whether Back should bring the splash back.
+  var splashOpen = true;
+
+  function handleEnter(pushHistory) {
     if (fired) return;
     fired = true;
+    splashOpen = false;
+    restoreFooter();
     try { sessionStorage.setItem('wsShown', '1'); } catch (e) {}
+    // Record "shop entered" as its own history entry (skipped when this
+    // runs from the popstate handler itself, e.g. pressing Forward again
+    // after having gone Back to the splash -- that navigation already
+    // supplies its own history entry, so pushing another here would be
+    // a duplicate). This is what lets the Back button return to the
+    // splash afterwards: going back from here lands on the page's
+    // original, pre-entry state.
+    if (pushHistory !== false) {
+      try { history.pushState({ shop: true }, '', location.pathname + location.search); } catch (e) {}
+    }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
-    // Remove from the DOM once the fade/slide-up transition finishes,
-    // so it stops intercepting taps/clicks even if the CSS transition
-    // event doesn't fire for some reason (fallback timer).
+    // Hide (not remove) once the fade/slide-up transition finishes, so it
+    // stops intercepting taps/clicks -- but stays in the DOM so pressing
+    // Back can bring it back exactly as it was, instead of being rebuilt.
     var done = false;
     function cleanup() {
       if (done) return;
       done = true;
-      screen.remove();
+      screen.classList.add('ws-hidden');
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
@@ -279,19 +311,37 @@ try {
   // filtering the shop underneath while the overlay still hides it.
   window.wsDismiss = handleEnter;
 
-  // iOS Safari quirk: setting overflow:hidden on <html> (done above,
-  // synchronously in <head>) stops normal scrollbar-driven scrolling,
-  // but it does NOT stop a finger-drag/swipe gesture from nudging the
-  // page underneath. That drag is enough to make Safari's address bar
-  // collapse/expand, which briefly resizes the visual viewport -- and
-  // for a frame or two, this fixed, full-screen overlay doesn't yet
-  // cover the newly-revealed strip at the bottom, so real shop content
-  // peeks through behind it. Blocking touchmove on the overlay itself
-  // (passive:false so preventDefault actually works) stops that drag
-  // from reaching the page at all, so the address bar never moves and
-  // no gap ever opens up. The Enter button still gets its own tap
-  // handled via touchstart above, so this doesn't block the CTA.
-  screen.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+  // Brings the splash back exactly as it was (no rebuild, no re-fetching
+  // audio) when the visitor presses the browser's Back button after
+  // having entered the shop. Exposed on window so it can also be wired
+  // into the app's own popstate handling in script.js if needed.
+  function reopenSplash() {
+    if (splashOpen) return;
+    fired = false;
+    splashOpen = true;
+    moveFooterToSplash();
+    screen.classList.remove('ws-hidden', 'ws-leaving');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  window.wsReopen = reopenSplash;
+
+  window.addEventListener('popstate', function (e) {
+    if (e.state && e.state.shop) {
+      // Forward-navigated (or otherwise landed) back onto the
+      // "shop entered" state while the splash happens to be showing --
+      // dismiss it again without pushing yet another history entry.
+      if (splashOpen) handleEnter(false);
+    } else {
+      // Landed on the page's original, pre-entry state -- bring the
+      // splash back.
+      reopenSplash();
+    }
+  });
+
+  // Note: the splash screen now scrolls internally (it holds the real
+  // <footer> below its main content -- see moveFooterToSplash() above),
+  // so touchmove is intentionally left alone here rather than blocked:
+  // blocking it would also block that scroll.
 
   // touchstart fires the instant a finger touches the screen -- "click"
   // only fires after touchstart -> touchend on top of that, which is
