@@ -279,6 +279,20 @@ try {
   // filtering the shop underneath while the overlay still hides it.
   window.wsDismiss = handleEnter;
 
+  // iOS Safari quirk: setting overflow:hidden on <html> (done above,
+  // synchronously in <head>) stops normal scrollbar-driven scrolling,
+  // but it does NOT stop a finger-drag/swipe gesture from nudging the
+  // page underneath. That drag is enough to make Safari's address bar
+  // collapse/expand, which briefly resizes the visual viewport -- and
+  // for a frame or two, this fixed, full-screen overlay doesn't yet
+  // cover the newly-revealed strip at the bottom, so real shop content
+  // peeks through behind it. Blocking touchmove on the overlay itself
+  // (passive:false so preventDefault actually works) stops that drag
+  // from reaching the page at all, so the address bar never moves and
+  // no gap ever opens up. The Enter button still gets its own tap
+  // handled via touchstart above, so this doesn't block the CTA.
+  screen.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+
   // touchstart fires the instant a finger touches the screen -- "click"
   // only fires after touchstart -> touchend on top of that, which is
   // exactly the kind of small-but-real gap a person can feel as lag.
