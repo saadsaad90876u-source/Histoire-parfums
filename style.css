@@ -7816,3 +7816,89 @@ footer .footer-links-col h3 {
 @media (max-width: 600px) {
   .testimonial-rating-line { flex-direction: column; gap: 4px; margin-bottom: 40px; }
 }
+
+/* ============================================================
+   PACK CIRCLES — "Pack Femme / Pack Homme" quick-nav shortcuts
+   Sits below the header, above the shop/collection section.
+   Added by request; images are painted in from the existing
+   offre-pack (pack4) badge images via pack-circles.js.
+   ============================================================ */
+.pack-circles-section {
+  padding: 28px 0 6px;
+}
+
+.pack-circles-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.pack-circle-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pack-circle-img-wrap {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid var(--gold, #8A9A46);
+  background: var(--line, #E4DAC8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .25s ease, border-color .25s ease;
+}
+
+.pack-circle-item:active .pack-circle-img-wrap {
+  transform: scale(.96);
+}
+
+.pack-circle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pack-circle-label {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .04em;
+  text-align: center;
+  color: var(--ink, #201A16);
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pack-circle-item:hover .pack-circle-img-wrap {
+    border-color: var(--green, #5C6B2E);
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 480px) {
+  .pack-circles-row {
+    gap: 32px;
+  }
+  .pack-circle-img-wrap {
+    width: 80px;
+    height: 80px;
+  }
+  .pack-circle-label {
+    font-size: 12px;
+  }
+}
