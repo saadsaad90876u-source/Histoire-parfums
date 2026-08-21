@@ -2377,6 +2377,8 @@ function setAdminUI(){
   renderShop(currentFilter, true);
   renderHeroBanner();
   trackingBannerCtrl.render();
+  wsBannerCtrl1.render();
+  wsBannerCtrl2.render();
   renderPack4BadgeImage();
   renderFeaturedProducts();
   if(currentProductPage) renderProductPage();

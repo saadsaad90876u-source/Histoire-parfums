@@ -42,9 +42,9 @@
   --emerald-light: #D6DFA0;
   --emerald-deep: #333D14;
   --navy-dark: #14100E;        /* was near-black navy -> warm ink */
-  --cream: #F4EEE4;            /* was pure white -> warm bone */
+  --cream: #FFFFFF;            /* unified to pure white store background */
   --ink: #201A16;              /* body text -> warm charcoal */
-  --paper: #FBF8F2;            /* was pure white paper -> warm paper */
+  --paper: #FFFFFF;            /* unified to pure white store background */
   --line: #E4DAC8;             /* was cool grey hairline -> warm hairline */
   --card-line: #E4DAC8;
   --text-soft: #6E6255;
@@ -352,7 +352,7 @@ a {
   z-index: 4000;
   height: 32px;
   overflow: hidden;
-  background: #F4EEE4;
+  background: #FFFFFF;
   border-bottom: 1px solid rgba(0,0,0,.12);
   display: flex;
   align-items: center;
@@ -477,7 +477,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  background: #F4EEE4;
+  background: #FFFFFF;
   border-radius: 14px;
   padding: 8px;
   min-width: 172px;
@@ -627,7 +627,7 @@ header {
   height: 100%;
   object-fit: cover;
   display: block;
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 .hb-track {
@@ -712,7 +712,7 @@ header {
 }
 
 .hb-dot.active {
-  background: #F4EEE4;
+  background: #FFFFFF;
   width: 22px;
   border-radius: 4px;
 }
@@ -796,7 +796,7 @@ header {
   aspect-ratio: 1/1;
   border-radius: 24px;
   overflow: hidden;
-  background: #F7F2E9;
+  background: #FFFFFF;
   box-shadow: 0 10px 30px rgba(0,0,0,.08);
   transition: transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s cubic-bezier(.22,.61,.36,1);
 }
@@ -1494,7 +1494,7 @@ header {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #F7F2E9;
+  background: #FFFFFF;
   border: 1px solid var(--line);
   display: flex;
   align-items: center;
@@ -1591,7 +1591,7 @@ header {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #FBF8F2;
+  background: #FFFFFF;
   border: 1.5px solid rgba(166,64,76,.4);
   border-radius: 12px;
   padding: 12px 14px;
@@ -1637,7 +1637,7 @@ header {
   align-items: center;
   gap: 8px;
   border: 1px solid #150F0C;
-  background: #FAF7F0;
+  background: #FFFFFF;
   border-radius: 10px;
   padding: 9px 11px;
   font-weight: 500;
@@ -1958,7 +1958,7 @@ header {
    ============================================================ */
 
 body {
-  background: #FBF8F2;
+  background: #FFFFFF;
   color: var(--ink);
   font-family: 'Work Sans', sans-serif;
   font-weight: 400;
@@ -1994,7 +1994,7 @@ h1,h2,h3 {
   border-radius: 0;
   overflow: hidden;
   aspect-ratio: 1/1;
-  background: #FBF8F2;
+  background: #FFFFFF;
   animation: heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;
   box-shadow: none;
   border: none;
@@ -2084,7 +2084,7 @@ h1,h2,h3 {
   border-radius: 14px;
   padding: 0;
   overflow: hidden;
-  background: #FBF8F2;
+  background: #FFFFFF;
   border: 1.5px solid rgba(10, 47, 29, .22);
   cursor: pointer;
   will-change: transform;
@@ -2192,7 +2192,7 @@ h1,h2,h3 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 /* ---------- glossy glass overlay on product photo ---------- */
@@ -2292,7 +2292,7 @@ h1,h2,h3 {
   height: 30px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: #FBF8F2;
+  background: #FFFFFF;
   cursor: pointer;
   font-size: 13px;
   display: flex;
@@ -2586,7 +2586,7 @@ h1,h2,h3 {
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-  background: #FBF8F2;
+  background: #FFFFFF;
   border-radius: 0;
   padding: calc(env(safe-area-inset-top, 0px) + 100px) 24px 32px;
   z-index: 3001;
@@ -2644,7 +2644,7 @@ h1,h2,h3 {
   padding: 13px 16px;
   border-radius: 12px;
   border: 2px solid #150F0C;
-  background: #FBF8F2;
+  background: #FFFFFF;
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
   color: var(--ink);
@@ -2663,7 +2663,7 @@ h1,h2,h3 {
 
 .confirm-details,
 .payment-card {
-  background: #FBF8F2;
+  background: #FFFFFF;
   border: 1px solid #E4DAC8;
 }
 
@@ -2805,7 +2805,7 @@ h1,h2,h3 {
   height: calc(100dvh - 32px);
   width: 360px;
   max-width: 88vw;
-  background: #FBF8F2;
+  background: #FFFFFF;
   z-index: 2001;
   transform: translateX(100%);
   transition: transform .45s cubic-bezier(.2,.8,.2,1);
@@ -2852,7 +2852,7 @@ h1,h2,h3 {
   border-radius: 8px;
   overflow: hidden;
   flex-shrink: 0;
-  background: #FAF7F0;
+  background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2998,7 +2998,7 @@ footer {
 #product-page {
   padding: 96px 20px 60px;
   min-height: 100vh;
-  background: var(--cream, #F4EEE4);
+  background: var(--cream, #FFFFFF);
   color: var(--ink);
 }
 
@@ -3022,7 +3022,7 @@ footer {
   padding: 108px 20px 60px;
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(180deg, #FBF8F2 0%, #FBF8F2 22%, #FBF8F2 78%, #FBF8F2 100%);
+  background: #FFFFFF;
   color: var(--ink);
 }
 
@@ -3058,7 +3058,7 @@ footer {
 /* Emerald accent for checkout form fields, matching the trust/feature color used across the store (gold stays reserved for price) */
 #checkout-page .cf-input {
   border: 1.5px solid rgba(166,64,76,.4);
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 #checkout-page .cf-input:focus {
@@ -3074,7 +3074,7 @@ footer {
 
 #checkout-page .trust-item {
   border-color: rgba(166,64,76,.35);
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 #checkout-page .trust-item::first-letter {
@@ -3283,7 +3283,7 @@ footer {
 }
 
 .pp-dot.active {
-  background: #F4EEE4;
+  background: #FFFFFF;
   width: 20px;
   border-radius: 4px;
 }
@@ -3760,7 +3760,7 @@ footer {
   height: calc(100vh - 32px);
   height: calc(100dvh - 32px);
   transform: translateX(-100%);
-  background: #F4EEE4;
+  background: #FFFFFF;
   color: var(--ink);
 }
 
@@ -3830,7 +3830,7 @@ footer {
 #cart-drawer {
   width: 88vw;
   max-width: 88vw;
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 #cart-drawer .wd-header {
@@ -4076,7 +4076,7 @@ footer {
 /* ---------- product page: qty/cart row, order button, trust badges, accordion ---------- */
 
 .pp-qty-stepper {
-  background: #F4EEE4;
+  background: #FFFFFF;
   border: 1.5px solid var(--line);
   border-radius: 10px;
   padding: 11px 16px;
@@ -4185,7 +4185,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px 18px;
-  background: #F4EEE4;
+  background: #FFFFFF;
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 24px;
@@ -4303,7 +4303,7 @@ footer {
   border: 1px solid rgba(20,18,14,.08);
   border-radius: 14px;
   padding: 18px 20px;
-  background: #F4EEE4;
+  background: #FFFFFF;
   box-shadow: 0 4px 18px -12px rgba(20,18,14,.15);
 }
 
@@ -4337,7 +4337,7 @@ footer {
   padding: 24px 22px;
   border: 1px solid rgba(20,18,14,.1);
   border-radius: 14px;
-  background: #FAF7F0;
+  background: #FFFFFF;
 }
 
 .pp-review-form-label {
@@ -4719,7 +4719,7 @@ textarea.cf-input-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #FBF8F2;
+  background: #FFFFFF;
   border-radius: 18px;
   padding: 7.6px 16px;
   margin-bottom: 8px;
@@ -4992,7 +4992,7 @@ textarea.cf-input-icon {
   padding: 11px 14px 11px 40px;
   border-radius: 10px;
   border: 1px solid #E6DCC8;
-  background: #FAF7F0;
+  background: #FFFFFF;
   color: var(--ink);
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
@@ -5172,7 +5172,7 @@ textarea.cf-input-icon {
   gap: 8px;
   cursor: pointer;
   transition: border-color .2s ease, background .2s ease;
-  background: #FAF7F0;
+  background: #FFFFFF;
   padding: 8px;
   text-align: center;
   position: relative;
@@ -5185,7 +5185,7 @@ textarea.cf-input-icon {
 
 .pack4-slot:hover {
   border-color: var(--emerald);
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 .pack4-qty-row {
@@ -5222,7 +5222,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-qty-btn {
-  background: #F4EEE4;
+  background: #FFFFFF;
   border: none;
   font-size: 17px;
   color: var(--ink);
@@ -5231,7 +5231,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-qty-btn:hover {
-  background: #FAF7F0;
+  background: #FFFFFF;
 }
 
 .pack4-qty-num {
@@ -5261,7 +5261,7 @@ textarea.cf-input-icon {
 
 .pack4-cart-btn {
   width: 100%;
-  background: #F4EEE4;
+  background: #FFFFFF;
   color: #9C8F7C;
   border: 1.5px solid #DED2BC;
   border-radius: 10px;
@@ -5301,7 +5301,7 @@ textarea.cf-input-icon {
 .pack4-slot.filled {
   border-style: solid;
   border-color: var(--emerald);
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 .pack4-slot .co-item-thumb {
@@ -5384,7 +5384,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-picker-item:hover {
-  background: #FAF7F0;
+  background: #FFFFFF;
 }
 
 .pack4-picker-item:last-child {
@@ -5424,7 +5424,7 @@ textarea.cf-input-icon {
 }
 
 .pack4-picker-item.is-selected {
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 @media(max-width: 480px) {
@@ -6720,7 +6720,7 @@ textarea.cf-input-icon {
 
 .lux-section {
   padding: 90px 0;
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 #contact-section {
@@ -6734,11 +6734,11 @@ textarea.cf-input-icon {
 
 #faq-section {
   padding-bottom: 30px;
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 .lux-section-alt {
-  background: #FBF8F2;
+  background: #FFFFFF;
 }
 
 .lux-eyebrow {
@@ -6865,7 +6865,7 @@ textarea.cf-input-icon {
   padding: 18px 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #F4EEE4;
+  background: #FFFFFF;
   box-shadow: 0 2px 8px rgba(0,0,0,.05);
   transition: transform .35s ease, box-shadow .35s ease;
 }
@@ -7043,7 +7043,7 @@ footer .footer-links-col h3 {
   right: 0;
   bottom: 0;
   padding: 14px 24px calc(14px + env(safe-area-inset-bottom, 0px));
-  background: #F4EEE4;
+  background: #FFFFFF;
   border-top: 1px solid var(--line);
   z-index: 5;
 }
@@ -7125,7 +7125,7 @@ footer .footer-links-col h3 {
   width: 100mm;
   min-height: 150mm;
   margin: 0 auto;
-  background: #F4EEE4;
+  background: #FFFFFF;
   border: 1px solid #201A16;
   padding: 6mm;
   font-family: 'Work Sans', sans-serif;
@@ -7372,7 +7372,7 @@ footer .footer-links-col h3 {
   align-items: center;
   text-align: center;
   padding: 28px 32px 22px;
-  background: #FBF8F2;
+  background: #FFFFFF;
   border: 1px solid rgba(10, 47, 29, .07);
   border-radius: 24px;
   box-shadow: 0 24px 48px -28px rgba(10, 47, 29, .28), 0 2px 10px rgba(10, 20, 40, .04);
