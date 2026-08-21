@@ -7750,14 +7750,14 @@ footer .footer-links-col h3 {
    offre-pack (pack4) badge images via pack-circles.js.
    ============================================================ */
 .pack-circles-section {
-  padding: 28px 0 6px;
+  padding: 52px 0 6px;
 }
 
 .pack-circles-row {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 48px;
+  gap: 96px;
   flex-wrap: wrap;
 }
 
@@ -7776,8 +7776,8 @@ footer .footer-links-col h3 {
 }
 
 .pack-circle-img-wrap {
-  width: 92px;
-  height: 92px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   overflow: hidden;
   border: 1.5px solid var(--gold, #8A9A46);
@@ -7818,11 +7818,11 @@ footer .footer-links-col h3 {
 
 @media (max-width: 480px) {
   .pack-circles-row {
-    gap: 32px;
+    gap: 64px;
   }
   .pack-circle-img-wrap {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
   }
   .pack-circle-label {
     font-size: 12px;
