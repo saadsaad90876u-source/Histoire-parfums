@@ -1454,7 +1454,24 @@ const trackingBannerCtrl = createBannerController({
   inputId: 'tracking-banner-input',
   storageKey: 'aura-tracking-banner'
 });
+// Two banners on the splash screen itself, stacked right below the
+// Entrer button. Same reusable banner system as the ones above; not
+// tied to the men/women filter either, so they're loaded once, directly.
+const wsBannerCtrl1 = createBannerController({
+  sectionId: 'ws-banner-1',
+  contentId: 'ws-banner-1-content',
+  inputId: 'ws-banner-1-input',
+  storageKey: 'aura-ws-banner-1'
+});
+const wsBannerCtrl2 = createBannerController({
+  sectionId: 'ws-banner-2',
+  contentId: 'ws-banner-2-content',
+  inputId: 'ws-banner-2-input',
+  storageKey: 'aura-ws-banner-2'
+});
 trackingBannerCtrl.load();
+wsBannerCtrl1.load();
+wsBannerCtrl2.load();
 heroBannerCtrl.load();
 bottomBannerCtrl.load();
 bottomBannerCtrl2.load();
@@ -5653,7 +5670,13 @@ if(footerLinkWomen) footerLinkWomen.addEventListener('click', () => {
   scrollToSection('shop-heading');
 });
 const footerLinkFaq = document.getElementById('footer-link-faq');
-if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => scrollToSection('faq-section'));
+if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => {
+  // FAQ now lives inside the splash screen (below the two admin
+  // banners), not on the shop page -- reopen the splash first (if it
+  // isn't already showing) so there's something to scroll to.
+  if(typeof window.wsReopen === 'function') window.wsReopen();
+  setTimeout(() => scrollToSection('faq-section'), 60);
+});
 const footerLinkContact = document.getElementById('footer-link-contact');
 if(footerLinkContact) footerLinkContact.addEventListener('click', () => scrollToSection('contact-section'));
 
