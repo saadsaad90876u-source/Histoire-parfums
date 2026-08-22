@@ -5673,11 +5673,7 @@ if(footerLinkWomen) footerLinkWomen.addEventListener('click', () => {
 });
 const footerLinkFaq = document.getElementById('footer-link-faq');
 if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => {
-  // FAQ now lives inside the splash screen (below the two admin
-  // banners), not on the shop page -- reopen the splash first (if it
-  // isn't already showing) so there's something to scroll to.
-  if(typeof window.wsReopen === 'function') window.wsReopen();
-  setTimeout(() => scrollToSection('faq-section'), 60);
+  scrollToSection('faq-section');
 });
 const footerLinkContact = document.getElementById('footer-link-contact');
 if(footerLinkContact) footerLinkContact.addEventListener('click', () => scrollToSection('contact-section'));

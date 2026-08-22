@@ -175,144 +175,6 @@ try {
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
   </div>
 
-  <!-- Two admin-manageable banner slots, right below the Entrer button.
-       Same reusable banner system (upload/carousel/admin controls) as
-       the homepage and tracking-page banners -- see createBannerController
-       in script.js. Not tied to the Femme/Homme filter, so each is loaded
-       once, directly. -->
-  <section id="ws-banner-1" style="display:none; margin-top:24px;">
-    <div class="hero-banner-frame" id="ws-banner-1-frame">
-      <div id="ws-banner-1-content"></div>
-    </div>
-  </section>
-  <input type="file" id="ws-banner-1-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-
-  <section id="ws-banner-2" style="display:none; margin-top:16px;">
-    <div class="hero-banner-frame" id="ws-banner-2-frame">
-      <div id="ws-banner-2-content"></div>
-    </div>
-  </section>
-  <input type="file" id="ws-banner-2-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-
-  <!-- FAQ and testimonials, moved here from the home page (below the
-       two admin banners above), instead of living further down the
-       shop page. -->
-<section class="lux-section lux-section-alt" id="faq-section">
-  <div class="container">
-    <div class="lux-eyebrow">Questions Fréquentes</div>
-    <h2 class="lux-heading reveal">FAQ</h2>
-    <p class="lux-subheading">Tout ce que vous devez savoir avant de commander.</p>
-    <div class="faq-list" id="faq-list">
-      <div class="faq-item reveal d1">
-        <button type="button" class="faq-question">
-          <span>Quels types de parfums proposez-vous ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.</div></div>
-      </div>
-      <div class="faq-item reveal d2">
-        <button type="button" class="faq-question">
-          <span>Comment choisir le parfum idéal ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.</div></div>
-      </div>
-      <div class="faq-item reveal d3">
-        <button type="button" class="faq-question">
-          <span>Quelle est la tenue moyenne ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.</div></div>
-      </div>
-      <div class="faq-item reveal d4">
-        <button type="button" class="faq-question">
-          <span>Vos parfums sont-ils sûrs pour la peau ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.</div></div>
-      </div>
-      <div class="faq-item reveal d1">
-        <button type="button" class="faq-question">
-          <span>Comment fonctionne la livraison ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.</div></div>
-      </div>
-      <div class="faq-item reveal d2">
-        <button type="button" class="faq-question">
-          <span>Quels sont les délais de livraison ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.</div></div>
-      </div>
-      <div class="faq-item reveal d3">
-        <button type="button" class="faq-question">
-          <span>Puis-je retourner un produit ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.</div></div>
-      </div>
-      <div class="faq-item reveal d4">
-        <button type="button" class="faq-question">
-          <span>Comment conserver mon parfum ?</span>
-          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="lux-section lux-section-alt" id="reviews-section">
-  <div class="container">
-    <div class="lux-eyebrow">Témoignages</div>
-    <h2 class="lux-heading reveal">Avis de nos clients</h2>
-    <p class="lux-subheading">Découvrez ce que nos clients pensent de leurs parfums HISTOIRE.</p>
-
-    <div class="reviews-summary" id="reviews-summary" style="display:none; align-items:center; justify-content:center; gap:8px; margin:-8px 0 22px; font-family:'Work Sans',sans-serif;">
-      <span id="reviews-summary-stars" style="color:#C9A24B; font-size:16px; letter-spacing:1px;"></span>
-      <span id="reviews-summary-text" style="font-size:14px; color:var(--text-soft);"></span>
-    </div>
-
-    <div class="testimonial-carousel reveal" id="testimonial-carousel">
-      <div class="testimonial-carousel-track" id="reviews-grid">
-        <div class="testimonial-skel"></div>
-      </div>
-      <div class="testimonial-dots" id="testimonial-dots"></div>
-    </div>
-
-    <div class="testimonial-empty" id="reviews-empty-note" style="display:none;">
-      <p class="testimonial-empty-title">Les premières confidences n'ont pas encore été partagées.</p>
-      <p class="testimonial-empty-sub">Soyez le premier à raconter votre expérience avec HISTOIRE.</p>
-    </div>
-
-    <div class="testimonial-write-row">
-      <button type="button" class="reviews-write-btn-outline" id="reviews-write-btn">Écrire un avis</button>
-    </div>
-  </div>
-</section>
-
-<!-- Copy of "Restons en contact" (id changed to avoid a duplicate-ID
-     clash with the original below, which stays on the shop page too --
-     unlike FAQ/Témoignages above, this one wasn't moved, just copied). -->
-<section class="lux-section" id="ws-contact-section">
-  <div class="container">
-    <div class="lux-eyebrow">Restons en contact</div>
-    <h2 class="lux-heading reveal">Contactez-nous</h2>
-    <p class="lux-subheading">Notre équipe est à votre écoute pour toute question sur votre commande ou nos parfums.</p>
-    <div class="contact-grid">
-      <a class="contact-card reveal d1" href="https://wa.me/212712804966" target="_blank" rel="noopener">
-        <div class="contact-card-icon contact-card-icon-wa"><svg viewBox="0 0 32 32" style="width:22px;height:22px;" fill="#fff"><path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.35.65 4.55 1.78 6.43L3 29l7.24-2.24a12.44 12.44 0 0 0 5.76 1.46c6.894 0 12.5-5.607 12.5-12.5S22.895 3 16.001 3zm0 22.6c-1.86 0-3.62-.5-5.14-1.4l-.37-.22-4.3 1.33 1.36-4.2-.24-.38a10.06 10.06 0 0 1-1.55-5.24c0-5.58 4.55-10.13 10.13-10.13 5.58 0 10.13 4.55 10.13 10.13.13 5.58-4.42 10.11-10 10.11zm5.55-7.58c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.96 1.18-.18.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.68-1.65-.94-2.26-.25-.6-.5-.51-.68-.52-.18-.01-.38-.01-.58-.01-.2 0-.53.08-.8.38-.28.3-1.05 1.03-1.05 2.5 0 1.47 1.08 2.9 1.23 3.1.15.2 2.13 3.25 5.16 4.56.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.07-.13-.27-.2-.57-.35z"/></svg></div>
-        <h3>WhatsApp</h3>
-      </a>
-      <a class="contact-card reveal d2" href="https://www.instagram.com/histoire.parfums?igsh=N3dsZjMweDNzNzRw&amp;utm_source=qr" target="_blank" rel="noopener">
-        <div class="contact-card-icon contact-card-icon-ig"><svg viewBox="0 0 24 24" style="width:18px;height:18px;" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="#fff" stroke="none"/></svg></div>
-        <h3>Instagram</h3>
-      </a>
-    </div>
-  </div>
-</section>
-
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
 </div>
 <script>
@@ -325,11 +187,9 @@ try {
   // cases), skip the greeting itself -- the chime and its up-front
   // audio decoding below -- since re-playing that every single page
   // load in the session would just be wasted work for a sound that was
-  // already heard. It does NOT skip the rest of this script: the FAQ
-  // and testimonials sections now live only inside this splash screen
-  // (see the footer-link-faq handling in script.js and reopenSplash()
-  // below), so the ability to reopen it has to keep working even on a
-  // page load where the greeting itself was skipped.
+  // already heard. The splash itself is now just the logo/circles/
+  // enter-button greeting -- FAQ and testimonials live permanently on
+  // the shop page, so skipping the greeting here doesn't hide them.
   var skipGreeting = false;
   try {
     skipGreeting = document.documentElement.classList.contains('ws-skip');
@@ -716,12 +576,118 @@ try {
 </section>
 <input type="file" id="bottom-banner-2-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
-<!-- ============================================================
-     LUXURY MARKETING SECTIONS (additive) — About, Why Choose,
-     Trust Stats, Testimonials, Lifestyle, FAQ, Newsletter, Contact.
-     ============================================================ -->
+<!-- Two more admin-manageable banner slots (same reusable banner
+     system as hero/bottom banners -- see createBannerController in
+     script.js), permanently visible here on the shop page instead of
+     only inside the one-time splash screen. -->
+<section id="ws-banner-1" style="display:none; margin-top:24px;">
+  <div class="hero-banner-frame" id="ws-banner-1-frame">
+    <div id="ws-banner-1-content"></div>
+  </div>
+</section>
+<input type="file" id="ws-banner-1-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
+<section id="ws-banner-2" style="display:none; margin-top:16px;">
+  <div class="hero-banner-frame" id="ws-banner-2-frame">
+    <div id="ws-banner-2-content"></div>
+  </div>
+</section>
+<input type="file" id="ws-banner-2-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
+<section class="lux-section lux-section-alt" id="faq-section">
+  <div class="container">
+    <div class="lux-eyebrow">Questions Fréquentes</div>
+    <h2 class="lux-heading reveal">FAQ</h2>
+    <p class="lux-subheading">Tout ce que vous devez savoir avant de commander.</p>
+    <div class="faq-list" id="faq-list">
+      <div class="faq-item reveal d1">
+        <button type="button" class="faq-question">
+          <span>Quels types de parfums proposez-vous ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <button type="button" class="faq-question">
+          <span>Comment choisir le parfum idéal ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <button type="button" class="faq-question">
+          <span>Quelle est la tenue moyenne ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <button type="button" class="faq-question">
+          <span>Vos parfums sont-ils sûrs pour la peau ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.</div></div>
+      </div>
+      <div class="faq-item reveal d1">
+        <button type="button" class="faq-question">
+          <span>Comment fonctionne la livraison ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.</div></div>
+      </div>
+      <div class="faq-item reveal d2">
+        <button type="button" class="faq-question">
+          <span>Quels sont les délais de livraison ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.</div></div>
+      </div>
+      <div class="faq-item reveal d3">
+        <button type="button" class="faq-question">
+          <span>Puis-je retourner un produit ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.</div></div>
+      </div>
+      <div class="faq-item reveal d4">
+        <button type="button" class="faq-question">
+          <span>Comment conserver mon parfum ?</span>
+          <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lux-section lux-section-alt" id="reviews-section">
+  <div class="container">
+    <div class="lux-eyebrow">Témoignages</div>
+    <h2 class="lux-heading reveal">Avis de nos clients</h2>
+    <p class="lux-subheading">Découvrez ce que nos clients pensent de leurs parfums HISTOIRE.</p>
+
+    <div class="reviews-summary" id="reviews-summary" style="display:none; align-items:center; justify-content:center; gap:8px; margin:-8px 0 22px; font-family:'Work Sans',sans-serif;">
+      <span id="reviews-summary-stars" style="color:#C9A24B; font-size:16px; letter-spacing:1px;"></span>
+      <span id="reviews-summary-text" style="font-size:14px; color:var(--text-soft);"></span>
+    </div>
+
+    <div class="testimonial-carousel reveal" id="testimonial-carousel">
+      <div class="testimonial-carousel-track" id="reviews-grid">
+        <div class="testimonial-skel"></div>
+      </div>
+      <div class="testimonial-dots" id="testimonial-dots"></div>
+    </div>
+
+    <div class="testimonial-empty" id="reviews-empty-note" style="display:none;">
+      <p class="testimonial-empty-title">Les premières confidences n'ont pas encore été partagées.</p>
+      <p class="testimonial-empty-sub">Soyez le premier à raconter votre expérience avec HISTOIRE.</p>
+    </div>
+
+    <div class="testimonial-write-row">
+      <button type="button" class="reviews-write-btn-outline" id="reviews-write-btn">Écrire un avis</button>
+    </div>
+  </div>
+</section>
 
 <section class="lux-section" id="contact-section">
   <div class="container">
