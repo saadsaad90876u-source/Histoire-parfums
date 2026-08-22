@@ -1469,9 +1469,25 @@ const wsBannerCtrl2 = createBannerController({
   inputId: 'ws-banner-2-input',
   storageKey: 'aura-ws-banner-2'
 });
+// Splash-only banner slots (top, right below the header; bottom, right
+// below the enter button). Same reusable system, own storage keys.
+const splashBannerTopCtrl = createBannerController({
+  sectionId: 'splash-banner-top',
+  contentId: 'splash-banner-top-content',
+  inputId: 'splash-banner-top-input',
+  storageKey: 'aura-splash-banner-top'
+});
+const splashBannerBottomCtrl = createBannerController({
+  sectionId: 'splash-banner-bottom',
+  contentId: 'splash-banner-bottom-content',
+  inputId: 'splash-banner-bottom-input',
+  storageKey: 'aura-splash-banner-bottom'
+});
 trackingBannerCtrl.load();
 wsBannerCtrl1.load();
 wsBannerCtrl2.load();
+splashBannerTopCtrl.load();
+splashBannerBottomCtrl.load();
 heroBannerCtrl.load();
 bottomBannerCtrl.load();
 bottomBannerCtrl2.load();
@@ -2379,6 +2395,8 @@ function setAdminUI(){
   trackingBannerCtrl.render();
   wsBannerCtrl1.render();
   wsBannerCtrl2.render();
+  splashBannerTopCtrl.render();
+  splashBannerBottomCtrl.render();
   renderPack4BadgeImage();
   renderFeaturedProducts();
   if(currentProductPage) renderProductPage();

@@ -154,6 +154,19 @@ try {
        screen (see style.css), so they render on top of it, in their
        exact real position and colors, and never move when the splash
        fades out -- because they were never inside it to begin with. -->
+
+  <!-- Splash-only banner slot, right below the real header (which sits
+       on top of this screen via z-index -- see comment above). Same
+       reusable banner system as the other banners on the site -- see
+       createBannerController in script.js. Shown only on the splash
+       screen, not on the shop page. -->
+  <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
+    <div class="hero-banner-frame" id="splash-banner-top-frame">
+      <div id="splash-banner-top-content"></div>
+    </div>
+  </section>
+  <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+
   <div class="ws-content">
     <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
       <div class="pack-circles-row">
@@ -173,6 +186,17 @@ try {
     </section>
     <p class="ws-subtitle">Une Histoire à Vivre</p>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
+
+    <!-- Splash-only banner slot, right below the enter button. Same
+         reusable banner system -- see createBannerController in
+         script.js. Shown only on the splash screen, not on the shop
+         page. -->
+    <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin-top:20px;">
+      <div class="hero-banner-frame" id="splash-banner-bottom-frame">
+        <div id="splash-banner-bottom-content"></div>
+      </div>
+    </section>
+    <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
@@ -200,43 +224,17 @@ try {
   var unlocked = false;
 
   // The real, single <footer> element (logo, links, social icons,
-  // copyright) shared with the bottom of the shop page -- moved into
-  // the splash screen while it's up, and moved straight back to its
-  // original spot in the page the moment the visitor enters. It is
-  // never duplicated: at any given moment it lives in exactly one of
-  // the two places.
-  //
-  // <footer> is defined further down in the page, after this script
-  // tag, so document.querySelector('footer') would find nothing if run
-  // right now (the parser hasn't reached it yet) -- wait for the whole
-  // document to finish parsing first.
-  var footer = null;
-  var footerAnchor = null;
-  function initFooterMove() {
-    footer = document.querySelector('footer');
-    if (footer) {
-      footerAnchor = document.createComment('footer-original-position');
-      footer.parentNode.insertBefore(footerAnchor, footer);
-      // Only auto-move it in on load when the splash is actually about
-      // to show. On a skipped-greeting page load the footer needs to
-      // stay put, visible at the bottom of the shop page -- it only
-      // moves into the splash later, if/when reopenSplash() runs.
-      if (!skipGreeting) screen.appendChild(footer);
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooterMove);
-  } else {
-    initFooterMove();
-  }
-  function moveFooterToSplash() {
-    if (footer && footer.parentNode !== screen) screen.appendChild(footer);
-  }
-  function restoreFooter() {
-    if (footer && footerAnchor && footer.parentNode === screen) {
-      footerAnchor.parentNode.insertBefore(footer, footerAnchor.nextSibling);
-    }
-  }
+  // copyright) used to be moved into the splash screen while it was
+  // up. Now that the splash is just the logo/circles/enter-button
+  // greeting (FAQ, testimonials and contact all live permanently on
+  // the shop page), the footer no longer needs to follow it in --
+  // moving it in caused its bottom part (social icons, copyright) to
+  // get clipped by the splash's fixed, overflow:hidden viewport on
+  // shorter screens. It now simply stays in its one, original spot in
+  // the page at all times, hidden behind the splash overlay (like the
+  // rest of the shop page) until the visitor dismisses it.
+  function moveFooterToSplash() {}
+  function restoreFooter() {}
 
   // The <audio>.play() approach still has a real, felt cold-start delay
   // on first playback (roughly the ~1s that was reported): even with
@@ -370,10 +368,9 @@ try {
     }
   });
 
-  // Note: the splash screen now scrolls internally (it holds the real
-  // <footer> below its main content -- see moveFooterToSplash() above),
-  // so touchmove is intentionally left alone here rather than blocked:
-  // blocking it would also block that scroll.
+  // Note: touchmove is intentionally left alone here rather than
+  // blocked, since blocking it isn't needed now that the splash's
+  // content (logo, circles, button) always fits within the screen.
 
   // touchstart fires the instant a finger touches the screen -- "click"
   // only fires after touchstart -> touchend on top of that, which is
