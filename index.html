@@ -224,17 +224,30 @@ try {
   var unlocked = false;
 
   // The real, single <footer> element (logo, links, social icons,
-  // copyright) used to be moved into the splash screen while it was
-  // up. Now that the splash is just the logo/circles/enter-button
-  // greeting (FAQ, testimonials and contact all live permanently on
-  // the shop page), the footer no longer needs to follow it in --
-  // moving it in caused its bottom part (social icons, copyright) to
-  // get clipped by the splash's fixed, overflow:hidden viewport on
-  // shorter screens. It now simply stays in its one, original spot in
-  // the page at all times, hidden behind the splash overlay (like the
-  // rest of the shop page) until the visitor dismisses it.
-  function moveFooterToSplash() {}
-  function restoreFooter() {}
+  // copyright) is moved into the splash screen while it's up, and
+  // moved back to its original spot in the shop page once the visitor
+  // taps "Entrer" (or navigates back from the shop). It's a move, not
+  // a clone, so there's still only ever one footer in the DOM. The
+  // splash itself scrolls internally (#welcome-screen has
+  // overflow-y:auto in style.css) instead of being pinned to exactly
+  // one screen height, so the footer is reachable by scrolling down
+  // past the circles/button without ever getting clipped.
+  var footer = document.querySelector('footer');
+  var footerHome = footer ? { parent: footer.parentNode, next: footer.nextSibling } : null;
+  var wsChime = document.getElementById('ws-chime');
+
+  function moveFooterToSplash() {
+    if (!footer) return;
+    screen.insertBefore(footer, wsChime || null);
+  }
+  function restoreFooter() {
+    if (!footer || !footerHome) return;
+    if (footerHome.next && footerHome.next.parentNode === footerHome.parent) {
+      footerHome.parent.insertBefore(footer, footerHome.next);
+    } else {
+      footerHome.parent.appendChild(footer);
+    }
+  }
 
   // The <audio>.play() approach still has a real, felt cold-start delay
   // on first playback (roughly the ~1s that was reported): even with
@@ -304,6 +317,11 @@ try {
   // was never shown to begin with). Also used by the popstate handler
   // below to decide whether Back should bring the splash back.
   var splashOpen = !skipGreeting;
+
+  // Move the footer in right away if the splash is showing on this load
+  // (first visit this session) -- reopenSplash() below handles the
+  // Back-button case, but the very first paint needs this too.
+  if (splashOpen) moveFooterToSplash();
 
   function handleEnter(pushHistory) {
     if (fired) return;
