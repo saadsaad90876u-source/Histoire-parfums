@@ -3723,6 +3723,13 @@ function createBannerController(cfg){
       slideEl.classList.toggle('hb-active', isActive);
     });
 
+    const dotsContainer = content.querySelector('.hb-dots');
+    if(dotsContainer){
+      dotsContainer.querySelectorAll('.hb-dot').forEach((dot) => {
+        dot.classList.toggle('active', parseInt(dot.dataset.i, 10) === nextIndex);
+      });
+    }
+
     if(prevIndex !== nextIndex){
       const outgoingSlide = content.querySelector(`.hb-slide[data-i="${prevIndex}"]`);
       if(outgoingSlide){
@@ -3847,6 +3854,13 @@ function createBannerController(cfg){
     const nextBtn = content.querySelector('.hb-next');
     if(prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex - 1); restartAutoplay(); });
     if(nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goToSlide(state.activeIndex + 1); restartAutoplay(); });
+    content.querySelectorAll('.hb-dot').forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        goToSlide(parseInt(dot.dataset.i, 10));
+        restartAutoplay();
+      });
+    });
   }
 
   function render(){
@@ -3891,6 +3905,9 @@ function createBannerController(cfg){
         <button type="button" class="hb-arrow prev hb-prev" aria-label="Previous">‹</button>
         <button type="button" class="hb-arrow next hb-next" aria-label="Next">›</button>` : '';
 
+      const dots = state.banners.length > 1 ? `
+        <div class="hb-dots">${state.banners.map((b, i) => `<button type="button" class="hb-dot${i === state.activeIndex ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : '';
+
       const catLabel = state.category === 'women' ? t('filterWomen') : t('filterMen');
       const adminControls = isAdmin ? `
         <div class="hero-banner-admin-controls">
@@ -3900,7 +3917,7 @@ function createBannerController(cfg){
           <button class="hb-admin-btn remove hb-remove-btn" type="button">${t('removeBannerBtn')}</button>
         </div>` : '';
 
-      content.innerHTML = `<div class="hb-track">${slides}</div>${arrows}${adminControls}`;
+      content.innerHTML = `<div class="hb-track">${slides}</div>${arrows}${dots}${adminControls}`;
 
       // Auto-size the frame's height to match the active slide's natural
       // dimensions (image, GIF or video) instead of forcing a fixed square —

@@ -170,18 +170,17 @@ try {
   <div class="ws-content">
     <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
       <div class="pack-circles-row">
-        <button type="button" class="pack-circle-item" id="pack-circle-femme" data-pf="women" aria-label="Pack Femme">
-          <span class="pack-circle-img-wrap">
-            <img class="pack-circle-img" id="pack-circle-img-femme" src="" alt="Pack Femme">
+        <div class="pack-circle-item">
+          <span class="pack-circle-img-wrap" id="splash-circle-wrap">
+            <img class="pack-circle-img" id="splash-circle-img" src="" alt="Parfums" style="display:none;">
+            <span class="pack-circle-placeholder" id="splash-circle-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </span>
+            <button type="button" class="pack-circle-edit" id="splash-circle-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
+            <input type="file" id="splash-circle-input" accept="image/*,image/avif" hidden>
           </span>
-          <span class="pack-circle-label">Pack Femme</span>
-        </button>
-        <button type="button" class="pack-circle-item" id="pack-circle-homme" data-pf="men" aria-label="Pack Homme">
-          <span class="pack-circle-img-wrap">
-            <img class="pack-circle-img" id="pack-circle-img-homme" src="" alt="Pack Homme">
-          </span>
-          <span class="pack-circle-label">Pack Homme</span>
-        </button>
+          <span class="pack-circle-label">Parfums</span>
+        </div>
       </div>
     </section>
     <p class="ws-subtitle">Une Histoire à Vivre</p>
@@ -232,11 +231,23 @@ try {
   // overflow-y:auto in style.css) instead of being pinned to exactly
   // one screen height, so the footer is reachable by scrolling down
   // past the circles/button without ever getting clipped.
-  var footer = document.querySelector('footer');
-  var footerHome = footer ? { parent: footer.parentNode, next: footer.nextSibling } : null;
+  // NOTE: this script runs synchronously while the parser is still on
+  // the <welcome-screen> markup near the top of <body> -- the real
+  // <footer> lives much further down the page and doesn't exist as a
+  // DOM node yet at this point, so it's looked up lazily (on first
+  // actual move) rather than captured up front.
+  var footer = null;
+  var footerHome = null;
   var wsChime = document.getElementById('ws-chime');
 
+  function captureFooter() {
+    if (footer) return;
+    footer = document.querySelector('footer');
+    if (footer) footerHome = { parent: footer.parentNode, next: footer.nextSibling };
+  }
+
   function moveFooterToSplash() {
+    captureFooter();
     if (!footer) return;
     screen.insertBefore(footer, wsChime || null);
   }
@@ -320,8 +331,12 @@ try {
 
   // Move the footer in right away if the splash is showing on this load
   // (first visit this session) -- reopenSplash() below handles the
-  // Back-button case, but the very first paint needs this too.
-  if (splashOpen) moveFooterToSplash();
+  // Back-button case. The footer doesn't exist in the DOM yet at this
+  // point in parsing, so this waits for DOMContentLoaded (by which
+  // time the whole document, footer included, has been parsed).
+  if (splashOpen) {
+    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); });
+  }
 
   function handleEnter(pushHistory) {
     if (fired) return;
@@ -501,7 +516,7 @@ try {
 </section>
 <input type="file" id="hero-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
-<section class="lux-section" id="trust-section" style="padding-top:20px; padding-bottom:8px;">
+<section class="lux-section" id="trust-section" style="padding-top:20px; padding-bottom:0;">
   <div class="container">
     <div class="pp-trust-grid pp-trust-grid-standalone">
       <div class="pp-trust-item reveal d1">

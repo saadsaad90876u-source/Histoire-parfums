@@ -1983,7 +1983,7 @@ h1,h2,h3 {
 }
 
 .shop-section {
-  padding: 16px 0 14px;
+  padding: 8px 0 14px;
   position: relative;
 }
 
@@ -4185,6 +4185,16 @@ footer {
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
+}
+
+/* The one, standalone trust card on the shop page (above "Collection
+   Femme") doesn't need the same 24px gap .pp-trust-grid normally
+   reserves for whatever comes after it elsewhere -- the section
+   padding around it already provides breathing room, so the default
+   margin on top of that was leaving a large empty gap before the
+   heading. */
+.pp-trust-grid-standalone {
+  margin-bottom: 0;
 }
 
 .pp-trust-item {
@@ -7739,10 +7749,8 @@ footer .footer-links-col h3 {
 }
 
 /* ============================================================
-   PACK CIRCLES — "Pack Femme / Pack Homme" quick-nav shortcuts
+   PACK CIRCLE — single "Parfums" badge, admin-editable image.
    Sits below the header, above the shop/collection section.
-   Added by request; images are painted in from the existing
-   offre-pack (pack4) badge images via pack-circles.js.
    ============================================================ */
 .pack-circles-section {
   padding: 52px 0 6px;
@@ -7781,6 +7789,42 @@ footer .footer-links-col h3 {
   align-items: center;
   justify-content: center;
   transition: transform .25s ease, border-color .25s ease;
+  position: relative;
+}
+
+.pack-circle-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--emerald-light);
+  opacity: .55;
+}
+
+.pack-circle-placeholder svg {
+  width: 26px;
+  height: 26px;
+}
+
+.pack-circle-edit {
+  display: none;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: var(--emerald);
+  color: #170F0A;
+  font-size: 9px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  z-index: 2;
 }
 
 .pack-circle-item:active .pack-circle-img-wrap {
@@ -7821,6 +7865,10 @@ footer .footer-links-col h3 {
   }
   .pack-circle-label {
     font-size: 12px;
+  }
+  .pack-circle-placeholder svg {
+    width: 22px;
+    height: 22px;
   }
 }
 
