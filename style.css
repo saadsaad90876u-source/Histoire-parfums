@@ -118,6 +118,12 @@
   background: #FFFFFF;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  /* Without this, pulling down past the top (iOS rubber-band/elastic
+     bounce) shifts this whole scroll container down for a moment --
+     since the header above it is position:fixed and never moves, that
+     briefly exposes a white gap between the header and this banner.
+     Same fix already used on html/body for the outer page. */
+  overscroll-behavior-y: none;
   transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
 
@@ -6737,6 +6743,10 @@ textarea.cf-input-icon {
   padding-top: 18px;
 }
 
+#reviews-section .lux-subheading {
+  margin-bottom: 18px;
+}
+
 #faq-section {
   padding-bottom: 30px;
   background: #FFFFFF;
@@ -7346,6 +7356,7 @@ footer .footer-links-col h3 {
   max-width: 660px;
   margin: 0 auto;
   touch-action: pan-y;
+  position: relative;
 }
 
 .testimonial-carousel-track {
@@ -7376,7 +7387,7 @@ footer .footer-links-col h3 {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 28px 32px 22px;
+  padding: 28px 32px 40px;
   background: #FFFFFF;
   border: 1px solid rgba(10, 47, 29, .07);
   border-radius: 24px;
@@ -7481,7 +7492,11 @@ footer .footer-links-col h3 {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
 .testimonial-dot {
@@ -7534,7 +7549,7 @@ footer .footer-links-col h3 {
 /* ---------- write-a-review, secondary & outlined only ---------- */
 .testimonial-write-row {
   text-align: center;
-  margin-top: 46px;
+  margin-top: 22px;
 }
 
 .reviews-write-btn-outline {
@@ -7560,7 +7575,7 @@ footer .footer-links-col h3 {
 }
 
 @media (max-width: 640px) {
-  .testimonial-card { height: 380px; padding: 32px 22px 24px; }
+  .testimonial-card { height: 380px; padding: 32px 22px 42px; }
   .testimonial-carousel-track { height: 380px; }
   .testimonial-skel { height: 380px; }
   .testimonial-quote-mark { font-size: 36px; }
@@ -7749,11 +7764,51 @@ footer .footer-links-col h3 {
 }
 
 /* ============================================================
+   SPLASH GENDER PROMPT — "Vous êtes...?" shown when the Parfums
+   circle is tapped, before jumping into the pack-of-3 builder.
+   ============================================================ */
+.splash-gender-title {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 26px;
+}
+
+.splash-gender-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.splash-gender-btn {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: 1.5px solid var(--emerald-deep, #333D14);
+  background: transparent;
+  color: var(--emerald-deep, #333D14);
+  cursor: pointer;
+  transition: background .3s ease, color .3s ease;
+}
+.splash-gender-btn:hover,
+.splash-gender-btn:active {
+  background: var(--emerald-deep, #333D14);
+  color: #F4EEE4;
+}
+/* ============================================================
    PACK CIRCLE — single "Parfums" badge, admin-editable image.
-   Sits below the header, above the shop/collection section.
+   Sits below the "Découvrir la Collection" button on the splash
+   screen, above the subtitle.
    ============================================================ */
 .pack-circles-section {
-  padding: 52px 0 6px;
+  padding: 28px 0 6px;
 }
 
 .pack-circles-row {

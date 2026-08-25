@@ -168,6 +168,7 @@ try {
   <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
   <div class="ws-content">
+    <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
     <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
       <div class="pack-circles-row">
         <div class="pack-circle-item">
@@ -184,7 +185,27 @@ try {
       </div>
     </section>
     <p class="ws-subtitle">Une Histoire à Vivre</p>
-    <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
+
+    <section id="splash-trust-section" style="width:100%; max-width:520px; margin:0 0 20px;">
+      <div class="pp-trust-grid pp-trust-grid-standalone">
+        <div class="pp-trust-item reveal d1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+          <div><strong data-i18n="trustDeliveryTitle">Livraison 1-4j</strong><span data-i18n="trustDeliverySub">Partout au Maroc</span></div>
+        </div>
+        <div class="pp-trust-item reveal d2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/></svg>
+          <div><strong data-i18n="trustCertifiedTitle">Qualité certifiée</strong><span data-i18n="trustCertifiedSub">Parfums de qualité</span></div>
+        </div>
+        <div class="pp-trust-item reveal d3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          <div><strong data-i18n="trustPaymentTitle">Paiement</strong><span data-i18n="trustPaymentSub">À la livraison</span></div>
+        </div>
+        <div class="pp-trust-item reveal d4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-10-9.2C.5 7.8 2.5 4 6.5 4c2.3 0 4 1.3 5.5 3.3C13.5 5.3 15.2 4 17.5 4c4 0 6 3.8 4.5 7.3-2.5 4.6-10 9.2-10 9.2z"/></svg>
+          <div><strong data-i18n="trustSupportTitle">Service client</strong><span data-i18n="trustSupportSub">À votre écoute</span></div>
+        </div>
+      </div>
+    </section>
 
     <!-- Splash-only banner slot, right below the enter button. Same
          reusable banner system -- see createBannerController in
@@ -199,6 +220,22 @@ try {
   </div>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
+</div>
+
+<!-- Asked when the visitor taps the "Parfums" circle: which gender's
+     perfumes to jump straight into the pack-of-3 builder with. Reuses
+     the existing pack4 modal/picker (see openPack4Modal in script.js) --
+     "Mixte" just opens it with no gender lock, same as the normal
+     "Composer mon pack" button, so both genders stay pickable. -->
+<div class="modal-overlay" id="splash-gender-overlay"></div>
+<div class="checkout-modal splash-gender-modal" id="splash-gender-modal" style="text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;">
+  <button class="wd-close" id="splash-gender-close" aria-label="Close">✕</button>
+  <p class="splash-gender-title">Vous êtes...</p>
+  <div class="splash-gender-choices">
+    <button type="button" class="splash-gender-btn" data-gender="women">Femme</button>
+    <button type="button" class="splash-gender-btn" data-gender="men">Homme</button>
+    <button type="button" class="splash-gender-btn" data-gender="mixte">Mixte</button>
+  </div>
 </div>
 <script>
 (function () {
@@ -516,29 +553,6 @@ try {
 </section>
 <input type="file" id="hero-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
-<section class="lux-section" id="trust-section" style="padding-top:20px; padding-bottom:0;">
-  <div class="container">
-    <div class="pp-trust-grid pp-trust-grid-standalone">
-      <div class="pp-trust-item reveal d1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
-        <div><strong data-i18n="trustDeliveryTitle">Livraison 1-4j</strong><span data-i18n="trustDeliverySub">Partout au Maroc</span></div>
-      </div>
-      <div class="pp-trust-item reveal d2">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/></svg>
-        <div><strong data-i18n="trustCertifiedTitle">Qualité certifiée</strong><span data-i18n="trustCertifiedSub">Parfums de qualité</span></div>
-      </div>
-      <div class="pp-trust-item reveal d3">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        <div><strong data-i18n="trustPaymentTitle">Paiement</strong><span data-i18n="trustPaymentSub">À la livraison</span></div>
-      </div>
-      <div class="pp-trust-item reveal d4">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-10-9.2C.5 7.8 2.5 4 6.5 4c2.3 0 4 1.3 5.5 3.3C13.5 5.3 15.2 4 17.5 4c4 0 6 3.8 4.5 7.3-2.5 4.6-10 9.2-10 9.2z"/></svg>
-        <div><strong data-i18n="trustSupportTitle">Service client</strong><span data-i18n="trustSupportSub">À votre écoute</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="shop-section">
   <div class="container">
     <h2 class="shop-heading reveal" id="shop-heading">Women's Collection</h2>
@@ -696,7 +710,7 @@ try {
     <h2 class="lux-heading reveal">Avis de nos clients</h2>
     <p class="lux-subheading">Découvrez ce que nos clients pensent de leurs parfums HISTOIRE.</p>
 
-    <div class="reviews-summary" id="reviews-summary" style="display:none; align-items:center; justify-content:center; gap:8px; margin:-8px 0 22px; font-family:'Work Sans',sans-serif;">
+    <div class="reviews-summary" id="reviews-summary" style="display:none; align-items:center; justify-content:center; gap:8px; margin:-4px 0 10px; font-family:'Work Sans',sans-serif;">
       <span id="reviews-summary-stars" style="color:#C9A24B; font-size:16px; letter-spacing:1px;"></span>
       <span id="reviews-summary-text" style="font-size:14px; color:var(--text-soft);"></span>
     </div>

@@ -65,11 +65,15 @@
 
   if (wrap) {
     wrap.addEventListener('click', function (e) {
-      if (typeof isAdmin === 'undefined' || !isAdmin) return;
-      if (e.target.closest('#splash-circle-edit') || e.target.closest('#splash-circle-placeholder')) {
+      // Admin tapping the pencil/placeholder to change the image takes
+      // priority over the "which gender" prompt below.
+      if (typeof isAdmin !== 'undefined' && isAdmin &&
+          (e.target.closest('#splash-circle-edit') || e.target.closest('#splash-circle-placeholder'))) {
         e.stopPropagation();
         if (input) input.click();
+        return;
       }
+      openSplashGenderPrompt();
     });
   }
 
@@ -95,6 +99,41 @@
       }
     });
   }
+
+  // ---------- "Vous êtes...?" prompt -> straight into the pack-of-3
+  // builder, locked to the chosen gender (or unlocked for "Mixte", same
+  // as the site's normal "Composer mon pack" entry point). ----------
+  var genderOverlay = document.getElementById('splash-gender-overlay');
+  var genderModal = document.getElementById('splash-gender-modal');
+  var genderClose = document.getElementById('splash-gender-close');
+
+  function openSplashGenderPrompt() {
+    if (!genderModal || !genderOverlay) return;
+    genderModal.classList.add('open');
+    genderOverlay.classList.add('open');
+  }
+  function closeSplashGenderPrompt() {
+    if (!genderModal || !genderOverlay) return;
+    genderModal.classList.remove('open');
+    genderOverlay.classList.remove('open');
+  }
+  if (genderClose) genderClose.addEventListener('click', closeSplashGenderPrompt);
+  if (genderOverlay) genderOverlay.addEventListener('click', closeSplashGenderPrompt);
+
+  document.querySelectorAll('.splash-gender-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var gender = btn.dataset.gender; // 'women' | 'men' | 'mixte'
+      closeSplashGenderPrompt();
+      // Leave the splash for the shop underneath first (same dismissal
+      // the Enter button itself uses), then open the pack-of-3 builder
+      // on top of it, locked to the chosen gender -- "mixte" passes no
+      // lock at all, so both genders stay pickable in the picker.
+      if (typeof window.wsDismiss === 'function') window.wsDismiss();
+      if (typeof openPack4Modal === 'function') {
+        openPack4Modal(true, false, gender === 'mixte' ? null : gender);
+      }
+    });
+  });
 
   render();
 })();
