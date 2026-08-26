@@ -3,9 +3,9 @@ window.onunhandledrejection = function(event){ event.preventDefault(); return tr
 window.addEventListener('error', function(event){ event.preventDefault(); }, true);
 window.addEventListener('unhandledrejection', function(event){ event.preventDefault(); }, true);
 
-// Escapes any untrusted text (customer names, addresses, notes, etc.)
-// before it is inserted into innerHTML, so a malicious checkout
-// submission can never execute as HTML/script in the admin dashboard.
+
+
+
 function escapeHtml(str){
   if(str === null || str === undefined) return '';
   return String(str)
@@ -16,104 +16,88 @@ function escapeHtml(str){
     .replace(/'/g, '&#39;');
 }
 
-/* ============================================================
-   SCROLL REVEAL ANIMATION -- "reveal" on scroll (Intersection Observer)
-   ------------------------------------------------------------
-   Any element with the "reveal" class starts hidden/translated
-   (see CSS) and smoothly rises into place the first time it enters
-   the viewport. Uses IntersectionObserver instead of a scroll event
-   listener for performance -- no work happens on every scroll tick,
-   the browser only notifies us when an element crosses the threshold.
 
-   - threshold: 0.12  -> element reveals once ~12% of it is visible
-   - unobserve()      -> stop watching once revealed, so it never
-                          re-triggers/repeats on subsequent scrolls
-   - refreshScrollReveal() is exposed globally so any code that
-     injects new markup (product grid re-render, featured products,
-     admin panel, etc.) can call it to pick up newly added .reveal
-     elements without creating duplicate observers.
-   ============================================================ */
 let scrollRevealObserver = null;
 function refreshScrollReveal(root){
   const scope = root || document;
   if(!('IntersectionObserver' in window)){
-    // Very old browsers: just show everything, no scroll dependency.
+    
     scope.querySelectorAll('.reveal:not(.active)').forEach(el => el.classList.add('active'));
     return;
   }
   if(!scrollRevealObserver){
     scrollRevealObserver = new IntersectionObserver((entries) => {
-      // When many elements are already on screen at the moment they start
-      // being observed (e.g. switching Femme/Homme doesn't scroll the
-      // page, so every card in the new grid is already visible), they'd
-      // all fire in the same callback batch and reveal in the same
-      // instant. A tiny incremental delay per entry in that batch turns
-      // that into a proper cascading reveal instead.
+      
+      
+      
+      
+      
+      
       entries.forEach((entry, i) => {
         if(entry.isIntersecting){
-          // Cap the stagger so a big batch (fast flick-scroll crossing many
-          // elements' threshold in one callback) can't compound into a
-          // multi-second queue -- past a handful of items the extra delay
-          // reads as the page being "stuck" rather than a nice cascade.
+          
+          
+          
+          
           setTimeout(() => entry.target.classList.add('active'), Math.min(i, 8) * 55);
-          // Reveal once, then stop watching. Previously this kept observing
-          // and removed "active" again the moment the element scrolled back
-          // out of view -- so scrolling up and down rapidly toggled the
-          // animation on/off mid-transition, which is what caused the
-          // stutter/"stuck" feeling. Unobserving here makes every element
-          // reveal exactly once and then leaves it alone for good.
+          
+          
+          
+          
+          
+          
           scrollRevealObserver.unobserve(entry.target);
         }
       });
     }, {
-      // threshold 0.15 + a -12% bottom rootMargin: trigger once the
-      // element is meaningfully on screen, without waiting so long
-      // (the previous -25%) that on shorter viewports / smaller items
-      // like FAQ rows the element could already be scrolled fully past
-      // the trigger zone before ever intersecting it.
+      
+      
+      
+      
+      
       threshold: 0.15,
       rootMargin: '0px 0px -12% 0px'
     });
   }
   scope.querySelectorAll('.reveal:not(.active)').forEach(el => {
     scrollRevealObserver.observe(el);
-    // Safety net: if this element is somehow never marked "active" (an
-    // IntersectionObserver edge case, a re-render race condition, the
-    // element sitting just outside every threshold check, etc.), force it
-    // visible eventually regardless. Without this, a rare miss left the
-    // card permanently stuck in its pre-reveal state -- translated down
-    // and half-transparent -- which is exactly the "slides down and
-    // freezes there, looking faded" symptom.
-    //
-    // This used to fire after a flat 4s from when observation started,
-    // which sounds safe but isn't: refreshScrollReveal() observes every
-    // .reveal element on the page right at load, including ones far
-    // below the fold (FAQ, contact, etc.). Any visitor who spends more
-    // than 4s reading the top of the page before scrolling down -- which
-    // is most visitors -- would have those far-off sections silently
-    // force-activated in the background by this timer before ever
-    // scrolling near them, so by the time they actually arrived there
-    // was nothing left to reveal. That's why sections could appear to
-    // "already be revealed" before being reached.
-    //
-    // Fix: only arm this fallback once the element is actually near the
-    // viewport (a generous 60% margin below/above), using the *same*
-    // observer machinery rather than a second one, so a section sitting
-    // far down the page doesn't start its countdown until there's a
-    // realistic chance the user is about to scroll it into view.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if(el.dataset.revealFallback) return;
     el.dataset.revealFallback = '1';
-    // Keep observing (don't unobserve on the first near-hit) and only
-    // actually arm the 4s timer while the element is continuously near.
-    // This guards against a real-world race: at the moment the page
-    // first loads, images/fonts/async product data haven't finished
-    // loading yet, so the document can be transiently *shorter* than its
-    // final height -- making a far-off section like FAQ or Contact look
-    // "near" for a brief instant, arming the fallback too early. Once the
-    // rest of the page loads in and pushes that section back down where
-    // it belongs, this cancels the stale timer instead of letting it fire
-    // anyway, so the section doesn't reveal itself before the user
-    // actually scrolls near it.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     let fallbackTimer = null;
     const armWhenNear = new IntersectionObserver((nearEntries) => {
       nearEntries.forEach(nearEntry => {
@@ -134,34 +118,34 @@ function refreshScrollReveal(root){
   });
 }
 document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());
-// In case this script runs after DOMContentLoaded already fired (e.g. deferred load timing).
+
 if(document.readyState === 'interactive' || document.readyState === 'complete'){
   refreshScrollReveal();
 }
 
-// ---------- Sequential, viewport-gated image loading ----------
-// The high-priority images (first product row, hero banner, pack4 card)
-// already load immediately/in parallel via loading="eager" -- that's
-// intentional, they're few and small, and the user should see something
-// right away. Every other image on the site ("seq-lazy") only starts
-// downloading once it actually scrolls near the viewport (an
-// IntersectionObserver gates that), and even then goes through a strict
-// one-at-a-time queue: whichever seq-lazy element enters view first
-// finishes downloading first, instead of a dozen firing in parallel and
-// fighting over the same limited mobile bandwidth.
-//
-// The viewport gate matters for more than just perceived speed: without
-// it, every product photo/video/testimonial on the whole page still gets
-// downloaded in the background even if the visitor never scrolls that
-// far -- which is pure wasted bandwidth (and, on a metered host like
-// Supabase Storage, wasted egress quota) for content nobody ever saw.
-//
-// How an image opts in: instead of `src="url"`, give it
-// `class="seq-lazy" data-src="url"` (no `loading="lazy"` needed -- this
-// queue replaces that). A MutationObserver hands every seq-lazy element,
-// as soon as it's added to the page (covers dynamically-rendered content
-// like product cards, reviews, banners...), off to the IntersectionObserver
-// below; an initial scan on load covers anything already in the HTML.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const seqImageQueue = [];
 let seqImageLoading = false;
 
@@ -180,30 +164,30 @@ function seqProcessQueue(){
     seqImageLoading = false;
     seqProcessQueue();
   };
-  // Watchdog: if a single image/video hangs (slow network, stalled
-  // connection, or a load/error event that never fires for some edge
-  // case) the strict one-at-a-time queue would otherwise stall forever,
-  // silently blocking every product photo below it from ever appearing
-  // -- which is exactly what causes the feed to seem "stuck" mid-scroll.
-  // Forcing the queue to move on after 6s means one bad request can
-  // never freeze the rest of the page.
+  
+  
+  
+  
+  
+  
+  
   const watchdog = setTimeout(finish, 6000);
-  // <img> signals "done" with a 'load' event, but <video>/<audio> never
-  // fire 'load' at all -- their equivalent is 'loadeddata'. Using 'load'
-  // unconditionally here would mean seqImageLoading never resets once a
-  // video enters the queue, permanently stalling every image/video after
-  // it on the page.
+  
+  
+  
+  
+  
   next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', finish, { once: true });
   next.addEventListener('error', finish, { once: true });
   next.removeAttribute('data-src');
   next.src = src;
 }
 
-// rootMargin extends the "counts as near the viewport" zone by 600px in
-// every direction, so content one screen-height below the fold (or the
-// very next slide in a horizontal carousel like the product gallery)
-// starts loading a little before the visitor actually reaches it,
-// instead of only starting the instant it's already on screen.
+
+
+
+
+
 const seqIO = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(!entry.isIntersecting) return;
@@ -220,9 +204,9 @@ function seqEnqueueImages(root){
   const els = (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-observed]), video.seq-lazy[data-src]:not([data-seq-observed])');
   els.forEach(el => {
     el.setAttribute('data-seq-observed', '1');
-    // No IntersectionObserver support (very old browser) -- fall back to
-    // the old "load everything eventually" behavior rather than never
-    // loading images at all.
+    
+    
+    
     if(!seqIO){
       el.setAttribute('data-seq-queued', '1');
       seqImageQueue.push(el);
@@ -251,7 +235,7 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
 
 let wishlist = [];
 let cart = [];
-let checkoutOverrideItems = null; // when set, checkout uses only these items instead of the full cart (e.g. "Order Now" from a single product page)
+let checkoutOverrideItems = null; 
 function getCheckoutItems(){ return checkoutOverrideItems || cart; }
 try{
   const savedWishlist = localStorage.getItem('aura-wishlist');
@@ -508,21 +492,21 @@ function productImages(p){
   if(p.image) return [p.image];
   return [];
 }
-// Product-page slides can be short .mp4 clips (see uploadProductImage) --
-// this is the single shared check used everywhere that needs to tell a
-// video slide apart from a photo slide.
+
+
+
 function isVideoUrl(url){
   return /\.mp4(\?|#|$)/i.test(url || '') || /^data:video\//i.test(url || '');
 }
 function productCoverImage(p){
   const imgs = productImages(p);
   if(!imgs.length) return null;
-  // The cover image is what shows up on the shop grid / homepage card, and
-  // videos are only meant to appear inside the product page gallery (never
-  // the homepage) -- so the cover must always resolve to an actual photo.
-  // If the stored cover index happens to point at a video (e.g. it was the
-  // only slide uploaded so far), fall back to the first non-video slide
-  // instead of showing a broken <img src="...mp4"> on the shop card.
+  
+  
+  
+  
+  
+  
   const idx = (typeof p.cover === 'number' && p.cover >= 0 && p.cover < imgs.length && !isVideoUrl(imgs[p.cover]))
     ? p.cover
     : imgs.findIndex(u => !isVideoUrl(u));
@@ -534,14 +518,14 @@ function productMedia(p, idx){
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
       </div>`;
-  // The first row of cards is always on-screen the instant the shop grid
-  // renders -- "lazy" loading was giving them the same low network
-  // priority as images far down the page the visitor may never scroll
-  // to, which is exactly backwards for cards that are never actually
-  // off-screen. Loading them eagerly with high priority lets the browser
-  // fetch them immediately instead of queuing them behind lower-priority
-  // work, so the real photo has the best chance of being ready by the
-  // time the welcome screen is dismissed.
+  
+  
+  
+  
+  
+  
+  
+  
   const eager = typeof idx === 'number' && idx < 4;
   const srcAttrs = eager
     ? `src="${cover}" loading="eager" fetchpriority="high"`
@@ -565,7 +549,7 @@ function productCard(pRaw, category, idx){
   const pinBadge = p.pinned ? `<div class="pc-pin-badge">PACK</div>` : '';
   const delay = Math.min(idx, 8) * 0.05;
   const revealDelayClass = `d${(idx % 4) + 1}`;
-  // Premium sale layout: fixed "was" price shown on every card, per request.
+  
   const oldPrice = 75;
   return `<div class="product-card reveal ${revealDelayClass} ${p.pinned ? 'product-card-pinned' : ''}" data-name="${p.name}" data-category="${category}" style="animation-delay:${delay}s;">
     ${adminControls}
@@ -611,10 +595,10 @@ function renderShop(filter, skipScroll, playPack4Shine){
   document.getElementById('shop-heading').textContent = filter === 'women' ? t('womenCollection') : t('menCollection');
   const grid = document.getElementById('shop-grid');
   grid.style.opacity = '0';
-  // If the user is switching tabs very fast, cancel whatever render was
-  // previously queued instead of letting it also run. Without this, every
-  // rapid click stacks up its own full grid rebuild, and they all fire back
-  // to back a moment later — which is what was freezing the page.
+  
+  
+  
+  
   clearTimeout(shopRenderTimer);
   shopRenderTimer = setTimeout(() => {
     const indexed = m.list.map((p, idx) => ({ p, idx }));
@@ -626,12 +610,12 @@ function renderShop(filter, skipScroll, playPack4Shine){
         </button>` : '');
     grid.style.opacity = '1';
     refreshScrollReveal(grid);
-    // The first two product cards should welcome the visitor immediately —
-    // rise into view as soon as the shop loads, instead of waiting for the
-    // visitor to scroll/touch the screen and cross the IntersectionObserver
-    // threshold. A short delay keeps the CSS transition visible (adding the
-    // class in the very same tick as the initial paint can make browsers
-    // skip straight to the end state instead of animating).
+    
+    
+    
+    
+    
+    
     requestAnimationFrame(() => {
       setTimeout(() => {
         grid.querySelectorAll('.product-card.reveal:not(.active)').forEach((card, i) => {
@@ -748,7 +732,7 @@ function closeWishlistDrawer(){
 document.getElementById('wishlist-close').addEventListener('click', closeWishlistDrawer);
 document.getElementById('wishlist-overlay').addEventListener('click', closeWishlistDrawer);
 
-/* ---------- cart ---------- */
+
 function updateCartBadge(){
   const count = cart.reduce((sum, c) => sum + c.qty, 0);
   const badge = document.getElementById('cart-badge-count');
@@ -860,15 +844,15 @@ document.getElementById('cart-btn').addEventListener('click', openCartDrawer);
 document.getElementById('cart-close').addEventListener('click', closeCartDrawer);
 document.getElementById('cart-overlay').addEventListener('click', closeCartDrawer);
 
-// Tapping the "Pack Découverte" line inside the cart re-opens the 3-perfume
-// builder with the same 3 perfumes still selected, instead of doing nothing
-// (regular product rows in the cart are intentionally not clickable -- see
-// the early "#cart-items" return above -- but the pack is a multi-step
-// selection the visitor may want to revisit/edit, not a single product).
-// The names are re-parsed from the cart line itself (rather than trusting
-// whatever pack4Selection currently holds in memory) so this also works
-// correctly after a page reload, when the cart is restored from
-// localStorage but pack4Selection has reset to empty.
+
+
+
+
+
+
+
+
+
 document.getElementById('cart-items').addEventListener('click', (e) => {
   if(e.target.closest('.wi-remove') || e.target.closest('.qty-stepper')) return;
   const row = e.target.closest('.wishlist-item');
@@ -890,7 +874,7 @@ document.getElementById('checkout-btn').addEventListener('click', () => {
   openCheckoutPage();
 });
 
-let appliedCoupon = null; // {code, discount_type, discount_value}
+let appliedCoupon = null; 
 let lastOrder = null;
 
 function computeOrderTotals(){
@@ -1085,10 +1069,8 @@ document.addEventListener('click', e => {
   }
 });
 
-/* ---------- Supabase connection ---------- */
-/* 1. Create a free project at https://supabase.com
-   2. Run the SQL setup script (provided separately) to create the kv_store table
-   3. Paste your Project URL and anon public key below (Settings → API in Supabase) */
+
+
 const SUPABASE_URL = 'https://kydrxvfarubaazemxqhw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZHJ4dmZhcnViYWF6ZW14cWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3ODk1ODMsImV4cCI6MjA5OTM2NTU4M30.eYbHXtBVY8knbZtzX1BLaKWKlRznBYl9II2EcZKQG8M';
 
@@ -1104,23 +1086,23 @@ async function kvSet(key, value){
   if(error) throw error;
 }
 
-// Deletes the underlying file from a Supabase Storage bucket given its public
-// URL (as returned by getPublicUrl). Safe to call with base64 data URLs or
-// non-Supabase URLs — it silently no-ops on anything it doesn't recognize,
-// so a storage cleanup failure never blocks the primary delete/save action.
+
+
+
+
 async function deleteStorageFile(bucket, publicUrl){
   if(!supabaseClient || !publicUrl || typeof publicUrl !== 'string') return;
   const marker = `/storage/v1/object/public/${bucket}/`;
   const i = publicUrl.indexOf(marker);
-  if(i === -1) return; // not a Supabase Storage URL for this bucket (e.g. base64 fallback)
+  if(i === -1) return; 
   const path = publicUrl.slice(i + marker.length).split('?')[0];
   if(!path) return;
   try{
     await supabaseClient.storage.from(bucket).remove([path]);
   }catch(err){
-    // Non-critical: the DB/catalog record is already gone, which is what
-    // matters most to the shopper-facing site. Leftover file, if any, can
-    // be cleaned up later — we don't want this to interrupt the admin flow.
+    
+    
+    
   }
 }
 
@@ -1135,18 +1117,18 @@ async function kvGet(key){
   return data ? data.value : null;
 }
 
-/* ---------- admin mode ---------- */
+
 const CATALOG_KEY = 'aura-catalog-v1';
 
 let storageAvailable = true;
 
-// A browser-local mirror of the last successfully loaded catalog (real
-// product photos included). Reading this is synchronous and instant --
-// no network round trip -- so on repeat visits we can paint real photos
-// immediately instead of the placeholder bottle shapes while Supabase is
-// still being contacted. Supabase remains the source of truth; this is
-// only ever used to avoid a blank/placeholder flash, and gets silently
-// refreshed every time a real fetch succeeds.
+
+
+
+
+
+
+
 const CATALOG_LOCAL_CACHE_KEY = 'histoire-catalog-cache-v1';
 
 function readCatalogLocalCache(){
@@ -1163,8 +1145,8 @@ function writeCatalogLocalCache(data){
   try{
     localStorage.setItem(CATALOG_LOCAL_CACHE_KEY, JSON.stringify({ men: data.men, women: data.women }));
   }catch(err){
-    // Storage full/unavailable (e.g. private browsing) -- non-critical,
-    // just means the next visit won't have an instant-paint cache.
+    
+    
   }
 }
 
@@ -1206,7 +1188,7 @@ async function normalizeProductRatingsOnce(){
   try{
     const flag = await kvGet('reviews-normalized-v1');
     if(flag) return;
-  }catch(err){ return; } // if kv is unreachable, skip rather than risk looping every load
+  }catch(err){ return; } 
   men.forEach(p => { p.reviews = 360; p.rating = 4.9; });
   women.forEach(p => { p.reviews = 360; p.rating = 4.9; });
   try{
@@ -1216,19 +1198,19 @@ async function normalizeProductRatingsOnce(){
   }catch(err){}
 }
 
-// Every product previously got the exact same 4.9 rating (see
-// normalizeProductRatingsOnce above) -- identical ratings across an
-// entire catalog reads as fake to a careful shopper rather than
-// reassuring. This spreads them out a bit instead, staying within
-// 4.5-5.0 so nothing ever looks anything less than excellent. The rating
-// is derived deterministically from the product's name (a simple hash)
-// rather than Math.random(), so it stays the same on every reload/visit
-// instead of visibly changing each time -- a rating that flickers
-// between visits would look even more obviously fake than a uniform one.
+
+
+
+
+
+
+
+
+
 function seededRatingFromName(name){
   let hash = 0;
   for(let i = 0; i < name.length; i++){ hash = (hash * 31 + name.charCodeAt(i)) >>> 0; }
-  const step = hash % 6; // 0..5 -> 4.5, 4.6, 4.7, 4.8, 4.9, 5.0
+  const step = hash % 6; 
   return Math.round((4.5 + step / 10) * 10) / 10;
 }
 
@@ -1247,9 +1229,9 @@ async function varyProductRatingsOnce(){
 }
 
 async function loadCatalog(){
-  // Instant paint from last visit's real data (if any), synchronously,
-  // before Supabase has even been contacted -- this is what removes the
-  // placeholder-bottle flash on repeat visits.
+  
+  
+  
   const cached = readCatalogLocalCache();
   if(cached){
     men.length = 0; men.push(...cached.men);
@@ -1280,18 +1262,13 @@ async function loadCatalog(){
   renderShop(currentFilter, true);
 
   if(result === 'timeout'){
-    // Supabase is slow — we've already shown something so the page feels fast.
-    // once the real data arrives, quietly refresh the view to match it.
+    
+    
     fetchTask.then(() => renderShop(currentFilter, true));
   }
 }
-/* ---------- top banners load FIRST ----------
-   Moved above loadCatalog() on purpose: the hero banner (top banner
-   shown on the femme/homme pages) and the "offre pack" image are the
-   first visuals people see, so their fetch + <img> render must kick
-   off before the product catalog/grid images so they win the
-   network priority race and appear first on screen. */
-/* ---------- pack4 banner product image (admin-editable) ---------- */
+
+
 const PACK4_IMAGE_KEYS = { women: 'aura-pack4-badge-image-women', men: 'aura-pack4-badge-image-men' };
 const LEGACY_PACK4_IMAGE_KEY = 'aura-pack4-badge-image';
 let pack4BadgeImageUrls = { women: null, men: null };
@@ -1309,10 +1286,10 @@ function renderPack4BadgeImage(playShine){
     img.src = url;
     img.style.display = 'block';
     if(placeholder) placeholder.style.display = 'none';
-    // Keep the shine overlay's mask pointed at the exact same image the
-    // user is currently seeing, so the sweep clips to that photo's own
-    // silhouette (see .pack4-banner-image::after in style.css). Without
-    // this, the shine would just be a plain rectangle over the whole box.
+    
+    
+    
+    
     if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${url}")`);
   } else {
     img.style.display = 'none';
@@ -1321,9 +1298,9 @@ function renderPack4BadgeImage(playShine){
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
   if(playShine && imageWrap && img.style.display !== 'none'){
-    // Remove-then-reflow-then-add is required to replay the animation on
-    // every switch: toggling a class that's already present doesn't
-    // restart a CSS animation, only adding a class that wasn't there does.
+    
+    
+    
     imageWrap.classList.remove('pack4-shine-active');
     void imageWrap.offsetWidth;
     imageWrap.classList.add('pack4-shine-active');
@@ -1333,24 +1310,24 @@ function renderPack4BadgeImage(playShine){
 function preloadImage(url){
   if(!url) return;
   const img = new Image();
-  img.src = url; // fire-and-forget: just gets the bytes into the browser's HTTP cache
+  img.src = url; 
 }
 
 async function loadPack4BadgeImage(){
-  // Paint instantly from the last-known-good image while the real fetch runs.
+  
   try{
     const cached = JSON.parse(localStorage.getItem('cache-pack4-badge-images') || 'null');
     if(cached && (cached.women || cached.men)){
       if(cached.women) pack4BadgeImageUrls.women = cached.women;
       if(cached.men) pack4BadgeImageUrls.men = cached.men;
       renderPack4BadgeImage();
-      // Warm the browser cache for BOTH genders right away — this is what
-      // makes switching femme/homme instant instead of freezing for ~2s
-      // while the other gender's image downloads for the first time.
+      
+      
+      
       preloadImage(cached.women);
       preloadImage(cached.men);
     }
-  }catch(err){ /* ignore */ }
+  }catch(err){  }
 
   const currentCat = currentFilter === 'men' ? 'men' : 'women';
   const otherCat = currentCat === 'men' ? 'women' : 'men';
@@ -1360,14 +1337,14 @@ async function loadPack4BadgeImage(){
       localStorage.setItem('cache-pack4-badge-images', JSON.stringify({
         women: pack4BadgeImageUrls.women, men: pack4BadgeImageUrls.men
       }));
-    }catch(err){ /* private browsing / storage full — ignore */ }
+    }catch(err){  }
   }
 
-  // Fetch + paint the image for the category the visitor is actually
-  // looking at FIRST, on its own, so it isn't stuck waiting behind the
-  // other category's request — this is the "offre pack" image, and it
-  // should appear right after the top hero banner, not after everything
-  // else on the page.
+  
+  
+  
+  
+  
   try{
     const data = await kvGet(PACK4_IMAGE_KEYS[currentCat]).catch(() => null);
     if(data && data.url){
@@ -1375,13 +1352,13 @@ async function loadPack4BadgeImage(){
       persistCache();
       renderPack4BadgeImage();
     }
-  }catch(err){ /* not configured yet */ }
+  }catch(err){  }
 
-  // Now quietly fetch the other category (and the legacy fallback, if
-  // still needed) in the background — no rush, it's not on screen yet.
-  // Crucially, we also PRELOAD its actual image bytes here (not just the
-  // URL), so the moment the visitor taps the other gender tab, the image
-  // is already sitting in the browser cache instead of downloading fresh.
+  
+  
+  
+  
+  
   try{
     const otherData = await kvGet(PACK4_IMAGE_KEYS[otherCat]).catch(() => null);
     if(otherData && otherData.url) pack4BadgeImageUrls[otherCat] = otherData.url;
@@ -1394,7 +1371,7 @@ async function loadPack4BadgeImage(){
     }
     preloadImage(pack4BadgeImageUrls[otherCat]);
     persistCache();
-  }catch(err){ /* not configured yet */ }
+  }catch(err){  }
   renderPack4BadgeImage();
 }
 
@@ -1444,19 +1421,19 @@ const bottomBannerCtrl2 = createBannerController({
   inputId: 'bottom-banner-2-input',
   storageKey: 'aura-bottom-banner-2'
 });
-// Banner shown at the bottom of the order-tracking view (below "Livré"),
-// using the exact same banner system (upload/carousel/admin controls) as
-// the homepage banners above. It isn't tied to the men/women filter, so
-// it's loaded once, directly, right after being created.
+
+
+
+
 const trackingBannerCtrl = createBannerController({
   sectionId: 'tracking-banner',
   contentId: 'tracking-banner-content',
   inputId: 'tracking-banner-input',
   storageKey: 'aura-tracking-banner'
 });
-// Two banners on the splash screen itself, stacked right below the
-// Entrer button. Same reusable banner system as the ones above; not
-// tied to the men/women filter either, so they're loaded once, directly.
+
+
+
 const wsBannerCtrl1 = createBannerController({
   sectionId: 'ws-banner-1',
   contentId: 'ws-banner-1-content',
@@ -1469,8 +1446,8 @@ const wsBannerCtrl2 = createBannerController({
   inputId: 'ws-banner-2-input',
   storageKey: 'aura-ws-banner-2'
 });
-// Splash-only banner slots (top, right below the header; bottom, right
-// below the enter button). Same reusable system, own storage keys.
+
+
 const splashBannerTopCtrl = createBannerController({
   sectionId: 'splash-banner-top',
   contentId: 'splash-banner-top-content',
@@ -1491,14 +1468,14 @@ splashBannerBottomCtrl.load();
 heroBannerCtrl.load();
 bottomBannerCtrl.load();
 bottomBannerCtrl2.load();
-// "offre pack" image loads right after the hero banner kicks off its own
-// fetch — second priority on the page, ahead of the product grid.
+
+
 loadPack4BadgeImage();
 function renderHeroBanner(){ heroBannerCtrl.render(); bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
-// The top (hero) banner is shared/unified across Femme and Homme on
-// purpose — it never switches when the gender filter changes. The bottom
-// banners are the opposite: each gender keeps its own separate banner,
-// so switching the filter needs to actually swap their content back in.
+
+
+
+
 function setBannerCategory(cat){
   bottomBannerCtrl.setCategory(cat);
   bottomBannerCtrl2.setCategory(cat);
@@ -1507,7 +1484,7 @@ function setBannerCategory(cat){
 const catalogReady = loadCatalog();
 loadReviewsSection();
 
-/* ---------- featured full-width products (separate showcase below the grid) ---------- */
+
 const FEATURED_KEY = 'aura-featured-products-v1';
 let featuredProducts = [];
 let featuredStorageAvailable = true;
@@ -1653,10 +1630,10 @@ document.addEventListener('click', (e) => {
     });
     return;
   }
-  // Clicking the featured product card itself (not its admin edit/delete
-  // buttons) opens the same "pack of 3 perfumes" picker as the offre-pack
-  // banner, locked to the gender the admin chose when creating/editing
-  // this card (not asked to the buyer).
+  
+  
+  
+  
   const featuredCard = e.target.closest('.featured-product-card');
   if(featuredCard){
     const idx = Number(featuredCard.dataset.idx);
@@ -1665,22 +1642,17 @@ document.addEventListener('click', (e) => {
   }
 });
 
-/* ---------- orders (Supabase relational tables) ---------- */
+
 const SHIPPING_FEE = 20;
 const FREE_SHIPPING_THRESHOLD = 195;
 const ORDER_STATUSES = ['pending', 'confirmed', 'preparing', 'shipped', 'delivered'];
-let customers = []; // cached list of orders for the admin dashboard
+let customers = []; 
 
 function genOrderNumber(){
   return 'HISTOIRE-' + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).slice(2, 4).toUpperCase();
 }
 
-/* ---------- customer's own order history (kept on this device) ----------
-   Purely local (localStorage) — no login/account system exists on this
-   storefront, so "my orders" means "orders placed from this browser".
-   This lets a customer close the site after checkout and, next time they
-   open the tracking screen, immediately see their past order(s) and tap
-   one to see its status instead of having to remember/retype the code. */
+
 const MY_ORDERS_KEY = 'histoire-my-orders';
 function getMyOrders(){
   try{
@@ -1692,7 +1664,7 @@ function saveMyOrder(orderNumber, total){
   try{
     let list = getMyOrders().filter(o => o.orderNumber !== orderNumber);
     list.unshift({ orderNumber, total: total || null, date: new Date().toISOString() });
-    list = list.slice(0, 10); // keep the 10 most recent
+    list = list.slice(0, 10); 
     localStorage.setItem(MY_ORDERS_KEY, JSON.stringify(list));
   }catch(e){}
 }
@@ -1702,13 +1674,13 @@ async function createOrder({name, phone, city, address, notes, items, subtotal, 
   const nowIso = new Date().toISOString();
   if(supabaseClient){
     try{
-      // Generate the row's id client-side and insert it explicitly.
-      // Reason: after the "orders" SELECT policy was locked to admin-only
-      // (security-fix-phase1.sql), a guest can still INSERT a new order,
-      // but can no longer read it back via .select().single() afterwards
-      // (that read is a SELECT under the hood and gets blocked by RLS,
-      // which made every checkout silently fail into the local fallback).
-      // Knowing the id in advance means we never need to read it back.
+      
+      
+      
+      
+      
+      
+      
       const orderId = (crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2));
       const orderPayload = {
         id: orderId,
@@ -1732,7 +1704,7 @@ async function createOrder({name, phone, city, address, notes, items, subtotal, 
       if(isAdmin) showToast(t('toastStorageUnavailable'));
     }
   }
-  // fallback if Supabase isn't configured/reachable — keep the order locally for this session only
+  
   return { orderNumber, id: null, createdAt: nowIso, items, name, phone, city, address, notes, subtotal, discount, couponCode, total, status:'pending', local:true };
 }
 
@@ -1797,9 +1769,9 @@ async function fetchStatusHistory(orderId){
 async function fetchOrderByNumber(orderNumber){
   if(!supabaseClient) return null;
   try{
-    // Uses a security-definer RPC instead of a direct table select, so a
-    // guest can look up their own order by its exact number without the
-    // "orders" table needing to be publicly readable (see security-fix-phase1.sql).
+    
+    
+    
     const { data, error } = await supabaseClient
       .rpc('get_order_by_number', { p_order_number: orderNumber });
     if(error) throw error;
@@ -1809,14 +1781,14 @@ async function fetchOrderByNumber(orderNumber){
   }
 }
 
-// Lets a guest cancel their own order from the tracking screen, without the
-// "orders" table needing to be writable by the public. Mirrors the same
-// trust model already used by get_order_by_number above (knowing the exact
-// order number is treated as proof of ownership -- there's no login system
-// on this storefront). The matching `cancel_order_by_number` SQL function
-// (security definer) additionally refuses to cancel an order that's already
-// shipped/delivered/cancelled, so this can't be used to reopen or tamper
-// with an order past that point -- see cancel-order-function.sql.
+
+
+
+
+
+
+
+
 async function cancelOrderByNumber(orderNumber){
   if(!supabaseClient) return false;
   try{
@@ -1829,11 +1801,11 @@ async function cancelOrderByNumber(orderNumber){
   }
 }
 
-/* ---------- customer reviews (Supabase table + storage) ---------- */
-let publicReviews = [];   // cached approved reviews shown on the storefront
+
+let publicReviews = [];   
 let testimonialIndex = 0;
 let testimonialTimer = null;
-let adminReviews = [];    // cached full list (pending + approved) for the admin dashboard
+let adminReviews = [];    
 
 async function fetchApprovedReviews(){
   if(!supabaseClient) return [];
@@ -1895,7 +1867,7 @@ async function uploadReviewImage(file){
       const { data } = supabaseClient.storage.from('review-images').getPublicUrl(filename);
       return data.publicUrl;
     }catch(err){
-      // fall through to base64 fallback below
+      
     }
   }
   return new Promise((resolve) => {
@@ -1940,8 +1912,8 @@ async function approveReview(id){
 async function deleteReview(id){
   if(!supabaseClient) return false;
   try{
-    // Look up the image_url first so we can also remove the photo file from
-    // Storage — deleting only the row would leave it orphaned in the bucket.
+    
+    
     const { data: reviewRow } = await supabaseClient.from('reviews').select('image_url').eq('id', id).maybeSingle();
     const { error } = await supabaseClient.from('reviews').delete().eq('id', id);
     if(error) throw error;
@@ -1984,7 +1956,7 @@ function testimonialCardHtml(r){
     </div>`;
 }
 
-/* ---------- per-product reviews (product page) ---------- */
+
 function ppReviewCardHtml(r){
   const img = r.image_url ? `<div class="pp-review-photo"><img class="seq-lazy" data-src="${r.image_url}" alt=""></div>` : '';
   return `
@@ -2008,9 +1980,9 @@ async function renderProductReviews(productName){
   if(!listEl) return;
   listEl.innerHTML = `<div class="testimonial-skel"></div>`;
   const reviews = await fetchApprovedReviewsForProduct(productName);
-  // Bail out silently if the visitor has already navigated to a different
-  // product page while this fetch was in flight — avoids painting stale
-  // reviews for the wrong perfume.
+  
+  
+  
   if(!currentProductPage) return;
   const list = currentProductPage.category === 'men' ? men : women;
   const activeName = list[currentProductPage.idx] ? list[currentProductPage.idx].name : null;
@@ -2040,10 +2012,10 @@ function renderTestimonialDots(){
   const dotsEl = document.getElementById('testimonial-dots');
   if(!dotsEl) return;
   const total = publicReviews.length;
-  // With a handful of reviews, individual dots are a nice touch. With
-  // hundreds of reviews, hundreds of dots would break the layout — fall
-  // back to a simple "3 / 240" counter instead, still fully working with
-  // the same rotation/swipe logic underneath.
+  
+  
+  
+  
   if(total > 12){
     dotsEl.classList.add('is-counter');
     dotsEl.innerHTML = `<span class="testimonial-counter" id="testimonial-counter">${testimonialIndex + 1} / ${total}</span>`;
@@ -2096,12 +2068,12 @@ function stopTestimonialAutoplay(){
   testimonialTimer = null;
 }
 
-/* ---------- swipe to browse testimonials (works for any number of reviews) ---------- */
+
 function setupTestimonialSwipe(carousel){
   if(!carousel || carousel.dataset.swipeBound) return;
   carousel.dataset.swipeBound = '1';
   let startX = 0, startY = 0, tracking = false;
-  const threshold = 40; // min horizontal drag distance (px) to count as a swipe
+  const threshold = 40; 
   carousel.addEventListener('touchstart', (e) => {
     if(!e.touches || !e.touches.length) return;
     startX = e.touches[0].clientX;
@@ -2115,10 +2087,10 @@ function setupTestimonialSwipe(carousel){
     if(!touch || publicReviews.length < 2) return;
     const dx = touch.clientX - startX;
     const dy = touch.clientY - startY;
-    if(Math.abs(dx) < threshold || Math.abs(dx) < Math.abs(dy)) return; // ignore taps / vertical scrolls
+    if(Math.abs(dx) < threshold || Math.abs(dx) < Math.abs(dy)) return; 
     stopTestimonialAutoplay();
-    if(dx < 0) showTestimonial(testimonialIndex + 1); // swiped left -> next
-    else showTestimonial(testimonialIndex - 1);        // swiped right -> previous
+    if(dx < 0) showTestimonial(testimonialIndex + 1); 
+    else showTestimonial(testimonialIndex - 1);        
     startTestimonialAutoplay();
   }, { passive: true });
 }
@@ -2150,11 +2122,11 @@ async function loadReviewsSection(){
   if(ratingLine) ratingLine.style.display = 'flex';
   if(carousel && !carousel.dataset.tBound){
     carousel.dataset.tBound = '1';
-    // Pause-on-hover is a desktop-only nicety. On touch devices, some mobile
-    // browsers fire a synthetic "mouseenter" on tap with no matching
-    // "mouseleave" afterwards — which would silently freeze the rotation
-    // forever after the very first tap. Guard it to real hover-capable
-    // pointers only, exactly like the rest of the site's hover effects.
+    
+    
+    
+    
+    
     if(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
       carousel.addEventListener('mouseenter', stopTestimonialAutoplay);
       carousel.addEventListener('mouseleave', startTestimonialAutoplay);
@@ -2165,7 +2137,7 @@ async function loadReviewsSection(){
   if(typeof refreshScrollReveal === 'function') refreshScrollReveal();
 }
 
-/* ---------- review submission modal ---------- */
+
 let reviewSelectedRating = 0;
 let reviewSelectedImageFile = null;
 
@@ -2284,7 +2256,7 @@ document.getElementById('review-form').addEventListener('submit', async (e) => {
   }
 });
 
-/* ---------- admin: reviews moderation ---------- */
+
 let adReviewsStatusFilter = 'pending';
 
 function adReviewCardHtml(r){
@@ -2402,20 +2374,20 @@ function setAdminUI(){
   if(currentProductPage) renderProductPage();
 }
 
-// Logo now behaves like a normal store logo (goes home). Admin entry is
-// gated server-side (see middleware.js) — the real URL is never present
-// in this file, so it can't be found by reading the site's source.
+
+
+
 document.getElementById('logo-link').addEventListener('click', (e) => {
   e.preventDefault();
   if(isAdmin) return;
-  // Previously this only scrolled to top -- it never actually closed
-  // whatever sub-page/modal was open (product page, checkout, the pack4
-  // modal, ...), so the URL was left pointing at e.g. /product/xxx even
-  // after the visitor was back looking at the home page. That stale URL
-  // is exactly what a refresh (or routeInitialLoad() below) then reads
-  // and reopens. Explicitly closing everything here keeps the URL and
-  // what's actually on screen in sync, the same way the browser's own
-  // back button already does via the popstate handler above.
+  
+  
+  
+  
+  
+  
+  
+  
   closeTrackingModal(true); closeAboutModal(true); closeFounderModal(true);
   closeSideMenu(true); closeProductPage(true); closeCheckoutPage(true);
   closePack4Modal(true); closeAdminLoginModal(true); closeAdminDashboardPage(true);
@@ -2445,9 +2417,9 @@ document.getElementById('admin-login-overlay').addEventListener('click', () => c
 async function checkAdminPassword(email, pass){
   try{
     if(!supabaseClient) return false;
-    // Real Supabase Auth sign-in — the email is now typed at login time
-    // (not stored in the page's code), so it's no longer visible to
-    // anyone just viewing the page source.
+    
+    
+    
     const { data, error } = await supabaseClient.auth.signInWithPassword({
       email: email,
       password: pass
@@ -2455,7 +2427,7 @@ async function checkAdminPassword(email, pass){
     if(error) throw error;
     return !!(data && data.session);
   }catch(err){
-    // Wrong password / Supabase unreachable — deny login, no fallback
+    
   }
   return false;
 }
@@ -2489,10 +2461,10 @@ document.getElementById('exit-admin-btn').addEventListener('click', async () => 
   setAdminUI();
 });
 
-// Admin mode should ONLY ever be active right after an explicit password
-// login — never automatically restored from a saved browser session. Any
-// leftover Supabase session from a previous login (on this device) is
-// signed out immediately on page load, so every visit starts as a guest.
+
+
+
+
 (async function clearAnyLingeringAdminSession(){
   try{
     if(!supabaseClient) return;
@@ -2514,7 +2486,7 @@ document.getElementById('exit-admin-btn').addEventListener('click', async () => 
   }catch(err){}
 })();
 
-/* ---------- search ---------- */
+
 function scoreProduct(p, terms){
   const name = p.name.toLowerCase();
   const family = p.family.toLowerCase();
@@ -2526,7 +2498,7 @@ function scoreProduct(p, terms){
     else if(name.includes(t)) score += 40;
     else if(family.includes(t)) score += 15;
     else if(desc.includes(t)) score += 5;
-    else return -1; // this term matched nothing — exclude the product
+    else return -1; 
   }
   return score;
 }
@@ -2580,18 +2552,18 @@ document.getElementById('search-modal-close').addEventListener('click', closeSea
 document.getElementById('search-overlay').addEventListener('click', closeSearchModal);
 document.getElementById('search-input').addEventListener('input', (e) => renderSearchResults(e.target.value));
 
-/* ---------- Pack of 4 Perfumes ---------- */
+
 
 const PACK4_PRICE = 195;
 let pack4Selection = [null, null, null];
 let pack4Qty = 1;
 let pack4ActiveSlot = null;
 let pack4PickerFilter = 'all';
-let checkoutOrigin = null; // 'pack4' when checkout was reached from the 3-perfume pack builder, so "Retour" can send the user back to their in-progress pack instead of the home screen
-// When set to 'men' or 'women', the pack builder is restricted to that
-// gender only (used when opening the pack picker from the big featured
-// product card, after the visitor answers "Femme ou Homme ?"). Left null
-// for the normal "offre pack" banner, which still offers everything.
+let checkoutOrigin = null; 
+
+
+
+
 let pack4LockedGender = null;
 
 function pack4AllProducts(){
@@ -2659,14 +2631,14 @@ function openPack4Modal(pushHistory, preserveSelection, lockedGender){
   pack4ActiveSlot = null;
   pack4LockedGender = lockedGender || null;
   pack4PickerFilter = pack4LockedGender || (currentFilter === 'men' ? 'men' : 'women');
-  // When locked to a single gender, hide the "Tous / Homme / Femme" filter
-  // buttons in the picker so the visitor can't switch to the other gender —
-  // only the matching filter button stays, already marked active.
+  
+  
+  
   document.querySelectorAll('.pack4-pf-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.pf === pack4PickerFilter);
     b.style.display = pack4LockedGender && b.dataset.pf !== pack4LockedGender ? 'none' : '';
-    // Lead with whichever gender matches the shop's active tab (Femme/Homme),
-    // followed by the other gender, then "Tous" last.
+    
+    
     const order = currentFilter === 'men'
       ? { men: 0, women: 1, all: 2 }
       : { women: 0, men: 1, all: 2 };
@@ -2691,11 +2663,11 @@ document.getElementById('pack4-banner-btn').addEventListener('click', () => open
 document.getElementById('pack4-modal-close').addEventListener('click', () => closePack4Modal());
 document.getElementById('pack4-overlay').addEventListener('click', () => closePack4Modal());
 
-// The rotating gold border around the pack4 banner is now pure CSS: the
-// border's paint source is a spinning conic-gradient (see .pack4-banner's
-// background/@property --pack4-angle/@keyframes pack4-border-spin in
-// style.css) instead of a solid color, so it's the actual border itself
-// that appears to rotate -- no overlay element and no JS needed here.
+
+
+
+
+
 
 document.getElementById('pack4-slots').addEventListener('click', (e) => {
   const removeBtn = e.target.closest('.pack4-slot-remove');
@@ -2705,10 +2677,25 @@ document.getElementById('pack4-slots').addEventListener('click', (e) => {
     return;
   }
   const slot = e.target.closest('.pack4-slot');
-  if(slot){
-    pack4ActiveSlot = Number(slot.dataset.slot);
-    openPack4Picker();
+  if(!slot) return;
+  if(slot.classList.contains('filled')){
+    
+    
+    
+    
+    
+    
+    
+    const i = Number(slot.dataset.slot);
+    const name = pack4Selection[i];
+    if(!name) return;
+    checkoutOrigin = 'pack4';
+    closePack4Modal(true);
+    openProductPage(name, true);
+    return;
   }
+  pack4ActiveSlot = Number(slot.dataset.slot);
+  openPack4Picker();
 });
 
 function renderPack4Picker(){
@@ -2804,13 +2791,13 @@ document.getElementById('pack4-cart-btn').addEventListener('click', () => {
   showCartToast(t('pack4CartFamily'));
 });
 
-/* ---------- product page (full page, not a modal) ---------- */
-let currentProductPage = null; // { category, idx }
+
+let currentProductPage = null; 
 let ppQty = 1;
 
 function slugify(str){
   return String(str)
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') 
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -2943,7 +2930,7 @@ function attachProductPageEvents(){
     addImgBtn.addEventListener('click', () => addImgInput.click());
   }
 
-  // ---- product reviews (5-star rating + comment, pending admin approval) ----
+  
   ppReviewSelectedRating = 0;
   const ref = currentProductPage;
   if(ref){
@@ -3009,24 +2996,24 @@ function goToPpSlide(i){
   document.querySelectorAll('.pp-thumb').forEach((th, idx) => th.classList.toggle('active', idx === ppActiveIndex));
   syncPpSlideVideos(slides);
 }
-// Only the video the shopper is currently looking at should ever be
-// playing -- swiping away pauses/rewinds it (so it starts from the
-// beginning again next time) and the newly-active slide's video starts
-// itself. Without this every video in the gallery would just autoplay
-// and run simultaneously in the background as soon as its data loaded.
+
+
+
+
+
 function syncPpSlideVideos(slides){
   slides.forEach((slide, idx) => {
     const v = slide.querySelector('video');
     if(!v) return;
     if(idx === ppActiveIndex){
-      // The video is seq-lazy, so at the moment this runs it may not even
-      // have a real "src" yet (still just data-src, waiting its turn in
-      // the sequential loading queue) -- readyState would be 0 forever in
-      // that case and a single play() call now would fail silently with
-      // nothing to retry it. Calling play() both now (covers the case
-      // where it's already loaded) and again on 'loadeddata' (covers the
-      // case where the queue assigns the real src a moment later) handles
-      // both orders without needing to know which one applies.
+      
+      
+      
+      
+      
+      
+      
+      
       const tryPlay = () => { v.play().catch(() => {}); };
       tryPlay();
       v.addEventListener('loadeddata', tryPlay, { once: true });
@@ -3189,12 +3176,12 @@ function renderProductPage(){
   ppContent.innerHTML = productPageTemplate(p, currentProductPage.category, currentProductPage.idx);
   attachProductPageEvents();
   refreshScrollReveal(ppContent);
-  // Restart the fade-in animation every time the page (re)renders — e.g.
-  // opening a new product while already on a product page. Removing and
-  // re-adding the class on the next frame forces the CSS animation to
-  // play again instead of being a no-op the second time.
+  
+  
+  
+  
   ppContent.classList.remove('pp-fade-in');
-  void ppContent.offsetWidth; // force reflow so the class removal registers
+  void ppContent.offsetWidth; 
   ppContent.classList.add('pp-fade-in');
 }
 
@@ -3223,8 +3210,8 @@ function openProductPage(name, pushHistory, preserveQty){
   closeSearchModal();
   closeWishlistDrawer();
   if(typeof closeCartDrawer === 'function') closeCartDrawer();
-  // Remember where the visitor was on the home page so "Retour" can
-  // bring them back to the same spot instead of jumping to the top.
+  
+  
   if(document.getElementById('product-page').style.display !== 'block'){
     ppSavedScrollY = window.scrollY;
   }
@@ -3233,14 +3220,14 @@ function openProductPage(name, pushHistory, preserveQty){
   document.getElementById('shop-view').style.display = 'none';
   const coEl = document.getElementById('checkout-page');
   if(coEl) coEl.style.display = 'none';
-  // Make the product-page container visible BEFORE rendering its content
-  // and starting the scroll-reveal IntersectionObserver below. Observing
-  // ".reveal" elements while their container is still display:none gives
-  // them no layout box to measure, so anything already inside the initial
-  // viewport (like the price row) is wrongly treated as "not visible yet"
-  // -- some browsers (notably Safari) then only re-check intersection on
-  // an actual scroll/resize event, not automatically once display flips
-  // to block a moment later. Flipping display first avoids that entirely.
+  
+  
+  
+  
+  
+  
+  
+  
   document.getElementById('product-page').style.display = 'block';
   renderProductPage();
   window.scrollTo({ top: 0, behavior: 'auto' });
@@ -3273,47 +3260,47 @@ window.addEventListener('popstate', (e) => {
   else { closeTrackingModal(true); closeAboutModal(true); closeFounderModal(true); closeSideMenu(true); closeProductPage(true); closeCheckoutPage(true); closePack4Modal(true); closeAdminLoginModal(true); closeAdminDashboardPage(true); }
 });
 
-// Initial routing: open the right view based on the URL the page was loaded
-// with (deep link / shared link / browser refresh), e.g. /product/opium,
-// /offre, /checkout, /panel (admin dashboard label — entry itself is gated in middleware.js).
+
+
+
 (function routeInitialLoad(){
   const path = location.pathname.replace(/\/+$/, '') || '/';
   if(path.startsWith('/product/')){
     const slug = decodeURIComponent(path.slice('/product/'.length));
-    // The product catalog loads asynchronously from Supabase (see
-    // loadCatalog() above). On a hard refresh, this route check used to run
-    // immediately, before that fetch finished, so it often couldn't find
-    // the product yet and silently fell back to the home page. Waiting for
-    // catalogReady first fixes refreshing/sharing a direct product link.
+    
+    
+    
+    
+    
     catalogReady.then(() => {
       const ref = findProductBySlug(slug);
       if(ref){
         history.replaceState({ ppName: ref.name }, '', path);
         openProductPage(ref.name, false);
       }
-      // If the product genuinely doesn't exist (deleted, wrong slug), we
-      // simply stay on the home page — nothing to open.
+      
+      
     });
     return;
   } else if(path === '/offre' || path === '/pack-parfums'){
-    // Previously this auto-opened the pack offer on load whenever the
-    // browser's address bar still showed /offre from an earlier visit
-    // (pushState leaves that in the URL even after navigating away).
-    // The store should always land on the home page first, so we just
-    // clean the URL back to '/' instead of reopening the offer.
+    
+    
+    
+    
+    
     history.replaceState({}, '', '/');
     return;
   } else if(path === '/checkout'){
-    // Same reasoning as /offre above -- always land on home first.
+    
     history.replaceState({}, '', '/');
     return;
   }
 })();
 
-// Admin entry point: no path or string here reveals the real URL — that
-// check now happens server-side in middleware.js (never sent to the
-// browser). Middleware sets a short-lived cookie after verifying login;
-// this just looks for that cookie and opens the login modal.
+
+
+
+
 (function checkAdminGateCookie(){
   const match = document.cookie.match(/(?:^|; )adminGateOK=([^;]*)/);
   if(match){
@@ -3351,26 +3338,26 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Desktop shows the product-photo shine on :hover (see .pc-stage::after in
-// style.css), but a finger has no hover state -- without this, mobile
-// visitors (the majority here) would never see it at all. This mirrors
-// the same effect for touch: touching anywhere on the product card plays
-// the shine on that card's photo once via the .pc-shine-active class,
-// which is removed again once the sweep finishes so it's ready to replay
-// on the next touch.
+
+
+
+
+
+
+
 document.addEventListener('touchstart', (e) => {
   const card = e.target.closest('.product-card');
   const stage = card && card.querySelector('.pc-stage');
   if(!stage) return;
   stage.classList.remove('pc-shine-active');
-  // Restart the CSS animation via requestAnimationFrame instead of a
-  // synchronous "read offsetWidth to force reflow" trick. That forced
-  // layout used to run synchronously inside the touchstart handler --
-  // right at the exact moment iOS Safari decides whether this touch is
-  // the start of a scroll gesture -- and could make the page stutter or
-  // briefly freeze when a finger simply brushed a card while starting to
-  // scroll (not tapping it). requestAnimationFrame defers the reflow to
-  // the next paint instead, so it never blocks the scroll gesture itself.
+  
+  
+  
+  
+  
+  
+  
+  
   requestAnimationFrame(() => {
     stage.classList.add('pc-shine-active');
   });
@@ -3385,11 +3372,11 @@ document.addEventListener('animationend', (e) => {
 function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceFormat){
   maxDim = maxDim || 640;
   quality = quality || 0.72;
-  // PNG/GIF/WebP source files can carry an alpha channel. If we always
-  // re-encode to JPEG (which has no alpha channel), any transparent area
-  // gets flattened onto a solid black background by the canvas — that's
-  // the "black square behind transparent PNGs" bug. When preserveTransparency
-  // is requested, keep the output as PNG instead so transparency survives.
+  
+  
+  
+  
+  
   const mayHaveAlpha = /image\/(png|gif|webp)/i.test(file.type || '');
   const outputType = forceFormat || ((preserveTransparency && mayHaveAlpha) ? 'image/png' : 'image/jpeg');
   return new Promise((resolve, reject) => {
@@ -3407,8 +3394,8 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
         canvas.width = w; canvas.height = h;
         const ctx = canvas.getContext('2d');
         if(outputType === 'image/jpeg'){
-          // JPEG has no alpha channel — fill white first so any transparent
-          // pixels come out white instead of the canvas default (black).
+          
+          
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, w, h);
         }
@@ -3426,11 +3413,11 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
 async function uploadProductImage(file, opts){
   if(!file) return null;
   const preserveTransparency = !!(opts && opts.transparent);
-  // Short product-demo clips: the gallery on the product page renders
-  // these as an actual <video> slide (see productPageTemplate) instead
-  // of a photo. They obviously can't go through compressImageToBlob at
-  // all (that's canvas-based, images only), so this branch uploads the
-  // raw file directly, same idea as the GIF/WebP branch below.
+  
+  
+  
+  
+  
   const isVideo = /^video\//i.test(file.type || '') || /\.mp4$/i.test(file.name || '');
   if(isVideo){
     if(file.size > 20 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
@@ -3448,31 +3435,31 @@ async function uploadProductImage(file, opts){
         return null;
       }
     }
-    // No Supabase configured (local/offline preview) -- fall back to a
-    // data: URL, same escape hatch the image branches below use. isVideoUrl()
-    // already recognizes "data:video/..." so this still renders correctly.
+    
+    
+    
     return new Promise((resolve) => {
       const fr = new FileReader();
       fr.onload = () => resolve(fr.result);
       fr.readAsDataURL(file);
     });
   }
-  // GIF and WebP are the two formats a browser will actually animate
-  // inside a plain <img> tag (used for the big product photo). Canvas
-  // has no concept of animation though -- compressImageToBlob() below
-  // draws a single frame onto a <canvas> and re-encodes *that*, so
-  // running an animated file through it would silently flatten it down
-  // to one still frame. Detect that case up front and skip compression
-  // entirely for it: the original animated bytes are uploaded as-is, so
-  // the animation survives. (A *static* GIF/WebP loses the resize step
-  // this way too -- there's no way to tell the two apart without fully
-  // parsing the file for multiple frames -- but that only costs a bit of
-  // extra bandwidth on a still image, versus silently breaking every
-  // animated one, which is the far worse failure mode here.)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const isGifOrWebp = /^image\/(gif|webp)$/i.test(file.type || '') || /\.(gif|webp)$/i.test(file.name || '');
   if(isGifOrWebp){
-    // Large GIFs in particular can be several MB -- warn the admin so an
-    // unexpectedly slow page load doesn't look like a bug later.
+    
+    
     if(file.size > 6 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
     const contentType = /^image\/gif$/i.test(file.type || '') || /\.gif$/i.test(file.name || '') ? 'image/gif' : 'image/webp';
     const ext = contentType === 'image/gif' ? 'gif' : 'webp';
@@ -3495,33 +3482,33 @@ async function uploadProductImage(file, opts){
       fr.readAsDataURL(file);
     });
   }
-  // Some OS file pickers report a generic/blank MIME type for .avif, so
-  // fall back to checking the filename extension too (same detection used
-  // for the banner uploads).
+  
+  
+  
   const isAvif = file.type === 'image/avif' || /\.avif$/i.test(file.name || '');
-  // Wrap AVIF files so the Blob/File carries the correct MIME type even
-  // when the source File's reported type was blank/wrong -- otherwise the
-  // data URL built below would be mistagged and fail to decode even
-  // though the underlying bytes are a perfectly valid image.
+  
+  
+  
+  
   const sourceFile = (isAvif && file.type !== 'image/avif')
     ? new File([file], file.name || 'photo.avif', { type: 'image/avif' })
     : file;
   let blob = null;
   let avifRaw = false;
   if(isAvif){
-    // Still resize AVIF uploads like every other format -- an admin photo
-    // can be several megapixels while the card only ever displays it at a
-    // few hundred px, so shipping it untouched wastes a lot of bandwidth.
-    // Canvas can decode AVIF in every current browser, it just can't
-    // *encode* it back out, so the resized result is re-saved as WebP
-    // instead (keeps most of AVIF's size benefit). If decode fails for
-    // any reason (older browser), fall back to uploading the original
-    // file untouched so the upload still succeeds.
-    //
-    // AVIF's codec is more efficient than WebP, so a small/already-
-    // optimized AVIF can end up *larger* after this WebP re-encode
-    // (e.g. a 4KB AVIF turning into a 95KB WebP). Only use the WebP
-    // result if it's actually smaller than the original file.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     try{ blob = await compressImageToBlob(sourceFile, 560, 0.7, true, 'image/webp'); }
     catch(err){ blob = null; }
     if(!blob || blob.size >= sourceFile.size){ blob = sourceFile; avifRaw = true; }
@@ -3545,10 +3532,10 @@ async function uploadProductImage(file, opts){
       return data.publicUrl;
     }catch(err){
       if(isAdmin) showToast(t('toastImageUploadFailed'));
-      // fall through to base64 fallback below
+      
     }
   }
-  // fallback: no Supabase Storage configured/available — embed a compressed base64 image instead
+  
   return new Promise((resolve) => {
     const fr = new FileReader();
     fr.onload = () => resolve(fr.result);
@@ -3556,10 +3543,10 @@ async function uploadProductImage(file, opts){
   });
 }
 
-// Measure an image/GIF's natural size once, up front (from the raw File),
-// so the banner frame can be sized correctly on the very first render —
-// instead of waiting for the <img> to (re)load and firing a visible
-// resize/jump every time the page loads.
+
+
+
+
 function getImageFileDimensions(file){
   return new Promise((resolve) => {
     const objUrl = URL.createObjectURL(file);
@@ -3573,8 +3560,8 @@ function getImageFileDimensions(file){
   });
 }
 
-// Same idea for videos: read metadata once at upload time instead of
-// re-measuring (and re-flashing the frame) on every page load.
+
+
 function getVideoFileDimensions(file){
   return new Promise((resolve) => {
     const objUrl = URL.createObjectURL(file);
@@ -3589,18 +3576,18 @@ function getVideoFileDimensions(file){
   });
 }
 
-// A static WebP and an animated WebP share the exact same MIME type
-// (image/webp), so file.type alone can't tell them apart. Animated WebP
-// files contain an "ANIM" chunk in their RIFF container; a plain static
-// WebP never does. We scan the raw bytes for that marker to tell them
-// apart, so animated WebPs get uploaded as-is (like GIFs) instead of being
-// run through the canvas compressor, which would flatten them to one frame.
+
+
+
+
+
+
 async function isAnimatedWebp(file){
   if(file.type !== 'image/webp') return false;
   try{
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
-    const marker = [0x41, 0x4E, 0x49, 0x4D]; // "ANIM"
+    const marker = [0x41, 0x4E, 0x49, 0x4D]; 
     for(let i = 0; i <= bytes.length - marker.length; i++){
       if(bytes[i] === marker[0] && bytes[i+1] === marker[1] && bytes[i+2] === marker[2] && bytes[i+3] === marker[3]){
         return true;
@@ -3612,13 +3599,12 @@ async function isAnimatedWebp(file){
   }
 }
 
-/* ---------- banner (admin-editable, multi-slide carousel) ---------- */
-/* Factory so the same carousel/upload/admin logic can power multiple
-   independent banners on the page (top hero banner, bottom banner, ...). */
+
+
 function createBannerController(cfg){
   const state = {
     keyBase: cfg.storageKey,
-    category: currentFilter, // 'men' or 'women' — each category keeps its own banners
+    category: currentFilter, 
     bannersByCat: { men: [], women: [] },
     loadedCat: { men: false, women: false },
     activeIndex: 0,
@@ -3631,9 +3617,9 @@ function createBannerController(cfg){
     autoplayTimer: null,
     priority: !!cfg.priority
   };
-  // state.banners always reads/writes the array for the CURRENT category,
-  // so all the existing logic below (push/splice/map/length) keeps working
-  // untouched — it just now operates on a per-category list.
+  
+  
+  
   Object.defineProperty(state, 'banners', {
     get(){ return state.bannersByCat[state.category]; },
     set(arr){ state.bannersByCat[state.category] = arr; }
@@ -3652,22 +3638,22 @@ function createBannerController(cfg){
 
   function writeLocalCache(cat, items){
     try{ localStorage.setItem(`cache-${keyFor(cat)}`, JSON.stringify(items)); }
-    catch(err){ /* private browsing / storage full — ignore */ }
+    catch(err){  }
   }
 
   async function loadCategory(cat){
-    // Paint instantly from last-known-good cache while the real fetch is in flight.
+    
     const cached = readLocalCache(cat);
     if(cached && cached.length) state.bannersByCat[cat] = cached;
     try{
       const data = await kvGet(keyFor(cat));
       if(data){
         if(Array.isArray(data.items)) state.bannersByCat[cat] = data.items.filter(it => it && it.url);
-        else if(data.url) state.bannersByCat[cat] = [{ url: data.url, type: data.type || 'image' }]; // legacy single-banner format
+        else if(data.url) state.bannersByCat[cat] = [{ url: data.url, type: data.type || 'image' }]; 
         writeLocalCache(cat, state.bannersByCat[cat]);
       }
     }catch(err){
-      // no banner set yet for this category, or storage unavailable
+      
     }
     state.loadedCat[cat] = true;
   }
@@ -3711,13 +3697,13 @@ function createBannerController(cfg){
       return;
     }
 
-    // Crossfade + Ken Burns: swap which slide carries the "active"
-    // (opacity:1, resting scale) class. Both the outgoing and incoming
-    // slide are absolutely stacked on top of each other and transition
-    // simultaneously via CSS (see .hb-slide / .hb-slide.hb-active), with
-    // zero horizontal/vertical movement of the slides themselves — only
-    // the incoming slide's own image/video eases from a subtle 103% zoom
-    // down to 100% (see below), while the outgoing one stays pinned.
+    
+    
+    
+    
+    
+    
+    
     track.querySelectorAll('.hb-slide').forEach((slideEl) => {
       const isActive = parseInt(slideEl.dataset.i, 10) === nextIndex;
       slideEl.classList.toggle('hb-active', isActive);
@@ -3733,15 +3719,15 @@ function createBannerController(cfg){
     if(prevIndex !== nextIndex){
       const outgoingSlide = content.querySelector(`.hb-slide[data-i="${prevIndex}"]`);
       if(outgoingSlide){
-        // Pin the outgoing slide's media at its resting scale/position
-        // while it fades out, so the Ken Burns zoom only ever plays on
-        // the slide that's coming in — the outgoing image simply
-        // dissolves without any movement of its own.
+        
+        
+        
+        
         outgoingSlide.classList.add('hb-outgoing');
         const cleanup = () => outgoingSlide.classList.remove('hb-outgoing');
         outgoingSlide.addEventListener('transitionend', cleanup, { once: true });
-        // Safety net in case transitionend never fires (e.g. tab
-        // backgrounded mid-transition), so the class doesn't get stuck.
+        
+        
         setTimeout(cleanup, 1800);
       }
     }
@@ -3749,10 +3735,10 @@ function createBannerController(cfg){
     applyActiveSlideEffects(content);
   }
 
-  // Keeps the frame's aspect ratio in sync with the newly-active slide and
-  // makes sure only the active slide's video is playing. Shared between the
-  // full render() (first paint / banner set changes) and the lightweight
-  // goToSlide() transform-only path (slide-to-slide navigation).
+  
+  
+  
+  
   function applyActiveSlideEffects(content){
     const frameEl = document.getElementById(`${state.sectionId}-frame`);
     const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
@@ -3787,9 +3773,9 @@ function createBannerController(cfg){
       }
     }
 
-    // Index each video by its own slide's data-i (not NodeList position),
-    // since the clone slides bookending the track would otherwise throw
-    // off a simple positional index.
+    
+    
+    
     content.querySelectorAll('.hb-slide video').forEach((v) => {
       const slideEl = v.closest('.hb-slide');
       const i = slideEl ? parseInt(slideEl.dataset.i, 10) : -1;
@@ -3820,8 +3806,8 @@ function createBannerController(cfg){
     }, state.autoplayDelay);
   }
 
-  // Any manual interaction (swipe, dot, arrow) restarts the countdown so the
-  // banner doesn't jump to the next slide right after the user just picked one.
+  
+  
   function restartAutoplay(){
     startAutoplay();
   }
@@ -3829,11 +3815,11 @@ function createBannerController(cfg){
   function attachEvents(content){
     const track = content.querySelector('.hb-track');
     if(track){
-      // Swipe is detected (for manual navigation) but never visually
-      // "dragged" — the slide never follows the finger and there is no
-      // horizontal movement at all. On release, a swipe past the
-      // threshold simply triggers the same opacity crossfade used by the
-      // arrows/autoplay.
+      
+      
+      
+      
+      
       let startX = 0, startY = 0, deltaX = 0, dragging = false;
       const threshold = 40;
       track.addEventListener('touchstart', (e) => {
@@ -3878,16 +3864,16 @@ function createBannerController(cfg){
             ? `<video src="${b.url}" muted loop playsinline webkit-playsinline preload="auto"${i === state.activeIndex ? ' autoplay' : ''}></video>`
             : (() => {
                 const isGifBanner = /\.(gif|webp)(\?|$)/i.test(b.url);
-                // High fetch priority is only safe for the small, compressed
-                // static banner image. A GIF is typically many times larger,
-                // so marking it "high" tells the browser to pour bandwidth
-                // into it first — starving/delaying every product-card image
-                // on the page until the GIF finishes downloading.
-                // Also only the hero banner (state.priority) gets this at
-                // all -- banners further down the page and the tracking-page
-                // banner are never the first thing visible, so they should
-                // never compete with the top banner / first product row for
-                // bandwidth. They stay lazy regardless of slide index.
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 const isPriorityEligible = state.priority && i === 0;
                 if(isPriorityEligible && !isGifBanner){
                   return `<img src="${b.url}" alt="HISTOIRE" loading="eager" fetchpriority="high">`;
@@ -3896,9 +3882,9 @@ function createBannerController(cfg){
               })()}
         </div>`;
 
-      // All slides are stacked directly on top of each other (see .hb-slide
-      // in style.css) and cross-fade purely via opacity — no clones, no
-      // horizontal track, no transform of any kind.
+      
+      
+      
       const slides = state.banners.map((b, i) => buildSlide(b, i)).join('');
 
       const arrows = state.banners.length > 1 ? `
@@ -3919,10 +3905,10 @@ function createBannerController(cfg){
 
       content.innerHTML = `<div class="hb-track">${slides}</div>${arrows}${dots}${adminControls}`;
 
-      // Auto-size the frame's height to match the active slide's natural
-      // dimensions (image, GIF or video) instead of forcing a fixed square —
-      // this stops smaller/differently-shaped media from leaving empty space.
-      // Also makes sure only the active slide's video is playing.
+      
+      
+      
+      
       applyActiveSlideEffects(content);
 
       attachEvents(content);
@@ -3944,18 +3930,18 @@ function createBannerController(cfg){
       section.style.display = 'none';
       content.innerHTML = '';
     }
-    // The section can start as display:none until banner data finishes
-    // loading from Supabase (after the page's initial reveal scan already
-    // ran), so re-scan it here to make sure it still gets picked up once
-    // it becomes visible, instead of staying invisible forever.
+    
+    
+    
+    
     refreshScrollReveal(section);
-    // Any of the branches above can change this section's height (a full
-    // banner collapsing to the small empty placeholder, or disappearing
-    // entirely). Every other scroll-linked animation further down the page
-    // (GSAP ScrollTrigger) still has its OLD start/end positions cached from
-    // before this change, so without a refresh they end up misaligned with
-    // the new, shorter layout — visually this looks like nearby elements
-    // (e.g. the FEMME/HOMME toggle) are stuck half-animated/half-hidden.
+    
+    
+    
+    
+    
+    
+    
     requestAnimationFrame(() => {
       if(typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
     });
@@ -3966,12 +3952,12 @@ function createBannerController(cfg){
     const isGif = file.type === 'image/gif';
     const isAnimWebp = !isVideo && !isGif && await isAnimatedWebp(file);
     const isAnimated = isGif || isAnimWebp;
-    // Some OS file pickers report a generic/blank MIME type for .avif, so
-    // fall back to checking the filename extension too.
+    
+    
     const isAvif = !isVideo && (file.type === 'image/avif' || /\.avif$/i.test(file.name || ''));
     let url = null;
-    // Measure dimensions from the original file up front so the frame can
-    // be sized correctly on the very first paint (see render() below).
+    
+    
     const dims = isVideo ? await getVideoFileDimensions(file) : await getImageFileDimensions(file);
 
     if(isVideo){
@@ -3989,9 +3975,9 @@ function createBannerController(cfg){
         }
       }
     } else if(isAnimated){
-      // GIFs and animated WebPs must be uploaded as-is: running them
-      // through the canvas compressor below (which re-encodes to a
-      // single frame) would flatten the animation to a still image.
+      
+      
+      
       const ext = isGif ? 'gif' : 'webp';
       const contentType = isGif ? 'image/gif' : 'image/webp';
       if(supabaseClient){
@@ -4015,21 +4001,21 @@ function createBannerController(cfg){
         });
       }
     } else if(isAvif){
-      // Still resize AVIF banners like every other image format -- an
-      // admin photo can be several megapixels while the banner frame is
-      // much smaller, so shipping it untouched wastes a lot of bandwidth.
-      // Canvas can decode AVIF in every current browser, it just can't
-      // *encode* it back out, so the resized result is re-saved as WebP
-      // instead (keeps most of AVIF's size benefit). If decode fails for
-      // any reason (older browser), fall back to uploading the original
-      // file untouched so the upload still succeeds.
+      
+      
+      
+      
+      
+      
+      
+      
       const sourceFile = file.type === 'image/avif' ? file : new File([file], file.name || 'banner.avif', { type: 'image/avif' });
       let blob = null;
       try{ blob = await compressImageToBlob(sourceFile, 1280, 0.72, true, 'image/webp'); }
       catch(err){ blob = null; }
-      // AVIF compresses better than WebP, so a small/already-optimized
-      // AVIF can end up larger after this re-encode. Keep whichever is
-      // actually smaller instead of always taking the WebP result.
+      
+      
+      
       const avifRaw = !blob || blob.size >= sourceFile.size;
       if(avifRaw) blob = sourceFile;
       const ext = avifRaw ? 'avif' : 'webp';
@@ -4186,8 +4172,8 @@ function closeAdminModal(){
 document.getElementById('admin-modal-close').addEventListener('click', closeAdminModal);
 document.getElementById('admin-overlay').addEventListener('click', closeAdminModal);
 
-/* ---------- customers modal (admin) ---------- */
-/* ---------- order tracking ---------- */
+
+
 function renderTrackingTimeline(status){
   const idx = ORDER_STATUSES.indexOf(status);
   const cancelled = status === 'cancelled';
@@ -4235,8 +4221,8 @@ function renderTrackingCancelArea(order, orderNumber){
   const btn = document.getElementById('tracking-cancel-btn');
   const confirmBox = document.getElementById('tracking-cancel-confirm');
   btn.addEventListener('click', () => {
-    // First tap only reveals the "are you sure?" step -- nothing is
-    // cancelled yet, so an accidental tap here costs nothing.
+    
+    
     btn.style.display = 'none';
     confirmBox.style.display = 'block';
   });
@@ -4312,9 +4298,9 @@ function openTrackingModal(orderNumber, pushHistory){
   document.getElementById('tracking-overlay').classList.add('open');
   if(typeof trackingBannerCtrl !== 'undefined') trackingBannerCtrl.render();
 
-  // If no specific order number was requested, fall back to this device's
-  // saved order history (most recent order shown automatically) so the
-  // customer doesn't need to remember/retype their tracking code.
+  
+  
+  
   const myOrders = getMyOrders();
   const target = orderNumber || (myOrders.length ? myOrders[0].orderNumber : '');
   renderMyOrdersList(myOrders, target);
@@ -4329,7 +4315,7 @@ document.getElementById('tracking-lookup-btn').addEventListener('click', () => {
   const val = document.getElementById('tracking-lookup-input').value.trim();
   if(val) lookupAndRenderOrder(val);
 });
-/* ---------- hamburger side menu ---------- */
+
 function openSideMenu(pushHistory){
   document.getElementById('side-menu-drawer').classList.add('open');
   document.getElementById('side-menu-overlay').classList.add('open');
@@ -4404,7 +4390,7 @@ function closeAboutModal(fromPopstate){
   }
 }
 
-/* ---------- "Derrière la Marque" (brand owner) — admin-editable ---------- */
+
 const FOUNDER_KEY = 'histoire-founder-info';
 let founderInfo = { photoUrl: null, bio: '' };
 
@@ -4444,7 +4430,7 @@ async function loadFounderInfo(){
       founderInfo.photoUrl = data.photoUrl || null;
       founderInfo.bio = data.bio || '';
     }
-  }catch(err){ /* not configured yet */ }
+  }catch(err){  }
   renderFounderInfo();
 }
 
@@ -4510,9 +4496,7 @@ function closeTrackingModal(fromPopstate){
 document.getElementById('tracking-modal-close').addEventListener('click', () => closeTrackingModal());
 document.getElementById('tracking-overlay').addEventListener('click', closeTrackingModal);
 
-/* ============================================================
-   ADMIN DASHBOARD — full-page (Dashboard / Orders / Products / Customers / Analytics / Settings)
-   ============================================================ */
+
 
 let adCurrentStatusFilter = 'all';
 let adExpandedOrderId = null;
@@ -4728,7 +4712,7 @@ function adRenderOrdersPage(){
   adUpdatePrintSelectedUI();
 }
 
-/* ---------- dashboard stats & charts ---------- */
+
 function adRenderDashboardStats(){
   const total = customers.length;
   const revenue = customers.reduce((s, o) => s + (o.status !== 'cancelled' ? (Number(o.total) || 0) : 0), 0);
@@ -4904,7 +4888,7 @@ function adRenderDashboardPage(){
   adRenderAllCharts();
 }
 
-/* ---------- products page ---------- */
+
 function adRenderProductsPage(){
   const all = [
     ...men.map((p, i) => ({ p, category: 'men', idx: i })),
@@ -4930,7 +4914,7 @@ function adRenderProductsPage(){
   }).join('');
 }
 
-/* ---------- customers page ---------- */
+
 function adAggregateCustomers(){
   const map = new Map();
   customers.forEach(o => {
@@ -4973,7 +4957,7 @@ function adRenderCustomersPage(){
     </div>`).join('');
 }
 
-/* ---------- print: invoice & shipping label ---------- */
+
 function adPrintInvoice(order){
   const area = document.getElementById('ad-print-area');
   const itemsRows = (order.order_items || []).map(i => `
@@ -5026,13 +5010,7 @@ function adPrintInvoice(order){
   setTimeout(() => { area.innerHTML = ''; }, 300);
 }
 
-/* ==========================================================
-   SHIPPING LABEL SYSTEM
-   100mm x 150mm thermal-printer-ready label, with barcode +
-   QR code (deep link back to this order in the admin panel),
-   a preview screen before anything is sent to the printer,
-   and batch printing for several orders at once.
-   ========================================================== */
+
 function adFindProductSize(name){
   const all = men.concat(women);
   const p = all.find(pp => pp.name === name);
@@ -5112,9 +5090,9 @@ function adRenderLabelCodes(order, uid){
   }
 }
 
-// Sets a temporary @page size (Chrome/Edge/most thermal-printer print
-// dialogs respect this) — 100x150mm for labels, back to normal for
-// anything else — so labels don't get forced onto an A4 sheet.
+
+
+
 function adSetPrintPageSize(sizeCss){
   let styleEl = document.getElementById('ad-dynamic-page-size');
   if(!styleEl){
@@ -5201,10 +5179,10 @@ async function adDeleteSelectedOrders(){
   askConfirm(t('deleteSelectedOrdersTemplate').replace('{count}', ids.length), async () => {
     const btn = document.getElementById('ad-delete-selected-btn');
     btn.disabled = true;
-    // Delete one by one (rather than a single bulk query) so a failure on
-    // one row -- e.g. a stale id, or a momentary network hiccup -- doesn't
-    // silently block the rest; whatever succeeds gets removed from view
-    // and whatever didn't stays selected so the admin can just retry.
+    
+    
+    
+    
     const stillSelected = new Set();
     for(const id of ids){
       const ok = await deleteOrder(id);
@@ -5224,7 +5202,7 @@ async function adDeleteSelectedOrders(){
 }
 document.getElementById('ad-delete-selected-btn').addEventListener('click', adDeleteSelectedOrders);
 
-/* ---------- notification sound ---------- */
+
 function adPlayNotifSound(){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -5265,7 +5243,7 @@ function adSubscribeRealtime(){
   }catch(e){}
 }
 
-/* ---------- page navigation ---------- */
+
 function adRefreshCurrentPage(){
   const activePage = document.querySelector('.ad-page.active');
   if(!activePage) return;
@@ -5303,7 +5281,7 @@ document.getElementById('ad-sidebar-backdrop').addEventListener('click', () => {
   document.getElementById('admin-dashboard-page').classList.remove('sidebar-open');
 });
 
-/* ---------- notifications dropdown ---------- */
+
 function adFormatNotifTime(date){
   const diffMin = Math.round((Date.now() - date.getTime()) / 60000);
   if(diffMin < 1) return "à l'instant";
@@ -5364,13 +5342,7 @@ document.addEventListener('click', (e) => {
   if(wrap && !wrap.contains(e.target)) adCloseNotifPanel();
 });
 
-/* ---------- manual "vue ordinateur" (desktop view) toggle ----------
-   Some mobile browsers' built-in "request desktop site" option does not
-   reliably widen the page's layout viewport, so the dashboard offers its
-   own toggle: it widens the viewport meta tag itself (the same mechanism
-   browsers use for desktop mode), which makes the existing desktop CSS
-   layout (sidebar, multi-column grids, etc.) apply and the browser scales
-   it to fit the screen. The choice is remembered for next time. */
+
 const AD_DESKTOP_KEY = 'ad_force_desktop';
 const AD_DESKTOP_WIDTH = 1280;
 
@@ -5389,7 +5361,7 @@ document.getElementById('ad-desktop-toggle').addEventListener('click', () => {
   adSetDesktopViewport(next);
 });
 
-/* ---------- open / close dashboard ---------- */
+
 async function openAdminDashboardPage(pushHistory){
   document.getElementById('admin-dashboard-page').classList.add('open');
   document.documentElement.style.overflow = 'hidden';
@@ -5425,7 +5397,7 @@ document.getElementById('ad-settings-exit-btn').addEventListener('click', () => 
   closeAdminDashboardPage();
 });
 
-/* ---------- orders search / filter tabs ---------- */
+
 document.getElementById('ad-orders-search').addEventListener('input', () => adRenderOrdersPage());
 document.getElementById('ad-global-search').addEventListener('input', (e) => {
   const val = e.target.value;
@@ -5444,7 +5416,7 @@ document.getElementById('ad-filter-tabs').addEventListener('click', (e) => {
 document.getElementById('ad-customers-search').addEventListener('input', () => adRenderCustomersPage());
 document.getElementById('ad-add-product-btn').addEventListener('click', () => openAdminModal('create', 'men'));
 
-/* ---------- order card interactions (expand, status change, delete, print) ---------- */
+
 document.getElementById('ad-orders-list').addEventListener('click', async (e) => {
   const statusTrigger = e.target.closest('.ad-status-trigger');
   if(statusTrigger){
@@ -5506,7 +5478,7 @@ document.getElementById('ad-orders-list').addEventListener('click', async (e) =>
   }
 });
 
-/* close status dropdown when clicking outside */
+
 document.addEventListener('click', (e) => {
   if(!e.target.closest('.ad-status-select')){
     document.querySelectorAll('.ad-status-select.open').forEach(w => w.classList.remove('open'));
@@ -5545,7 +5517,7 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
   const newImage = await uploadProductImage(file);
 
   if(idx === null){
-    // create new product
+    
     const list = newCategory === 'men' ? men : women;
     list.push({
       name, desc, price,
@@ -5637,14 +5609,9 @@ function askConfirm(message, onConfirm){
   overlay.addEventListener('click', onCancel);
 }
 
-/* ================================================================
-   LUXURY MARKETING SECTIONS — additive JS layer.
-   Powers: FAQ accordion, newsletter form,
-   footer quick links, and the
-   4 store-policy modals. Nothing above this point was modified.
-   ================================================================ */
 
-/* ---------- FAQ accordion ---------- */
+
+
 document.querySelectorAll('#faq-list .faq-item').forEach((item) => {
   const question = item.querySelector('.faq-question');
   const answer = item.querySelector('.faq-answer');
@@ -5666,7 +5633,7 @@ document.querySelectorAll('#faq-list .faq-item').forEach((item) => {
   });
 });
 
-/* ---------- Newsletter ---------- */
+
 const newsletterForm = document.getElementById('newsletter-form');
 if(newsletterForm){
   newsletterForm.addEventListener('submit', (e) => {
@@ -5689,7 +5656,7 @@ if(newsletterForm){
   });
 }
 
-/* ---------- Footer quick links ---------- */
+
 function scrollToSection(id){
   const el = document.getElementById(id);
   if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -5713,7 +5680,7 @@ if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => {
 const footerLinkContact = document.getElementById('footer-link-contact');
 if(footerLinkContact) footerLinkContact.addEventListener('click', () => scrollToSection('contact-section'));
 
-/* ---------- Store policy modals (mirrors the About Us modal pattern) ---------- */
+
 function setupPolicyModal(prefix){
   const modal = document.getElementById(prefix + '-modal');
   const overlay = document.getElementById(prefix + '-overlay');

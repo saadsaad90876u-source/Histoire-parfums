@@ -1,14 +1,4 @@
-/* ============================================================
-   SPLASH CIRCLE — single "Parfums" badge shown on the welcome
-   screen. Its image is independent from every other image on the
-   site (not reused from the offre-pack badge) and is set by the
-   admin, uploading directly onto the circle itself.
-   Kept in its own file so it never has to touch script.js.
-   Must be loaded with `defer`, after script.js and motion.js,
-   so the globals used below (kvGet, kvSet, uploadProductImage,
-   isAdmin, showToast, t, deleteStorageFile, setAdminUI) already
-   exist when this file runs.
-   ============================================================ */
+
 (function () {
   var STORAGE_KEY = 'aura-splash-circle-image';
   var CACHE_KEY = 'cache-splash-circle-image';
@@ -33,9 +23,9 @@
     if (editBtn) editBtn.style.display = (typeof isAdmin !== 'undefined' && isAdmin) ? 'flex' : 'none';
   }
 
-  // Paint instantly from the last-known-good image while the real fetch
-  // (below) is in flight, same pattern used by every other admin-editable
-  // image on the site.
+  
+  
+  
   try {
     var cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
     if (cached && cached.url) { imageUrl = cached.url; render(); }
@@ -48,13 +38,13 @@
         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ url: imageUrl })); } catch (e) {}
         render();
       }
-    }).catch(function () { /* not configured yet */ });
+    }).catch(function () {  });
   }
 
-  // Refresh (mainly the edit-pencil's visibility) whenever admin mode is
-  // entered/exited -- monkey-patching setAdminUI() the same way the old
-  // version of this file wrapped renderPack4BadgeImage(), so this stays
-  // self-contained instead of adding a line inside script.js.
+  
+  
+  
+  
   if (typeof setAdminUI === 'function') {
     var originalSetAdminUI = setAdminUI;
     setAdminUI = function () {
@@ -65,8 +55,8 @@
 
   if (wrap) {
     wrap.addEventListener('click', function (e) {
-      // Admin tapping the pencil/placeholder to change the image takes
-      // priority over the "which gender" prompt below.
+      
+      
       if (typeof isAdmin !== 'undefined' && isAdmin &&
           (e.target.closest('#splash-circle-edit') || e.target.closest('#splash-circle-placeholder'))) {
         e.stopPropagation();
@@ -100,9 +90,9 @@
     });
   }
 
-  // ---------- "Vous êtes...?" prompt -> straight into the pack-of-3
-  // builder, locked to the chosen gender (or unlocked for "Mixte", same
-  // as the site's normal "Composer mon pack" entry point). ----------
+  
+  
+  
   var genderOverlay = document.getElementById('splash-gender-overlay');
   var genderModal = document.getElementById('splash-gender-modal');
   var genderClose = document.getElementById('splash-gender-close');
@@ -122,12 +112,12 @@
 
   document.querySelectorAll('.splash-gender-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var gender = btn.dataset.gender; // 'women' | 'men' | 'mixte'
+      var gender = btn.dataset.gender; 
       closeSplashGenderPrompt();
-      // Leave the splash for the shop underneath first (same dismissal
-      // the Enter button itself uses), then open the pack-of-3 builder
-      // on top of it, locked to the chosen gender -- "mixte" passes no
-      // lock at all, so both genders stay pickable in the picker.
+      
+      
+      
+      
       if (typeof window.wsDismiss === 'function') window.wsDismiss();
       if (typeof openPack4Modal === 'function') {
         openPack4Modal(true, false, gender === 'mixte' ? null : gender);

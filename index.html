@@ -101,6 +101,16 @@ try {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://kydrxvfarubaazemxqhw.supabase.co" crossorigin>
+<!-- GSAP, ScrollTrigger, Lenis (smooth-scroll), Supabase-js, JsBarcode and
+     QRCode all load from these two CDNs near the bottom of the page (see
+     the <script defer> tags right before </body>). Without this hint the
+     browser doesn't start the TCP/TLS handshake for either origin until
+     its parser physically reaches those tags, ~1700 lines down a large
+     HTML document -- preconnecting here lets both connections warm up in
+     parallel with everything else instead, so those 5 fetches start
+     sooner once discovered. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <!-- Fonts and the main stylesheet are loaded non-blocking: the inline
      critical CSS above already covers the very first paint, so there is
      no need to hold up rendering while these download. The
@@ -108,6 +118,15 @@ try {
      blocking, then applies them the instant they arrive. -->
 <link rel="preload" as="fetch" href="/welcome-chime.mp3" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
+<!-- script.js is the core of the entire site (product data, cart, every
+     interaction) but its <script defer> tag sits near the very end of
+     this HTML file. Browsers do speculatively scan ahead for resources
+     like this while still parsing, but that's a best-effort heuristic --
+     an explicit preload guarantees the fetch starts at the earliest
+     possible moment rather than depending on it. defer already makes it
+     non-render-blocking either way; this only affects how early the
+     download itself begins. -->
+<link rel="preload" as="script" href="/script.js?v=12">
 <link rel="stylesheet" href="/style.css?v=12" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
