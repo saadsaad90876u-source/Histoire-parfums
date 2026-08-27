@@ -1269,28 +1269,26 @@ async function loadCatalog(){
 }
 
 
-const PACK4_IMAGE_KEYS = { women: 'aura-pack4-badge-image-women', men: 'aura-pack4-badge-image-men' };
-const LEGACY_PACK4_IMAGE_KEY = 'aura-pack4-badge-image';
-let pack4BadgeImageUrls = { women: null, men: null };
+// Single image/CTA shared by both Femme and Homme -- the card no longer
+// changes at all when the shop filter is switched. PACK4_IMAGE_KEY is the
+// old pre-split key, reused as the one canonical key; the per-gender keys
+// are only read once as a migration fallback so an image uploaded before
+// this was unified doesn't just disappear.
+const PACK4_IMAGE_KEY = 'aura-pack4-badge-image';
+const LEGACY_PACK4_IMAGE_KEYS = { women: 'aura-pack4-badge-image-women', men: 'aura-pack4-badge-image-men' };
+let pack4BadgeImageUrl = null;
 
 function renderPack4BadgeImage(playShine){
   const img = document.getElementById('pack4-banner-img');
   const placeholder = document.getElementById('pack4-banner-image-placeholder');
   const editBtn = document.getElementById('pack4-banner-image-edit');
-  const bannerEl = document.getElementById('pack4-banner-btn');
   const imageWrap = document.getElementById('pack4-banner-image');
-  if(bannerEl) bannerEl.classList.toggle('pack4-men', currentFilter === 'men');
   if(!img) return;
-  const url = pack4BadgeImageUrls[currentFilter];
-  if(url){
-    img.src = url;
+  if(pack4BadgeImageUrl){
+    img.src = pack4BadgeImageUrl;
     img.style.display = 'block';
     if(placeholder) placeholder.style.display = 'none';
-    
-    
-    
-    
-    if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${url}")`);
+    if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${pack4BadgeImageUrl}")`);
   } else {
     img.style.display = 'none';
     if(placeholder) placeholder.style.display = 'flex';
@@ -1298,81 +1296,57 @@ function renderPack4BadgeImage(playShine){
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
   if(playShine && imageWrap && img.style.display !== 'none'){
-    
-    
-    
     imageWrap.classList.remove('pack4-shine-active');
     void imageWrap.offsetWidth;
     imageWrap.classList.add('pack4-shine-active');
   }
+  // The splash screen's "Parfums" circle (see pack-circles.js) shows this
+  // exact same photo -- keep it in sync whenever this card's image changes.
+  if(typeof window.renderSplashCircle === 'function') window.renderSplashCircle();
 }
 
 function preloadImage(url){
   if(!url) return;
   const img = new Image();
-  img.src = url; 
+  img.src = url;
 }
 
 async function loadPack4BadgeImage(){
-  
   try{
-    const cached = JSON.parse(localStorage.getItem('cache-pack4-badge-images') || 'null');
-    if(cached && (cached.women || cached.men)){
-      if(cached.women) pack4BadgeImageUrls.women = cached.women;
-      if(cached.men) pack4BadgeImageUrls.men = cached.men;
+    const cached = JSON.parse(localStorage.getItem('cache-pack4-badge-image') || 'null');
+    if(cached && cached.url){
+      pack4BadgeImageUrl = cached.url;
       renderPack4BadgeImage();
-      
-      
-      
-      preloadImage(cached.women);
-      preloadImage(cached.men);
+      preloadImage(cached.url);
     }
-  }catch(err){  }
-
-  const currentCat = currentFilter === 'men' ? 'men' : 'women';
-  const otherCat = currentCat === 'men' ? 'women' : 'men';
+  }catch(err){ }
 
   function persistCache(){
-    try{
-      localStorage.setItem('cache-pack4-badge-images', JSON.stringify({
-        women: pack4BadgeImageUrls.women, men: pack4BadgeImageUrls.men
-      }));
-    }catch(err){  }
+    try{ localStorage.setItem('cache-pack4-badge-image', JSON.stringify({ url: pack4BadgeImageUrl })); }
+    catch(err){ }
   }
 
-  
-  
-  
-  
-  
   try{
-    const data = await kvGet(PACK4_IMAGE_KEYS[currentCat]).catch(() => null);
+    const data = await kvGet(PACK4_IMAGE_KEY).catch(() => null);
     if(data && data.url){
-      pack4BadgeImageUrls[currentCat] = data.url;
+      pack4BadgeImageUrl = data.url;
+      persistCache();
+      renderPack4BadgeImage();
+      return;
+    }
+    // Nothing under the unified key yet -- fall back to whichever
+    // per-gender image existed before, so it doesn't just vanish.
+    const [legacyWomen, legacyMen] = await Promise.all([
+      kvGet(LEGACY_PACK4_IMAGE_KEYS.women).catch(() => null),
+      kvGet(LEGACY_PACK4_IMAGE_KEYS.men).catch(() => null)
+    ]);
+    const legacyUrl = (legacyWomen && legacyWomen.url) || (legacyMen && legacyMen.url) || null;
+    if(legacyUrl){
+      pack4BadgeImageUrl = legacyUrl;
       persistCache();
       renderPack4BadgeImage();
     }
-  }catch(err){  }
-
-  
-  
-  
-  
-  
-  try{
-    const otherData = await kvGet(PACK4_IMAGE_KEYS[otherCat]).catch(() => null);
-    if(otherData && otherData.url) pack4BadgeImageUrls[otherCat] = otherData.url;
-    if(!pack4BadgeImageUrls.women || !pack4BadgeImageUrls.men){
-      const legacy = await kvGet(LEGACY_PACK4_IMAGE_KEY).catch(() => null);
-      if(legacy && legacy.url){
-        if(!pack4BadgeImageUrls.women) pack4BadgeImageUrls.women = legacy.url;
-        if(!pack4BadgeImageUrls.men) pack4BadgeImageUrls.men = legacy.url;
-      }
-    }
-    preloadImage(pack4BadgeImageUrls[otherCat]);
-    persistCache();
-  }catch(err){  }
-  renderPack4BadgeImage();
+  }catch(err){ }
 }
 
 document.getElementById('pack4-banner-image').addEventListener('click', (e) => {
@@ -1390,15 +1364,16 @@ document.getElementById('pack4-banner-image-input').addEventListener('change', a
   showToast(t('bannerUploading'));
   const url = await uploadProductImage(file, { transparent: true });
   if(url){
-    const gender = currentFilter === 'men' ? 'men' : 'women';
-    const oldUrl = pack4BadgeImageUrls[gender];
-    pack4BadgeImageUrls[gender] = url;
-    try{ await kvSet(PACK4_IMAGE_KEYS[gender], { url }); }
+    const oldUrl = pack4BadgeImageUrl;
+    pack4BadgeImageUrl = url;
+    try{ await kvSet(PACK4_IMAGE_KEY, { url }); }
     catch(err){ if(isAdmin) showToast(t('toastStorageUnavailable')); }
+    try{ localStorage.setItem('cache-pack4-badge-image', JSON.stringify({ url })); }catch(err2){}
     if(oldUrl && oldUrl !== url) deleteStorageFile('product-images', oldUrl);
     renderPack4BadgeImage();
   }
 });
+
 
 const heroBannerCtrl = createBannerController({
   sectionId: 'hero-banner',
@@ -2758,8 +2733,7 @@ document.getElementById('pack4-picker-list').addEventListener('click', (e) => {
 });
 
 function pack4CurrentBadgeImage(){
-  const gender = pack4LockedGender || currentFilter || 'women';
-  return pack4BadgeImageUrls[gender] || pack4BadgeImageUrls.women || pack4BadgeImageUrls.men || null;
+  return pack4BadgeImageUrl;
 }
 
 document.getElementById('pack4-add-btn').addEventListener('click', () => {
