@@ -1,10 +1,3 @@
-window.onerror = function(){ return true; };
-window.onunhandledrejection = function(event){ event.preventDefault(); return true; };
-window.addEventListener('error', function(event){ event.preventDefault(); }, true);
-window.addEventListener('unhandledrejection', function(event){ event.preventDefault(); }, true);
-
-
-
 
 function escapeHtml(str){
   if(str === null || str === undefined) return '';
@@ -1014,6 +1007,7 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
   document.getElementById('cd-order-number').textContent = order.orderNumber;
   document.getElementById('cd-date').textContent = new Date().toLocaleDateString('fr-FR');
   document.getElementById('cd-total').textContent = total + ' DH';
+  document.getElementById('cd-shipping').textContent = shipping === 0 ? t('freeShippingLabel') : shipping + ' DH';
   const etaEl = document.getElementById('cd-eta');
   if(etaEl) etaEl.textContent = eta.toLocaleDateString('fr-FR');
   const badge = document.getElementById('cd-status-badge');
