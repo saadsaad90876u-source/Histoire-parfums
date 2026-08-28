@@ -415,6 +415,7 @@ const translations = {
     statusCancelled: "Annulée",
     trackingLookupSub: "Entrez votre numéro de commande pour voir son statut.",
     trackingLookupPh: "ex. HISTOIRE-XXXXXXX",
+    genericErrorMsg: "Une erreur est survenue, veuillez réessayer.",
     trackingLookupBtn: "Suivre",
     trackingNotFound: "Aucune commande trouvée avec ce numéro.",
     trackingMineLabel: "Mes commandes précédentes",
@@ -594,28 +595,27 @@ function renderShop(filter, skipScroll, playPack4Shine){
   
   clearTimeout(shopRenderTimer);
   shopRenderTimer = setTimeout(() => {
-    const indexed = m.list.map((p, idx) => ({ p, idx }));
-    indexed.sort((a, b) => (a.p.pinned ? 1 : 0) - (b.p.pinned ? 1 : 0));
-    grid.innerHTML = indexed.map(({ p, idx }) => productCard(p, filter, idx)).join('')
-      + (isAdmin ? `<button class="add-new-card" id="add-new-card">
-          <span class="anc-plus">+</span>
-          <span>${t('addNewPerfume')}</span>
-        </button>` : '');
-    grid.style.opacity = '1';
-    refreshScrollReveal(grid);
-    
-    
-    
-    
-    
-    
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        grid.querySelectorAll('.product-card.reveal:not(.active)').forEach((card, i) => {
-          if(i < 2) card.classList.add('active');
-        });
-      }, 60);
-    });
+    try{
+      const indexed = m.list.map((p, idx) => ({ p, idx }));
+      indexed.sort((a, b) => (a.p.pinned ? 1 : 0) - (b.p.pinned ? 1 : 0));
+      grid.innerHTML = indexed.map(({ p, idx }) => productCard(p, filter, idx)).join('')
+        + (isAdmin ? `<button class="add-new-card" id="add-new-card">
+            <span class="anc-plus">+</span>
+            <span>${t('addNewPerfume')}</span>
+          </button>` : '');
+      refreshScrollReveal(grid);
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          grid.querySelectorAll('.product-card.reveal:not(.active)').forEach((card, i) => {
+            if(i < 2) card.classList.add('active');
+          });
+        }, 60);
+      });
+    }catch(err){
+      console.error('renderShop failed', err);
+    }finally{
+      grid.style.opacity = '1';
+    }
   }, 100);
   document.querySelectorAll('.sf-btn').forEach(b=>b.classList.toggle('active', b.dataset.f === filter));
   if(!skipScroll) window.scrollTo({top:0, behavior:'smooth'});
@@ -3197,7 +3197,15 @@ function openProductPage(name, pushHistory, preserveQty){
   
   
   document.getElementById('product-page').style.display = 'block';
-  renderProductPage();
+  try{
+    renderProductPage();
+  }catch(err){
+    console.error('openProductPage failed for', name, err);
+    document.getElementById('product-page').style.display = 'none';
+    document.getElementById('shop-view').style.display = '';
+    if(typeof showToast === 'function') showToast(t('genericErrorMsg') || 'Something went wrong, please try again.');
+    return;
+  }
   window.scrollTo({ top: 0, behavior: 'auto' });
   if(pushHistory !== false){
     try{ history.pushState({ ppName: name }, '', '/product/' + slugify(name)); }catch(err){}
@@ -3753,6 +3761,7 @@ function createBannerController(cfg){
       v.playsInline = true;
       v.removeAttribute('controls');
       if(i === state.activeIndex){
+        if(v.preload !== 'auto'){ v.preload = 'auto'; v.load(); }
         const tryPlay = () => { v.play().catch(() => {}); };
         if(v.readyState >= 2) tryPlay();
         else v.addEventListener('loadeddata', tryPlay, { once: true });
@@ -3829,7 +3838,7 @@ function createBannerController(cfg){
       const buildSlide = (b, i) => `
         <div class="hb-slide${i === state.activeIndex ? ' hb-active' : ''}" data-i="${i}">
           ${b.type === 'video'
-            ? `<video src="${b.url}" muted loop playsinline webkit-playsinline preload="auto"${i === state.activeIndex ? ' autoplay' : ''}></video>`
+            ? `<video src="${b.url}" muted loop playsinline webkit-playsinline preload="${i === state.activeIndex ? 'auto' : 'none'}"${i === state.activeIndex ? ' autoplay' : ''}></video>`
             : (() => {
                 const isGifBanner = /\.(gif|webp)(\?|$)/i.test(b.url);
                 
@@ -4571,7 +4580,7 @@ function adOrderCardHtml(o){
     const img = adFindProductImage(i.product_name);
     return `
     <div class="ad-product-line">
-      ${img ? `<img class="ad-product-thumb" src="${img}" alt="">` : `<div class="ad-product-thumb-empty"></div>`}
+      ${img ? `<img class="ad-product-thumb seq-lazy" data-src="${img}" alt="">` : `<div class="ad-product-thumb-empty"></div>`}
       <div class="ad-product-info">
         <div class="ad-product-name">${escapeHtml(i.product_name)}</div>
         <div class="ad-product-meta">Qté ${i.quantity} × ${i.unit_price} DH</div>
