@@ -1826,18 +1826,11 @@ async function uploadReviewImage(file){
   const blob = await compressImageToBlob(file, 560, 0.68, false, 'image/webp');
   if(!blob) return null;
   const ext = blob.type === 'image/webp' ? 'webp' : (blob.type === 'image/png' ? 'png' : 'jpg');
-  if(supabaseClient){
-    try{
-      const filename = `reviews/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error } = await supabaseClient.storage
-        .from('review-images')
-        .upload(filename, blob, { contentType: blob.type || 'image/webp', upsert: true, cacheControl: '31536000' });
-      if(error) throw error;
-      const { data } = supabaseClient.storage.from('review-images').getPublicUrl(filename);
-      return data.publicUrl;
-    }catch(err){
-      
-    }
+  try{
+    const filename = `reviews/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    return await uploadToR2(blob, filename, blob.type || 'image/webp');
+  }catch(err){
+    
   }
   return new Promise((resolve) => {
     const fr = new FileReader();
@@ -3345,6 +3338,24 @@ document.addEventListener('animationend', (e) => {
   }
 });
 
+const R2_UPLOAD_URL = 'https://histoireparfums.saadsaad90876u.workers.dev/';
+const R2_UPLOAD_SECRET = 'hst_9k2Lp7qXz4Rm1vWc8Ndj3TfYb6Aoe5';
+
+async function uploadToR2(blob, filename, contentType){
+  const res = await fetch(R2_UPLOAD_URL, {
+    method: 'POST',
+    headers: {
+      'X-Upload-Key': R2_UPLOAD_SECRET,
+      'X-File-Name': filename,
+      'Content-Type': contentType || blob.type || 'application/octet-stream'
+    },
+    body: blob
+  });
+  if(!res.ok) throw new Error('R2 upload failed: ' + res.status);
+  const data = await res.json();
+  return data.url;
+}
+
 function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceFormat){
   maxDim = maxDim || 640;
   quality = quality || 0.72;
@@ -3397,19 +3408,12 @@ async function uploadProductImage(file, opts){
   const isVideo = /^video\//i.test(file.type || '') || /\.mp4$/i.test(file.name || '');
   if(isVideo){
     if(file.size > 20 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
-    if(supabaseClient){
-      try{
-        const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
-        const { error } = await supabaseClient.storage
-          .from('product-images')
-          .upload(filename, file, { contentType: 'video/mp4', upsert: true, cacheControl: '31536000' });
-        if(error) throw error;
-        const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-        return data.publicUrl;
-      }catch(err){
-        if(isAdmin) showToast(t('toastImageUploadFailed'));
-        return null;
-      }
+    try{
+      const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
+      return await uploadToR2(file, filename, 'video/mp4');
+    }catch(err){
+      if(isAdmin) showToast(t('toastImageUploadFailed'));
+      return null;
     }
     
     
@@ -3442,12 +3446,7 @@ async function uploadProductImage(file, opts){
     if(supabaseClient){
       try{
         const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        const { error } = await supabaseClient.storage
-          .from('product-images')
-          .upload(filename, file, { contentType, upsert: true, cacheControl: '31536000' });
-        if(error) throw error;
-        const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-        return data.publicUrl;
+        return await uploadToR2(file, filename, contentType);
       }catch(err){
         if(isAdmin) showToast(t('toastImageUploadFailed'));
       }
@@ -3500,12 +3499,7 @@ async function uploadProductImage(file, opts){
   if(supabaseClient){
     try{
       const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error } = await supabaseClient.storage
-        .from('product-images')
-        .upload(filename, blob, { contentType, upsert: true, cacheControl: '31536000' });
-      if(error) throw error;
-      const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-      return data.publicUrl;
+      return await uploadToR2(blob, filename, contentType);
     }catch(err){
       if(isAdmin) showToast(t('toastImageUploadFailed'));
       
@@ -3938,18 +3932,11 @@ function createBannerController(cfg){
     const dims = isVideo ? await getVideoFileDimensions(file) : await getImageFileDimensions(file);
 
     if(isVideo){
-      if(supabaseClient){
-        try{
-          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
-          const { error } = await supabaseClient.storage
-            .from('product-images')
-            .upload(filename, file, { contentType: 'video/mp4', upsert: true, cacheControl: '31536000' });
-          if(error) throw error;
-          const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-          url = data.publicUrl;
-        }catch(err){
-          showToast(t('toastImageUploadFailed'));
-        }
+      try{
+        const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
+        url = await uploadToR2(file, filename, 'video/mp4');
+      }catch(err){
+        showToast(t('toastImageUploadFailed'));
       }
     } else if(isAnimated){
       
@@ -3957,18 +3944,11 @@ function createBannerController(cfg){
       
       const ext = isGif ? 'gif' : 'webp';
       const contentType = isGif ? 'image/gif' : 'image/webp';
-      if(supabaseClient){
-        try{
-          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-          const { error } = await supabaseClient.storage
-            .from('product-images')
-            .upload(filename, file, { contentType, upsert: true, cacheControl: '31536000' });
-          if(error) throw error;
-          const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-          url = data.publicUrl;
-        }catch(err){
-          showToast(t('toastImageUploadFailed'));
-        }
+      try{
+        const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        url = await uploadToR2(file, filename, contentType);
+      }catch(err){
+        showToast(t('toastImageUploadFailed'));
       }
       if(!url){
         url = await new Promise((resolve) => {
@@ -3997,18 +3977,11 @@ function createBannerController(cfg){
       if(avifRaw) blob = sourceFile;
       const ext = avifRaw ? 'avif' : 'webp';
       const contentType = avifRaw ? 'image/avif' : 'image/webp';
-      if(supabaseClient){
-        try{
-          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-          const { error } = await supabaseClient.storage
-            .from('product-images')
-            .upload(filename, blob, { contentType, upsert: true, cacheControl: '31536000' });
-          if(error) throw error;
-          const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-          url = data.publicUrl;
-        }catch(err){
-          showToast(t('toastImageUploadFailed'));
-        }
+      try{
+        const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        url = await uploadToR2(blob, filename, contentType);
+      }catch(err){
+        showToast(t('toastImageUploadFailed'));
       }
       if(!url){
         url = await new Promise((resolve) => {
@@ -4019,15 +3992,10 @@ function createBannerController(cfg){
       }
     } else {
       const blob = await compressImageToBlob(file, 1280, 0.7);
-      if(blob && supabaseClient){
+      if(blob){
         try{
           const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
-          const { error } = await supabaseClient.storage
-            .from('product-images')
-            .upload(filename, blob, { contentType: 'image/jpeg', upsert: true, cacheControl: '31536000' });
-          if(error) throw error;
-          const { data } = supabaseClient.storage.from('product-images').getPublicUrl(filename);
-          url = data.publicUrl;
+          url = await uploadToR2(blob, filename, 'image/jpeg');
         }catch(err){
           showToast(t('toastImageUploadFailed'));
         }
