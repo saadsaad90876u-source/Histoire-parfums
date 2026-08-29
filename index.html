@@ -133,7 +133,7 @@ try {
      non-render-blocking either way; this only affects how early the
      download itself begins. -->
 <link rel="preload" as="script" href="/script.js?v=13">
-<link rel="stylesheet" href="/style.css?v=24" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=27" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
@@ -185,12 +185,12 @@ try {
        reusable banner system as the other banners on the site -- see
        createBannerController in script.js. Shown only on the splash
        screen, not on the shop page. -->
-  <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
-    <div class="hero-banner-frame" id="splash-banner-top-frame">
-      <div id="splash-banner-top-content"></div>
+  <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
+    <div class="hero-banner-frame" id="splash-banner-bottom-frame">
+      <div id="splash-banner-bottom-content"></div>
     </div>
   </section>
-  <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+  <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
   <div class="ws-content">
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
@@ -241,12 +241,12 @@ try {
          reusable banner system -- see createBannerController in
          script.js. Shown only on the splash screen, not on the shop
          page. -->
-    <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin-top:20px;">
-      <div class="hero-banner-frame" id="splash-banner-bottom-frame">
-        <div id="splash-banner-bottom-content"></div>
+    <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin-top:20px;">
+      <div class="hero-banner-frame" id="splash-banner-top-frame">
+        <div id="splash-banner-top-content"></div>
       </div>
     </section>
-    <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+    <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
@@ -497,17 +497,11 @@ try {
   // card/element sits underneath at the same screen position, opening it
   // unintentionally. Calling preventDefault() on touchstart tells the
   // browser not to synthesize that follow-up mouse/click sequence at all.
-  btn.addEventListener('touchstart', function (e) {
-    btn.classList.add('ws-btn-pressed');
-  }, { passive: true });
   btn.addEventListener('touchend', function (e) {
     unlockAudio();
     e.preventDefault();
     setTimeout(function () { handleEnter(); }, 150);
   }, { passive: false });
-  btn.addEventListener('touchcancel', function () {
-    btn.classList.remove('ws-btn-pressed');
-  });
   // click covers mouse/keyboard/assistive-tech activation (desktop, or any
   // touch device where touchstart didn't fire for some reason). The
   // `unlocked` guard inside unlockAudio() stops this from re-triggering
