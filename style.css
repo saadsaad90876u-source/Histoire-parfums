@@ -1038,7 +1038,7 @@ to{opacity:1;max-height:1400px}
 .ad-qa-btn{font-size:11px;padding:7px 10px}
 }
 .lux-reveal{opacity:1}
-.lux-section{padding:90px 0;background:#FFFFFF}
+.lux-section{padding:48px 0;background:#FFFFFF}
 #contact-section{padding-top:30px;padding-bottom:12px}
 #reviews-section{padding-top:18px}
 #reviews-section .lux-subheading{margin-bottom:18px}
@@ -1046,7 +1046,7 @@ to{opacity:1;max-height:1400px}
 .lux-section-alt{background:#FFFFFF}
 .lux-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Work Sans',sans-serif;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--emerald);font-weight:600;margin-bottom:14px}
 .lux-eyebrow::before,.lux-eyebrow::after{content:'';width:28px;height:1px;background:var(--emerald)}
-.lux-heading{font-family:'Work Sans',sans-serif;font-size:clamp(30px,4.2vw,44px);text-align:center;color:#1C1512;margin-bottom:14px}
+.lux-heading{font-family:'Work Sans',sans-serif;font-size:clamp(30px,4.2vw,44px);text-align:center;color:#5C6B2E;margin-bottom:8px;text-transform:uppercase}
 .lux-subheading{font-family:'Work Sans',sans-serif;font-style:italic;font-size:clamp(17px,2vw,21px);text-align:center;color:var(--text-soft);max-width:640px;margin:0 auto 46px;line-height:1.7}
 #contact-section .lux-subheading{font-family:'Work Sans',sans-serif;font-style:normal;letter-spacing:.02em}
 .faq-list{max-width:780px;margin:0 auto}
@@ -1080,7 +1080,7 @@ footer .footer-links-col h3{color:#D8C49B}
 .policy-modal-body h4:first-child{margin-top:0}
 @media (max-width:900px){.contact-grid{grid-template-columns:repeat(2,1fr)}
 }
-@media (max-width:600px){.lux-section{padding:60px 0}
+@media (max-width:600px){.lux-section{padding:34px 0}
 .contact-grid{grid-template-columns:1fr 1fr}
 .footer-links-grid{grid-template-columns:1fr 1fr;gap:20px}
 }
