@@ -133,7 +133,7 @@ try {
      non-render-blocking either way; this only affects how early the
      download itself begins. -->
 <link rel="preload" as="script" href="/script.js?v=13">
-<link rel="stylesheet" href="/style.css?v=22" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=24" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
@@ -193,9 +193,6 @@ try {
   <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
   <div class="ws-content">
-    <div class="ws-logo-wrap">
-      <img class="ws-logo" src="/histoire-logo.webp" alt="HISTOIRE">
-    </div>
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
     <p class="ws-social-proof" id="ws-social-proof" style="display:none;">
       <span id="ws-social-proof-stars"></span>
@@ -500,11 +497,17 @@ try {
   // card/element sits underneath at the same screen position, opening it
   // unintentionally. Calling preventDefault() on touchstart tells the
   // browser not to synthesize that follow-up mouse/click sequence at all.
+  btn.addEventListener('touchstart', function (e) {
+    btn.classList.add('ws-btn-pressed');
+  }, { passive: true });
   btn.addEventListener('touchend', function (e) {
     unlockAudio();
     e.preventDefault();
-    handleEnter();
+    setTimeout(function () { handleEnter(); }, 150);
   }, { passive: false });
+  btn.addEventListener('touchcancel', function () {
+    btn.classList.remove('ws-btn-pressed');
+  });
   // click covers mouse/keyboard/assistive-tech activation (desktop, or any
   // touch device where touchstart didn't fire for some reason). The
   // `unlocked` guard inside unlockAudio() stops this from re-triggering
