@@ -2082,6 +2082,12 @@ async function loadReviewsSection(){
   if(summaryStarsEl) summaryStarsEl.innerHTML = reviewStarsHtml(Math.round(avg));
   if(summaryTextEl) summaryTextEl.textContent = `${avg.toFixed(1)} sur 5 — basé sur ${publicReviews.length} avis`;
   if(ratingLine) ratingLine.style.display = 'flex';
+  const wsProof = document.getElementById('ws-social-proof');
+  if(wsProof && publicReviews.length >= 3){
+    document.getElementById('ws-social-proof-stars').innerHTML = reviewStarsHtml(Math.round(avg));
+    document.getElementById('ws-social-proof-text').textContent = `${avg.toFixed(1)}/5 · +${publicReviews.length} clientes satisfaites`;
+    wsProof.style.display = 'flex';
+  }
   if(carousel && !carousel.dataset.tBound){
     carousel.dataset.tBound = '1';
     
