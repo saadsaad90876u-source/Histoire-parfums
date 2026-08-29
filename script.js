@@ -1492,6 +1492,7 @@ function featuredProductCard(p, idx){
     </div>
     <div class="featured-product-name">${p.name}</div>
     <div class="featured-product-price">${p.price} DH</div>
+    <button type="button" class="featured-pack-btn ${p.gender === 'men' ? 'is-men' : 'is-women'}" data-idx="${idx}">Composer mon pack</button>
   </div>`;
 }
 

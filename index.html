@@ -185,14 +185,14 @@ try {
        reusable banner system as the other banners on the site -- see
        createBannerController in script.js. Shown only on the splash
        screen, not on the shop page. -->
-  <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
-    <div class="hero-banner-frame" id="splash-banner-bottom-frame">
-      <div id="splash-banner-bottom-content"></div>
-    </div>
-  </section>
-  <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-
   <div class="ws-content">
+    <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
+      <div class="hero-banner-frame" id="splash-banner-bottom-frame">
+        <div id="splash-banner-bottom-content"></div>
+      </div>
+    </section>
+    <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+
     <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
     <p class="ws-social-proof" id="ws-social-proof" style="display:none;">
       <span id="ws-social-proof-stars"></span>
@@ -216,7 +216,7 @@ try {
     <p class="ws-subtitle">Une Histoire à Vivre</p>
     <p class="ws-tagline">Fabrication française · Ingrédients d'exception</p>
 
-    <section id="splash-trust-section" style="width:100%; max-width:520px; margin:0 0 20px;">
+    <section id="splash-trust-section" style="width:100%; max-width:520px; margin:0 0 8px;">
       <div class="pp-trust-grid pp-trust-grid-standalone">
         <div class="pp-trust-item reveal d1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
@@ -241,7 +241,7 @@ try {
          reusable banner system -- see createBannerController in
          script.js. Shown only on the splash screen, not on the shop
          page. -->
-    <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin-top:20px;">
+    <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin-top:8px;">
       <div class="hero-banner-frame" id="splash-banner-top-frame">
         <div id="splash-banner-top-content"></div>
       </div>
@@ -633,22 +633,22 @@ try {
     <div class="product-grid" id="shop-grid"></div>
 
     <div class="featured-products" id="featured-products-list"></div>
-  </div>
-</section>
 
-<section id="bottom-banner" class="reveal" style="display:none;">
-  <div class="hero-banner-frame" id="bottom-banner-frame">
-    <div id="bottom-banner-content"></div>
-  </div>
-</section>
-<input type="file" id="bottom-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+    <section id="bottom-banner" class="reveal" style="display:none;">
+      <div class="hero-banner-frame" id="bottom-banner-frame">
+        <div id="bottom-banner-content"></div>
+      </div>
+    </section>
+    <input type="file" id="bottom-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
-<section id="bottom-banner-2" class="reveal" style="display:none;">
-  <div class="hero-banner-frame" id="bottom-banner-2-frame">
-    <div id="bottom-banner-2-content"></div>
+    <section id="bottom-banner-2" class="reveal" style="display:none;">
+      <div class="hero-banner-frame" id="bottom-banner-2-frame">
+        <div id="bottom-banner-2-content"></div>
+      </div>
+    </section>
+    <input type="file" id="bottom-banner-2-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
 </section>
-<input type="file" id="bottom-banner-2-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
 <!-- Two more admin-manageable banner slots (same reusable banner
      system as hero/bottom banners -- see createBannerController in
@@ -671,6 +671,7 @@ try {
 <section class="lux-section lux-section-alt" id="faq-section">
   <div class="container">
     <h2 class="lux-heading reveal">FAQ</h2>
+    <div class="faq-frame">
     <div class="faq-list" id="faq-list">
       <div class="faq-item reveal d1">
         <button type="button" class="faq-question">
@@ -729,6 +730,7 @@ try {
         <div class="faq-answer"><div class="faq-answer-inner">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -772,17 +774,6 @@ try {
         <h3>Instagram</h3>
       </a>
     </div>
-  </div>
-</section>
-
-<section class="lux-section lux-section-alt" id="newsletter-section">
-  <div class="container" style="text-align:center;">
-    <h2 class="lux-heading reveal">Soyez les premiers informés</h2>
-    <form id="newsletter-form" style="display:flex; gap:10px; max-width:420px; margin:18px auto 0; flex-wrap:wrap; justify-content:center;">
-      <input type="email" id="newsletter-email" required placeholder="Votre adresse email" class="cf-input" style="flex:1; min-width:220px;">
-      <button type="submit" class="checkout-btn" style="width:auto; padding:0 22px;">S'inscrire</button>
-    </form>
-    <p id="newsletter-msg" style="margin-top:12px; font-size:13px; color:var(--text-soft); min-height:18px;"></p>
   </div>
 </section>
 
