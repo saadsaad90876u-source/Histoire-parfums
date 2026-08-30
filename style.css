@@ -424,8 +424,8 @@ footer{background:#7CC28F;color:#F4EEE4;padding:60px 0 26px;margin-top:20px;box-
 #toast,.toast{border:1px solid var(--lux-border-gold)}
 #exit-admin-btn,#customers-btn{border:1px solid var(--lux-border-gold)}
 .footer-top{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:24px;padding-bottom:34px;text-align:center}
-.logo-img{height:42.5px;width:auto;aspect-ratio:1/1;display:block;margin:0 auto}
-.footer-logo-img{height:30.6px;width:auto;aspect-ratio:1/1;display:block;margin:0 auto}
+.logo-img{height:44px;width:auto;aspect-ratio:841/274;display:block;margin:0 auto}
+.footer-logo-img{height:32px;width:auto;aspect-ratio:841/274;display:block;margin:0 auto}
 @media (prefers-reduced-motion:reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important}
 .ab-track{animation:none}
 .checkout-modal,.wishlist-drawer{transition:opacity .01ms,visibility .01ms !important}
@@ -650,7 +650,7 @@ to{opacity:1;transform:translateY(0)}
 .cf-field-icon svg{width:19px;height:19px}
 .cf-input-icon{padding-left:62px;min-height:56px}
 textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
-.pack4-banner{display:flex;align-items:stretch;gap:16px;border:1.8px solid transparent;border-radius:24px;padding:18px 14px;margin:0 auto 14px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:#7CC28F padding-box,conic-gradient(from 0deg,#8A6D3A 0deg,#F0E0B8 90deg,#8A6D3A 180deg,#F0E0B8 270deg,#8A6D3A 360deg) border-box}
+.pack4-banner{display:flex;align-items:stretch;gap:16px;border:1.8px solid transparent;border-radius:24px;padding:18px 14px;margin:0 auto 14px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:linear-gradient(0deg,#7CC28F,#7CC28F) padding-box,conic-gradient(from 0deg,#8A6D3A 0deg,#F0E0B8 90deg,#8A6D3A 180deg,#F0E0B8 270deg,#8A6D3A 360deg) border-box}
 .pack4-banner.reveal:not(.active){transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 @property --pack4-angle{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes pack4-border-spin{to{--pack4-angle:360deg}
