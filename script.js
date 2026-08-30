@@ -140,40 +140,38 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
 
 
 const seqImageQueue = [];
-let seqImageLoading = false;
+const SEQ_MAX_CONCURRENT = 6;
+let seqImageLoadingCount = 0;
 
 function seqProcessQueue(){
-  if(seqImageLoading) return;
-  const next = seqImageQueue.shift();
-  if(!next) return;
-  const src = next.dataset.src;
-  if(!src){ seqProcessQueue(); return; }
-  seqImageLoading = true;
-  let settled = false;
-  const finish = () => {
-    if(settled) return;
-    settled = true;
-    clearTimeout(watchdog);
-    seqImageLoading = false;
-    seqProcessQueue();
-  };
-  
-  
-  
-  
-  
-  
-  
-  const watchdog = setTimeout(finish, 6000);
-  
-  
-  
-  
-  
-  next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', finish, { once: true });
-  next.addEventListener('error', finish, { once: true });
-  next.removeAttribute('data-src');
-  next.src = src;
+  while(seqImageLoadingCount < SEQ_MAX_CONCURRENT){
+    const next = seqImageQueue.shift();
+    if(!next) return;
+    const src = next.dataset.src;
+    if(!src){ continue; }
+    seqImageLoadingCount++;
+    let settled = false;
+    const finish = () => {
+      if(settled) return;
+      settled = true;
+      clearTimeout(watchdog);
+      seqImageLoadingCount--;
+      seqProcessQueue();
+    };
+
+
+
+
+    const watchdog = setTimeout(finish, 6000);
+
+
+
+
+    next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', finish, { once: true });
+    next.addEventListener('error', finish, { once: true });
+    next.removeAttribute('data-src');
+    next.src = src;
+  }
 }
 
 
@@ -1417,14 +1415,17 @@ const splashBannerTopCtrl = createBannerController({
   sectionId: 'splash-banner-top',
   contentId: 'splash-banner-top-content',
   inputId: 'splash-banner-top-input',
-  storageKey: 'aura-splash-banner-top'
+  storageKey: 'aura-splash-banner-top',
+  priority: true
 });
 const splashBannerBottomCtrl = createBannerController({
   sectionId: 'splash-banner-bottom',
   contentId: 'splash-banner-bottom-content',
   inputId: 'splash-banner-bottom-input',
-  storageKey: 'aura-splash-banner-bottom'
+  storageKey: 'aura-splash-banner-bottom',
+  priority: true
 });
+loadPack4BadgeImage();
 trackingBannerCtrl.load();
 wsBannerCtrl1.load();
 wsBannerCtrl2.load();
@@ -1435,7 +1436,6 @@ bottomBannerCtrl.load();
 bottomBannerCtrl2.load();
 
 
-loadPack4BadgeImage();
 function renderHeroBanner(){ heroBannerCtrl.render(); bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
 
 
