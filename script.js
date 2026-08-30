@@ -554,10 +554,6 @@ function productCard(pRaw, category, idx){
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
       <h3>${p.name}</h3>
-      <div class="pc-rating">
-        <span class="pc-stars">${reviewStarsHtml(Math.round(p.rating || 5))}</span>
-        <span class="pc-rating-value">(${(p.rating || 5).toFixed(1)})</span>
-      </div>
       <div class="desc">${p.desc}</div>
       <div class="pc-bottom">
         <div class="pc-price-wrap">
