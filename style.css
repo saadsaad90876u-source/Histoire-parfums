@@ -84,7 +84,7 @@ a{color:inherit;text-decoration:none}
 header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(16px) saturate(160%);background:#66B6B3;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .nav-wrap{position:relative;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 24px;direction:ltr;overflow:hidden}
 .logo{font-family:'Poppins',sans-serif;font-size:19px;letter-spacing:.3em;font-weight:600;background:none;border:none;padding:0;color:var(--gold);cursor:pointer}
-.logo-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.logo-center{position:absolute;left:50%;top:50%;transform:translate(-50%,calc(-50% + 6px))}
 #menu-toggle-btn svg{width:22px;height:22px}
 .nav-left{display:flex;align-items:center;flex-shrink:0}
 .support-wrap{position:relative;margin-left:10px;flex-shrink:0}
@@ -1204,7 +1204,7 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .pack-circles-section{padding:28px 0 6px}
 .pack-circles-row{display:flex;justify-content:center;align-items:flex-start;gap:96px;flex-wrap:wrap}
 .pack-circle-item{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
-.pack-circle-img-wrap{width:85px;height:85px;border-radius:50%;overflow:hidden;border:1.5px solid var(--gold,#8A9A46);background:var(--line,#E4DAC8);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,border-color .25s ease;position:relative}
+.pack-circle-img-wrap{width:85px;height:85px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(200,205,212,.6);background:var(--line,#E4DAC8);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,border-color .25s ease;position:relative}
 .pack-circle-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--emerald-light);opacity:.55}
 .pack-circle-placeholder svg{width:26px;height:26px}
 .pack-circle-edit{display:none;position:absolute;bottom:2px;right:2px;width:18px;height:18px;border-radius:50%;border:none;background:var(--emerald);color:#170F0A;font-size:9px;align-items:center;justify-content:center;cursor:pointer;line-height:1;padding:0;z-index:2}
