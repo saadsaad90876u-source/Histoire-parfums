@@ -169,7 +169,9 @@ function seqProcessQueue(){
 
     next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', finish, { once: true });
     next.addEventListener('error', finish, { once: true });
+    const srcset = next.dataset.srcset;
     next.removeAttribute('data-src');
+    if(srcset){ next.removeAttribute('data-srcset'); next.srcset = srcset; }
     next.src = src;
   }
 }
@@ -519,9 +521,11 @@ function productMedia(p, idx){
   
   
   const eager = typeof idx === 'number' && idx < 4;
+  const coverSrcset = (p.imagesSrcset && p.imagesSrcset[cover]) || '';
+  const sizesAttr = coverSrcset ? ` sizes="(max-width: 640px) 45vw, 320px"` : '';
   const srcAttrs = eager
-    ? `src="${cover}" loading="eager" fetchpriority="high"`
-    : `class="seq-lazy" data-src="${cover}"`;
+    ? `src="${cover}"${coverSrcset ? ` srcset="${coverSrcset}"${sizesAttr}` : ''} loading="eager" fetchpriority="high"`
+    : `class="seq-lazy" data-src="${cover}"${coverSrcset ? ` data-srcset="${coverSrcset}"${sizesAttr}` : ''}`;
   return cover
     ? `<img ${srcAttrs} alt="${p.name}" decoding="async" style="width:100%;height:100%;object-fit:contain;border-radius:0;" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">${fallback}`
     : `<div class="bottle mini-bottle">
@@ -1350,7 +1354,8 @@ document.getElementById('pack4-banner-image-input').addEventListener('change', a
   e.target.value = '';
   if(!file) return;
   showToast(t('bannerUploading'));
-  const url = await uploadProductImage(file, { transparent: true });
+  const res = await uploadProductImage(file, { transparent: true, responsive: false });
+  const url = res && res.url;
   if(url){
     const oldUrl = pack4BadgeImageUrl;
     pack4BadgeImageUrl = url;
@@ -1552,10 +1557,12 @@ document.getElementById('featured-form').addEventListener('submit', async (e) =>
   const price = Number(document.getElementById('featured-price').value);
   const gender = document.getElementById('featured-gender').value === 'men' ? 'men' : 'women';
   const file = document.getElementById('featured-image').files[0];
-  const newImage = await uploadProductImage(file);
+  const uploadRes = file ? await uploadProductImage(file) : null;
+  const newImage = uploadRes && uploadRes.url;
+  const newSrcset = (uploadRes && uploadRes.srcset) || '';
 
   if(idx === null){
-    featuredProducts.push({ name, price, gender, image: newImage || '' });
+    featuredProducts.push({ name, price, gender, image: newImage || '', imageSrcset: newSrcset });
   } else {
     const p = featuredProducts[idx];
     const oldImage = p.image;
@@ -1564,6 +1571,7 @@ document.getElementById('featured-form').addEventListener('submit', async (e) =>
     p.gender = gender;
     if(newImage){
       p.image = newImage;
+      p.imageSrcset = newSrcset;
       if(oldImage && oldImage !== newImage) deleteStorageFile('product-images', oldImage);
     }
   }
@@ -1820,7 +1828,7 @@ async function fetchAllReviewsAdmin(){
 
 async function uploadReviewImage(file){
   if(!file) return null;
-  const blob = await compressImageToBlob(file, 560, 0.68, false, 'image/webp');
+  const blob = await compressImageToBlob(file, 560, 0.8, false, 'image/webp');
   if(!blob) return null;
   const ext = blob.type === 'image/webp' ? 'webp' : (blob.type === 'image/png' ? 'png' : 'jpg');
   try{
@@ -2999,9 +3007,11 @@ function productPageTemplate(pRaw, category, idx){
     <div class="pp-gallery">
       ${backBtnHtml}
       <div class="pp-track" id="pp-track">
-        ${images.map((url, i) => isVideoUrl(url)
-          ? `<div class="pp-slide pp-slide-video"><video class="seq-lazy" data-src="${url}" loop playsinline webkit-playsinline preload="none" aria-label="${p.name}"></video></div>`
-          : `<div class="pp-slide"><img class="seq-lazy" data-src="${url}" alt="${p.name}"></div>`).join('')}
+        ${images.map((url, i) => {
+          if(isVideoUrl(url)) return `<div class="pp-slide pp-slide-video"><video class="seq-lazy" data-src="${url}" loop playsinline webkit-playsinline preload="none" aria-label="${p.name}"></video></div>`;
+          const ss = (p.imagesSrcset && p.imagesSrcset[url]) || '';
+          return `<div class="pp-slide"><img class="seq-lazy" data-src="${url}"${ss ? ` data-srcset="${ss}" sizes="100vw"` : ''} alt="${p.name}"></div>`;
+        }).join('')}
       </div>
       ${images.length > 1 ? `<div class="pp-dots">${images.map((_, i) => `<button type="button" class="pp-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : ''}
       ${images.length > 1 ? `<button type="button" class="pp-arrow prev" id="pp-prev" aria-label="Previous">‹</button><button type="button" class="pp-arrow next" id="pp-next" aria-label="Next">›</button>` : ''}
@@ -3290,9 +3300,13 @@ document.getElementById('pp-admin-add-input').addEventListener('change', async (
   showToast(t('bannerUploading'));
   const existing = productImages(p);
   const newImages = existing.slice();
+  p.imagesSrcset = p.imagesSrcset || {};
   for(const file of files){
-    const url = await uploadProductImage(file);
-    if(url) newImages.push(url);
+    const res = await uploadProductImage(file);
+    if(res && res.url){
+      newImages.push(res.url);
+      if(res.srcset) p.imagesSrcset[res.url] = res.srcset;
+    }
   }
   p.images = newImages;
   delete p.image;
@@ -3399,98 +3413,89 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
   });
 }
 
+// Génère plusieurs tailles (WebP, qualité 0.8) pour une image raster et les upload sur R2.
+// Retourne { url, srcset } où url = variante par défaut (960w ou la plus proche dispo)
+// et srcset = liste "url largeurw" utilisable directement dans un attribut srcset.
+async function buildResponsiveVariants(file, preserveTransparency){
+  const widths = [420, 800, 1280];
+  const variants = [];
+  for(const w of widths){
+    let vBlob = null;
+    try{ vBlob = await compressImageToBlob(file, w, 0.8, preserveTransparency, 'image/webp'); }
+    catch(err){ vBlob = null; }
+    if(!vBlob) continue;
+    try{
+      const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${w}w.webp`;
+      const url = await uploadToR2(vBlob, filename, 'image/webp');
+      if(url) variants.push({ width: w, url });
+    }catch(err){ /* on continue avec les autres tailles */ }
+  }
+  if(!variants.length) return null;
+  const mid = variants[Math.min(1, variants.length - 1)];
+  const srcset = variants.map(v => `${v.url} ${v.width}w`).join(', ');
+  return { url: mid.url, srcset };
+}
+
 async function uploadProductImage(file, opts){
   if(!file) return null;
   const preserveTransparency = !!(opts && opts.transparent);
-  
-  
-  
-  
-  
+  const wantsResponsive = !opts || opts.responsive !== false;
+
   const isVideo = /^video\//i.test(file.type || '') || /\.mp4$/i.test(file.name || '');
   if(isVideo){
     if(file.size > 20 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
     try{
       const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`;
-      return await uploadToR2(file, filename, 'video/mp4');
+      const url = await uploadToR2(file, filename, 'video/mp4');
+      return { url, srcset: '' };
     }catch(err){
       if(isAdmin) showToast(t('toastImageUploadFailed'));
       return null;
     }
-    
-    
-    
-    return new Promise((resolve) => {
-      const fr = new FileReader();
-      fr.onload = () => resolve(fr.result);
-      fr.readAsDataURL(file);
-    });
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
   const isGifOrWebp = /^image\/(gif|webp)$/i.test(file.type || '') || /\.(gif|webp)$/i.test(file.name || '');
   if(isGifOrWebp){
-    
-    
+    // Les GIF/WEBP animés ne peuvent pas être redécoupés en plusieurs tailles sans casser l'animation.
     if(file.size > 6 * 1024 * 1024) showToast(t('toastLargeAnimatedImage'));
     const contentType = /^image\/gif$/i.test(file.type || '') || /\.gif$/i.test(file.name || '') ? 'image/gif' : 'image/webp';
     const ext = contentType === 'image/gif' ? 'gif' : 'webp';
     if(supabaseClient){
       try{
         const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        return await uploadToR2(file, filename, contentType);
+        const url = await uploadToR2(file, filename, contentType);
+        return { url, srcset: '' };
       }catch(err){
         if(isAdmin) showToast(t('toastImageUploadFailed'));
       }
     }
     return new Promise((resolve) => {
       const fr = new FileReader();
-      fr.onload = () => resolve(fr.result);
+      fr.onload = () => resolve({ url: fr.result, srcset: '' });
       fr.readAsDataURL(file);
     });
   }
-  
-  
-  
+
   const isAvif = file.type === 'image/avif' || /\.avif$/i.test(file.name || '');
-  
-  
-  
-  
   const sourceFile = (isAvif && file.type !== 'image/avif')
     ? new File([file], file.name || 'photo.avif', { type: 'image/avif' })
     : file;
+
+  // Images raster classiques (jpg/png/webp statique/avif) : on génère un vrai jeu de tailles responsives.
+  if(supabaseClient && wantsResponsive){
+    const set = await buildResponsiveVariants(sourceFile, true);
+    if(set) return set;
+    // en cas d'échec de la génération multi-tailles, on retombe sur l'ancien comportement (une seule taille)
+  }
+
   let blob = null;
   let avifRaw = false;
   if(isAvif){
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    try{ blob = await compressImageToBlob(sourceFile, 560, 0.7, true, 'image/webp'); }
+    try{ blob = await compressImageToBlob(sourceFile, 560, 0.8, true, 'image/webp'); }
     catch(err){ blob = null; }
     if(!blob || blob.size >= sourceFile.size){ blob = sourceFile; avifRaw = true; }
   } else {
-    blob = await compressImageToBlob(file, 560, 0.65, preserveTransparency);
+    blob = await compressImageToBlob(file, 560, 0.8, true, 'image/webp');
   }
   if(!blob) return null;
   let ext, contentType;
@@ -3501,16 +3506,16 @@ async function uploadProductImage(file, opts){
   if(supabaseClient){
     try{
       const filename = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      return await uploadToR2(blob, filename, contentType);
+      const url = await uploadToR2(blob, filename, contentType);
+      return { url, srcset: '' };
     }catch(err){
       if(isAdmin) showToast(t('toastImageUploadFailed'));
-      
     }
   }
-  
+
   return new Promise((resolve) => {
     const fr = new FileReader();
-    fr.onload = () => resolve(fr.result);
+    fr.onload = () => resolve({ url: fr.result, srcset: '' });
     fr.readAsDataURL(blob);
   });
 }
@@ -3970,7 +3975,7 @@ function createBannerController(cfg){
       
       const sourceFile = file.type === 'image/avif' ? file : new File([file], file.name || 'banner.avif', { type: 'image/avif' });
       let blob = null;
-      try{ blob = await compressImageToBlob(sourceFile, 1280, 0.72, true, 'image/webp'); }
+      try{ blob = await compressImageToBlob(sourceFile, 1280, 0.8, true, 'image/webp'); }
       catch(err){ blob = null; }
       
       
@@ -3993,11 +3998,11 @@ function createBannerController(cfg){
         });
       }
     } else {
-      const blob = await compressImageToBlob(file, 1280, 0.7);
+      const blob = await compressImageToBlob(file, 1280, 0.8, true, 'image/webp');
       if(blob){
         try{
-          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
-          url = await uploadToR2(blob, filename, 'image/jpeg');
+          const filename = `banner/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.webp`;
+          url = await uploadToR2(blob, filename, 'image/webp');
         }catch(err){
           showToast(t('toastImageUploadFailed'));
         }
@@ -4397,7 +4402,8 @@ document.getElementById('founder-photo-input').addEventListener('change', async 
   e.target.value = '';
   if(!file) return;
   const oldUrl = founderInfo.photoUrl;
-  const url = await uploadProductImage(file);
+  const founderRes = await uploadProductImage(file, { responsive: false });
+  const url = founderRes && founderRes.url;
   if(url){
     founderInfo.photoUrl = url;
     renderFounderInfo();
@@ -5461,7 +5467,9 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
   const notesBase = document.getElementById('admin-notes-base').value.trim();
   const pinned = document.getElementById('admin-pinned').checked;
   const file = document.getElementById('admin-image').files[0];
-  const newImage = await uploadProductImage(file);
+  const uploadRes = file ? await uploadProductImage(file) : null;
+  const newImage = uploadRes && uploadRes.url;
+  const newSrcset = (uploadRes && uploadRes.srcset) || '';
 
   if(idx === null){
     
@@ -5473,6 +5481,7 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
       size: sizeInput || '100ml · EDP',
       notesTop, notesHeart, notesBase,
       images: newImage ? [newImage] : [],
+      imagesSrcset: newImage && newSrcset ? { [newImage]: newSrcset } : {},
       cover: 0,
       pinned
     });
@@ -5495,6 +5504,10 @@ document.getElementById('admin-form').addEventListener('submit', async (e) => {
       product.images = imgs;
       delete product.image;
       product.cover = 0;
+      if(newSrcset){
+        product.imagesSrcset = product.imagesSrcset || {};
+        product.imagesSrcset[newImage] = newSrcset;
+      }
     }
     if(newCategory !== originalCategory){
       oldList.splice(idx, 1);
