@@ -3326,22 +3326,21 @@ document.addEventListener('touchstart', (e) => {
   const stage = card && card.querySelector('.pc-stage');
   if(!stage) return;
   stage.classList.remove('pc-shine-active');
-  
-  
-  
-  
-  
-  
-  
-  
-  requestAnimationFrame(() => {
-    stage.classList.add('pc-shine-active');
-  });
+  void stage.offsetWidth;
+  stage.classList.add('pc-shine-active');
+  clearTimeout(stage._shineFallback);
+  stage._shineFallback = setTimeout(() => {
+    stage.classList.remove('pc-shine-active');
+  }, 1100);
 }, { passive: true });
 
 document.addEventListener('animationend', (e) => {
   if(e.animationName === 'pcStageShine'){
-    e.target.closest('.pc-stage')?.classList.remove('pc-shine-active');
+    const stage = e.target.closest('.pc-stage');
+    if(stage){
+      stage.classList.remove('pc-shine-active');
+      clearTimeout(stage._shineFallback);
+    }
   }
 });
 
