@@ -496,7 +496,7 @@ try {
   // card/element sits underneath at the same screen position, opening it
   // unintentionally. Calling preventDefault() on touchstart tells the
   // browser not to synthesize that follow-up mouse/click sequence at all.
-  btn.addEventListener('touchend', function (e) {
+  btn.addEventListener('touchstart', function (e) {
     unlockAudio();
     e.preventDefault();
     setTimeout(function () { handleEnter(); }, 150);
