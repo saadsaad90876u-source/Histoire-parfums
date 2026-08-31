@@ -139,7 +139,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .featured-product-card:hover .featured-product-name{text-shadow:0 0 14px color-mix(in srgb,var(--emerald) 45%,transparent)}
 }
 .featured-product-media img{width:100%;height:100%;object-fit:cover;display:block}
-.featured-product-name{font-family:'Poppins',sans-serif;font-weight:500;font-style:italic;font-size:22px;color:var(--ink);margin-top:18px}
+.featured-product-name{font-family:'Poppins',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;font-size:20px;color:var(--ink);margin-top:18px}
 .featured-product-price{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500;color:var(--seal);margin-top:6px}
 .featured-pack-btn{display:block;width:100%;margin-top:10px;padding:9px 0;border:none;border-radius:8px;font-family:'Work Sans',sans-serif;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;position:relative;isolation:isolate;transition:filter .25s ease,transform .15s ease}
 .featured-pack-btn.is-women,.featured-pack-btn.is-men{background:#000000;color:#F4EEE4;box-shadow:none}
@@ -341,7 +341,7 @@ h1,h2,h3{font-family:'Poppins',sans-serif;font-weight:500;color:var(--ink)}
 .admin-edit-btn,.admin-del-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#FFFFFF;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--ink);border-color:rgba(138,154,70,.35)}
 .add-new-card{border:2px dashed var(--line);border-radius:var(--radius);background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--text-soft);min-height:280px;transition:all .3s ease;border-color:rgba(138,154,70,.4)}
 .add-new-card:hover{border-color:var(--emerald);color:var(--emerald-light)}
-.shop-heading{font-size:clamp(28px,3.6vw,42px);margin-bottom:8px;font-family:'Poppins','Work Sans',sans-serif;font-weight:500;font-style:italic;letter-spacing:.01em;text-transform:none;text-align:center;color:#201A16}
+.shop-heading{font-size:clamp(28px,3.6vw,42px);margin-bottom:8px;font-family:'Poppins','Work Sans',sans-serif;font-weight:700;font-style:normal;letter-spacing:.01em;text-transform:uppercase;text-align:center;color:#201A16}
 .shop-filters{display:flex;gap:28px;justify-content:center;width:fit-content;margin:0 auto 24px;padding:0;border:none;border-bottom:1px solid #E4DAC8;background:transparent;backdrop-filter:none}
 .sf-btn{padding:12px 4px;border-radius:0;border:none;border-bottom:2px solid transparent;background:transparent;color:#9C8F7C;font-family:'Work Sans',sans-serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .25s ease,border-color .25s ease;font-weight:500;margin-bottom:-1px}
 .sf-btn:hover{color:#000000}
