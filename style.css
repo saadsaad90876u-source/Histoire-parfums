@@ -678,8 +678,8 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-price-unit{font-family:'Work Sans',sans-serif;font-weight:700;font-size:20px;color:#1C1512;margin-left:2px}
 .pack4-price-sep{width:1px;height:30px;background:rgba(122,31,43,.15);flex-shrink:0}
 .pack4-price-old{font-family:'Work Sans',sans-serif;color:var(--text-soft);font-size:20px;text-decoration:line-through;text-decoration-color:var(--emerald-deep);text-decoration-thickness:1px}
-.pack4-banner-savings{display:inline-flex;align-items:center;gap:5px;background:#0E92A3;color:#294948;font-family:'Work Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.01em;border-radius:999px;padding:4px 20px;margin-bottom:10px}
-.pack4-banner-savings b{color:#294948;font-weight:700}
+.pack4-banner-savings{display:inline-flex;align-items:center;gap:5px;background:#0E92A3;color:#150F0C;font-family:'Work Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.01em;border-radius:999px;padding:4px 20px;margin-bottom:10px}
+.pack4-banner-savings b{color:#150F0C;font-weight:700}
 .pack4-banner-savings .pack4-shipping-icon{flex-shrink:0}
 .pack4-banner-benefits{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-bottom:16px}
 .pack4-benefit{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1 1 0;min-width:0}
@@ -719,7 +719,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-picker-filters{display:flex;gap:8px;margin-bottom:16px}
 .pack4-pf-btn{flex:1;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;outline:none;padding:9px 0;border-radius:10px;border:1.5px solid #0E92A3;background:transparent;color:var(--text-soft);font-family:'Work Sans',sans-serif;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .25s ease,color .25s ease;font-weight:800}
 .pack4-pf-btn:hover{color:#294948}
-.pack4-pf-btn.active{background:#0E92A3;color:#294948}
+.pack4-pf-btn.active{background:#0E92A3;color:#150F0C}
 .pack4-card{background:#0E92A3;border-radius:20px;padding:24px 16px 22px;margin:18px 0 16px;text-align:center}
 .pack4-card-heading{font-family:'Work Sans',sans-serif;font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#FBF8F2;margin-bottom:18px}
 .pack4-card-shipping{font-family:'Work Sans',sans-serif;font-weight:600;font-size:13.5px;color:#FBF8F2;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -1201,11 +1201,11 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .splash-gender-title{font-family:'Poppins',sans-serif;font-style:italic;font-size:21px;line-height:1.4;color:var(--ink);margin:6px 0 26px}
 .splash-gender-choices{display:flex;flex-direction:column;gap:12px;width:100%;max-width:260px}
 .splash-gender-btn{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:14px 20px;border-radius:999px;border:1.5px solid #0E92A3;background:transparent;color:#294948;cursor:pointer;transition:background .3s ease,color .3s ease}
-.splash-gender-btn:hover,.splash-gender-btn:active{background:#0E92A3;color:#294948}
+.splash-gender-btn:hover,.splash-gender-btn:active{background:#0E92A3;color:#150F0C}
 .pack-circles-section{padding:28px 0 6px}
 .pack-circles-row{display:flex;justify-content:center;align-items:flex-start;gap:96px;flex-wrap:wrap}
 .pack-circle-item{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:none;padding:0;cursor:pointer;font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
-.pack-circle-img-wrap{width:85px;height:85px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(200,205,212,.6);background:var(--line,#E4DAC8);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,border-color .25s ease;position:relative}
+.pack-circle-img-wrap{width:85px;height:85px;border-radius:50%;overflow:hidden;border:1.5px solid #0E92A3;background:var(--line,#E4DAC8);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,border-color .25s ease;position:relative}
 .pack-circle-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--emerald-light);opacity:.55}
 .pack-circle-placeholder svg{width:26px;height:26px}
 .pack-circle-edit{display:none;position:absolute;bottom:2px;right:2px;width:18px;height:18px;border-radius:50%;border:none;background:var(--emerald);color:#170F0A;font-size:9px;align-items:center;justify-content:center;cursor:pointer;line-height:1;padding:0;z-index:2}
