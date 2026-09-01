@@ -374,20 +374,23 @@ try {
     // Fast path: buffer already decoded -> near-instant playback.
     if (audioCtx && audioBuffer) {
       try {
-        var src = audioCtx.createBufferSource();
-        src.buffer = audioBuffer;
-        src.connect(audioCtx.destination);
+        var playBuffer = function () {
+          var src = audioCtx.createBufferSource();
+          src.buffer = audioBuffer;
+          src.connect(audioCtx.destination);
+          src.start(0);
+        };
         if (audioCtx.state === 'suspended') {
-          // resume() is async and can, rarely, be rejected by the
-          // browser -- without catching that, the sound would just
-          // silently never play with no fallback engaged. Falling back
-          // to the plain <audio> element here is safe even though
-          // src.start(0) below has already been scheduled: a suspended
-          // context never advances its clock, so that scheduled source
-          // simply never produces sound if resume() never succeeds.
-          audioCtx.resume().catch(fallbackToAudioElement);
+          // resume() is async -- starting the source before it actually
+          // resolves is unreliable (the source can get silently dropped
+          // since the context's clock hasn't moved yet), so playback is
+          // chained onto the resume promise instead of firing in
+          // parallel with it. Falls back to the plain <audio> element if
+          // resume() is ever rejected.
+          audioCtx.resume().then(playBuffer).catch(fallbackToAudioElement);
+        } else {
+          playBuffer();
         }
-        src.start(0);
         return;
       } catch (e) {}
     }
