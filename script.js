@@ -413,6 +413,8 @@ const translations = {
     statusShipped: "Expédiée",
     statusDelivered: "Livrée",
     statusCancelled: "Annulée",
+    trackingEtaPrefix: "Livraison estimée entre le",
+    trackingEtaAnd: "et le",
     trackingLookupSub: "Entrez votre numéro de commande pour voir son statut.",
     trackingLookupPh: "ex. SYMPHONIE-XXXXXXX",
     genericErrorMsg: "Une erreur est survenue, veuillez réessayer.",
@@ -4125,7 +4127,7 @@ document.getElementById('admin-overlay').addEventListener('click', closeAdminMod
 
 
 
-function renderTrackingTimeline(status){
+function renderTrackingTimeline(status, orderDate){
   const idx = ORDER_STATUSES.indexOf(status);
   const cancelled = status === 'cancelled';
   const labels = {
@@ -4134,19 +4136,30 @@ function renderTrackingTimeline(status){
   };
   const container = document.getElementById('tracking-timeline');
   if(cancelled){
-    container.innerHTML = `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;color:#fff;">✕</div><div class="tt-content"><div class="tt-label">${t('statusCancelled')}</div></div></div>`;
+    container.innerHTML = `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;border-color:#c0392b;color:#fff;">✕</div><div class="tt-content"><div class="tt-label" style="background:#c0392b;color:#fff;">${t('statusCancelled')}</div></div></div>`;
     return;
   }
-  container.innerHTML = ORDER_STATUSES.map((s, i) => {
+  const placedDate = orderDate ? new Date(orderDate) : null;
+  const placedDateStr = (placedDate && !isNaN(placedDate)) ? placedDate.toLocaleDateString('fr-FR', {weekday:'long', day:'2-digit', month:'2-digit'}) : '';
+  const stepsHtml = ORDER_STATUSES.map((s, i) => {
     const state = i < idx ? 'done' : (i === idx ? 'active' : '');
-    const icon = i < idx ? '✓' : (i + 1);
+    const icon = i <= idx ? '✓' : '';
+    const dateHtml = (i === 0 && placedDateStr) ? `<div class="tt-date">${placedDateStr}</div>` : '';
     return `
     <div class="tt-step ${state}" data-status="${s}">
       <div class="tt-dot">${icon}</div>
       ${i < ORDER_STATUSES.length - 1 ? '<div class="tt-line"></div>' : ''}
-      <div class="tt-content"><div class="tt-label">${labels[s]}</div></div>
+      <div class="tt-content"><div class="tt-label">${labels[s]}</div>${dateHtml}</div>
     </div>`;
   }).join('');
+  let etaHtml = '';
+  if(placedDate && !isNaN(placedDate) && idx < ORDER_STATUSES.length - 1){
+    const from = new Date(placedDate); from.setDate(from.getDate() + 2);
+    const to = new Date(placedDate); to.setDate(to.getDate() + 3);
+    const fmt = d => d.toLocaleDateString('fr-FR', {weekday:'long', day:'2-digit', month:'long'});
+    etaHtml = `<div class="tt-eta-note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg><span>${t('trackingEtaPrefix')} ${fmt(from)} ${t('trackingEtaAnd')} ${fmt(to)}</span></div>`;
+  }
+  container.innerHTML = stepsHtml + etaHtml;
 }
 
 function renderTrackingCancelArea(order, orderNumber){
@@ -4211,7 +4224,7 @@ async function lookupAndRenderOrder(orderNumber){
     return;
   }
   document.getElementById('tracking-order-number').textContent = 'Order #' + orderNumber;
-  renderTrackingTimeline(order.status);
+  renderTrackingTimeline(order.status, order.date || order.createdAt || order.created_at);
   renderTrackingCancelArea(order, orderNumber);
 }
 

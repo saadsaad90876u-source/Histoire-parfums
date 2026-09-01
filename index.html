@@ -140,7 +140,7 @@ try {
      non-render-blocking either way; this only affects how early the
      download itself begins. -->
 <link rel="preload" as="script" href="/script.js?v=13">
-<link rel="stylesheet" href="/style.css?v=31" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=33" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
@@ -335,73 +335,25 @@ try {
     }
   }
 
-  // Plain <audio>.play() has a real, felt decode/pipeline-startup delay
-  // on its very first play on a given page load -- even with
-  // preload="auto" downloading the bytes ahead of time, the browser
-  // still hasn't decoded them or spun up its audio output pipeline until
-  // play() is actually called, and both of those happen synchronously
-  // (from the visitor's perspective) at that point, which is exactly
-  // the felt delay being reported here. Web Audio avoids that by doing
-  // the expensive part -- fetch + decode into raw PCM -- ahead of time,
-  // on page load, while the welcome screen is just sitting there, so by
-  // the time a finger actually touches the button all that's left to do
-  // is hand an already-decoded buffer to the sound card. The
-  // AudioContext is created immediately too (in 'suspended' state);
-  // creating it doesn't need a user gesture, only resuming it does, so
-  // that cost is paid up front as well. Falls back to the plain <audio>
-  // element (still present in the markup for this) whenever the fast
-  // path isn't ready yet or isn't supported.
-  var AudioCtx = window.AudioContext || window.webkitAudioContext;
-  var audioCtx = AudioCtx ? new AudioCtx() : null;
-  var audioBuffer = null;
-  if (audioCtx && chime) {
-    fetch(chime.currentSrc || chime.src)
-      .then(function (r) { return r.arrayBuffer(); })
-      .then(function (data) { return audioCtx.decodeAudioData(data); })
-      .then(function (buf) { audioBuffer = buf; })
-      .catch(function () {});
-  }
-
-  function playFallbackElement() {
+  // Web Audio (fetch + decode ahead of time for near-instant playback)
+  // was tried here to remove the plain <audio> element's felt first-play
+  // delay, but it turned out unreliable in practice across real
+  // devices/browsers in a way that was hard to fully pin down and fix
+  // remotely -- and silence is a much worse outcome than a slight delay.
+  // Back to the simple, consistently-audible approach.
+  function unlockAudio() {
     if (!chime) return;
     // Kept as two separate try/catch blocks on purpose: if resetting
     // currentTime throws (the element can be in a transitional state
-    // right after a previous playback), that must not skip play() --
-    // skipping it is what caused sound to work every other tap and not
-    // the ones in between, before this was split out.
+    // right after a previous playback, e.g. between "ended" and the
+    // next readyState update), that must not skip play() -- skipping it
+    // is what caused sound to work every other tap and not the ones in
+    // between, before this was split out.
     try { chime.currentTime = 0; } catch (e) {}
     try {
       var p = chime.play();
       if (p && p.catch) p.catch(function () {});
     } catch (e) {}
-  }
-
-  function unlockAudio() {
-    if (audioCtx && audioBuffer) {
-      try {
-        var playBuffer = function () {
-          var src = audioCtx.createBufferSource();
-          src.buffer = audioBuffer;
-          src.connect(audioCtx.destination);
-          src.start(0);
-        };
-        if (audioCtx.state === 'suspended') {
-          // resume() is async -- starting the source before it actually
-          // resolves is unreliable (the source can get silently dropped
-          // since the context's clock hasn't moved yet), so playback is
-          // chained onto the resume promise instead of firing in
-          // parallel with it.
-          audioCtx.resume().then(playBuffer).catch(playFallbackElement);
-        } else {
-          playBuffer();
-        }
-        return;
-      } catch (e) {}
-    }
-    // Fallback: decode wasn't ready yet (slow connection, or this is the
-    // very first tap and the fetch/decode above hasn't resolved) or Web
-    // Audio isn't supported.
-    playFallbackElement();
   }
 
   // true while the splash is the thing on screen; false once the visitor
@@ -1761,7 +1713,7 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
-<script src="/script.js?v=15" defer></script>
+<script src="/script.js?v=16" defer></script>
 <script src="/motion.js?v=13" defer></script>
 <script src="/pack-circles.js?v=2" defer></script>
 </body>
