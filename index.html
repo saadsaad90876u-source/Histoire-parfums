@@ -468,6 +468,11 @@ try {
     fired = false;
     unlocked = false;
     splashOpen = true;
+    // The visitor is looking at the splash again (via Back), so a
+    // refresh from here should show it too, not skip straight back to
+    // the shop -- clear the "already seen this session" flag that
+    // handleEnter() sets, so the <head> check doesn't short-circuit it.
+    try { sessionStorage.removeItem('ws-seen'); } catch (e) {}
     moveFooterToSplash();
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
     screen.classList.remove('ws-hidden', 'ws-leaving');
