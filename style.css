@@ -1196,10 +1196,10 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 }
 .splash-gender-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.94);width:min(340px,88vw);max-height:85vh;overflow-y:auto;background:#FFFFFF;border-radius:22px;padding:34px 26px 28px;text-align:center;box-shadow:0 30px 70px -20px rgba(20,16,14,.45);z-index:3001;opacity:0;visibility:hidden;transition:opacity .35s cubic-bezier(.2,.8,.2,1),visibility .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1)}
 .splash-gender-modal.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
-.splash-gender-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--line,#E4DAC8);border:none;color:var(--ink);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease}
-.splash-gender-close:hover{background:var(--emerald-light,#D6DFA0)}
+.splash-gender-close{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;background:none;border:none;color:var(--ink);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s ease}
+.splash-gender-close:hover{opacity:.6}
 .splash-gender-title{font-family:'Poppins',sans-serif;font-style:italic;font-size:21px;line-height:1.4;color:var(--ink);margin:6px 0 26px}
-.splash-gender-choices{display:flex;flex-direction:column;gap:12px;width:100%;max-width:260px}
+.splash-gender-choices{display:flex;flex-direction:column;gap:12px;width:100%;max-width:260px;margin:0 auto}
 .splash-gender-btn{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:14px 20px;border-radius:999px;border:1.5px solid #0E92A3;background:transparent;color:#294948;cursor:pointer;transition:background .3s ease,color .3s ease}
 .splash-gender-btn:hover,.splash-gender-btn:active{background:#0E92A3;color:#150F0C}
 .pack-circles-section{padding:28px 0 6px}

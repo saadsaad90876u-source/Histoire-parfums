@@ -52,7 +52,13 @@ try {
   // admin login prompt, not the splash -- see checkAdminGateCookie()
   // and openAdminLoginModal() in script.js, further down the page.
   var skipForAdminGate = /(?:^|; )adminGateOK=/.test(document.cookie);
-  if (skipForAdminGate) {
+  // Already saw the splash once this tab session (set by handleEnter()
+  // further down once the visitor actually enters the shop) -- covers
+  // refreshes and deep links (e.g. reloading a product page) so the
+  // intro doesn't replay every time.
+  var skipForSessionSeen = false;
+  try { skipForSessionSeen = sessionStorage.getItem('ws-seen') === '1'; } catch (e) {}
+  if (skipForAdminGate || skipForSessionSeen) {
     document.documentElement.classList.add('ws-skip');
   } else {
     document.documentElement.style.overflow = 'hidden';
@@ -133,7 +139,7 @@ try {
      non-render-blocking either way; this only affects how early the
      download itself begins. -->
 <link rel="preload" as="script" href="/script.js?v=13">
-<link rel="stylesheet" href="/style.css?v=29" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=31" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
@@ -260,7 +266,7 @@ try {
 <div class="modal-overlay" id="splash-gender-overlay"></div>
 <div class="splash-gender-modal" id="splash-gender-modal">
   <button class="splash-gender-close" id="splash-gender-close" aria-label="Fermer">✕</button>
-  <p class="splash-gender-title">Quelle histoire voulez-vous raconter ?</p>
+  <p class="splash-gender-title">Quelle symphonie voulez-vous composer ?</p>
   <div class="splash-gender-choices">
     <button type="button" class="splash-gender-btn" data-gender="women">Femme</button>
     <button type="button" class="splash-gender-btn" data-gender="men">Homme</button>
@@ -394,6 +400,16 @@ try {
   // below to decide whether Back should bring the splash back.
   var splashOpen = !skipGreeting;
 
+  // On a skipped-greeting load (returning visitor this session, or a
+  // reload/deep link into e.g. a product page) handleEnter() never runs,
+  // so it never gets a chance to push the "shop" history state either --
+  // without it, Back has nothing to return from and can't trigger
+  // reopenSplash() below. Push that baseline state here instead so Back
+  // still brings the splash back even on these skipped-greeting loads.
+  if (skipGreeting) {
+    try { history.pushState({ shop: true }, '', location.pathname + location.search); } catch (e) {}
+  }
+
   // Move the footer in right away if the splash is showing on this load
   // (first visit this session) -- reopenSplash() below handles the
   // Back-button case. The footer doesn't exist in the DOM yet at this
@@ -408,6 +424,12 @@ try {
     fired = true;
     splashOpen = false;
     restoreFooter();
+    // Remember this for the rest of the tab session (read by the
+    // synchronous check in <head>) so a refresh -- or navigating deeper
+    // into the shop, e.g. a product page -- doesn't show the splash
+    // again. sessionStorage is scoped per-tab and cleared when the tab
+    // closes, so a genuinely new visit still gets the intro.
+    try { sessionStorage.setItem('ws-seen', '1'); } catch (e) {}
     // Record "shop entered" as its own history entry (skipped when this
     // runs from the popstate handler itself, e.g. pressing Forward again
     // after having gone Back to the splash -- that navigation already
