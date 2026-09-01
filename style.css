@@ -171,7 +171,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .footer-social-row{display:flex;align-items:center;gap:18px;border-top:1px solid rgba(255,255,255,.1);padding:18px 0;margin-bottom:6px}
 .instagram-btn,.facebook-btn,.tiktok-btn,.whatsapp-btn{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:22px;height:22px;transition:opacity .3s ease,transform .3s ease}
 .instagram-btn:hover,.facebook-btn:hover,.tiktok-btn:hover,.whatsapp-btn:hover{opacity:.8;transform:scale(1.08)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:#9C8F7C}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12.5px;color:#F4EEE4}
 .wishlist-overlay{position:fixed;top:32px;right:0;bottom:0;left:0;background:rgba(20,16,14,.45);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;z-index:2000}
 .wishlist-overlay.open{opacity:1;visibility:visible}
 .wishlist-drawer.open{transform:translateX(0);box-shadow:-30px 0 80px rgba(0,0,0,.5)}

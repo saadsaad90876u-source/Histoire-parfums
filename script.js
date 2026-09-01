@@ -255,7 +255,7 @@ const translations = {
     sideMenuTrackOrder: "Suivre ma commande",
     sideMenuAboutUs: "À propos de nous",
     aboutUsTitle: "À propos de nous",
-    aboutUsBody: "HISTOIRE Parfum Collection propose une sélection exclusive de parfums de qualité, inspirés des plus grandes maisons, à des prix accessibles. Chaque flacon est choisi avec soin pour offrir une expérience olfactive raffinée et durable. Nous livrons partout au Maroc, avec un paiement à la livraison et un service client à votre écoute.",
+    aboutUsBody: "SYMPHONIE Parfum Collection propose une sélection exclusive de parfums de qualité, inspirés des plus grandes maisons, à des prix accessibles. Chaque flacon est choisi avec soin pour offrir une expérience olfactive raffinée et durable. Nous livrons partout au Maroc, avec un paiement à la livraison et un service client à votre écoute.",
     quantityLabel: "Quantité",
     trustDeliveryTitle: "Livraison 1-4j",
     trustDeliverySub: "Partout au Maroc",
@@ -309,7 +309,7 @@ const translations = {
     pack4CartFamily: "Pack Découverte · 3\u00A0Parfums",
     closeBtn: "Fermer",
     confirmOrder: "Confirmer la commande",
-    copyright: "© 2026 HISTOIRE Parfum Collection. Tous droits réservés.",
+    copyright: "© 2026 SYMPHONIE Parfum Collection. Tous droits réservés.",
     filterMen: "Homme",
     filterWomen: "Femme",
     fullName: "Nom complet",
@@ -397,14 +397,14 @@ const translations = {
     trustShipping: "Livraison rapide",
     trustSupport: "Service client",
     orderSuccessTitle: "Votre commande a été passée avec succès !",
-    orderSuccessMsg: "Merci d'avoir choisi HISTOIRE. Votre commande est reçue et en cours de traitement.",
+    orderSuccessMsg: "Merci d'avoir choisi SYMPHONIE. Votre commande est reçue et en cours de traitement.",
     orderNumberLabel: "Numéro de commande",
     dateLabel: "Date",
     orderStatusLabel: "Statut de la commande",
     trackOrderBtn: "Suivre ma commande",
     menuTitle: "Menu",
     aboutUsBtn: "À propos de nous",
-    aboutUsText: "HISTOIRE Parfum Collection propose des eaux de parfum d'inspiration haut de gamme, sélectionnées avec soin pour leur tenue, leur sillage et leur raffinement. Notre mission est de rendre le luxe olfactif accessible, avec un service rapide et attentionné partout au Maroc.",
+    aboutUsText: "SYMPHONIE Parfum Collection propose des eaux de parfum d'inspiration haut de gamme, sélectionnées avec soin pour leur tenue, leur sillage et leur raffinement. Notre mission est de rendre le luxe olfactif accessible, avec un service rapide et attentionné partout au Maroc.",
     continueShoppingBtn: "Continuer mes achats",
     trackingTitle: "Suivi de commande",
     statusPending: "En attente",
@@ -414,7 +414,7 @@ const translations = {
     statusDelivered: "Livrée",
     statusCancelled: "Annulée",
     trackingLookupSub: "Entrez votre numéro de commande pour voir son statut.",
-    trackingLookupPh: "ex. HISTOIRE-XXXXXXX",
+    trackingLookupPh: "ex. SYMPHONIE-XXXXXXX",
     genericErrorMsg: "Une erreur est survenue, veuillez réessayer.",
     trackingLookupBtn: "Suivre",
     trackingNotFound: "Aucune commande trouvée avec ce numéro.",
@@ -1627,7 +1627,7 @@ const ORDER_STATUSES = ['pending', 'confirmed', 'preparing', 'shipped', 'deliver
 let customers = []; 
 
 function genOrderNumber(){
-  return 'HISTOIRE-' + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).slice(2, 4).toUpperCase();
+  return 'SYMPHONIE-' + Date.now().toString(36).toUpperCase().slice(-6) + Math.random().toString(36).slice(2, 4).toUpperCase();
 }
 
 
@@ -3858,9 +3858,9 @@ function createBannerController(cfg){
                 
                 const isPriorityEligible = state.priority && i === 0;
                 if(isPriorityEligible && !isGifBanner){
-                  return `<img src="${b.url}" alt="HISTOIRE" loading="eager" fetchpriority="high">`;
+                  return `<img src="${b.url}" alt="SYMPHONIE" loading="eager" fetchpriority="high">`;
                 }
-                return `<img class="seq-lazy" data-src="${b.url}" alt="HISTOIRE">`;
+                return `<img class="seq-lazy" data-src="${b.url}" alt="SYMPHONIE">`;
               })()}
         </div>`;
 
@@ -4621,7 +4621,7 @@ function adOrderCardHtml(o){
         </div>
         <div class="ad-quick-actions">
           <a class="ad-qa-btn ad-qa-btn-call" href="tel:${phoneDigits}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.8 2z"/></svg>Appeler</a>
-          <a class="ad-qa-btn ad-qa-btn-wa" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent('Bonjour ' + o.customer_name + ', concernant votre commande ' + o.order_number + ' chez HISTOIRE...')}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.1c-5.5 0-10 4.5-10 10 0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10s-4.5-9.8-10-9.8z"/></svg>WhatsApp</a>
+          <a class="ad-qa-btn ad-qa-btn-wa" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent('Bonjour ' + o.customer_name + ', concernant votre commande ' + o.order_number + ' chez SYMPHONIE...')}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.1c-5.5 0-10 4.5-10 10 0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10s-4.5-9.8-10-9.8z"/></svg>WhatsApp</a>
           <a class="ad-qa-btn ad-qa-btn-maps" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${mapsQuery}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Google Maps</a>
           <button type="button" class="ad-qa-btn ad-qa-btn-print" data-print-invoice="${o.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>Facture</button>
           <button type="button" class="ad-qa-btn ad-qa-btn-note" data-print-note="${o.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Étiquette colis</button>
@@ -4920,7 +4920,7 @@ function adPrintInvoice(order){
     <div style="max-width:700px;margin:40px auto;font-family:'Jost',sans-serif;color:#16181d;padding:30px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #16181d;padding-bottom:18px;margin-bottom:24px;">
         <div>
-          <div style="font-family:'Jost',sans-serif;font-weight:700;font-size:22px;letter-spacing:.08em;">HISTOIRE</div>
+          <div style="font-family:'Jost',sans-serif;font-weight:700;font-size:22px;letter-spacing:.08em;">SYMPHONIE</div>
           <div style="font-size:11px;color:#6b7280;letter-spacing:.1em;text-transform:uppercase;">Parfum Collection</div>
         </div>
         <div style="text-align:right;">
@@ -4956,7 +4956,7 @@ function adPrintInvoice(order){
           <tr style="font-weight:700;font-size:15px;border-top:1px solid #ddd;"><td style="padding:8px 0;">Total</td><td style="text-align:right;">${order.total} DH</td></tr>
         </table>
       </div>
-      <div style="margin-top:40px;font-size:11px;color:#9ca3af;text-align:center;">Merci pour votre confiance — HISTOIRE Parfum Collection</div>
+      <div style="margin-top:40px;font-size:11px;color:#9ca3af;text-align:center;">Merci pour votre confiance — SYMPHONIE Parfum Collection</div>
     </div>`;
   window.print();
   setTimeout(() => { area.innerHTML = ''; }, 300);
@@ -4984,7 +4984,7 @@ function adLabelBoxHtml(order, uid){
   return `
     <div class="ad-label-box" id="ad-label-${uid}">
       <div class="ad-label-head">
-        <div class="ad-label-brand">HISTOIRE<small>Parfum Collection</small></div>
+        <div class="ad-label-brand">SYMPHONIE<small>Parfum Collection</small></div>
         <div class="ad-label-order-no">
           <div class="ad-label-order-id">#${escapeHtml(order.order_number || '')}</div>
           <div class="ad-label-order-date">${dateStr}</div>
