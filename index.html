@@ -255,7 +255,7 @@ try {
     <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
 
-  <audio id="ws-chime" src="/welcome-chime.mp3" preload="none" playsinline></audio>
+  <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
 
 <!-- Asked when the visitor taps the "Parfums" circle: which gender's
@@ -333,70 +333,23 @@ try {
     }
   }
 
-  // The <audio>.play() approach still has a real, felt cold-start delay
-  // on first playback (roughly the ~1s that was reported): even with
-  // preload="auto" the file has finished *downloading*, but the browser
-  // hasn't necessarily finished *decoding* the mp3 or spinning up its
-  // audio output pipeline yet, and both of those happen only once play()
-  // is actually called. Web Audio fixes this by doing the expensive part
-  // (fetch + decode into raw PCM) ahead of time, on page load, while the
-  // welcome screen is just sitting there -- so by the time the finger
-  // actually touches the button, all that's left to do is hand an
-  // already-decoded buffer to the sound card, which is effectively
-  // instant. The AudioContext is created immediately too (in 'suspended'
-  // state); creating it doesn't require a user gesture, only resuming it
-  // does, so that cost is paid up front as well.
-  var AudioCtx = window.AudioContext || window.webkitAudioContext;
-  var audioCtx = null;
-  var audioBuffer = null;
-  // Always prepare this up front, even on a skipped-greeting load --
-  // reopenSplash() (Back button) can bring the splash, and its button,
-  // back regardless of skipGreeting, so the fast path needs to be ready
-  // for that case too, not just a fresh first-visit load.
-  audioCtx = AudioCtx ? new AudioCtx() : null;
-  if (audioCtx && chime) {
-    fetch(chime.currentSrc || chime.src)
-      .then(function (r) { return r.arrayBuffer(); })
-      .then(function (data) { return audioCtx.decodeAudioData(data); })
-      .then(function (buf) { audioBuffer = buf; })
-      .catch(function () {});
-  }
+  // Previously used Web Audio (fetch + decodeAudioData + AudioContext) to
+  // avoid the plain <audio> element's cold-start decode delay on first
+  // play. In practice that introduced its own race (starting a
+  // BufferSource before resume() has actually resolved is unreliable --
+  // the source can get silently dropped), which showed up as no sound
+  // on the very first tap specifically. Simple and reliably-audible beats
+  // fast-but-sometimes-silent, so this now just uses the <audio> element
+  // directly; preload="auto" on it (see the markup above) means the file
+  // is already downloaded well before the visitor taps anything.
 
   function unlockAudio() {
-    function fallbackToAudioElement() {
-      if (!chime) return;
-      try {
-        chime.currentTime = 0;
-        var p = chime.play();
-        if (p && p.catch) p.catch(function () {});
-      } catch (e) {}
-    }
-    // Fast path: buffer already decoded -> near-instant playback.
-    if (audioCtx && audioBuffer) {
-      try {
-        var playBuffer = function () {
-          var src = audioCtx.createBufferSource();
-          src.buffer = audioBuffer;
-          src.connect(audioCtx.destination);
-          src.start(0);
-        };
-        if (audioCtx.state === 'suspended') {
-          // resume() is async -- starting the source before it actually
-          // resolves is unreliable (the source can get silently dropped
-          // since the context's clock hasn't moved yet), so playback is
-          // chained onto the resume promise instead of firing in
-          // parallel with it. Falls back to the plain <audio> element if
-          // resume() is ever rejected.
-          audioCtx.resume().then(playBuffer).catch(fallbackToAudioElement);
-        } else {
-          playBuffer();
-        }
-        return;
-      } catch (e) {}
-    }
-    // Fallback: decode wasn't ready yet (slow connection) or Web Audio
-    // isn't supported -- use the plain <audio> element instead.
-    fallbackToAudioElement();
+    if (!chime) return;
+    try {
+      chime.currentTime = 0;
+      var p = chime.play();
+      if (p && p.catch) p.catch(function () {});
+    } catch (e) {}
   }
 
   // true while the splash is the thing on screen; false once the visitor
