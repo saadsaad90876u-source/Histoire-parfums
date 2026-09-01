@@ -94,7 +94,8 @@ try {
 })();
 </script>
 <meta name="color-scheme" content="light only">
-<meta name="theme-color" content="#14100E">
+<meta name="theme-color" content="#0E92A3">
+<link rel="manifest" href="/manifest.json">
 <title>SYMPHONIE — Parfums de Luxe pour Homme et Femme</title>
 <meta name="description" content="SYMPHONIE — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
 <meta name="keywords" content="parfum, parfums de luxe, SYMPHONIE, parfum homme, parfum femme, boutique parfum Maroc">
@@ -176,6 +177,7 @@ try {
 })();
 </script>
 <link rel="icon" href="/histoire-favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 <div id="welcome-screen">
@@ -333,23 +335,73 @@ try {
     }
   }
 
-  // Previously used Web Audio (fetch + decodeAudioData + AudioContext) to
-  // avoid the plain <audio> element's cold-start decode delay on first
-  // play. In practice that introduced its own race (starting a
-  // BufferSource before resume() has actually resolved is unreliable --
-  // the source can get silently dropped), which showed up as no sound
-  // on the very first tap specifically. Simple and reliably-audible beats
-  // fast-but-sometimes-silent, so this now just uses the <audio> element
-  // directly; preload="auto" on it (see the markup above) means the file
-  // is already downloaded well before the visitor taps anything.
+  // Plain <audio>.play() has a real, felt decode/pipeline-startup delay
+  // on its very first play on a given page load -- even with
+  // preload="auto" downloading the bytes ahead of time, the browser
+  // still hasn't decoded them or spun up its audio output pipeline until
+  // play() is actually called, and both of those happen synchronously
+  // (from the visitor's perspective) at that point, which is exactly
+  // the felt delay being reported here. Web Audio avoids that by doing
+  // the expensive part -- fetch + decode into raw PCM -- ahead of time,
+  // on page load, while the welcome screen is just sitting there, so by
+  // the time a finger actually touches the button all that's left to do
+  // is hand an already-decoded buffer to the sound card. The
+  // AudioContext is created immediately too (in 'suspended' state);
+  // creating it doesn't need a user gesture, only resuming it does, so
+  // that cost is paid up front as well. Falls back to the plain <audio>
+  // element (still present in the markup for this) whenever the fast
+  // path isn't ready yet or isn't supported.
+  var AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var audioCtx = AudioCtx ? new AudioCtx() : null;
+  var audioBuffer = null;
+  if (audioCtx && chime) {
+    fetch(chime.currentSrc || chime.src)
+      .then(function (r) { return r.arrayBuffer(); })
+      .then(function (data) { return audioCtx.decodeAudioData(data); })
+      .then(function (buf) { audioBuffer = buf; })
+      .catch(function () {});
+  }
 
-  function unlockAudio() {
+  function playFallbackElement() {
     if (!chime) return;
+    // Kept as two separate try/catch blocks on purpose: if resetting
+    // currentTime throws (the element can be in a transitional state
+    // right after a previous playback), that must not skip play() --
+    // skipping it is what caused sound to work every other tap and not
+    // the ones in between, before this was split out.
+    try { chime.currentTime = 0; } catch (e) {}
     try {
-      chime.currentTime = 0;
       var p = chime.play();
       if (p && p.catch) p.catch(function () {});
     } catch (e) {}
+  }
+
+  function unlockAudio() {
+    if (audioCtx && audioBuffer) {
+      try {
+        var playBuffer = function () {
+          var src = audioCtx.createBufferSource();
+          src.buffer = audioBuffer;
+          src.connect(audioCtx.destination);
+          src.start(0);
+        };
+        if (audioCtx.state === 'suspended') {
+          // resume() is async -- starting the source before it actually
+          // resolves is unreliable (the source can get silently dropped
+          // since the context's clock hasn't moved yet), so playback is
+          // chained onto the resume promise instead of firing in
+          // parallel with it.
+          audioCtx.resume().then(playBuffer).catch(playFallbackElement);
+        } else {
+          playBuffer();
+        }
+        return;
+      } catch (e) {}
+    }
+    // Fallback: decode wasn't ready yet (slow connection, or this is the
+    // very first tap and the fetch/decode above hasn't resolved) or Web
+    // Audio isn't supported.
+    playFallbackElement();
   }
 
   // true while the splash is the thing on screen; false once the visitor
@@ -493,12 +545,27 @@ try {
     e.preventDefault();
     handleEnter();
   }, { passive: false });
+  // Mouse equivalent of touchstart above: 'click' only fires on
+  // mouseup/release, so without this the chime would only start once
+  // the mouse button comes back up instead of the instant it goes down.
+  btn.addEventListener('mousedown', function () {
+    unlockAudio();
+  });
+  // Keyboard/assistive-tech activation (Enter/Space) has no separate
+  // "press" event to hook the chime to the way mousedown/touchstart do,
+  // so it plays here instead, right as the key goes down.
+  btn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      unlockAudio();
+    }
+  });
   // click covers mouse/keyboard/assistive-tech activation (desktop, or any
   // touch device where touchstart didn't fire for some reason). touchend
   // above calls preventDefault(), so on touch devices this click won't
-  // also fire and double up the chime.
+  // also fire and double up the chime. The chime itself is already
+  // handled by mousedown/keydown/touchstart above, so this only
+  // triggers navigation.
   btn.addEventListener('click', function () {
-    unlockAudio();
     handleEnter();
   });
 })();
