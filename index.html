@@ -349,15 +349,17 @@ try {
   var AudioCtx = window.AudioContext || window.webkitAudioContext;
   var audioCtx = null;
   var audioBuffer = null;
-  if (!skipGreeting) {
-    audioCtx = AudioCtx ? new AudioCtx() : null;
-    if (audioCtx && chime) {
-      fetch(chime.currentSrc || chime.src)
-        .then(function (r) { return r.arrayBuffer(); })
-        .then(function (data) { return audioCtx.decodeAudioData(data); })
-        .then(function (buf) { audioBuffer = buf; })
-        .catch(function () {});
-    }
+  // Always prepare this up front, even on a skipped-greeting load --
+  // reopenSplash() (Back button) can bring the splash, and its button,
+  // back regardless of skipGreeting, so the fast path needs to be ready
+  // for that case too, not just a fresh first-visit load.
+  audioCtx = AudioCtx ? new AudioCtx() : null;
+  if (audioCtx && chime) {
+    fetch(chime.currentSrc || chime.src)
+      .then(function (r) { return r.arrayBuffer(); })
+      .then(function (data) { return audioCtx.decodeAudioData(data); })
+      .then(function (buf) { audioBuffer = buf; })
+      .catch(function () {});
   }
 
   function unlockAudio() {
