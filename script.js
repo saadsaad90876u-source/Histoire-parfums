@@ -3482,7 +3482,7 @@ async function uploadProductImage(file, opts){
     : file;
 
   // Images raster classiques (jpg/png/webp statique/avif) : on génère un vrai jeu de tailles responsives.
-  if(supabaseClient && wantsResponsive){
+  if(supabaseClient && wantsResponsive && !isAvif){
     const set = await buildResponsiveVariants(sourceFile, true);
     if(set) return set;
     // en cas d'échec de la génération multi-tailles, on retombe sur l'ancien comportement (une seule taille)
@@ -3491,9 +3491,9 @@ async function uploadProductImage(file, opts){
   let blob = null;
   let avifRaw = false;
   if(isAvif){
-    try{ blob = await compressImageToBlob(sourceFile, 560, 0.8, true, 'image/webp'); }
-    catch(err){ blob = null; }
-    if(!blob || blob.size >= sourceFile.size){ blob = sourceFile; avifRaw = true; }
+    // Keep AVIF uploads as AVIF, no re-encoding to WebP regardless of size.
+    blob = sourceFile;
+    avifRaw = true;
   } else {
     blob = await compressImageToBlob(file, 560, 0.8, true, 'image/webp');
   }
@@ -3974,14 +3974,9 @@ function createBannerController(cfg){
       
       
       const sourceFile = file.type === 'image/avif' ? file : new File([file], file.name || 'banner.avif', { type: 'image/avif' });
-      let blob = null;
-      try{ blob = await compressImageToBlob(sourceFile, 1280, 0.8, true, 'image/webp'); }
-      catch(err){ blob = null; }
-      
-      
-      
-      const avifRaw = !blob || blob.size >= sourceFile.size;
-      if(avifRaw) blob = sourceFile;
+      // Keep AVIF uploads as AVIF, no re-encoding to WebP regardless of size.
+      const blob = sourceFile;
+      const avifRaw = true;
       const ext = avifRaw ? 'avif' : 'webp';
       const contentType = avifRaw ? 'image/avif' : 'image/webp';
       try{
