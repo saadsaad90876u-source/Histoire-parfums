@@ -589,7 +589,7 @@ to{opacity:1;transform:translateY(0)}
 .pp-qty-stepper{background:#FFFFFF;border:1.5px solid var(--line);border-radius:10px;padding:11px 16px;gap:18px;flex-shrink:0}
 .pp-qty-stepper .qty-btn{font-size:17px;width:14px;color:var(--ink)}
 .pp-qty-stepper .qty-num{font-size:16px;font-weight:600;min-width:14px;color:var(--ink)}
-.pp-cart-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#0E92A3;color:#F4EEE4;border:none;border-radius:14px;padding:12px 16px;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s ease}
+.pp-cart-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#0E92A3;color:#F4EEE4;border:none;border-radius:14px;padding:12px 16px;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s ease;-webkit-tap-highlight-color:transparent;outline:none}
 .pp-cart-btn:hover{background:#559D9A}
 .pp-cart-btn .icon{width:17px;height:17px}
 .pp-order-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#000000;color:#F4EEE4;border:none;border-radius:var(--radius);padding:13px 16px;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-bottom:26px;transition:background .25s ease}

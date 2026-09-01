@@ -1421,14 +1421,18 @@ const splashBannerTopCtrl = createBannerController({
   contentId: 'splash-banner-top-content',
   inputId: 'splash-banner-top-input',
   storageKey: 'aura-splash-banner-top',
-  priority: true
+  priority: true,
+  autoplay: true,
+  autoplayDelay: 6000
 });
 const splashBannerBottomCtrl = createBannerController({
   sectionId: 'splash-banner-bottom',
   contentId: 'splash-banner-bottom-content',
   inputId: 'splash-banner-bottom-input',
   storageKey: 'aura-splash-banner-bottom',
-  priority: true
+  priority: true,
+  autoplay: true,
+  autoplayDelay: 6000
 });
 loadPack4BadgeImage();
 trackingBannerCtrl.load();

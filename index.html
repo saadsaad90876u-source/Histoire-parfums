@@ -446,6 +446,7 @@ try {
   function reopenSplash() {
     if (splashOpen) return;
     fired = false;
+    unlocked = false;
     splashOpen = true;
     moveFooterToSplash();
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
@@ -499,7 +500,15 @@ try {
   btn.addEventListener('touchstart', function (e) {
     unlockAudio();
     e.preventDefault();
-    setTimeout(function () { handleEnter(); }, 150);
+  }, { passive: false });
+  // Navigation now waits for the finger to actually lift (touchend),
+  // exactly like a normal tap/button press -- this is what lets the
+  // CSS :active press effect (scale-down) show during the hold, the
+  // same way it does on "Composer mon pack". Audio still starts
+  // instantly on touchstart above, so there's no felt delay there.
+  btn.addEventListener('touchend', function (e) {
+    e.preventDefault();
+    handleEnter();
   }, { passive: false });
   // click covers mouse/keyboard/assistive-tech activation (desktop, or any
   // touch device where touchstart didn't fire for some reason). The
