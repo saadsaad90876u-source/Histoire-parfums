@@ -558,6 +558,7 @@ function productCard(pRaw, category, idx){
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
       <h3>${p.name}</h3>
+      <div class="pc-stars">★★★★★</div>
       <div class="desc">${p.desc}</div>
       <div class="pc-bottom">
         <div class="pc-price-wrap">
@@ -3409,7 +3410,7 @@ function compressImageToBlob(file, maxDim, quality, preserveTransparency, forceF
         if(outputType === 'image/jpeg'){
           
           
-          ctx.fillStyle = '#ffffff';
+          ctx.fillStyle = '#F7F4ED';
           ctx.fillRect(0, 0, w, h);
         }
         ctx.drawImage(img, 0, 0, w, h);
@@ -4140,7 +4141,7 @@ function renderTrackingTimeline(status, orderDate){
   };
   const container = document.getElementById('tracking-timeline');
   if(cancelled){
-    container.innerHTML = `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;border-color:#c0392b;color:#fff;">✕</div><div class="tt-content"><div class="tt-label" style="background:#c0392b;color:#fff;">${t('statusCancelled')}</div></div></div>`;
+    container.innerHTML = `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;border-color:#c0392b;color:#F7F4ED;">✕</div><div class="tt-content"><div class="tt-label" style="background:#c0392b;color:#F7F4ED;">${t('statusCancelled')}</div></div></div>`;
     return;
   }
   const placedDate = orderDate ? new Date(orderDate) : null;
@@ -4545,7 +4546,7 @@ function adFindProductImage(name){
 
 function adTimelineHtml(status){
   if(status === 'cancelled'){
-    return `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;color:#fff;">✕</div><div class="tt-content"><div class="tt-label">${t('statusCancelled')}</div></div></div>`;
+    return `<div class="tt-step active"><div class="tt-dot" style="background:#c0392b;color:#F7F4ED;">✕</div><div class="tt-content"><div class="tt-label">${t('statusCancelled')}</div></div></div>`;
   }
   const idx = ORDER_STATUSES.indexOf(status);
   const labels = {
