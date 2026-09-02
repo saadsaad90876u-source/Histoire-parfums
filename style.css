@@ -79,8 +79,8 @@ a{color:inherit;text-decoration:none}
 #announcement-bar{position:fixed;top:0;left:0;right:0;z-index:4000;height:32px;overflow:hidden;background:#F7F4ED;border-bottom:1px solid rgba(0,0,0,.12);display:flex;align-items:center;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .ab-track{display:flex;width:max-content;animation:ab-scroll 11s linear infinite}
 .ab-group{display:flex;align-items:center;flex-shrink:0}
-.ab-item{display:inline-flex;align-items:center;gap:8px;font-family:'Work Sans',sans-serif;font-style:normal;font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:#C7D3C0;padding:0 40px}
-.ab-truck-icon{width:15px;height:15px;flex-shrink:0;color:#C7D3C0}
+.ab-item{display:inline-flex;align-items:center;gap:8px;font-family:'Work Sans',sans-serif;font-style:normal;font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:#6E8169;padding:0 40px}
+.ab-truck-icon{width:15px;height:15px;flex-shrink:0;color:#6E8169}
 header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(16px) saturate(160%);background:#6E8169;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .nav-wrap{position:relative;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 24px;direction:ltr;overflow:hidden}
 .logo{font-family:'Poppins',sans-serif;font-size:19px;letter-spacing:.3em;font-weight:600;background:none;border:none;padding:0;color:var(--gold);cursor:pointer}
@@ -185,7 +185,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .qty-num{font-size:16px;min-width:12px;width:26px;text-align:center;border:none;background:none;color:var(--ink);font-family:inherit;padding:0;-moz-appearance:textfield}
 .qty-num::-webkit-outer-spin-button,.qty-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .qty-num:focus{outline:none;color:var(--emerald-deep);font-size:16px}
-.checkout-btn{width:100%;padding:18px;border-radius:14px;border:none;cursor:pointer;background:#000000;color:#FBF8F2;font-family:'Work Sans';font-size:15px;letter-spacing:.04em;text-transform:none;font-weight:700;transition:background .3s ease}
+.checkout-btn{width:100%;padding:18px;border-radius:0;border:none;cursor:pointer;background:#000000;color:#FBF8F2;font-family:'Work Sans';font-size:15px;letter-spacing:.04em;text-transform:none;font-weight:700;transition:background .3s ease}
 .checkout-btn:hover{background:#1C1512}
 #checkout-btn{background:#000000;color:#F4EEE4}
 #checkout-btn:hover{background:#1C1512}
@@ -248,7 +248,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .coupon-row{display:flex;gap:10px}
 .coupon-row .cf-input{flex:1}
 .payment-card{display:flex;align-items:center;gap:12px;background:#F7F4ED;border:1.5px solid rgba(166,64,76,.4);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-family:'Work Sans',sans-serif}
-.payment-icon{width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:10px;background:linear-gradient(155deg,var(--emerald-light) 0%,var(--emerald) 55%,var(--emerald-deep) 100%);border:none;color:#1D3332}
+.payment-icon{width:42px;height:42px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#6E8169;border:none;color:#F7F4ED}
 .payment-icon svg{width:22px;height:22px;flex-shrink:0}
 .payment-name{font-family:'Poppins',sans-serif;font-size:16px;color:#294948}
 .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
@@ -356,9 +356,9 @@ h1,h2,h3{font-family:'Poppins',sans-serif;font-weight:500;color:var(--ink)}
 .product-card:hover .pc-price-row .price{transform:scale(1.05)}
 .product-card:hover .pc-price-old{transform:scale(1.03)}
 .product-card .pc-actions{display:flex;flex-direction:column;gap:6px;margin-top:4px}
-.product-card .pc-action-btn{width:100%;border-radius:10px;padding:8px 12px;font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1);text-align:center;height:auto;display:flex;align-items:center;justify-content:center}
-.product-card .pc-action-cart{position:relative;overflow:hidden;background:#C7D3C0;border:1px solid #C7D3C0;color:#F4EEE4;padding:9px 14px;box-shadow:none}
-@media (hover:hover) and (pointer:fine){.product-card .pc-action-cart:hover{background:#7C9277;border-color:#C7D3C0;box-shadow:none}
+.product-card .pc-action-btn{width:100%;border-radius:0;padding:8px 12px;font-family:'Work Sans',sans-serif;font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .3s cubic-bezier(.2,.8,.2,1);text-align:center;height:auto;display:flex;align-items:center;justify-content:center}
+.product-card .pc-action-cart{position:relative;overflow:hidden;background:#6E8169;border:1px solid #6E8169;color:#F4EEE4;padding:9px 14px;box-shadow:none}
+@media (hover:hover) and (pointer:fine){.product-card .pc-action-cart:hover{background:#7C9277;border-color:#6E8169;box-shadow:none}
 }
 .checkout-modal{position:fixed;inset:0;margin:0;width:100%;max-width:100%;height:100%;max-height:100%;overflow-y:auto;background:#F7F4ED;border-radius:0;padding:calc(env(safe-area-inset-top,0px) + 100px) 24px 32px;z-index:3001;box-shadow:none;opacity:0;visibility:hidden;transition:opacity .4s cubic-bezier(.2,.8,.2,1),visibility .4s cubic-bezier(.2,.8,.2,1);border:none}
 .checkout-modal.open{opacity:1;visibility:visible}
@@ -429,7 +429,7 @@ to{opacity:1;transform:none}
 }
 #checkout-page .cf-input{border:1.5px solid rgba(200,205,212,.6);background:#F7F4ED}
 #checkout-page .cf-input:focus{border-color:var(--emerald-deep);box-shadow:0 0 0 3px rgba(77,137,134,.16)}
-#checkout-page .cf-field-icon{background:linear-gradient(155deg,var(--emerald-light) 0%,var(--emerald) 55%,var(--emerald-deep) 100%);border:none;color:#1D3332}
+#checkout-page .cf-field-icon{background:#6E8169;border:none;color:#F7F4ED}
 #checkout-page .trust-item{border-color:rgba(200,205,212,.6);background:#F7F4ED}
 #checkout-page .trust-item::first-letter{color:var(--emerald-deep)}
 .pp-back-float{position:absolute;top:14px;left:14px;z-index:4;width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;background:rgba(14,10,8,.34);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#F4EEE4;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;transition:background .25s ease,transform .2s ease}
@@ -584,8 +584,8 @@ to{opacity:1;transform:translateY(0)}
 .pp-qty-stepper{background:#F7F4ED;border:1.5px solid var(--line);border-radius:10px;padding:11px 16px;gap:18px;flex-shrink:0}
 .pp-qty-stepper .qty-btn{font-size:17px;width:14px;color:var(--ink)}
 .pp-qty-stepper .qty-num{font-size:16px;font-weight:600;min-width:14px;color:var(--ink)}
-.pp-cart-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#6E8169;color:#F4EEE4;border:none;border-radius:14px;padding:12px 16px;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s ease;-webkit-tap-highlight-color:transparent;outline:none}
-.pp-cart-btn:hover{background:#559D9A}
+.pp-cart-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#6E8169;color:#F4EEE4;border:none;border-radius:0;padding:12px 16px;font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:background .25s ease;-webkit-tap-highlight-color:transparent;outline:none}
+.pp-cart-btn:hover{background:#7C9277}
 .pp-cart-btn .icon{width:17px;height:17px}
 .pp-order-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#C8A96B;color:#2E1608;border:none;border-radius:var(--radius);padding:13px 16px;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-bottom:26px;transition:filter .25s ease}
 .pp-order-btn:hover{filter:brightness(0.94)}
