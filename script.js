@@ -2805,21 +2805,31 @@ function findProductBySlug(slug){
 function attachProductPageEvents(){
   const track = document.getElementById('pp-track');
   if(track){
-    let startX = 0, deltaX = 0, dragging = false;
-    const threshold = 40;
-    track.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX; deltaX = 0; dragging = true;
+    let scrollTimer = null;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const slides = track.querySelectorAll('.pp-slide');
+        if(!slides.length) return;
+        let closest = 0, minDist = Infinity;
+        slides.forEach((s, idx) => {
+          const dist = Math.abs(s.offsetLeft - track.scrollLeft);
+          if(dist < minDist){ minDist = dist; closest = idx; }
+        });
+        ppActiveIndex = closest;
+        document.querySelectorAll('.pp-dot').forEach((d, idx) => d.classList.toggle('active', idx === ppActiveIndex));
+        document.querySelectorAll('.pp-thumb').forEach((th, idx) => th.classList.toggle('active', idx === ppActiveIndex));
+        const bar = document.getElementById('pp-scroll-progress-bar');
+        if(bar && slides.length > 1){
+          const barWidthPct = 100 / slides.length;
+          const maxLeft = 100 - barWidthPct;
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          const scrollPct = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+          bar.style.left = (scrollPct * maxLeft) + '%';
+        }
+        syncPpSlideVideos(slides);
+      }, 80);
     }, { passive: true });
-    track.addEventListener('touchmove', (e) => {
-      if(!dragging) return;
-      deltaX = e.touches[0].clientX - startX;
-    }, { passive: true });
-    track.addEventListener('touchend', () => {
-      if(!dragging) return;
-      dragging = false;
-      if(deltaX > threshold) goToPpSlide(ppActiveIndex - 1);
-      else if(deltaX < -threshold) goToPpSlide(ppActiveIndex + 1);
-    });
   }
   document.querySelectorAll('.pp-dot').forEach(dot => {
     dot.addEventListener('click', () => goToPpSlide(parseInt(dot.dataset.i, 10)));
@@ -2974,9 +2984,19 @@ function goToPpSlide(i){
   const slides = track.querySelectorAll('.pp-slide');
   if(!slides.length) return;
   ppActiveIndex = (i + slides.length) % slides.length;
-  track.style.transform = `translateX(${-ppActiveIndex * 100}%)`;
+  const target = slides[ppActiveIndex];
+  track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
   document.querySelectorAll('.pp-dot').forEach((d, idx) => d.classList.toggle('active', idx === ppActiveIndex));
   document.querySelectorAll('.pp-thumb').forEach((th, idx) => th.classList.toggle('active', idx === ppActiveIndex));
+  const bar = document.getElementById('pp-scroll-progress-bar');
+  if(bar && slides.length > 1){
+    const barWidthPct = 100 / slides.length;
+    const maxLeft = 100 - barWidthPct;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const targetScroll = target.offsetLeft;
+    const scrollPct = maxScroll > 0 ? targetScroll / maxScroll : 0;
+    bar.style.left = (Math.min(1, Math.max(0, scrollPct)) * maxLeft) + '%';
+  }
   syncPpSlideVideos(slides);
 }
 
@@ -3027,6 +3047,7 @@ function productPageTemplate(pRaw, category, idx){
       ${images.length > 1 ? `<div class="pp-dots">${images.map((_, i) => `<button type="button" class="pp-dot${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>` : ''}
       ${images.length > 1 ? `<button type="button" class="pp-arrow prev" id="pp-prev" aria-label="Previous">‹</button><button type="button" class="pp-arrow next" id="pp-next" aria-label="Next">›</button>` : ''}
     </div>
+    ${images.length > 1 ? `<div class="pp-scroll-progress" id="pp-scroll-progress"><div class="pp-scroll-progress-bar" id="pp-scroll-progress-bar" style="width:${(100/images.length).toFixed(2)}%;left:0%;"></div><span class="pp-scroll-arrow">‹</span></div>` : ''}
     ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => isVideoUrl(url)
       ? `<button type="button" class="pp-thumb pp-thumb-video${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir vidéo ${i + 1}"><video class="seq-lazy" data-src="${url}" muted playsinline preload="none"></video><span class="pp-thumb-play-badge">▶</span></button>`
       : `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
