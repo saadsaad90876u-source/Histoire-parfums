@@ -87,7 +87,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .logo-center{position:absolute;left:50%;top:50%;transform:translate(-50%,calc(-50% + 6.6px))}
 #menu-toggle-btn svg{width:20px;height:20px}
 .nav-left{display:flex;align-items:center;flex-shrink:0}
-.support-wrap{position:relative;margin-left:0px;flex-shrink:0}
+.support-wrap{position:relative;margin-left:2px;flex-shrink:0}
 #support-toggle-btn{background:none;border:none;cursor:pointer;padding:0;width:23px;height:23px;display:flex;align-items:center;justify-content:center;color:#F7F4ED}
 #support-toggle-btn svg{width:19px;height:19px}
 .support-popover{position:fixed;top:0;left:0;background:#F7F4ED;border-radius:14px;padding:8px;min-width:172px;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease,visibility .2s;z-index:1200}
