@@ -105,7 +105,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 #cart-btn:hover{background:rgba(255,255,255,.1);color:#F7F4ED}
 #search-btn{background:none;width:38px;height:38px;font-size:20px;color:#F7F4ED}
 #search-btn:hover{background:rgba(255,255,255,.1);color:#F7F4ED}
-.cart-badge{position:absolute;top:6px;right:6px;background:#C8A96B;color:#2E1608;font-size:9.5px;font-weight:700;width:17px;height:17px;border-radius:50%;border:1.5px solid rgba(244,238,228,.9);box-shadow:none;display:flex;align-items:center;justify-content:center}
+.cart-badge{position:absolute;top:-3px;right:-3px;background:#C8A96B;color:#2E1608;font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(244,238,228,.9);box-shadow:none;display:flex;align-items:center;justify-content:center}
 #shop-view{padding:96px 0 0}
 #bottom-banner{padding:16px 0 1mm}
 #bottom-banner-2{padding:1mm 0 60px}
