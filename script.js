@@ -3093,7 +3093,7 @@ function productPageTemplate(pRaw, category, idx){
           ${t('orderNowBtn')}
         </button>
 
-        <div class="pp-trust-grid">
+        <div class="pp-trust-grid pp-trust-grid-standalone">
           <div class="pp-trust-item reveal d1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
             <div><strong>${t('trustDeliveryTitle')}</strong><span>${t('trustDeliverySub')}</span></div>

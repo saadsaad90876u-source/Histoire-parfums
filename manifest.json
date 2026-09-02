@@ -4,8 +4,8 @@
   "description": "SYMPHONIE — boutique de parfums de luxe pour homme et femme.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#C7D3C0",
-  "theme_color": "#C7D3C0",
+  "background_color": "#6E8169",
+  "theme_color": "#6E8169",
   "icons": [
     {
       "src": "/icon-192.png",
