@@ -2143,6 +2143,8 @@ document.getElementById('review-star-picker').addEventListener('click', (e) => {
   document.querySelectorAll('.review-star-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.star) <= reviewSelectedRating);
   });
+  const hint = document.getElementById('review-stars-hint');
+  if(hint) hint.textContent = reviewSelectedRating + '/5';
 });
 
 async function convertHeicIfNeeded(file){
@@ -2167,7 +2169,7 @@ document.getElementById('review-image-placeholder').addEventListener('click', (e
 document.getElementById('review-image-input').addEventListener('change', async (e) => {
   let file = e.target.files && e.target.files[0];
   if(!file) return;
-  const placeholderText = document.querySelector('#review-image-placeholder span');
+  const placeholderText = document.querySelector('#review-image-placeholder .review-image-text');
   const originalText = placeholderText ? placeholderText.textContent : '';
   if(placeholderText) placeholderText.textContent = 'Traitement de la photo...';
   file = await convertHeicIfNeeded(file);
@@ -2203,6 +2205,8 @@ function resetReviewForm(){
   reviewSelectedImageFile = null;
   document.getElementById('review-rating').value = 0;
   document.querySelectorAll('.review-star-btn').forEach(b => b.classList.remove('active'));
+  const hint = document.getElementById('review-stars-hint');
+  if(hint) hint.textContent = 'Sélectionnez une note';
   document.getElementById('review-image-preview').style.display = 'none';
   document.getElementById('review-image-placeholder').style.display = 'flex';
   document.getElementById('review-image-remove').style.display = 'none';
@@ -3071,7 +3075,7 @@ function productPageTemplate(pRaw, category, idx){
           <span class="pp-price-old">75 DH</span>
           <span class="pp-price">${p.price} DH</span>
         </div>
-        <p class="pp-desc reveal">${p.desc}</p>
+
         <div class="pp-qty-cart-row reveal">
           <div class="qty-stepper pp-qty-stepper">
             <button type="button" class="qty-btn" id="pp-qty-dec">−</button>
@@ -3109,7 +3113,7 @@ function productPageTemplate(pRaw, category, idx){
 
         ${fragrancePyramidHtml(p)}
 
-        <details class="pp-accordion reveal" open>
+        <details class="pp-accordion reveal">
           <summary>${t('descriptionAccordionTitle')}</summary>
           <p>${p.desc}</p>
         </details>
@@ -4143,7 +4147,7 @@ function renderTrackingTimeline(status, orderDate){
   const placedDateStr = (placedDate && !isNaN(placedDate)) ? placedDate.toLocaleDateString('fr-FR', {weekday:'long', day:'2-digit', month:'2-digit'}) : '';
   const stepsHtml = ORDER_STATUSES.map((s, i) => {
     const state = i < idx ? 'done' : (i === idx ? 'active' : '');
-    const icon = i <= idx ? '✓' : '';
+    const icon = i <= idx ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>' : '';
     const dateHtml = (i === 0 && placedDateStr) ? `<div class="tt-date">${placedDateStr}</div>` : '';
     return `
     <div class="tt-step ${state}" data-status="${s}">

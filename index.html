@@ -130,7 +130,7 @@ try {
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
 <link rel="preload" as="fetch" href="/welcome-chime.mp3" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
 <!-- script.js is the core of the entire site (product data, cart, every
      interaction) but its <script defer> tag sits near the very end of
      this HTML file. Browsers do speculatively scan ahead for resources
@@ -140,9 +140,9 @@ try {
      non-render-blocking either way; this only affects how early the
      download itself begins. -->
 <link rel="preload" as="script" href="/script.js?v=13">
-<link rel="stylesheet" href="/style.css?v=33" id="main-stylesheet" onerror="window.__cssFailed=true;">
+<link rel="stylesheet" href="/style.css?v=38" id="main-stylesheet" onerror="window.__cssFailed=true;">
 <noscript>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </noscript>
 <script>
 // Self-healing check: if style.css failed to load, or loaded but somehow
@@ -787,14 +787,20 @@ try {
 <div class="modal-overlay" id="review-overlay"></div>
 <div class="checkout-modal review-modal" id="review-modal" style="text-align:left;">
   <button class="wd-close" id="review-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:6px;">Partagez votre avis</h3>
-  <p class="checkout-sub" style="margin-bottom:18px;">Votre avis sera publié après validation par notre équipe.</p>
+  <h3 class="review-modal-title">Partagez votre avis</h3>
+  <p class="review-modal-subtitle">Votre avis compte beaucoup pour nous
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 21s-7.2-4.4-9.6-8.8C.6 8.4 2.8 5 6.4 5c2 0 3.6 1.3 5.6 3.8C14 6.3 15.6 5 17.6 5c3.6 0 5.8 3.4 4 7.2C19.2 16.6 12 21 12 21z"/></svg>
+  </p>
   <form id="review-form">
-    <label class="cf-label"><span>Nom complet</span>
-      <input type="text" id="review-name" class="cf-input" required maxlength="60" placeholder="Votre nom">
-    </label>
-    <div class="review-stars-field">
-      <span class="cf-label-text">Votre note</span>
+    <div class="review-card">
+      <div class="review-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.3-4 4-6 7.5-6s6.2 2 7.5 6"/></svg></div>
+      <input type="text" id="review-name" class="review-card-input" required maxlength="60" placeholder="Votre nom">
+    </div>
+    <div class="review-card review-card-stars">
+      <div class="review-card-stars-head">
+        <span class="review-card-label">Votre note</span>
+        <span class="review-stars-hint" id="review-stars-hint">Sélectionnez une note</span>
+      </div>
       <div class="review-star-picker" id="review-star-picker" role="radiogroup" aria-label="Note">
         <button type="button" class="review-star-btn" data-star="1" aria-label="1 étoile">★</button>
         <button type="button" class="review-star-btn" data-star="2" aria-label="2 étoiles">★</button>
@@ -804,23 +810,31 @@ try {
       </div>
       <input type="hidden" id="review-rating" value="0">
     </div>
-    <label class="cf-label"><span>Votre commentaire</span>
-      <textarea id="review-comment" class="cf-input review-textarea" required maxlength="600" rows="4" placeholder="Racontez votre expérience avec ce parfum..."></textarea>
-    </label>
-    <label class="cf-label">
-      <span>Photo <em class="review-optional-tag">(optionnel)</em></span>
+    <div class="review-card review-card-textarea">
+      <div class="review-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c0 4-3.8 7-8.5 7-1 0-1.9-.1-2.8-.4L4 20l1.3-3.9C4.1 14.9 3.5 13.5 3.5 12c0-4 3.8-7 8.5-7s9 3 9 7z"/></svg></div>
+      <textarea id="review-comment" class="review-card-input review-textarea" required maxlength="600" rows="4" placeholder="Racontez votre expérience avec ce parfum..."></textarea>
+    </div>
+    <div class="review-card review-card-photo">
+      <div class="review-card-photo-head">Ajouter une photo <em class="review-optional-tag">(optionnel)</em></div>
       <div class="review-image-upload" id="review-image-upload">
         <input type="file" id="review-image-input" accept="image/*" style="display:none;">
         <div class="review-image-placeholder" id="review-image-placeholder">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
-          <span>Ajouter une photo</span>
+          <span class="review-image-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg></span>
+          <span class="review-image-text">Cliquez pour ajouter ou glissez-déposez</span>
         </div>
         <img id="review-image-preview" style="display:none;">
         <button type="button" id="review-image-remove" style="display:none;" aria-label="Supprimer la photo">✕</button>
       </div>
-    </label>
+    </div>
+    <p class="review-security-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+      <span>Vos données sont sécurisées et ne seront pas publiées sans validation.</span>
+    </p>
     <p id="review-form-error" style="display:none; color:#c0392b; font-size:13px; margin:-8px 0 14px;">Veuillez renseigner votre nom, une note et un commentaire.</p>
-    <button type="submit" class="checkout-btn" id="review-submit-btn">Envoyer mon avis</button>
+    <button type="submit" class="review-submit-btn" id="review-submit-btn">
+      <span>Envoyer mon avis</span>
+      <span class="review-submit-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </button>
   </form>
   <div id="review-thanks" style="display:none; text-align:center; padding:20px 0;">
     <div class="review-thanks-icon">✓</div>
@@ -924,7 +938,7 @@ try {
     </div>
 
     <div id="checkout-success-view" style="display:none; text-align:center; padding:16px 0 4px;">
-      <div class="success-icon">✓</div>
+      <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="32" height="32"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h3 data-i18n="orderSuccessTitle" style="margin-bottom:8px;">Your order has been placed successfully!</h3>
       <p style="color:var(--text-soft); font-size:14px; margin-bottom:24px;" data-i18n="orderSuccessMsg">Thank you for choosing SYMPHONIE. Your order has been received and is now being processed.</p>
       <div class="confirm-details">
@@ -1713,7 +1727,7 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
-<script src="/script.js?v=16" defer></script>
+<script src="/script.js?v=20" defer></script>
 <script src="/motion.js?v=13" defer></script>
 <script src="/pack-circles.js?v=2" defer></script>
 </body>
