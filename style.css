@@ -105,7 +105,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 #cart-btn:hover{background:rgba(255,255,255,.1);color:#6E8169}
 #search-btn{background:none;width:42px;height:42px;font-size:22px;color:#6E8169}
 #search-btn:hover{background:rgba(255,255,255,.1);color:#6E8169}
-.cart-badge{position:absolute;top:-3px;right:-3px;background:#C8A96B;color:#2E1608;font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(244,238,228,.9);box-shadow:none;display:flex;align-items:center;justify-content:center}
+.cart-badge{position:absolute;top:1px;right:1px;background:#C8A96B;color:#2E1608;font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(244,238,228,.9);box-shadow:none;display:flex;align-items:center;justify-content:center}
 #shop-view{padding:96px 0 0}
 #bottom-banner{padding:16px 0 1mm}
 #bottom-banner-2{padding:1mm 0 60px}
@@ -499,8 +499,8 @@ to{opacity:1;transform:none}
 .ab-track{animation-duration:8s}
 .nav-icons{gap:0px}
 .nav-icons button{width:33px;height:33px;font-size:14px}
-#search-btn{width:35px;height:35px;font-size:19px}
-#cart-btn{width:35px;height:35px;font-size:18px}
+#search-btn{width:39px;height:39px;font-size:21px}
+#cart-btn{width:39px;height:39px;font-size:21px}
 #shop-view{padding:86px 0 0}
 .hero-banner-frame{aspect-ratio:1/1;border-radius:0}
 .product-grid{grid-template-columns:repeat(2,1fr);gap:10px}
