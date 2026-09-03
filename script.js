@@ -1795,6 +1795,7 @@ async function fetchApprovedReviews(){
       .from('reviews')
       .select('*')
       .eq('approved', true)
+      .is('product_name', null)
       .order('created_at', { ascending: false });
     if(error) throw error;
     return data || [];
@@ -1948,11 +1949,16 @@ function ppReviewCardHtml(r){
     </div>`;
 }
 
+let currentPPAllReviews = [];
+let currentPPReviewsProductName = null;
+
 async function renderProductReviews(productName){
   const listEl = document.getElementById('pp-reviews-list');
   const summaryEl = document.getElementById('pp-reviews-summary');
+  const moreBtn = document.getElementById('pp-reviews-more-btn');
   if(!listEl) return;
   listEl.innerHTML = `<div class="testimonial-skel"></div>`;
+  if(moreBtn) moreBtn.style.display = 'none';
   const reviews = await fetchApprovedReviewsForProduct(productName);
   
   
@@ -1961,6 +1967,9 @@ async function renderProductReviews(productName){
   const list = currentProductPage.category === 'men' ? men : women;
   const activeName = list[currentProductPage.idx] ? list[currentProductPage.idx].name : null;
   if(activeName !== productName) return;
+
+  currentPPAllReviews = reviews;
+  currentPPReviewsProductName = productName;
 
   if(!reviews.length){
     listEl.innerHTML = `<p class="ad-empty-note">Soyez le premier à donner votre avis sur ce parfum.</p>`;
@@ -1975,7 +1984,46 @@ async function renderProductReviews(productName){
     if(starsEl) starsEl.innerHTML = reviewStarsHtml(Math.round(avg));
     if(textEl) textEl.textContent = `${avg.toFixed(1)} sur 5 (${reviews.length} avis)`;
   }
-  listEl.innerHTML = reviews.map(ppReviewCardHtml).join('');
+  const preview = reviews.slice(0, 3);
+  listEl.innerHTML = preview.map(ppReviewCardHtml).join('');
+  if(moreBtn){
+    if(reviews.length > 3){
+      moreBtn.style.display = 'flex';
+      moreBtn.textContent = `Voir les ${reviews.length} avis`;
+      moreBtn.onclick = () => openAllReviewsPage(productName);
+    }else{
+      moreBtn.style.display = 'none';
+    }
+  }
+}
+
+function fbReviewRowHtml(r){
+  return `
+    <div class="fb-comment-row">
+      <div class="fb-comment-avatar">${reviewInitial(r.customer_name)}</div>
+      <div class="fb-comment-body">
+        <div class="fb-comment-bubble">
+          <div class="fb-comment-name">${(r.customer_name || '').replace(/</g, '&lt;')}</div>
+          <p class="fb-comment-text">${(r.comment || '').replace(/</g, '&lt;')}</p>
+        </div>
+        <div class="fb-comment-meta">
+          <span class="fb-comment-stars">${reviewStarsHtml(r.rating)}</span>
+          <span class="fb-comment-date">${reviewFormatDate(r.created_at)}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function openAllReviewsPage(productName){
+  const titleEl = document.getElementById('all-reviews-title');
+  const listEl = document.getElementById('all-reviews-list');
+  if(titleEl) titleEl.textContent = productName || '';
+  if(listEl) listEl.innerHTML = currentPPAllReviews.map(fbReviewRowHtml).join('');
+  document.getElementById('all-reviews-modal').classList.add('open');
+}
+
+function closeAllReviewsPage(){
+  document.getElementById('all-reviews-modal').classList.remove('open');
 }
 
 let ppReviewSelectedRating = 0;
@@ -3032,11 +3080,11 @@ function productPageTemplate(pRaw, category, idx){
   const images = productImages(p);
   const coverIdx = (typeof pRaw.cover === 'number') ? pRaw.cover : 0;
 
-  const backBtnHtml = `<button type="button" class="pp-back-float" id="pp-back" aria-label="${t('backToShopBtn')}">←</button>`;
+  const backBtnHtml = `<div class="pp-back-row"><button type="button" class="pp-back-float" id="pp-back" aria-label="${t('backToShopBtn')}">←</button></div>`;
 
   const gallery = images.length ? `
+    ${backBtnHtml}
     <div class="pp-gallery">
-      ${backBtnHtml}
       <div class="pp-track" id="pp-track">
         ${images.map((url, i) => {
           if(isVideoUrl(url)) return `<div class="pp-slide pp-slide-video"><video class="seq-lazy" data-src="${url}" loop playsinline webkit-playsinline preload="none" aria-label="${p.name}"></video></div>`;
@@ -3051,8 +3099,8 @@ function productPageTemplate(pRaw, category, idx){
     ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => isVideoUrl(url)
       ? `<button type="button" class="pp-thumb pp-thumb-video${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir vidéo ${i + 1}"><video class="seq-lazy" data-src="${url}" muted playsinline preload="none"></video><span class="pp-thumb-play-badge">▶</span></button>`
       : `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
+    ${backBtnHtml}
     <div class="pp-gallery pp-gallery-placeholder">
-      ${backBtnHtml}
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
         <div class="cap"></div><div class="neck"></div>
         <div class="body" style="background:${bottleColors[p.tone]}"><div class="label">${p.label}</div></div>
@@ -3151,6 +3199,7 @@ function productPageTemplate(pRaw, category, idx){
         <div class="pp-reviews-list" id="pp-reviews-list">
           <div class="testimonial-skel"></div>
         </div>
+        <button type="button" class="pp-reviews-more-btn" id="pp-reviews-more-btn" style="display:none;"></button>
 
         <form class="pp-review-form" id="pp-review-form">
           <p class="pp-review-form-label">Donnez votre avis sur ce parfum</p>
@@ -4485,6 +4534,7 @@ function closeTrackingModal(fromPopstate){
   }
 }
 document.getElementById('tracking-modal-close').addEventListener('click', () => closeTrackingModal());
+document.getElementById('all-reviews-close').addEventListener('click', () => closeAllReviewsPage());
 document.getElementById('tracking-overlay').addEventListener('click', closeTrackingModal);
 
 
