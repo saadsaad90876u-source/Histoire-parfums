@@ -2879,6 +2879,60 @@ function attachProductPageEvents(){
       }, 80);
     }, { passive: true });
   }
+  const scrollProgress = document.getElementById('pp-scroll-progress');
+  const scrollHandle = document.getElementById('pp-scroll-progress-bar');
+  if(scrollProgress && scrollHandle && track){
+    let dragging = false;
+    const slidesCount = track.querySelectorAll('.pp-slide').length;
+    const barWidthPct = 100 / slidesCount;
+    const maxLeft = 100 - barWidthPct;
+
+    const updateFromClientX = (clientX) => {
+      const rect = scrollProgress.getBoundingClientRect();
+      if(rect.width <= 0) return;
+      const barWidthPx = rect.width * (barWidthPct / 100);
+      let x = clientX - rect.left - (barWidthPx / 2);
+      const maxLeftPx = rect.width - barWidthPx;
+      x = Math.min(maxLeftPx, Math.max(0, x));
+      const pct = maxLeftPx > 0 ? x / maxLeftPx : 0;
+      scrollHandle.style.left = (pct * maxLeft) + '%';
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      track.scrollLeft = pct * maxScroll;
+    };
+
+    const snapToClosest = () => {
+      const slides = track.querySelectorAll('.pp-slide');
+      let closest = 0, minDist = Infinity;
+      slides.forEach((s, idx) => {
+        const dist = Math.abs(s.offsetLeft - track.scrollLeft);
+        if(dist < minDist){ minDist = dist; closest = idx; }
+      });
+      goToPpSlide(closest);
+    };
+
+    const onPointerMove = (e) => {
+      if(!dragging) return;
+      e.preventDefault();
+      updateFromClientX(e.clientX);
+    };
+    const onPointerUp = () => {
+      if(!dragging) return;
+      dragging = false;
+      scrollProgress.classList.remove('dragging');
+      snapToClosest();
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+    const startDrag = (e) => {
+      if(slidesCount <= 1) return;
+      dragging = true;
+      scrollProgress.classList.add('dragging');
+      updateFromClientX(e.clientX);
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+      window.addEventListener('pointerup', onPointerUp);
+    };
+    scrollProgress.addEventListener('pointerdown', startDrag);
+  }
   document.querySelectorAll('.pp-dot').forEach(dot => {
     dot.addEventListener('click', () => goToPpSlide(parseInt(dot.dataset.i, 10)));
   });
