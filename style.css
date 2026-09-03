@@ -440,7 +440,6 @@ to{opacity:1;transform:none}
 .pp-gallery{position:relative;width:100%;aspect-ratio:1/1;border-radius:0;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,rgba(138,154,70,.12),transparent 60%);border:1px solid rgba(200,205,212,.6)}
 @media(max-width:860px){.pp-layout{grid-template-columns:1fr;gap:28px}
 .pp-media{position:relative;top:0}
-.pp-gallery{margin-left:-44px;margin-right:-44px;width:calc(100% + 88px);max-width:none;border-radius:0;border-left:none;border-right:none}
 }
 .pp-gallery-placeholder{display:flex;align-items:center;justify-content:center}
 .pp-thumbs{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
@@ -483,7 +482,7 @@ to{opacity:1;transform:none}
 .pp-title{font-family:'Poppins',sans-serif;font-weight:500;font-size:34px;margin-bottom:8px;line-height:1.12;color:var(--ink)}
 .pp-rating-badge{display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .pp-rating-stars{display:flex;gap:1px;font-size:15px;letter-spacing:1px}
-.pp-rating-stars .review-star.filled{color:#F0E0B8}
+.pp-rating-stars .review-star.filled{color:#C8A96B}
 .pp-rating-text{font-family:'Work Sans',sans-serif;font-size:12.5px;color:var(--text-soft)}
 .pp-desc{font-size:15px;color:var(--text-soft);line-height:1.75;margin-bottom:18px}
 .pp-notes{border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:22px}
@@ -517,7 +516,6 @@ to{opacity:1;transform:none}
 .product-card .pc-actions{gap:4px;margin-top:4px}
 .product-card .pc-action-btn{padding:7px 12px;font-size:11px}
 #product-page{padding:88px 12px 50px}
-.pp-gallery{margin-left:-36px;margin-right:-36px;width:calc(100% + 72px)}
 .pp-title{font-size:25px}
 }
 .menu-drawer-left{left:0;right:auto;transform:translateX(-100%)}
