@@ -85,11 +85,11 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .nav-wrap{position:relative;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 10px;direction:ltr;overflow:hidden}
 .logo{font-family:'Poppins',sans-serif;font-size:19px;letter-spacing:.3em;font-weight:600;background:none;border:none;padding:0;color:var(--gold);cursor:pointer}
 .logo-center{position:absolute;left:50%;top:50%;transform:translate(-50%,calc(-50% + 3px))}
-#menu-toggle-btn svg{width:20px;height:20px}
+#menu-toggle-btn svg{width:22px;height:22px}
 .nav-left{display:flex;align-items:center;flex-shrink:0}
 .support-wrap{position:relative;margin-left:4px;flex-shrink:0}
-#support-toggle-btn{background:none;border:none;cursor:pointer;padding:0;width:23px;height:23px;display:flex;align-items:center;justify-content:center;color:#6E8169}
-#support-toggle-btn svg{width:19px;height:19px}
+#support-toggle-btn{background:none;border:none;cursor:pointer;padding:0;width:25px;height:25px;display:flex;align-items:center;justify-content:center;color:#6E8169}
+#support-toggle-btn svg{width:21px;height:21px}
 .support-popover{position:fixed;top:0;left:0;background:#F7F4ED;border-radius:14px;padding:8px;min-width:172px;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease,visibility .2s;z-index:1200}
 .support-popover.open{opacity:1;visibility:visible;transform:translateY(0)}
 .support-popover-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;color:var(--ink);font-family:'Work Sans',sans-serif;font-weight:600;font-size:13.5px;text-decoration:none;transition:background .2s ease}
@@ -98,12 +98,12 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .support-popover-wa span{color:var(--ink)}
 .logo span{color:var(--gold)}
 .nav-icons{display:flex;align-items:center;gap:0px}
-.nav-icons button{background:rgba(255,255,255,.08);border:none;color:#6E8169;cursor:pointer;position:relative;font-size:16px;line-height:0;padding:0;transition:background .3s ease,color .3s ease;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.nav-icons button{background:rgba(255,255,255,.08);border:none;color:#6E8169;cursor:pointer;position:relative;font-size:18px;line-height:0;padding:0;transition:background .3s ease,color .3s ease;width:37px;height:37px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .nav-icons button:hover{background:rgba(255,255,255,.18);color:#6E8169}
-#cart-btn{background:none;color:#6E8169;border:none;width:38px;height:38px;font-size:19px}
+#cart-btn{background:none;color:#6E8169;border:none;width:42px;height:42px;font-size:21px}
 #cart-btn .icon{stroke-width:2}
 #cart-btn:hover{background:rgba(255,255,255,.1);color:#6E8169}
-#search-btn{background:none;width:38px;height:38px;font-size:20px;color:#6E8169}
+#search-btn{background:none;width:42px;height:42px;font-size:22px;color:#6E8169}
 #search-btn:hover{background:rgba(255,255,255,.1);color:#6E8169}
 .cart-badge{position:absolute;top:-3px;right:-3px;background:#C8A96B;color:#2E1608;font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(244,238,228,.9);box-shadow:none;display:flex;align-items:center;justify-content:center}
 #shop-view{padding:96px 0 0}
@@ -498,9 +498,9 @@ to{opacity:1;transform:none}
 @media(max-width:560px){.ab-item{font-size:11px;letter-spacing:.08em;padding:0 24px}
 .ab-track{animation-duration:8s}
 .nav-icons{gap:0px}
-.nav-icons button{width:30px;height:30px;font-size:13px}
-#search-btn{width:32px;height:32px;font-size:17px}
-#cart-btn{width:32px;height:32px;font-size:16px}
+.nav-icons button{width:33px;height:33px;font-size:14px}
+#search-btn{width:35px;height:35px;font-size:19px}
+#cart-btn{width:35px;height:35px;font-size:18px}
 #shop-view{padding:86px 0 0}
 .hero-banner-frame{aspect-ratio:1/1;border-radius:0}
 .product-grid{grid-template-columns:repeat(2,1fr);gap:10px}
