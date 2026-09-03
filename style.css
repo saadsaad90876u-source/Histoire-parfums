@@ -407,7 +407,7 @@ footer{background:#6E8169;color:#F7F4ED;padding:60px 0 calc(26px + env(safe-area
 #toast,.toast{border:1px solid var(--lux-border-gold)}
 #exit-admin-btn,#customers-btn{border:1px solid var(--lux-border-gold)}
 .footer-top{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:24px;padding-bottom:34px;text-align:center}
-.logo-img{height:44px;width:auto;aspect-ratio:838/230;display:block;margin:0 auto}
+.logo-img{height:56px;width:auto;aspect-ratio:838/230;display:block;margin:0 auto}
 .footer-logo-img{height:29px;width:auto;aspect-ratio:838/230;display:block;margin:0 auto}
 @media (prefers-reduced-motion:reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important}
 .ab-track{animation:none}
