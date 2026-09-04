@@ -667,7 +667,7 @@ to{opacity:1;transform:translateY(0)}
 .cf-field-icon svg{width:19px;height:19px}
 .cf-input-icon{padding-left:62px;min-height:56px}
 textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
-.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:none;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:none;box-shadow:none}
+.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:1px solid #E4DAC8;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:none;box-shadow:none}
 .pack4-banner.reveal:not(.active){transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 @property --pack4-angle{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes pack4-border-spin{to{--pack4-angle:360deg}
@@ -677,7 +677,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-banner::before{content:none}
 @media (hover:hover) and (pointer:fine){.pack4-banner:hover{transform:translateY(-2px)}
 }
-.pack4-banner-image{position:relative;flex:1 1 44%;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pack4-banner-image{position:relative;flex:1 1 44%;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden;filter:drop-shadow(0 10px 18px rgba(20,14,4,.12))}
 .pack4-banner-image::after{content:"";position:absolute;inset:0;background-image:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);background-repeat:no-repeat;background-size:250% 100%;background-position:-100% 0;-webkit-mask-image:var(--pack4-shine-mask,none);-webkit-mask-source-type:alpha;-webkit-mask-size:contain;-webkit-mask-position:center;-webkit-mask-repeat:no-repeat;mask-image:var(--pack4-shine-mask,none);mask-mode:alpha;mask-size:contain;mask-position:center;mask-repeat:no-repeat;transform:scale(1.12);pointer-events:none;z-index:2;will-change:background-position}
 .pack4-banner-image.pack4-shine-active::after{animation:pack4ImageShine 1.4s ease-in-out 1}
 @keyframes pack4ImageShine{0%{background-position:-100% 0}
@@ -694,13 +694,13 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .founder-photo-placeholder{display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--emerald) 8%,transparent);border:1.5px solid rgba(138,154,70,.4);color:var(--emerald)}
 .founder-photo-edit{display:none;position:absolute;bottom:2px;right:2px;width:32px;height:32px;border-radius:50%;border:2px solid #F4EEE4;background:var(--emerald);color:#170F0A;align-items:center;justify-content:center;cursor:pointer;padding:0;box-shadow:0 4px 10px rgba(0,0,0,.2)}
 .pack4-banner-text{flex:1 1 56%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
-.pack4-banner-heading{display:flex;flex-direction:column;align-items:center;line-height:1.05;margin-bottom:15px}
+.pack4-banner-heading{display:flex;flex-direction:column;align-items:center;line-height:1.05;margin-bottom:12px}
 .pack4-banner-heading-top{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2vw - 2.4px),10px);font-family:'Work Sans',sans-serif;font-size:clamp(10.5px,calc(2.17vw + 3.57px),17px);font-weight:700;letter-spacing:0;color:#201A16;text-transform:uppercase}
-.pack4-heading-line{display:block;width:clamp(10px,calc(5.33vw - 7.07px),26px);height:1px;background:rgba(138,154,70,.55);flex-shrink:0}
+.pack4-heading-line{display:block;width:clamp(10px,calc(5.33vw - 7.07px),26px);height:1px;background:rgba(53,196,201,.5);flex-shrink:0}
 .pack4-banner-heading-main-wrap{position:relative;display:inline-block;isolation:isolate;overflow:hidden}
 .pack4-banner-heading-main{font-family:'Work Sans',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:0;text-transform:uppercase;white-space:nowrap;display:block;color:#35C4C9;text-shadow:0 1px 1.5px rgba(20,14,4,.25)}
-.pack4-banner-title{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;color:#FBF8F2;margin-bottom:8px}
-.pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#FFFFFF;border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:17px;width:100%}
+.pack4-banner-title{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;color:#201A16;margin-bottom:8px}
+.pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#FFFFFF;border:1px solid #E4DAC8;box-shadow:0 4px 14px -8px rgba(20,14,4,.18);border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:12px;width:100%}
 .pack4-banner-price{display:flex;align-items:center;justify-content:center;gap:clamp(10px,calc(1.33vw + 5.73px),14px);width:100%}
 .pack4-price-new{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(24px,calc(7.33vw + 0.53px),46px);line-height:1;color:#1C1512}
 .pack4-price-unit{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(11px,calc(3vw + 1.4px),20px);color:#1C1512;margin-left:2px}
@@ -713,7 +713,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-benefit{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1 1 0;min-width:0}
 .pack4-benefit-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(155deg,var(--gold-light) 0%,var(--gold) 55%,var(--gold-deep) 100%);color:#294948;flex-shrink:0}
 .pack4-benefit-icon svg{width:15px;height:15px}
-.pack4-benefit-label{display:flex;flex-direction:column;line-height:1.25;color:#F4EEE4;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500}
+.pack4-benefit-label{display:flex;flex-direction:column;line-height:1.25;color:#201A16;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500}
 .pack4-benefit-sep{display:block;width:1px;align-self:stretch;background:rgba(138,154,70,.3);flex-shrink:0}
 .pack4-banner-cta{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2.67vw - 4.53px),12px);width:85%;margin:0 auto;background:#C8A96B;color:#2E1608;font-family:'Work Sans',sans-serif;font-size:clamp(9px,calc(2.33vw + 1.53px),16px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:8px clamp(4px,calc(2vw - 2.4px),10px);border:none;border-radius:14px;transition:transform .12s ease,filter .18s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55);animation:pack4CtaPulse 2.4s ease-in-out 1s infinite}
 @keyframes pack4CtaPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55)}
