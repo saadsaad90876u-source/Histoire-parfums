@@ -667,7 +667,7 @@ to{opacity:1;transform:translateY(0)}
 .cf-field-icon svg{width:19px;height:19px}
 .cf-input-icon{padding-left:62px;min-height:56px}
 textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
-.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:1.8px solid #C8A96B;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:#35C4C9}
+.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:none;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:#FFFFFF}
 .pack4-banner.reveal:not(.active){transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 @property --pack4-angle{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes pack4-border-spin{to{--pack4-angle:360deg}
@@ -695,7 +695,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .founder-photo-edit{display:none;position:absolute;bottom:2px;right:2px;width:32px;height:32px;border-radius:50%;border:2px solid #F4EEE4;background:var(--emerald);color:#170F0A;align-items:center;justify-content:center;cursor:pointer;padding:0;box-shadow:0 4px 10px rgba(0,0,0,.2)}
 .pack4-banner-text{flex:1 1 56%;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .pack4-banner-heading{display:flex;flex-direction:column;align-items:center;line-height:1.05;margin-bottom:15px}
-.pack4-banner-heading-top{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2vw - 2.4px),10px);font-family:'Work Sans',sans-serif;font-size:clamp(10.5px,calc(2.17vw + 3.57px),17px);font-weight:700;letter-spacing:0;color:#FBF8F2;text-transform:uppercase}
+.pack4-banner-heading-top{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2vw - 2.4px),10px);font-family:'Work Sans',sans-serif;font-size:clamp(10.5px,calc(2.17vw + 3.57px),17px);font-weight:700;letter-spacing:0;color:#201A16;text-transform:uppercase}
 .pack4-heading-line{display:block;width:clamp(10px,calc(5.33vw - 7.07px),26px);height:1px;background:rgba(138,154,70,.55);flex-shrink:0}
 .pack4-banner-heading-main-wrap{position:relative;display:inline-block;isolation:isolate;overflow:hidden}
 .pack4-banner-heading-main{font-family:'Work Sans',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:0;text-transform:uppercase;white-space:nowrap;display:block;color:#000000;text-shadow:0 1px 1.5px rgba(20,14,4,.25)}
