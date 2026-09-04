@@ -346,8 +346,8 @@ h1,h2,h3{font-family:'Poppins',sans-serif;font-weight:500;color:var(--ink)}
 .shop-heading{font-size:clamp(28px,3.6vw,42px);margin-bottom:8px;font-family:'Poppins','Work Sans',sans-serif;font-weight:700;font-style:normal;letter-spacing:.01em;text-transform:uppercase;text-align:center;color:#201A16}
 .shop-filters{display:flex;gap:28px;justify-content:center;width:fit-content;margin:0 auto 24px;padding:0;border:none;border-bottom:1px solid #E4DAC8;background:transparent;backdrop-filter:none}
 .sf-btn{padding:12px 4px;border-radius:0;border:none;border-bottom:2px solid transparent;background:transparent;color:#9C8F7C;font-family:'Work Sans',sans-serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .25s ease,border-color .25s ease;font-weight:500;margin-bottom:-1px}
-.sf-btn:hover{color:#000000}
-.sf-btn.active{background:transparent;color:#000000;font-weight:700;border-bottom:2px solid #000000}
+.sf-btn:hover{color:#201A16}
+.sf-btn.active{background:transparent;color:#201A16;font-weight:700;border-bottom:2px solid #35C4C9}
 .product-card .pc-fam,.product-card .desc{display:none}
 .product-card .pc-bottom{justify-content:center}
 .product-card h3{font-family:'Poppins',sans-serif;font-size:21px;font-weight:500;margin-bottom:2px;color:#211A15;text-align:center;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -698,14 +698,14 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-banner-heading-top{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2vw - 2.4px),10px);font-family:'Work Sans',sans-serif;font-size:clamp(10.5px,calc(2.17vw + 3.57px),17px);font-weight:700;letter-spacing:0;color:#201A16;text-transform:uppercase}
 .pack4-heading-line{display:block;width:clamp(10px,calc(5.33vw - 7.07px),26px);height:1px;background:rgba(138,154,70,.55);flex-shrink:0}
 .pack4-banner-heading-main-wrap{position:relative;display:inline-block;isolation:isolate;overflow:hidden}
-.pack4-banner-heading-main{font-family:'Work Sans',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:0;text-transform:uppercase;white-space:nowrap;display:block;color:#000000;text-shadow:0 1px 1.5px rgba(20,14,4,.25)}
+.pack4-banner-heading-main{font-family:'Work Sans',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:0;text-transform:uppercase;white-space:nowrap;display:block;color:#35C4C9;text-shadow:0 1px 1.5px rgba(20,14,4,.25)}
 .pack4-banner-title{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;color:#FBF8F2;margin-bottom:8px}
 .pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#FFFFFF;border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:17px;width:100%}
 .pack4-banner-price{display:flex;align-items:center;justify-content:center;gap:clamp(10px,calc(1.33vw + 5.73px),14px);width:100%}
 .pack4-price-new{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(24px,calc(7.33vw + 0.53px),46px);line-height:1;color:#1C1512}
 .pack4-price-unit{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(11px,calc(3vw + 1.4px),20px);color:#1C1512;margin-left:2px}
 .pack4-price-sep{width:1px;height:clamp(16px,calc(4.67vw + 1.07px),30px);background:rgba(122,31,43,.15);flex-shrink:0}
-.pack4-price-old{font-family:'Work Sans',sans-serif;color:var(--text-soft);font-size:clamp(11px,calc(3vw + 1.4px),20px);text-decoration:line-through;text-decoration-color:var(--emerald-deep);text-decoration-thickness:1px}
+.pack4-price-old{font-family:'Work Sans',sans-serif;color:var(--text-soft);font-size:clamp(11px,calc(3vw + 1.4px),20px);text-decoration:line-through;text-decoration-color:#35C4C9;text-decoration-thickness:1px}
 .pack4-banner-savings{display:inline-flex;align-items:center;gap:5px;background:#35C4C9;color:#150F0C;font-family:'Work Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.01em;border-radius:999px;padding:4px 20px;margin-bottom:10px}
 .pack4-banner-savings b{color:#150F0C;font-weight:700}
 .pack4-banner-savings .pack4-shipping-icon{flex-shrink:0}
@@ -715,12 +715,12 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-benefit-icon svg{width:15px;height:15px}
 .pack4-benefit-label{display:flex;flex-direction:column;line-height:1.25;color:#F4EEE4;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500}
 .pack4-benefit-sep{display:block;width:1px;align-self:stretch;background:rgba(138,154,70,.3);flex-shrink:0}
-.pack4-banner-cta{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2.67vw - 4.53px),12px);width:85%;margin:0 auto;background:#C8A96B;color:#2E1608;font-family:'Work Sans',sans-serif;font-size:clamp(9px,calc(2.33vw + 1.53px),16px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:8px clamp(4px,calc(2vw - 2.4px),10px);border:none;border-radius:14px;transition:transform .12s ease,filter .18s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:0 12px 26px -10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55);animation:pack4CtaPulse 2.4s ease-in-out 1s infinite}
-@keyframes pack4CtaPulse{0%,100%{box-shadow:0 12px 26px -10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55)}
-50%{box-shadow:0 12px 26px -10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.4),0 0 0 9px rgba(216,196,155,0)}
+.pack4-banner-cta{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2.67vw - 4.53px),12px);width:85%;margin:0 auto;background:#C8A96B;color:#2E1608;font-family:'Work Sans',sans-serif;font-size:clamp(9px,calc(2.33vw + 1.53px),16px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:8px clamp(4px,calc(2vw - 2.4px),10px);border:none;border-radius:14px;transition:transform .12s ease,filter .18s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55);animation:pack4CtaPulse 2.4s ease-in-out 1s infinite}
+@keyframes pack4CtaPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55)}
+50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 9px rgba(216,196,155,0)}
 }
-@keyframes pack4CtaPulseMen{0%,100%{box-shadow:0 12px 26px -10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25),0 0 0 0 rgba(244,238,228,.65)}
-50%{box-shadow:0 12px 26px -10px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25),0 0 0 10px rgba(244,238,228,0)}
+@keyframes pack4CtaPulseMen{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 0 rgba(244,238,228,.65)}
+50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 10px rgba(244,238,228,0)}
 }
 @media (prefers-reduced-motion:reduce){.pack4-banner-cta{animation:none}
 }
