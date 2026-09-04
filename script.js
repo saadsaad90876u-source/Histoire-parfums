@@ -341,6 +341,7 @@ const translations = {
     menCollection: "Collection Homme",
     womenCollection: "Collection Femme",
     addNewPerfume: "Ajouter un nouveau parfum",
+    shopLoadMoreBtn: "Voir plus",
     noResultsFound: "Aucun parfum trouvé.",
     orderSuccess: "Commande confirmée ! Nous vous contacterons bientôt.",
     editPerfumeTitle: "Modifier le parfum",
@@ -581,6 +582,9 @@ const meta = {
 };
 
 let currentFilter = 'women';
+const SHOP_PAGE_SIZE = 6;
+let shopVisibleCount = SHOP_PAGE_SIZE;
+let shopVisibleFilter = null;
 let shopRenderTimer = null;
 function renderShop(filter, skipScroll, playPack4Shine){
   const m = meta[filter] || meta.men;
@@ -597,13 +601,24 @@ function renderShop(filter, skipScroll, playPack4Shine){
   clearTimeout(shopRenderTimer);
   shopRenderTimer = setTimeout(() => {
     try{
+      if(shopVisibleFilter !== filter){
+        shopVisibleCount = SHOP_PAGE_SIZE;
+        shopVisibleFilter = filter;
+      }
       const indexed = m.list.map((p, idx) => ({ p, idx }));
       indexed.sort((a, b) => (a.p.pinned ? 1 : 0) - (b.p.pinned ? 1 : 0));
-      grid.innerHTML = indexed.map(({ p, idx }) => productCard(p, filter, idx)).join('')
+      const visible = indexed.slice(0, shopVisibleCount);
+      grid.innerHTML = visible.map(({ p, idx }) => productCard(p, filter, idx)).join('')
         + (isAdmin ? `<button class="add-new-card" id="add-new-card">
             <span class="anc-plus">+</span>
             <span>${t('addNewPerfume')}</span>
           </button>` : '');
+      const loadMoreWrap = document.getElementById('shop-load-more-wrap');
+      if(loadMoreWrap){
+        loadMoreWrap.innerHTML = indexed.length > shopVisibleCount
+          ? `<button type="button" class="shop-load-more-btn" id="shop-load-more-btn">${t('shopLoadMoreBtn')}</button>`
+          : '';
+      }
       refreshScrollReveal(grid);
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -626,6 +641,13 @@ updateWishlistBadge();
 updateCartBadge();
 renderCartDrawer();
 document.getElementById('shop-grid').innerHTML = `<p class="wishlist-empty">${t('loadingText')}</p>`;
+
+document.addEventListener('click', (e) => {
+  const loadMoreBtn = e.target.closest('#shop-load-more-btn');
+  if(!loadMoreBtn) return;
+  shopVisibleCount += SHOP_PAGE_SIZE;
+  renderShop(currentFilter, true);
+});
 
 
 
@@ -1500,7 +1522,6 @@ function featuredProductCard(p, idx){
     </div>
     <div class="featured-product-name">${p.name}</div>
     <div class="featured-product-price">${p.price} DH</div>
-    <button type="button" class="featured-pack-btn ${p.gender === 'men' ? 'is-men' : 'is-women'}" data-idx="${idx}">Composer mon pack</button>
   </div>`;
 }
 
