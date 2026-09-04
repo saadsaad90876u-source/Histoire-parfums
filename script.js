@@ -569,7 +569,7 @@ function productCard(pRaw, category, idx){
         </div>
       </div>
       <div class="pc-actions">
-        <button class="add-cart pc-action-btn pc-action-cart" data-name="${p.name}" data-price="${p.price}" data-family="${p.family}" data-category="${category}">${t('addToCartBtn')}</button>
+        <button class="add-cart pc-action-btn pc-action-cart" data-name="${p.name}" data-price="${p.price}" data-family="${p.family}" data-category="${category}"><span class="pc-cart-plus">+</span>${t('addToCartBtn')}</button>
       </div>
     </div>
   </div>`;
@@ -3208,7 +3208,7 @@ function productPageTemplate(pRaw, category, idx){
           </div>
           <button type="button" class="pp-cart-btn" id="pp-add-cart">
             <svg class="icon"><use href="#i-bag"></use></svg>
-            ${t('addToCartBtn')}
+            <span class="pc-cart-plus">+</span>${t('addToCartBtn')}
           </button>
         </div>
         <button type="button" class="pp-order-btn reveal" id="pp-order-now">

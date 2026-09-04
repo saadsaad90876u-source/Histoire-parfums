@@ -404,6 +404,7 @@ try {
     }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
+    window.scrollTo(0, 0);
     // Hide (not remove) once the fade/slide-up transition finishes, so it
     // stops intercepting taps/clicks -- but stays in the DOM so pressing
     // Back can bring it back exactly as it was, instead of being rebuilt.
