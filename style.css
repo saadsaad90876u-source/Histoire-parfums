@@ -677,7 +677,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-banner::before{content:none}
 @media (hover:hover) and (pointer:fine){.pack4-banner:hover{transform:translateY(-2px)}
 }
-.pack4-banner-image{position:relative;flex:1 1 44%;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden;filter:drop-shadow(0 10px 18px rgba(20,14,4,.12))}
+.pack4-banner-image{position:relative;flex:1 1 44%;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pack4-banner-image::after{content:"";position:absolute;inset:0;background-image:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);background-repeat:no-repeat;background-size:250% 100%;background-position:-100% 0;-webkit-mask-image:var(--pack4-shine-mask,none);-webkit-mask-source-type:alpha;-webkit-mask-size:contain;-webkit-mask-position:center;-webkit-mask-repeat:no-repeat;mask-image:var(--pack4-shine-mask,none);mask-mode:alpha;mask-size:contain;mask-position:center;mask-repeat:no-repeat;transform:scale(1.12);pointer-events:none;z-index:2;will-change:background-position}
 .pack4-banner-image.pack4-shine-active::after{animation:pack4ImageShine 1.4s ease-in-out 1}
 @keyframes pack4ImageShine{0%{background-position:-100% 0}
@@ -715,7 +715,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-benefit-icon svg{width:15px;height:15px}
 .pack4-benefit-label{display:flex;flex-direction:column;line-height:1.25;color:#201A16;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500}
 .pack4-benefit-sep{display:block;width:1px;align-self:stretch;background:rgba(138,154,70,.3);flex-shrink:0}
-.pack4-banner-cta{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2.67vw - 4.53px),12px);width:85%;margin:0 auto;background:#C8A96B;color:#2E1608;font-family:'Work Sans',sans-serif;font-size:clamp(9px,calc(2.33vw + 1.53px),16px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:8px clamp(4px,calc(2vw - 2.4px),10px);border:none;border-radius:14px;transition:transform .12s ease,filter .18s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55);animation:pack4CtaPulse 2.4s ease-in-out 1s infinite}
+.pack4-banner-cta{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2.67vw - 4.53px),12px);width:85%;margin:0 auto;background:#C8A96B;color:#2E1608;font-family:'Work Sans',sans-serif;font-size:clamp(9px,calc(2.33vw + 1.53px),16px);font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:8px clamp(4px,calc(2vw - 2.4px),10px);border:none;border-radius:14px;transition:transform .12s ease,filter .18s ease;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
 @keyframes pack4CtaPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 0 rgba(216,196,155,.55)}
 50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 9px rgba(216,196,155,0)}
 }
