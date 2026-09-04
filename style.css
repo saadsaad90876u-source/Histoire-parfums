@@ -667,14 +667,14 @@ to{opacity:1;transform:translateY(0)}
 .cf-field-icon svg{width:19px;height:19px}
 .cf-input-icon{padding-left:62px;min-height:56px}
 textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
-.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:none;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:#FFFFFF}
+.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:none;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:none;box-shadow:none}
 .pack4-banner.reveal:not(.active){transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 @property --pack4-angle{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes pack4-border-spin{to{--pack4-angle:360deg}
 }
 @media (prefers-reduced-motion:reduce){.pack4-banner{animation:none}
 }
-.pack4-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 8% 0%,rgba(255,221,140,.16) 0%,transparent 45%),linear-gradient(115deg,transparent 30%,rgba(255,255,255,.07) 48%,rgba(255,255,255,.14) 52%,rgba(255,255,255,.07) 56%,transparent 74%);pointer-events:none}
+.pack4-banner::before{content:none}
 @media (hover:hover) and (pointer:fine){.pack4-banner:hover{transform:translateY(-2px)}
 }
 .pack4-banner-image{position:relative;flex:1 1 44%;min-width:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
