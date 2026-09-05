@@ -162,7 +162,7 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
 .admin-edit-btn:hover{background:var(--emerald);border-color:var(--emerald);color:#170F0A}
 .admin-del-btn:hover{background:#35C4C9;border-color:#35C4C9;color:#F4EEE4}
 .anc-plus{font-size:34px;font-family:'Poppins',sans-serif;line-height:1}
-.pc-body{padding:6px 16px 10px;border-top:1px solid rgba(10,47,29,.08)}
+.pc-body{padding:6px 16px 10px;border-top:none}
 .pc-fam{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px}
 .pp-info .pc-fam{color:#1A1A1A;font-weight:600}
 .pc-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
