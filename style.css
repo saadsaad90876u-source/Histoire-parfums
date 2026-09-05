@@ -343,7 +343,7 @@ h1,h2,h3{font-family:'Poppins',sans-serif;font-weight:500;color:var(--ink)}
 .admin-edit-btn,.admin-del-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#FFFFFF;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--ink);border-color:rgba(53,196,201,.35)}
 .add-new-card{border:2px dashed var(--line);border-radius:var(--radius);background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--text-soft);min-height:280px;transition:all .3s ease;border-color:rgba(53,196,201,.4)}
 .add-new-card:hover{border-color:var(--emerald);color:var(--emerald-light)}
-.shop-heading{font-size:clamp(32px,4.2vw,48px);margin-bottom:28px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;letter-spacing:.01em;text-transform:none;text-align:center;color:#201A16}
+.shop-heading{font-size:clamp(32px,4.2vw,48px);margin-top:6px;margin-bottom:28px;font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;letter-spacing:.01em;text-transform:none;text-align:center;color:#201A16}
 .shop-filters{display:flex;gap:28px;justify-content:center;width:fit-content;margin:0 auto 24px;padding:0;border:none;border-bottom:1px solid #E4DAC8;background:transparent;backdrop-filter:none}
 .sf-btn{padding:12px 4px;border-radius:0;border:none;border-bottom:2px solid transparent;background:transparent;color:#9C8F7C;font-family:'Work Sans',sans-serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .25s ease,border-color .25s ease;font-weight:500;margin-bottom:-1px}
 .sf-btn:hover{color:#201A16}
@@ -1022,10 +1022,10 @@ to{opacity:1;max-height:1400px}
 }
 .lux-reveal{opacity:1}
 .lux-section{padding:76px 0;background:#FFFFFF}
-.brand-statement{max-width:640px;margin:0 auto 76px;padding:0 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.brand-statement{max-width:640px;margin:0 auto 0;padding:0 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
 .brand-statement-label{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#35C4C9;margin-bottom:18px}
 .brand-statement-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(19px,2.6vw,24px);line-height:1.55;color:#201A16;margin:0}
-.brand-statement-rule{display:block;width:40px;height:1px;background:#E4DAC8;margin-top:26px}
+
 #contact-section{padding-top:30px;padding-bottom:12px}
 #reviews-section{padding-top:18px}
 #reviews-section .lux-subheading{margin-bottom:18px}
