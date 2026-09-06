@@ -3883,8 +3883,7 @@ function createBannerController(cfg){
     const frameEl = document.getElementById(`${state.sectionId}-frame`);
     const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
     const activeBanner = state.banners[state.activeIndex];
-    const lockedAspectRatio = state.sectionId === 'splash-banner-bottom';
-    if(frameEl && activeSlide && !lockedAspectRatio){
+    if(frameEl && activeSlide){
       const media = activeSlide.querySelector('img, video');
       const refreshScrollTrigger = () => {
         requestAnimationFrame(() => {
