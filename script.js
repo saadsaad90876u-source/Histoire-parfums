@@ -3742,6 +3742,9 @@ async function isAnimatedWebp(file){
 
 
 function createBannerController(cfg){
+  if(!document.getElementById(cfg.sectionId) || !document.getElementById(cfg.contentId) || !document.getElementById(cfg.inputId)){
+    return { render(){}, setCategory(){}, load(){} };
+  }
   const state = {
     keyBase: cfg.storageKey,
     category: currentFilter, 
@@ -3883,7 +3886,8 @@ function createBannerController(cfg){
     const frameEl = document.getElementById(`${state.sectionId}-frame`);
     const activeSlide = content.querySelector(`.hb-slide[data-i="${state.activeIndex}"]`);
     const activeBanner = state.banners[state.activeIndex];
-    if(frameEl && activeSlide){
+    const lockedAspectRatio = state.sectionId === 'splash-banner-bottom';
+    if(frameEl && activeSlide && !lockedAspectRatio){
       const media = activeSlide.querySelector('img, video');
       const refreshScrollTrigger = () => {
         requestAnimationFrame(() => {
@@ -3993,6 +3997,7 @@ function createBannerController(cfg){
   function render(){
     const section = document.getElementById(state.sectionId);
     const content = document.getElementById(state.contentId);
+    if(!section || !content) return;
 
     if(state.activeIndex >= state.banners.length) state.activeIndex = Math.max(0, state.banners.length - 1);
 
@@ -5790,6 +5795,11 @@ if(newsletterForm){
 
 
 function scrollToSection(id){
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const splashOpen = welcomeScreen && getComputedStyle(welcomeScreen).display !== 'none' && !document.documentElement.classList.contains('ws-skip');
+  if(splashOpen && typeof window.wsDismiss === 'function'){
+    window.wsDismiss(false);
+  }
   const el = document.getElementById(id);
   if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }

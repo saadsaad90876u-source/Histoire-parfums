@@ -94,7 +94,6 @@ try {
 })();
 </script>
 <meta name="color-scheme" content="light only">
-<meta name="theme-color" content="#35C4C9">
 <link rel="manifest" href="/manifest.json">
 <title>KORAL — Parfums de Luxe pour Homme et Femme</title>
 <meta name="description" content="KORAL — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
@@ -194,7 +193,7 @@ try {
        createBannerController in script.js. Shown only on the splash
        screen, not on the shop page. -->
   <div class="ws-content">
-    <section id="splash-banner-bottom" style="width:100vw; max-width:100vw; margin:0 calc(-50vw + 50%) 18px;">
+    <section id="splash-banner-bottom" style="width:100vw; max-width:100vw; margin:0 calc(-50vw + 50%) 0;">
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
         <div class="hb-hero-overlay">
@@ -204,63 +203,6 @@ try {
       </div>
     </section>
     <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-
-    <section class="brand-statement">
-      <span class="brand-statement-label">Notre Philosophie</span>
-      <p class="brand-statement-text">Certaines mémoires ne se racontent pas… elles se respirent.</p>
-    </section>
-
-    <p class="ws-social-proof" id="ws-social-proof" style="display:none;">
-      <span id="ws-social-proof-stars"></span>
-      <span id="ws-social-proof-text"></span>
-    </p>
-    <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
-      <div class="pack-circles-row">
-        <div class="pack-circle-item">
-          <span class="pack-circle-img-wrap" id="splash-circle-wrap">
-            <img class="pack-circle-img" id="splash-circle-img" src="" alt="Parfums" style="display:none;">
-            <span class="pack-circle-placeholder" id="splash-circle-placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            </span>
-            <button type="button" class="pack-circle-edit" id="splash-circle-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
-            <input type="file" id="splash-circle-input" accept="image/*,image/avif" hidden>
-          </span>
-          <span class="pack-circle-label">Parfums</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="splash-trust-section" style="width:100%; max-width:520px; margin:0 0 8px;">
-      <div class="pp-trust-grid pp-trust-grid-standalone">
-        <div class="pp-trust-item reveal d1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
-          <div><strong data-i18n="trustDeliveryTitle">Livraison 1-4j</strong><span data-i18n="trustDeliverySub">Partout au Maroc</span></div>
-        </div>
-        <div class="pp-trust-item reveal d2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/></svg>
-          <div><strong data-i18n="trustCertifiedTitle">Qualité certifiée</strong><span data-i18n="trustCertifiedSub">Parfums de qualité</span></div>
-        </div>
-        <div class="pp-trust-item reveal d3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-          <div><strong data-i18n="trustPaymentTitle">Paiement</strong><span data-i18n="trustPaymentSub">À la livraison</span></div>
-        </div>
-        <div class="pp-trust-item reveal d4">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-10-9.2C.5 7.8 2.5 4 6.5 4c2.3 0 4 1.3 5.5 3.3C13.5 5.3 15.2 4 17.5 4c4 0 6 3.8 4.5 7.3-2.5 4.6-10 9.2-10 9.2z"/></svg>
-          <div><strong data-i18n="trustSupportTitle">Service client</strong><span data-i18n="trustSupportSub">À votre écoute</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Splash-only banner slot, right below the enter button. Same
-         reusable banner system -- see createBannerController in
-         script.js. Shown only on the splash screen, not on the shop
-         page. -->
-    <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin-top:8px;">
-      <div class="hero-banner-frame" id="splash-banner-top-frame">
-        <div id="splash-banner-top-content"></div>
-      </div>
-    </section>
-    <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
