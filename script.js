@@ -4068,7 +4068,9 @@ function createBannerController(cfg){
         </div>`;
     } else {
       stopAutoplay();
-      section.style.display = 'none';
+      if(state.sectionId !== 'splash-banner-bottom'){
+        section.style.display = 'none';
+      }
       content.innerHTML = '';
     }
     

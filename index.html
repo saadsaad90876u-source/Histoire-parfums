@@ -194,9 +194,13 @@ try {
        createBannerController in script.js. Shown only on the splash
        screen, not on the shop page. -->
   <div class="ws-content">
-    <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
+    <section id="splash-banner-bottom" style="width:100vw; max-width:100vw; margin:-104px calc(-50vw + 50%) 18px;">
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
+        <div class="hb-hero-overlay">
+          <h2 class="hb-hero-heading">Découvrez<br>l'Essence<br>du Luxe</h2>
+          <button type="button" class="hb-hero-cta ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Shop Now</span></button>
+        </div>
       </div>
     </section>
     <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
@@ -206,7 +210,6 @@ try {
       <p class="brand-statement-text">Certaines mémoires ne se racontent pas… elles se respirent.</p>
     </section>
 
-    <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
     <p class="ws-social-proof" id="ws-social-proof" style="display:none;">
       <span id="ws-social-proof-stars"></span>
       <span id="ws-social-proof-text"></span>
