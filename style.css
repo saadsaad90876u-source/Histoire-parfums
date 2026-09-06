@@ -1022,9 +1022,9 @@ to{opacity:1;max-height:1400px}
 }
 .lux-reveal{opacity:1}
 .lux-section{padding:76px 0;background:#FFFFFF}
-.brand-statement{max-width:640px;margin:0 auto 0;padding:0 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.brand-statement{max-width:640px;margin:40px auto 0;padding:0 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
 .brand-statement-label{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#35C4C9;margin-bottom:18px}
-.brand-statement-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(19px,2.6vw,24px);line-height:1.55;color:#201A16;margin:0}
+.brand-statement-text{font-family:'Work Sans',sans-serif;font-style:normal;font-weight:400;font-size:clamp(15px,1.9vw,17px);line-height:1.6;letter-spacing:.01em;color:#201A16;margin:0}
 
 #contact-section{padding-top:30px;padding-bottom:12px}
 #reviews-section{padding-top:18px}
