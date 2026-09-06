@@ -559,7 +559,6 @@ function productCard(pRaw, category, idx){
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
       <h3>${p.name}</h3>
-      <div class="pc-stars">★★★★★</div>
       <div class="desc">${p.desc}</div>
       <div class="pc-bottom">
         <div class="pc-price-wrap">
@@ -1998,6 +1997,14 @@ async function renderProductReviews(productName){
     return;
   }
   const avg = reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length;
+  const topBadge = document.getElementById('pp-rating-badge');
+  if(topBadge){
+    topBadge.style.display = 'flex';
+    const topStarsEl = document.getElementById('pp-rating-badge-stars');
+    const topTextEl = document.getElementById('pp-rating-badge-text');
+    if(topStarsEl) topStarsEl.innerHTML = reviewStarsHtml(Math.round(avg));
+    if(topTextEl) topTextEl.textContent = `${avg.toFixed(1)} · ${reviews.length} avis`;
+  }
   if(summaryEl){
     summaryEl.style.display = 'flex';
     const starsEl = document.getElementById('pp-reviews-summary-stars');
@@ -3212,9 +3219,9 @@ function productPageTemplate(pRaw, category, idx){
       <div class="pp-info">
         <div class="pc-fam reveal">${p.family} · ${p.size}</div>
         <h1 class="pp-title reveal">${p.name}</h1>
-        <div class="pp-rating-badge reveal">
-          <span class="pp-rating-stars">${reviewStarsHtml(Math.round(p.rating || 5))}</span>
-          <span class="pp-rating-text">${(p.rating || 5).toFixed(1)} · ${p.reviews || 0} avis</span>
+        <div class="pp-rating-badge reveal" id="pp-rating-badge" style="display:none;">
+          <span class="pp-rating-stars" id="pp-rating-badge-stars"></span>
+          <span class="pp-rating-text" id="pp-rating-badge-text"></span>
         </div>
         <div class="pp-price-row reveal">
           <span class="pp-price-old">75 DH</span>
