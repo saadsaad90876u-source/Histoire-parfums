@@ -346,8 +346,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .sf-btn{padding:12px 4px;border-radius:0;border:none;border-bottom:2px solid transparent;background:transparent;color:#9C8F7C;font-family:'Work Sans',sans-serif;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:color .25s ease,border-color .25s ease;font-weight:500;margin-bottom:-1px}
 .sf-btn:hover{color:#201A16}
 .sf-btn.active{background:transparent;color:#201A16;font-weight:600;border-bottom:2px solid #35C4C9}
-.product-card .desc{display:none}
-.product-card .pc-fam{display:block;text-align:center;font-size:9.5px;letter-spacing:.22em;margin-bottom:6px;color:#9C8F7C}
+.product-card .pc-fam,.product-card .desc{display:none}
 .product-card .pc-bottom{justify-content:center}
 .product-card h3{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;font-style:italic;margin-bottom:6px;color:#14100E;text-align:center;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pc-rating{display:flex;align-items:center;justify-content:flex-start;gap:4px;margin:0 0 2px}
@@ -699,7 +698,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-banner-heading-top{display:flex;align-items:center;justify-content:center;gap:clamp(4px,calc(2vw - 2.4px),10px);font-family:'Work Sans',sans-serif;font-size:clamp(10.5px,calc(2.17vw + 3.57px),17px);font-weight:700;letter-spacing:0;color:#F2E9DC;text-transform:uppercase}
 .pack4-heading-line{display:block;width:clamp(10px,calc(5.33vw - 7.07px),26px);height:1px;background:rgba(53,196,201,.5);flex-shrink:0}
 .pack4-banner-heading-main-wrap{position:relative;display:inline-block;isolation:isolate;overflow:hidden}
-.pack4-banner-heading-main{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,calc(9vw - 5.6px),48px);font-weight:600;font-style:italic;letter-spacing:.005em;text-transform:none;white-space:nowrap;display:block;color:#9CD0CE;text-shadow:none}
+.pack4-banner-heading-main{font-family:'Poppins',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:block;color:#9CD0CE;text-shadow:none}
 .pack4-banner-title{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;color:#201A16;margin-bottom:8px}
 .pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#FFFFFF;border:1px solid #E4DAC8;box-shadow:0 4px 14px -8px rgba(20,14,4,.18);border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:12px;width:100%}
 .pack4-banner-price{display:flex;align-items:center;justify-content:center;gap:clamp(10px,calc(1.33vw + 5.73px),14px);width:100%}
