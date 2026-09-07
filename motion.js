@@ -31,6 +31,35 @@
       gsap.ticker.add((time) => { lenis.raf(time * 1000); });
       gsap.ticker.lagSmoothing(0);
       window.__lenis = lenis;
+
+      // FIX — page freeze / scroll stops working entirely:
+      // Lenis measures the page's scrollable height once when it starts up
+      // and then owns ALL scroll input (wheel + touch) itself instead of
+      // letting the browser handle it natively. This site's real height
+      // keeps changing well after that: products are still being fetched
+      // from Supabase at that point, renderShop() re-renders the grid on
+      // every language switch, and fonts finishing loading re-triggers
+      // renderShop() again too. Nothing was telling Lenis to re-measure
+      // after any of that, so its cached scroll limit could end up smaller
+      // than the real page — and since Lenis (not the browser) decides how
+      // far the page can scroll, that shows up as the page refusing to
+      // scroll at all, on every browser/device (this isn't a touch-only or
+      // wheel-only bug, since Lenis intercepts both the same way).
+      // A ResizeObserver on <body> is the general fix: whenever the
+      // rendered page height changes for ANY reason (this one included, or
+      // any future addition), Lenis is told to recompute its limits.
+      if ('ResizeObserver' in window) {
+        let resizePending = false;
+        const ro = new ResizeObserver(() => {
+          if (resizePending) return;
+          resizePending = true;
+          requestAnimationFrame(() => {
+            resizePending = false;
+            if (window.__lenis) window.__lenis.resize();
+          });
+        });
+        ro.observe(document.body);
+      }
     }
 
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -187,7 +216,13 @@
     /* Per request: the first two product cards (top of the shop grid) should
        play their fade+rise entrance the instant the splash screen ends,
        instead of waiting for the user to scroll them into view. Everything
-       else in the grid keeps the normal scroll-triggered reveal. */
+       else in the grid keeps the normal scroll-triggered reveal.
+       NOTE: afterSplash() used to be called here without ever being defined
+       anywhere in the codebase — that threw "afterSplash is not defined" on
+       every single page load (check any browser console before this fix).
+       It's now provided by index.html's splash-screen script, which calls
+       it back once the splash has actually finished closing (or immediately,
+       on a page load where the splash was skipped entirely). */
     function revealFirstProductsNow() {
       const grid = document.getElementById('shop-grid');
       if (!grid) return false;
@@ -210,7 +245,8 @@
       return true;
     }
     function watchFirstProducts() {
-      afterSplash(function () {
+      if (typeof window.afterSplash !== 'function') return; // safety net if index.html's hook is ever missing again
+      window.afterSplash(function () {
         if (revealFirstProductsNow()) return;
         const grid = document.getElementById('shop-grid');
         if (!grid) return;

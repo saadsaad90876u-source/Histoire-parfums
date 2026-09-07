@@ -408,6 +408,28 @@ try {
   // below to decide whether Back should bring the splash back.
   var splashOpen = !skipGreeting;
 
+  // Public hook so other scripts (motion.js's watchFirstProducts, etc.) can
+  // run code once the splash has actually finished closing, without needing
+  // to know about `fired`/`splashOpen`/cleanup() internals. Was previously
+  // called (window.afterSplash(...)) without ever being defined here --
+  // that threw "afterSplash is not defined" on every page load and silently
+  // killed whatever ran after it in that function. If the splash was never
+  // shown this load (skipGreeting), fired is already true below, so calls
+  // made after this point run immediately instead of waiting forever.
+  var afterSplashCallbacks = [];
+  var afterSplashFired = skipGreeting;
+  window.afterSplash = function (cb) {
+    if (typeof cb !== 'function') return;
+    if (afterSplashFired) cb();
+    else afterSplashCallbacks.push(cb);
+  };
+  function flushAfterSplash() {
+    afterSplashFired = true;
+    var cbs = afterSplashCallbacks;
+    afterSplashCallbacks = [];
+    cbs.forEach(function (cb) { try { cb(); } catch (e) {} });
+  }
+
   // On a skipped-greeting load (returning visitor this session, or a
   // reload/deep link into e.g. a product page) handleEnter() never runs,
   // so it never gets a chance to push the "shop" history state either --
@@ -502,6 +524,7 @@ try {
       forceScrollUnlock();
       setTimeout(forceScrollUnlock, 60);
       setTimeout(forceScrollUnlock, 300);
+      flushAfterSplash();
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
@@ -1828,7 +1851,7 @@ try {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.12.3/JsBarcode.all.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
 <script src="/script.js?v=20" defer></script>
-<script src="/motion.js?v=13" defer></script>
+<script src="/motion.js?v=14" defer></script>
 <script src="/pack-circles.js?v=2" defer></script>
 </body>
 </html>
