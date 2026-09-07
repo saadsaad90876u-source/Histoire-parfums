@@ -315,7 +315,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .ws-cta-cursor{display:none;width:2px;height:.95em;margin-left:2px;background:#1C140D;vertical-align:-.12em;opacity:1;animation:ws-cta-blink 0.9s step-end infinite}
 .ws-cta-cursor.ws-cta-cursor-hidden{display:none}
 @keyframes ws-cta-blink{50%{opacity:0}}
-.hb-hero-cta-repositioned{position:fixed;left:8%;top:232px;transform:none;z-index:5}
+.hb-hero-cta-repositioned{position:fixed;left:8%;top:206px;transform:none;z-index:5}
 .hb-hero-cta-repositioned.ws-enter-btn-parked{position:absolute;top:auto}
 .hb-hero-cta:active{transform:scale(.96)}
 .ws-cta-wrap-repositioned:active{transform:scale(.96)}

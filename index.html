@@ -319,7 +319,7 @@ try {
   // scroll/resize since the footer's position within the scrollable
   // splash content can change (e.g. orientation change, banner image
   // finishing loading and shifting layout).
-  var BTN_FIXED_TOP = 232; // keep in sync with .hb-hero-cta-repositioned top in style.css
+  var BTN_FIXED_TOP = 206; // keep in sync with .hb-hero-cta-repositioned top in style.css
   var BTN_FOOTER_GAP = 16;
   function updateEnterBtnParking() {
     if (!btn || !footer) return;
@@ -438,15 +438,6 @@ try {
     // stops intercepting taps/clicks -- but stays in the DOM so pressing
     // Back can bring it back exactly as it was, instead of being rebuilt.
     var done = false;
-    // Runs once, the first time forceScrollUnlock fires: hides/shows
-    // <body> to force the reflow some in-app browsers need (see below).
-    // Guarded so it only ever runs a single time -- doing it on every
-    // forceScrollUnlock call (it used to run 3x back to back) restarts
-    // every CSS animation on the page each time it toggles display
-    // (including the hero banner's fade-in), which is what showed up as
-    // several rapid flashes of light across the shop's top banner right
-    // after entering.
-    var didHardReflow = false;
     function forceScrollUnlock() {
       // Some in-app browsers (Instagram/Facebook/TikTok WebViews) fail to
       // hand scroll control back to the page after this fixed, full-screen
@@ -455,24 +446,24 @@ try {
       // normal browsers, where it's already a harmless no-op.
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
-      if (!didHardReflow) {
-        didHardReflow = true;
-        try {
-          var prevDisplay = document.body.style.display;
-          document.body.style.display = 'none';
-          void document.body.offsetHeight;
-          document.body.style.display = prevDisplay;
-        } catch (e) {}
-      }
       // html{scroll-behavior:smooth} in style.css would otherwise turn
-      // this into an animated scroll that can get cut short mid-way
-      // (e.g. by the reflow above), leaving the shop page landed a few
-      // pixels below the very top instead of exactly at it. Switching to
-      // 'auto' here makes it jump straight to 0 every time, then restores
-      // whatever was set before so smooth-scrolling elsewhere (e.g. the
-      // nav's own anchor links) keeps working as before.
+      // the scrollTo calls below into an animated scroll that can land a
+      // few pixels short of the very top. 'auto' makes them jump straight
+      // to position 0 every time, then restores whatever was set before
+      // so smooth-scrolling elsewhere (e.g. the nav's own anchor links)
+      // keeps working as before.
       var prevScrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = 'auto';
+      // A tiny 1px-then-back scroll nudge is what actually unsticks the
+      // affected in-app browsers -- it forces them to recompute scroll
+      // without touching display/visibility on anything, so none of the
+      // page's CSS animations (e.g. the hero banner's fade-in) get
+      // interrupted and replayed. An earlier version of this fix hid/
+      // showed the whole <body> instead, which did force the same
+      // reflow, but also restarted every running CSS animation on the
+      // page each time it ran -- visible as flashes of light across the
+      // shop's top banner right after entering.
+      try { window.scrollTo(0, 1); } catch (e) {}
       window.scrollTo(0, 0);
       document.documentElement.style.scrollBehavior = prevScrollBehavior;
       try { window.dispatchEvent(new Event('resize')); } catch (e) {}
