@@ -197,6 +197,7 @@ try {
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
         <div class="hb-hero-overlay">
+          <p class="ws-cta-heading">IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS</p>
         </div>
       </div>
     </section>
@@ -208,7 +209,8 @@ try {
        scrolls, which an "overflow:hidden" ancestor would otherwise clip.
        The small script below parks it (position:absolute, pinned just
        above the footer) once the footer scrolls into view, so it never
-       overlaps/covers the footer. -->
+       overlaps/covers the footer. The heading above stays static inside
+       the banner (doesn't float) -- only this button moves. -->
   <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la collection</span></button>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
@@ -275,6 +277,8 @@ try {
     if (footer) footerHome = { parent: footer.parentNode, next: footer.nextSibling };
   }
 
+  // Keeps the floating heading+button group pinned at a fixed spot on
+  // screen while the visitor scrolls the splash up/down, but "parks" it
   // Keeps the floating "Decouvrir la collection" button pinned at a fixed
   // spot on screen while the visitor scrolls the splash up/down, but
   // "parks" it (switches to a normal, in-flow absolute position just
@@ -445,6 +449,14 @@ try {
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
     screen.classList.remove('ws-hidden', 'ws-leaving');
     document.documentElement.style.overflow = 'hidden';
+    // moveFooterToSplash() above ran its position check while the splash
+    // was still hidden (display:none), so the footer/button measurements
+    // it used were all zero -- that's what parked the button off-screen
+    // until the next scroll/touch recalculated it. Now that the splash's
+    // "hidden" class has just been removed and it's actually visible,
+    // recompute once more with real measurements so the button shows up
+    // in the right place immediately, with no scroll/touch needed.
+    requestAnimationFrame(updateEnterBtnParking);
   }
   window.wsReopen = reopenSplash;
 
