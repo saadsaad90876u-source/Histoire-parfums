@@ -361,6 +361,16 @@ try {
       if (done) return;
       done = true;
       screen.classList.add('ws-hidden');
+      // Some in-app browsers (Instagram/Facebook/TikTok WebViews) fail to
+      // recompute the page's scrollable height after this fixed, full-screen
+      // overlay is removed from layout (display:none), leaving the shop
+      // page stuck / unable to scroll until the tab is fully reloaded.
+      // Forcing a reflow + dispatching a resize event nudges those WebViews
+      // into recalculating scroll bounds immediately, without affecting
+      // normal browsers where this is already a no-op.
+      void document.body.offsetHeight;
+      window.scrollTo(0, 0);
+      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
