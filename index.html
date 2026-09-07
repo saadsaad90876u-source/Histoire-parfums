@@ -204,7 +204,7 @@ try {
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
         <div class="hb-hero-overlay">
-          <p class="ws-cta-heading" id="ws-cta-heading" aria-label="IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS"><span id="ws-cta-heading-text" aria-hidden="true"></span><span class="ws-cta-cursor" id="ws-cta-cursor" aria-hidden="true"></span></p>
+          <p class="ws-cta-heading" id="ws-cta-heading" data-i18n-aria-label="splashHeading" aria-label="IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS"><span id="ws-cta-heading-text" aria-hidden="true"></span><span class="ws-cta-cursor" id="ws-cta-cursor" aria-hidden="true"></span></p>
         </div>
       </div>
     </section>
@@ -218,7 +218,7 @@ try {
        above the footer) once the footer scrolls into view, so it never
        overlaps/covers the footer. The heading above stays static inside
        the banner (doesn't float) -- only this button moves. -->
-  <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la collection</span></button>
+  <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label" data-i18n="splashEnterBtn">Découvrir la collection</span></button>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
@@ -231,11 +231,11 @@ try {
 <div class="modal-overlay" id="splash-gender-overlay"></div>
 <div class="splash-gender-modal" id="splash-gender-modal">
   <button class="splash-gender-close" id="splash-gender-close" aria-label="Fermer">✕</button>
-  <p class="splash-gender-title">Quel pack KORAL voulez-vous composer ?</p>
+  <p class="splash-gender-title" data-i18n="splashGenderTitle">Quel pack KORAL voulez-vous composer ?</p>
   <div class="splash-gender-choices">
-    <button type="button" class="splash-gender-btn" data-gender="women">Femme</button>
-    <button type="button" class="splash-gender-btn" data-gender="men">Homme</button>
-    <button type="button" class="splash-gender-btn" data-gender="mixte">Mixte</button>
+    <button type="button" class="splash-gender-btn" data-gender="women" data-i18n="genderWomen">Femme</button>
+    <button type="button" class="splash-gender-btn" data-gender="men" data-i18n="genderMen">Homme</button>
+    <button type="button" class="splash-gender-btn" data-gender="mixte" data-i18n="genderMixte">Mixte</button>
   </div>
 </div>
 <script>
@@ -250,7 +250,22 @@ try {
   // readers get it immediately rather than word-by-word.
   var headingTextEl = document.getElementById('ws-cta-heading-text');
   var headingCursorEl = document.getElementById('ws-cta-cursor');
-  var HEADING_FULL_TEXT = 'IL Y A DES MOMENTS QU\u2019ON N\u2019OUBLIE JAMAIS';
+  var HEADING_FULL_TEXT_FALLBACK = 'IL Y A DES MOMENTS QU\u2019ON N\u2019OUBLIE JAMAIS';
+  // Picks up the current language's heading text from the shared
+  // translations dictionary in script.js (loaded with `defer`, so by the
+  // time DOMContentLoaded fires here it has already run and both
+  // `translations` and `currentLang` exist as page-global bindings).
+  // Falls back to the French text if, for any reason, script.js hasn't
+  // run yet.
+  function getHeadingText() {
+    try {
+      if (typeof translations !== 'undefined' && typeof currentLang !== 'undefined') {
+        var dict = translations[currentLang] || translations.fr;
+        if (dict && dict.splashHeading) return dict.splashHeading;
+      }
+    } catch (e) {}
+    return HEADING_FULL_TEXT_FALLBACK;
+  }
   var HEADING_WORD_DELAY = 160; // ms between each word appearing
   var headingTypeTimer = null;
   function typeHeading() {
@@ -258,7 +273,7 @@ try {
     clearTimeout(headingTypeTimer);
     headingTextEl.textContent = '';
     if (headingCursorEl) headingCursorEl.classList.remove('ws-cta-cursor-hidden');
-    var words = HEADING_FULL_TEXT.split(' ');
+    var words = getHeadingText().split(' ');
     var i = 0;
     function typeNextWord() {
       headingTextEl.textContent = words.slice(0, i + 1).join(' ');
@@ -275,6 +290,10 @@ try {
     }
     typeNextWord();
   }
+  // Exposed so applyTranslations() (in script.js) can re-run this after a
+  // language switch and have the heading re-type itself in the new
+  // language, since this splash text isn't a plain data-i18n swap.
+  window.retypeSplashHeading = typeHeading;
   // Repeat visits within the same session, and entry via the admin link
   // (see the ws-skip check in <head> above, which now covers both
   // cases), skip the greeting itself -- the chime and its up-front
@@ -728,7 +747,7 @@ try {
         </div>
         <div class="pack4-banner-shipping">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
-          <span>Livraison gratuite</span>
+          <span data-i18n="pack4BannerShipping">Livraison gratuite</span>
         </div>
         <div class="pack4-banner-cta" id="pack4-banner-cta">
           <span data-i18n="pack4BannerCta">Composer mon pack</span>
@@ -742,7 +761,7 @@ try {
       </div>
     </div>
 
-    <p class="collection-divider-text">Chaque flacon, une histoire.</p>
+    <p class="collection-divider-text" data-i18n="collectionDividerText">Chaque flacon, une histoire.</p>
 
     <section id="ws-banner-1" style="display:none; margin-bottom:24px;">
       <div class="hero-banner-frame" id="ws-banner-1-frame">
@@ -785,64 +804,64 @@ try {
 
 <section class="lux-section lux-section-alt" id="faq-section">
   <div class="container">
-    <h2 class="lux-heading reveal">FAQ</h2>
+    <h2 class="lux-heading reveal" data-i18n="faqSectionTitle">FAQ</h2>
     <div class="faq-frame">
     <div class="faq-list" id="faq-list">
       <div class="faq-item reveal d1">
         <button type="button" class="faq-question">
-          <span>Quels types de parfums proposez-vous ?</span>
+          <span data-i18n="faqQ1">Quels types de parfums proposez-vous ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA1">Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.</div></div>
       </div>
       <div class="faq-item reveal d2">
         <button type="button" class="faq-question">
-          <span>Comment choisir le parfum idéal ?</span>
+          <span data-i18n="faqQ2">Comment choisir le parfum idéal ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA2">Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.</div></div>
       </div>
       <div class="faq-item reveal d3">
         <button type="button" class="faq-question">
-          <span>Quelle est la tenue moyenne ?</span>
+          <span data-i18n="faqQ3">Quelle est la tenue moyenne ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA3">Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.</div></div>
       </div>
       <div class="faq-item reveal d4">
         <button type="button" class="faq-question">
-          <span>Vos parfums sont-ils sûrs pour la peau ?</span>
+          <span data-i18n="faqQ4">Vos parfums sont-ils sûrs pour la peau ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA4">Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.</div></div>
       </div>
       <div class="faq-item reveal d1">
         <button type="button" class="faq-question">
-          <span>Comment fonctionne la livraison ?</span>
+          <span data-i18n="faqQ5">Comment fonctionne la livraison ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA5">Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.</div></div>
       </div>
       <div class="faq-item reveal d2">
         <button type="button" class="faq-question">
-          <span>Quels sont les délais de livraison ?</span>
+          <span data-i18n="faqQ6">Quels sont les délais de livraison ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA6">Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.</div></div>
       </div>
       <div class="faq-item reveal d3">
         <button type="button" class="faq-question">
-          <span>Puis-je retourner un produit ?</span>
+          <span data-i18n="faqQ7">Puis-je retourner un produit ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA7">Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.</div></div>
       </div>
       <div class="faq-item reveal d4">
         <button type="button" class="faq-question">
-          <span>Comment conserver mon parfum ?</span>
+          <span data-i18n="faqQ8">Comment conserver mon parfum ?</span>
           <span class="faq-question-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="faq-answer"><div class="faq-answer-inner">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
+        <div class="faq-answer"><div class="faq-answer-inner" data-i18n="faqA8">Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.</div></div>
       </div>
     </div>
     </div>
@@ -852,7 +871,7 @@ try {
 
 <section class="lux-section lux-section-alt" id="reviews-section">
   <div class="container">
-    <h2 class="lux-heading reveal">Avis de nos clients</h2>
+    <h2 class="lux-heading reveal" data-i18n="reviewsHeading">Avis de nos clients</h2>
 
     <div class="testimonial-carousel reveal" id="testimonial-carousel">
       <div class="testimonial-carousel-track" id="reviews-grid">
@@ -862,12 +881,12 @@ try {
     </div>
 
     <div class="testimonial-empty" id="reviews-empty-note" style="display:none;">
-      <p class="testimonial-empty-title">Les premières confidences n'ont pas encore été partagées.</p>
-      <p class="testimonial-empty-sub">Soyez le premier à raconter votre expérience avec KORAL.</p>
+      <p class="testimonial-empty-title" data-i18n="testimonialEmptyTitle">Les premières confidences n'ont pas encore été partagées.</p>
+      <p class="testimonial-empty-sub" data-i18n="testimonialEmptySub">Soyez le premier à raconter votre expérience avec KORAL.</p>
     </div>
 
     <div class="testimonial-write-row">
-      <button type="button" class="reviews-write-btn-outline" id="reviews-write-btn">Écrire un avis</button>
+      <button type="button" class="reviews-write-btn-outline" id="reviews-write-btn" data-i18n="writeReviewBtn">Écrire un avis</button>
     </div>
   </div>
 </section>
@@ -877,19 +896,19 @@ try {
 <div class="modal-overlay" id="review-overlay"></div>
 <div class="checkout-modal review-modal" id="review-modal" style="text-align:left;">
   <button class="wd-close" id="review-modal-close" aria-label="Close">✕</button>
-  <h3 class="review-modal-title">Partagez votre avis</h3>
-  <p class="review-modal-subtitle">Votre avis compte beaucoup pour nous
+  <h3 class="review-modal-title" data-i18n="reviewModalTitle">Partagez votre avis</h3>
+  <p class="review-modal-subtitle"><span data-i18n="reviewModalSubtitle">Votre avis compte beaucoup pour nous</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 21s-7.2-4.4-9.6-8.8C.6 8.4 2.8 5 6.4 5c2 0 3.6 1.3 5.6 3.8C14 6.3 15.6 5 17.6 5c3.6 0 5.8 3.4 4 7.2C19.2 16.6 12 21 12 21z"/></svg>
   </p>
   <form id="review-form">
     <div class="review-card">
       <div class="review-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.3-4 4-6 7.5-6s6.2 2 7.5 6"/></svg></div>
-      <input type="text" id="review-name" class="review-card-input" required maxlength="60" placeholder="Votre nom">
+      <input type="text" id="review-name" class="review-card-input" required maxlength="60" data-i18n-placeholder="reviewNamePh" placeholder="Votre nom">
     </div>
     <div class="review-card review-card-stars">
       <div class="review-card-stars-head">
-        <span class="review-card-label">Votre note</span>
-        <span class="review-stars-hint" id="review-stars-hint">Sélectionnez une note</span>
+        <span class="review-card-label" data-i18n="reviewYourRating">Votre note</span>
+        <span class="review-stars-hint" id="review-stars-hint" data-i18n="reviewSelectRating">Sélectionnez une note</span>
       </div>
       <div class="review-star-picker" id="review-star-picker" role="radiogroup" aria-label="Note">
         <button type="button" class="review-star-btn" data-star="1" aria-label="1 étoile">★</button>
@@ -902,15 +921,15 @@ try {
     </div>
     <div class="review-card review-card-textarea">
       <div class="review-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c0 4-3.8 7-8.5 7-1 0-1.9-.1-2.8-.4L4 20l1.3-3.9C4.1 14.9 3.5 13.5 3.5 12c0-4 3.8-7 8.5-7s9 3 9 7z"/></svg></div>
-      <textarea id="review-comment" class="review-card-input review-textarea" required maxlength="600" rows="4" placeholder="Racontez votre expérience avec ce parfum..."></textarea>
+      <textarea id="review-comment" class="review-card-input review-textarea" required maxlength="600" rows="4" data-i18n-placeholder="reviewCommentPh" placeholder="Racontez votre expérience avec ce parfum..."></textarea>
     </div>
     <div class="review-card review-card-photo">
-      <div class="review-card-photo-head">Ajouter une photo <em class="review-optional-tag">(optionnel)</em></div>
+      <div class="review-card-photo-head"><span data-i18n="reviewAddPhoto">Ajouter une photo</span> <em class="review-optional-tag" data-i18n="reviewOptional">(optionnel)</em></div>
       <div class="review-image-upload" id="review-image-upload">
         <input type="file" id="review-image-input" accept="image/*" style="display:none;">
         <div class="review-image-placeholder" id="review-image-placeholder">
           <span class="review-image-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg></span>
-          <span class="review-image-text">Cliquez pour ajouter ou glissez-déposez</span>
+          <span class="review-image-text" data-i18n="reviewClickOrDrag">Cliquez pour ajouter ou glissez-déposez</span>
         </div>
         <img id="review-image-preview" style="display:none;">
         <button type="button" id="review-image-remove" style="display:none;" aria-label="Supprimer la photo">✕</button>
@@ -918,19 +937,19 @@ try {
     </div>
     <p class="review-security-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
-      <span>Vos données sont sécurisées et ne seront pas publiées sans validation.</span>
+      <span data-i18n="reviewSecurityNote">Vos données sont sécurisées et ne seront pas publiées sans validation.</span>
     </p>
-    <p id="review-form-error" style="display:none; color:#c0392b; font-size:13px; margin:-8px 0 14px;">Veuillez renseigner votre nom, une note et un commentaire.</p>
+    <p id="review-form-error" style="display:none; color:#c0392b; font-size:13px; margin:-8px 0 14px;" data-i18n="reviewFormError">Veuillez renseigner votre nom, une note et un commentaire.</p>
     <button type="submit" class="review-submit-btn" id="review-submit-btn">
-      <span>Envoyer mon avis</span>
+      <span data-i18n="reviewSubmitBtn">Envoyer mon avis</span>
       <span class="review-submit-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
     </button>
   </form>
   <div id="review-thanks" style="display:none; text-align:center; padding:20px 0;">
     <div class="review-thanks-icon">✓</div>
-    <h3 style="margin:14px 0 8px;">Merci pour votre avis !</h3>
-    <p style="color:var(--text-soft); font-size:14px; line-height:1.7;">Votre commentaire sera publié dès qu'il aura été validé par notre équipe.</p>
-    <button type="button" class="checkout-btn" id="review-thanks-close">Fermer</button>
+    <h3 style="margin:14px 0 8px;" data-i18n="reviewThanksTitle">Merci pour votre avis !</h3>
+    <p style="color:var(--text-soft); font-size:14px; line-height:1.7;" data-i18n="reviewThanksSub">Votre commentaire sera publié dès qu'il aura été validé par notre équipe.</p>
+    <button type="button" class="checkout-btn" id="review-thanks-close" data-i18n="closeBtn">Fermer</button>
   </div>
 </div>
 
@@ -1050,23 +1069,23 @@ try {
   <div class="container">
     <div class="footer-top">
       <div class="footer-logo"><img class="seq-lazy footer-logo-img" data-src="/histoire-logo.webp" alt="KORAL" width="2299" height="707" decoding="async"></div>
-      <p class="footer-tagline">Fabrication française · Ingrédients d'exception</p>
+      <p class="footer-tagline" data-i18n="footerTagline">Fabrication française · Ingrédients d'exception</p>
     </div>
 
     <div class="footer-links-grid">
       <div class="footer-links-col">
-        <h3>Liens Rapides</h3>
-        <button type="button" id="footer-link-men">Collection Homme</button>
-        <button type="button" id="footer-link-women">Collection Femme</button>
-        <button type="button" id="footer-link-faq">FAQ</button>
-        <button type="button" id="footer-link-contact">Contact</button>
+        <h3 data-i18n="footerQuickLinks">Liens Rapides</h3>
+        <button type="button" id="footer-link-men" data-i18n="footerLinkMen">Collection Homme</button>
+        <button type="button" id="footer-link-women" data-i18n="footerLinkWomen">Collection Femme</button>
+        <button type="button" id="footer-link-faq" data-i18n="footerLinkFaq">FAQ</button>
+        <button type="button" id="footer-link-contact" data-i18n="footerLinkContact">Contact</button>
       </div>
       <div class="footer-links-col">
-        <h3>Politiques</h3>
-        <button type="button" id="footer-link-privacy">Politique de confidentialité</button>
-        <button type="button" id="footer-link-terms">Conditions générales</button>
-        <button type="button" id="footer-link-shipping">Politique de livraison</button>
-        <button type="button" id="footer-link-returns">Politique de retour</button>
+        <h3 data-i18n="footerPolicies">Politiques</h3>
+        <button type="button" id="footer-link-privacy" data-i18n="footerLinkPrivacy">Politique de confidentialité</button>
+        <button type="button" id="footer-link-terms" data-i18n="footerLinkTerms">Conditions générales</button>
+        <button type="button" id="footer-link-shipping" data-i18n="footerLinkShipping">Politique de livraison</button>
+        <button type="button" id="footer-link-returns" data-i18n="footerLinkReturns">Politique de retour</button>
       </div>
     </div>
 
@@ -1200,7 +1219,7 @@ try {
     <button type="button" class="side-menu-item" id="side-menu-founder">
       <span class="sm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:19px;height:19px;"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg></span>
       <span class="sm-item-text">
-        <span class="sm-item-label">Derrière la Marque</span>
+        <span class="sm-item-label" data-i18n="sideMenuFounder">Derrière la Marque</span>
       </span>
       <svg class="sm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
     </button>
@@ -1222,7 +1241,7 @@ try {
 <div class="modal-overlay" id="founder-overlay"></div>
 <div class="checkout-modal" id="founder-modal" style="text-align:left; overflow-y:auto;">
   <button class="wd-close" id="founder-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:20px;">Derrière la Marque</h3>
+  <h3 style="margin-bottom:20px;" data-i18n="sideMenuFounder">Derrière la Marque</h3>
   <div class="founder-photo-wrap" id="founder-photo-wrap">
     <img id="founder-photo-img" class="founder-photo" style="display:none;">
     <div class="founder-photo-placeholder" id="founder-photo-placeholder">
@@ -1235,8 +1254,8 @@ try {
   </div>
   <p class="founder-bio-text" id="founder-bio-text" style="font-size:14.5px; color:var(--text-soft); line-height:1.85; white-space:pre-line; text-align:center;"></p>
   <div id="founder-bio-edit-wrap" style="display:none;">
-    <textarea id="founder-bio-input" class="cf-input" rows="9" style="resize:vertical; margin-top:6px;" placeholder="Parlez de vous : votre parcours, vos objectifs, vos ambitions pour KORAL..."></textarea>
-    <button type="button" class="coupon-apply-btn" id="founder-bio-save" style="margin-top:10px; width:100%;">Enregistrer</button>
+    <textarea id="founder-bio-input" class="cf-input" rows="9" style="resize:vertical; margin-top:6px;" data-i18n-placeholder="founderBioPlaceholder" placeholder="Parlez de vous : votre parcours, vos objectifs, vos ambitions pour KORAL..."></textarea>
+    <button type="button" class="coupon-apply-btn" id="founder-bio-save" style="margin-top:10px; width:100%;" data-i18n="founderBioSave">Enregistrer</button>
   </div>
 </div>
 
@@ -1254,64 +1273,64 @@ try {
 <div class="modal-overlay" id="privacy-overlay"></div>
 <div class="checkout-modal" id="privacy-modal" style="text-align:left; overflow-y:auto;">
   <button class="wd-close" id="privacy-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:14px;">Politique de confidentialité</h3>
+  <h3 style="margin-bottom:14px;" data-i18n="footerLinkPrivacy">Politique de confidentialité</h3>
   <div class="policy-modal-body">
-    <h4>Collecte des données</h4>
-    <p>Nous collectons uniquement les informations nécessaires au traitement de votre commande : nom, numéro de téléphone, adresse de livraison et ville.</p>
-    <h4>Utilisation des données</h4>
-    <p>Ces informations sont utilisées exclusivement pour confirmer, préparer et livrer votre commande, ainsi que pour vous contacter en cas de besoin.</p>
-    <h4>Protection des données</h4>
-    <p>Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales. Elles sont conservées de manière sécurisée.</p>
-    <h4>Vos droits</h4>
-    <p>Vous pouvez à tout moment demander la consultation, la modification ou la suppression de vos données en nous contactant via WhatsApp ou par email.</p>
+    <h4 data-i18n="privacyH1">Collecte des données</h4>
+    <p data-i18n="privacyP1">Nous collectons uniquement les informations nécessaires au traitement de votre commande : nom, numéro de téléphone, adresse de livraison et ville.</p>
+    <h4 data-i18n="privacyH2">Utilisation des données</h4>
+    <p data-i18n="privacyP2">Ces informations sont utilisées exclusivement pour confirmer, préparer et livrer votre commande, ainsi que pour vous contacter en cas de besoin.</p>
+    <h4 data-i18n="privacyH3">Protection des données</h4>
+    <p data-i18n="privacyP3">Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales. Elles sont conservées de manière sécurisée.</p>
+    <h4 data-i18n="privacyH4">Vos droits</h4>
+    <p data-i18n="privacyP4">Vous pouvez à tout moment demander la consultation, la modification ou la suppression de vos données en nous contactant via WhatsApp ou par email.</p>
   </div>
 </div>
 
 <div class="modal-overlay" id="terms-overlay"></div>
 <div class="checkout-modal" id="terms-modal" style="text-align:left; overflow-y:auto;">
   <button class="wd-close" id="terms-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:14px;">Conditions générales</h3>
+  <h3 style="margin-bottom:14px;" data-i18n="footerLinkTerms">Conditions générales</h3>
   <div class="policy-modal-body">
-    <h4>Commandes</h4>
-    <p>Toute commande passée sur KORAL est considérée comme définitive après confirmation par nos équipes, par téléphone ou WhatsApp.</p>
-    <h4>Prix</h4>
-    <p>Les prix affichés sont en Dirhams marocains (DH) et incluent la TVA le cas échéant. Les frais de livraison sont indiqués séparément avant validation de la commande.</p>
-    <h4>Paiement</h4>
-    <p>Le paiement s'effectue exclusivement à la livraison (Cash on Delivery), sauf indication contraire.</p>
-    <h4>Responsabilité</h4>
-    <p>KORAL s'engage à livrer des produits conformes à la description affichée sur le site. En cas d'anomalie, contactez notre service client sous 48h après réception.</p>
+    <h4 data-i18n="termsH1">Commandes</h4>
+    <p data-i18n="termsP1">Toute commande passée sur KORAL est considérée comme définitive après confirmation par nos équipes, par téléphone ou WhatsApp.</p>
+    <h4 data-i18n="termsH2">Prix</h4>
+    <p data-i18n="termsP2">Les prix affichés sont en Dirhams marocains (DH) et incluent la TVA le cas échéant. Les frais de livraison sont indiqués séparément avant validation de la commande.</p>
+    <h4 data-i18n="termsH3">Paiement</h4>
+    <p data-i18n="termsP3">Le paiement s'effectue exclusivement à la livraison (Cash on Delivery), sauf indication contraire.</p>
+    <h4 data-i18n="termsH4">Responsabilité</h4>
+    <p data-i18n="termsP4">KORAL s'engage à livrer des produits conformes à la description affichée sur le site. En cas d'anomalie, contactez notre service client sous 48h après réception.</p>
   </div>
 </div>
 
 <div class="modal-overlay" id="shipping-overlay"></div>
 <div class="checkout-modal" id="shipping-modal" style="text-align:left; overflow-y:auto;">
   <button class="wd-close" id="shipping-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:14px;">Politique de livraison</h3>
+  <h3 style="margin-bottom:14px;" data-i18n="footerLinkShipping">Politique de livraison</h3>
   <div class="policy-modal-body">
-    <h4>Zone de livraison</h4>
-    <p>Nous livrons dans toutes les villes du Maroc, via des partenaires de livraison locaux fiables.</p>
-    <h4>Délais</h4>
-    <p>Le délai de livraison moyen est de 1 à 3 jours ouvrables après confirmation de la commande, selon votre ville.</p>
-    <h4>Frais de livraison</h4>
-    <p>Des frais de livraison forfaitaires s'appliquent et sont indiqués avant validation de la commande. La livraison est gratuite à partir de 195 DH d'achat.</p>
-    <h4>Suivi de commande</h4>
-    <p>Un numéro de commande vous est fourni pour suivre l'état de votre livraison à tout moment depuis le site.</p>
+    <h4 data-i18n="shippingH1">Zone de livraison</h4>
+    <p data-i18n="shippingP1">Nous livrons dans toutes les villes du Maroc, via des partenaires de livraison locaux fiables.</p>
+    <h4 data-i18n="shippingH2">Délais</h4>
+    <p data-i18n="shippingP2">Le délai de livraison moyen est de 1 à 3 jours ouvrables après confirmation de la commande, selon votre ville.</p>
+    <h4 data-i18n="shippingH3">Frais de livraison</h4>
+    <p data-i18n="shippingP3">Des frais de livraison forfaitaires s'appliquent et sont indiqués avant validation de la commande. La livraison est gratuite à partir de 195 DH d'achat.</p>
+    <h4 data-i18n="shippingH4">Suivi de commande</h4>
+    <p data-i18n="shippingP4">Un numéro de commande vous est fourni pour suivre l'état de votre livraison à tout moment depuis le site.</p>
   </div>
 </div>
 
 <div class="modal-overlay" id="returns-overlay"></div>
 <div class="checkout-modal" id="returns-modal" style="text-align:left; overflow-y:auto;">
   <button class="wd-close" id="returns-modal-close" aria-label="Close">✕</button>
-  <h3 style="margin-bottom:14px;">Politique de retour</h3>
+  <h3 style="margin-bottom:14px;" data-i18n="footerLinkReturns">Politique de retour</h3>
   <div class="policy-modal-body">
-    <h4>Conditions de retour</h4>
-    <p>Un retour est accepté dans un délai de 7 jours après réception, à condition que le produit soit non ouvert, non utilisé et dans son emballage d'origine.</p>
-    <h4>Procédure</h4>
-    <p>Contactez notre service client par WhatsApp ou téléphone en précisant votre numéro de commande pour lancer une demande de retour ou d'échange.</p>
-    <h4>Remboursement</h4>
-    <p>Après validation du retour, le remboursement ou l'échange est effectué dans les meilleurs délais selon le mode convenu avec notre équipe.</p>
-    <h4>Produits non éligibles</h4>
-    <p>Les produits ouverts, testés ou endommagés ne peuvent malheureusement pas être repris.</p>
+    <h4 data-i18n="returnsH1">Conditions de retour</h4>
+    <p data-i18n="returnsP1">Un retour est accepté dans un délai de 7 jours après réception, à condition que le produit soit non ouvert, non utilisé et dans son emballage d'origine.</p>
+    <h4 data-i18n="returnsH2">Procédure</h4>
+    <p data-i18n="returnsP2">Contactez notre service client par WhatsApp ou téléphone en précisant votre numéro de commande pour lancer une demande de retour ou d'échange.</p>
+    <h4 data-i18n="returnsH3">Remboursement</h4>
+    <p data-i18n="returnsP3">Après validation du retour, le remboursement ou l'échange est effectué dans les meilleurs délais selon le mode convenu avec notre équipe.</p>
+    <h4 data-i18n="returnsH4">Produits non éligibles</h4>
+    <p data-i18n="returnsP4">Les produits ouverts, testés ou endommagés ne peuvent malheureusement pas être repris.</p>
   </div>
 </div>
 

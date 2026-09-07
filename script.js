@@ -439,7 +439,95 @@ const translations = {
     deleteCustomerTemplate: 'Supprimer le client "{name}" ? Cette action est irréversible.',
     deleteOrderTemplate: 'Supprimer la commande de "{name}" ? Cette action est irréversible.',
     deleteSelectedOrdersTemplate: 'Supprimer les {count} commandes sélectionnées ? Cette action est irréversible.',
-    orderItemsLabel: "Articles"
+    orderItemsLabel: "Articles",
+    splashHeading: "IL Y A DES MOMENTS QU\u2019ON N\u2019OUBLIE JAMAIS",
+    splashEnterBtn: "Découvrir la collection",
+    splashGenderTitle: "Quel pack KORAL voulez-vous composer ?",
+    genderWomen: "Femme",
+    genderMen: "Homme",
+    genderMixte: "Mixte",
+    footerTagline: "Fabrication française · Ingrédients d'exception",
+    footerQuickLinks: "Liens Rapides",
+    footerLinkMen: "Collection Homme",
+    footerLinkWomen: "Collection Femme",
+    footerLinkFaq: "FAQ",
+    footerLinkContact: "Contact",
+    footerPolicies: "Politiques",
+    footerLinkPrivacy: "Politique de confidentialité",
+    footerLinkTerms: "Conditions générales",
+    footerLinkShipping: "Politique de livraison",
+    footerLinkReturns: "Politique de retour",
+    sideMenuFounder: "Derrière la Marque",
+    founderBioPlaceholder: "Parlez de vous : votre parcours, vos objectifs, vos ambitions pour KORAL...",
+    founderBioSave: "Enregistrer",
+    privacyH1: "Collecte des données",
+    privacyP1: "Nous collectons uniquement les informations nécessaires au traitement de votre commande : nom, numéro de téléphone, adresse de livraison et ville.",
+    privacyH2: "Utilisation des données",
+    privacyP2: "Ces informations sont utilisées exclusivement pour confirmer, préparer et livrer votre commande, ainsi que pour vous contacter en cas de besoin.",
+    privacyH3: "Protection des données",
+    privacyP3: "Vos données ne sont jamais vendues ni partagées avec des tiers à des fins commerciales. Elles sont conservées de manière sécurisée.",
+    privacyH4: "Vos droits",
+    privacyP4: "Vous pouvez à tout moment demander la consultation, la modification ou la suppression de vos données en nous contactant via WhatsApp ou par email.",
+    termsH1: "Commandes",
+    termsP1: "Toute commande passée sur KORAL est considérée comme définitive après confirmation par nos équipes, par téléphone ou WhatsApp.",
+    termsH2: "Prix",
+    termsP2: "Les prix affichés sont en Dirhams marocains (DH) et incluent la TVA le cas échéant. Les frais de livraison sont indiqués séparément avant validation de la commande.",
+    termsH3: "Paiement",
+    termsP3: "Le paiement s'effectue exclusivement à la livraison (Cash on Delivery), sauf indication contraire.",
+    termsH4: "Responsabilité",
+    termsP4: "KORAL s'engage à livrer des produits conformes à la description affichée sur le site. En cas d'anomalie, contactez notre service client sous 48h après réception.",
+    shippingH1: "Zone de livraison",
+    shippingP1: "Nous livrons dans toutes les villes du Maroc, via des partenaires de livraison locaux fiables.",
+    shippingH2: "Délais",
+    shippingP2: "Le délai de livraison moyen est de 1 à 3 jours ouvrables après confirmation de la commande, selon votre ville.",
+    shippingH3: "Frais de livraison",
+    shippingP3: "Des frais de livraison forfaitaires s'appliquent et sont indiqués avant validation de la commande. La livraison est gratuite à partir de 195 DH d'achat.",
+    shippingH4: "Suivi de commande",
+    shippingP4: "Un numéro de commande vous est fourni pour suivre l'état de votre livraison à tout moment depuis le site.",
+    returnsH1: "Conditions de retour",
+    returnsP1: "Un retour est accepté dans un délai de 7 jours après réception, à condition que le produit soit non ouvert, non utilisé et dans son emballage d'origine.",
+    returnsH2: "Procédure",
+    returnsP2: "Contactez notre service client par WhatsApp ou téléphone en précisant votre numéro de commande pour lancer une demande de retour ou d'échange.",
+    returnsH3: "Remboursement",
+    returnsP3: "Après validation du retour, le remboursement ou l'échange est effectué dans les meilleurs délais selon le mode convenu avec notre équipe.",
+    returnsH4: "Produits non éligibles",
+    returnsP4: "Les produits ouverts, testés ou endommagés ne peuvent malheureusement pas être repris.",
+    faqSectionTitle: "FAQ",
+    faqQ1: "Quels types de parfums proposez-vous ?",
+    faqA1: "Nous proposons une large gamme de parfums pour homme et femme, inspirés des plus grandes maisons de luxe, ainsi que des packs découverte pour varier les senteurs.",
+    faqQ2: "Comment choisir le parfum idéal ?",
+    faqA2: "Chaque fiche produit indique la famille olfactive et l'occasion idéale. Vous pouvez aussi nous écrire sur WhatsApp pour un conseil personnalisé selon vos goûts.",
+    faqQ3: "Quelle est la tenue moyenne ?",
+    faqA3: "Nos parfums offrent en moyenne une tenue de 6 à 10 heures selon le type de peau et la concentration du flacon choisi.",
+    faqQ4: "Vos parfums sont-ils sûrs pour la peau ?",
+    faqA4: "Oui, tous nos flacons passent par un contrôle qualité avant expédition. Comme pour tout parfum, nous recommandons un test sur une petite zone de peau avant la première utilisation.",
+    faqQ5: "Comment fonctionne la livraison ?",
+    faqA5: "Nous livrons partout au Maroc avec paiement à la livraison. Vous recevez un numéro de commande pour suivre son statut en temps réel.",
+    faqQ6: "Quels sont les délais de livraison ?",
+    faqA6: "Le délai moyen est de 1 à 3 jours ouvrables selon votre ville, comptés à partir de la confirmation de votre commande.",
+    faqQ7: "Puis-je retourner un produit ?",
+    faqA7: "Oui, les retours sont acceptés dans les 7 jours suivant la réception si le produit est non ouvert et dans son emballage d'origine. Consultez notre politique de retour pour les détails.",
+    faqQ8: "Comment conserver mon parfum ?",
+    faqA8: "Conservez votre flacon à l'abri de la lumière directe et de la chaleur, idéalement dans son coffret, pour préserver sa qualité le plus longtemps possible.",
+    collectionDividerText: "Chaque flacon, une histoire.",
+    reviewsHeading: "Avis de nos clients",
+    testimonialEmptyTitle: "Les premières confidences n'ont pas encore été partagées.",
+    testimonialEmptySub: "Soyez le premier à raconter votre expérience avec KORAL.",
+    writeReviewBtn: "Écrire un avis",
+    reviewModalTitle: "Partagez votre avis",
+    reviewModalSubtitle: "Votre avis compte beaucoup pour nous",
+    reviewNamePh: "Votre nom",
+    reviewYourRating: "Votre note",
+    reviewSelectRating: "Sélectionnez une note",
+    reviewCommentPh: "Racontez votre expérience avec ce parfum...",
+    reviewAddPhoto: "Ajouter une photo",
+    reviewOptional: "(optionnel)",
+    reviewClickOrDrag: "Cliquez pour ajouter ou glissez-déposez",
+    reviewSecurityNote: "Vos données sont sécurisées et ne seront pas publiées sans validation.",
+    reviewFormError: "Veuillez renseigner votre nom, une note et un commentaire.",
+    reviewSubmitBtn: "Envoyer mon avis",
+    reviewThanksTitle: "Merci pour votre avis !",
+    reviewThanksSub: "Votre commentaire sera publié dès qu'il aura été validé par notre équipe."
   },
   ar: {
     cartEmpty: "سلة التسوق فارغة.",
@@ -638,7 +726,95 @@ const translations = {
     deleteCustomerTemplate: 'حذف العميل "{name}"؟ هذا الإجراء لا يمكن التراجع عنه.',
     deleteOrderTemplate: 'حذف طلب "{name}"؟ هذا الإجراء لا يمكن التراجع عنه.',
     deleteSelectedOrdersTemplate: 'حذف الطلبات المحددة ({count})؟ هذا الإجراء لا يمكن التراجع عنه.',
-    orderItemsLabel: "المنتجات"
+    orderItemsLabel: "المنتجات",
+    splashHeading: "هناك لحظات لا تُنسى أبدًا",
+    splashEnterBtn: "اكتشف المجموعة",
+    splashGenderTitle: "أي باك من KORAL تريد تكوينه؟",
+    genderWomen: "نسائي",
+    genderMen: "رجالي",
+    genderMixte: "مختلط",
+    footerTagline: "صناعة فرنسية · مكونات استثنائية",
+    footerQuickLinks: "روابط سريعة",
+    footerLinkMen: "مجموعة رجالي",
+    footerLinkWomen: "مجموعة نسائي",
+    footerLinkFaq: "الأسئلة الشائعة",
+    footerLinkContact: "اتصل بنا",
+    footerPolicies: "السياسات",
+    footerLinkPrivacy: "سياسة الخصوصية",
+    footerLinkTerms: "الشروط والأحكام",
+    footerLinkShipping: "سياسة التوصيل",
+    footerLinkReturns: "سياسة الإرجاع",
+    sideMenuFounder: "خلف العلامة",
+    founderBioPlaceholder: "تحدث عن نفسك: مسارك، أهدافك، طموحاتك من أجل KORAL...",
+    founderBioSave: "حفظ",
+    privacyH1: "جمع البيانات",
+    privacyP1: "نجمع فقط المعلومات الضرورية لمعالجة طلبكم: الاسم، رقم الهاتف، عنوان التوصيل والمدينة.",
+    privacyH2: "استخدام البيانات",
+    privacyP2: "تُستخدم هذه المعلومات حصريًا لتأكيد طلبكم وتحضيره وتوصيله، وكذلك للتواصل معكم عند الحاجة.",
+    privacyH3: "حماية البيانات",
+    privacyP3: "لا تُباع بياناتكم أبدًا ولا تُشارك مع أطراف ثالثة لأغراض تجارية. يتم الاحتفاظ بها بشكل آمن.",
+    privacyH4: "حقوقكم",
+    privacyP4: "يمكنكم في أي وقت طلب الاطلاع على بياناتكم أو تعديلها أو حذفها من خلال التواصل معنا عبر واتساب أو البريد الإلكتروني.",
+    termsH1: "الطلبات",
+    termsP1: "يُعتبر أي طلب على KORAL نهائيًا بعد تأكيده من قبل فريقنا، عبر الهاتف أو واتساب.",
+    termsH2: "الأسعار",
+    termsP2: "الأسعار المعروضة بالدرهم المغربي (DH) وتشمل الضريبة عند الاقتضاء. تُذكر مصاريف التوصيل بشكل منفصل قبل تأكيد الطلب.",
+    termsH3: "الدفع",
+    termsP3: "يتم الدفع حصريًا عند التوصيل (الدفع عند الاستلام)، ما لم يُذكر خلاف ذلك.",
+    termsH4: "المسؤولية",
+    termsP4: "تلتزم KORAL بتوصيل منتجات مطابقة للوصف المعروض على الموقع. في حال وجود أي خلل، تواصلوا مع خدمة العملاء خلال 48 ساعة بعد الاستلام.",
+    shippingH1: "منطقة التوصيل",
+    shippingP1: "نوصل إلى جميع مدن المغرب، عبر شركاء توصيل محليين موثوقين.",
+    shippingH2: "الآجال",
+    shippingP2: "متوسط مدة التوصيل من 1 إلى 3 أيام عمل بعد تأكيد الطلب، حسب مدينتكم.",
+    shippingH3: "مصاريف التوصيل",
+    shippingP3: "تُطبق مصاريف توصيل ثابتة وتُذكر قبل تأكيد الطلب. التوصيل مجاني ابتداءً من 195 درهمًا من المشتريات.",
+    shippingH4: "تتبع الطلب",
+    shippingP4: "يُزوَّد كل عميل برقم طلب لتتبع حالة توصيله في أي وقت عبر الموقع.",
+    returnsH1: "شروط الإرجاع",
+    returnsP1: "يُقبل الإرجاع خلال 7 أيام من الاستلام، بشرط أن يكون المنتج غير مفتوح وغير مستعمل وفي تغليفه الأصلي.",
+    returnsH2: "الإجراء",
+    returnsP2: "تواصلوا مع خدمة العملاء عبر واتساب أو الهاتف مع تحديد رقم طلبكم لبدء طلب إرجاع أو استبدال.",
+    returnsH3: "الاسترداد",
+    returnsP3: "بعد التحقق من الإرجاع، يتم رد المبلغ أو الاستبدال في أقرب وقت ممكن حسب الطريقة المتفق عليها مع فريقنا.",
+    returnsH4: "منتجات غير قابلة للإرجاع",
+    returnsP4: "للأسف، لا يمكن استرجاع المنتجات المفتوحة أو المجرَّبة أو التالفة.",
+    faqSectionTitle: "الأسئلة الشائعة",
+    faqQ1: "ما أنواع العطور التي تقدمونها؟",
+    faqA1: "نقدم مجموعة واسعة من العطور للرجال والنساء، مستوحاة من أكبر دور العطور الفاخرة، بالإضافة إلى باقات اكتشاف لتنويع الروائح.",
+    faqQ2: "كيف أختار العطر المثالي؟",
+    faqA2: "توضح كل بطاقة منتج العائلة العطرية والمناسبة المثالية له. يمكنكم أيضًا مراسلتنا عبر واتساب للحصول على نصيحة شخصية حسب ذوقكم.",
+    faqQ3: "ما هي مدة ثبات العطر في المتوسط؟",
+    faqA3: "تدوم عطورنا في المتوسط من 6 إلى 10 ساعات حسب نوع البشرة وتركيز القارورة المختارة.",
+    faqQ4: "هل عطوركم آمنة على البشرة؟",
+    faqA4: "نعم، تخضع جميع قواريرنا لمراقبة جودة قبل الشحن. وكما هو الحال مع أي عطر، نوصي بإجراء اختبار على منطقة صغيرة من البشرة قبل أول استخدام.",
+    faqQ5: "كيف يعمل التوصيل؟",
+    faqA5: "نوصل إلى جميع أنحاء المغرب مع الدفع عند الاستلام. ستحصلون على رقم طلب لتتبع حالته في الوقت الفعلي.",
+    faqQ6: "ما هي آجال التوصيل؟",
+    faqA6: "متوسط المدة من 1 إلى 3 أيام عمل حسب مدينتكم، تُحتسب ابتداءً من تأكيد طلبكم.",
+    faqQ7: "هل يمكنني إرجاع منتج؟",
+    faqA7: "نعم، يُقبل الإرجاع خلال 7 أيام من الاستلام إذا كان المنتج غير مفتوح وفي تغليفه الأصلي. راجعوا سياسة الإرجاع لمزيد من التفاصيل.",
+    faqQ8: "كيف أحافظ على عطري؟",
+    faqA8: "احفظوا القارورة بعيدًا عن الضوء المباشر والحرارة، ويُفضل داخل علبتها، للحفاظ على جودتها لأطول فترة ممكنة.",
+    collectionDividerText: "كل قارورة، حكاية.",
+    reviewsHeading: "آراء عملائنا",
+    testimonialEmptyTitle: "لم تُشارَك أولى الانطباعات بعد.",
+    testimonialEmptySub: "كن أول من يروي تجربته مع KORAL.",
+    writeReviewBtn: "اكتب تقييمًا",
+    reviewModalTitle: "شاركنا رأيك",
+    reviewModalSubtitle: "رأيك يهمنا كثيرًا",
+    reviewNamePh: "اسمك",
+    reviewYourRating: "تقييمك",
+    reviewSelectRating: "اختر تقييمًا",
+    reviewCommentPh: "احكِ لنا تجربتك مع هذا العطر...",
+    reviewAddPhoto: "أضف صورة",
+    reviewOptional: "(اختياري)",
+    reviewClickOrDrag: "انقر للإضافة أو اسحب وأفلت",
+    reviewSecurityNote: "بياناتك آمنة ولن تُنشر دون التحقق منها.",
+    reviewFormError: "يرجى إدخال اسمك وتقييم وتعليق.",
+    reviewSubmitBtn: "إرسال تقييمي",
+    reviewThanksTitle: "شكرًا على تقييمك!",
+    reviewThanksSub: "سيُنشر تعليقك بمجرد التحقق منه من قبل فريقنا."
   },
 };
 
@@ -664,6 +840,13 @@ function applyTranslations(){
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
   });
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+    el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria-label')));
+  });
+  // The splash heading is typed out word-by-word by an inline script in
+  // index.html (not a plain data-i18n swap), so it exposes its own hook
+  // to re-run with the right language's text whenever translations change.
+  if (typeof window.retypeSplashHeading === 'function') window.retypeSplashHeading();
 }
 
 const bottleColors = {
@@ -4769,6 +4952,29 @@ document.getElementById('menu-toggle-btn').addEventListener('click', () => openS
   applyTranslations();
   syncLabel();
 })();
+
+// iOS Safari has a well-known bug where text painted with a fallback font
+// *before* a custom web font (Cormorant Garamond / Work Sans / Poppins,
+// loaded from Google Fonts) finishes downloading doesn't get correctly
+// re-shaped once the real font swaps in -- for Arabic specifically this
+// shows up as letters rendering disconnected/isolated instead of joined
+// cursively, since Arabic shaping is font-dependent and the swap doesn't
+// always trigger a proper reflow. Elements whose text is set later (e.g.
+// after an interaction, once fonts are already loaded) don't hit this,
+// which is why it looks inconsistent across the page rather than affecting
+// everything at once. Re-running applyTranslations() once every font is
+// confirmed fully loaded forces a fresh text-content write (and reshape)
+// under the correct, final font -- cheap, and only fires once.
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function () {
+    try {
+      applyTranslations();
+      if (typeof window.retypeSplashHeading === 'function') window.retypeSplashHeading();
+      if (typeof renderShop === 'function') renderShop(currentFilter, true);
+      if (typeof renderHeroBanner === 'function') renderHeroBanner();
+    } catch (e) {}
+  });
+}
 
 document.getElementById('side-menu-close').addEventListener('click', () => closeSideMenu());
 document.getElementById('side-menu-overlay').addEventListener('click', () => closeSideMenu());
