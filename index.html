@@ -94,6 +94,7 @@ try {
 })();
 </script>
 <meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#35C4C9">
 <link rel="manifest" href="/manifest.json">
 <title>KORAL — Parfums de Luxe pour Homme et Femme</title>
 <meta name="description" content="KORAL — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
@@ -193,25 +194,73 @@ try {
        createBannerController in script.js. Shown only on the splash
        screen, not on the shop page. -->
   <div class="ws-content">
-    <section id="splash-banner-bottom" style="width:100vw; max-width:100vw; margin:0 calc(-50vw + 50%) 0;">
+    <section id="splash-banner-bottom" style="display:none; width:100%; max-width:520px; margin:0 0 18px;">
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
-        <div class="hb-hero-overlay">
-          <p class="ws-cta-heading" id="ws-cta-heading" aria-label="IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS"><span id="ws-cta-heading-text" aria-hidden="true"></span><span class="ws-cta-cursor" id="ws-cta-cursor" aria-hidden="true"></span></p>
-        </div>
       </div>
     </section>
     <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-  </div>
 
-  <!-- Lives outside the clipped hero-banner-frame on purpose: it needs to
-       float (position:fixed) over the splash content as the visitor
-       scrolls, which an "overflow:hidden" ancestor would otherwise clip.
-       The small script below parks it (position:absolute, pinned just
-       above the footer) once the footer scrolls into view, so it never
-       overlaps/covers the footer. The heading above stays static inside
-       the banner (doesn't float) -- only this button moves. -->
-  <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la collection</span></button>
+    <section class="brand-statement">
+      <span class="brand-statement-label">Notre Philosophie</span>
+      <p class="brand-statement-text">Certaines mémoires ne se racontent pas… elles se respirent.</p>
+    </section>
+
+    <button type="button" class="ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la Collection</span></button>
+    <p class="ws-social-proof" id="ws-social-proof" style="display:none;">
+      <span id="ws-social-proof-stars"></span>
+      <span id="ws-social-proof-text"></span>
+    </p>
+    <section class="pack-circles-section ws-pack-circles" id="pack-circles-section">
+      <div class="pack-circles-row">
+        <div class="pack-circle-item">
+          <span class="pack-circle-img-wrap" id="splash-circle-wrap">
+            <img class="pack-circle-img" id="splash-circle-img" src="" alt="Parfums" style="display:none;">
+            <span class="pack-circle-placeholder" id="splash-circle-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </span>
+            <button type="button" class="pack-circle-edit" id="splash-circle-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
+            <input type="file" id="splash-circle-input" accept="image/*,image/avif" hidden>
+          </span>
+          <span class="pack-circle-label">Parfums</span>
+        </div>
+      </div>
+    </section>
+    <p class="ws-subtitle">L'Art KORAL à Vivre</p>
+    <p class="ws-tagline">Fabrication française · Ingrédients d'exception</p>
+
+    <section id="splash-trust-section" style="width:100%; max-width:520px; margin:0 0 8px;">
+      <div class="pp-trust-grid pp-trust-grid-standalone">
+        <div class="pp-trust-item reveal d1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
+          <div><strong data-i18n="trustDeliveryTitle">Livraison 1-4j</strong><span data-i18n="trustDeliverySub">Partout au Maroc</span></div>
+        </div>
+        <div class="pp-trust-item reveal d2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/></svg>
+          <div><strong data-i18n="trustCertifiedTitle">Qualité certifiée</strong><span data-i18n="trustCertifiedSub">Parfums de qualité</span></div>
+        </div>
+        <div class="pp-trust-item reveal d3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          <div><strong data-i18n="trustPaymentTitle">Paiement</strong><span data-i18n="trustPaymentSub">À la livraison</span></div>
+        </div>
+        <div class="pp-trust-item reveal d4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-10-9.2C.5 7.8 2.5 4 6.5 4c2.3 0 4 1.3 5.5 3.3C13.5 5.3 15.2 4 17.5 4c4 0 6 3.8 4.5 7.3-2.5 4.6-10 9.2-10 9.2z"/></svg>
+          <div><strong data-i18n="trustSupportTitle">Service client</strong><span data-i18n="trustSupportSub">À votre écoute</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Splash-only banner slot, right below the enter button. Same
+         reusable banner system -- see createBannerController in
+         script.js. Shown only on the splash screen, not on the shop
+         page. -->
+    <section id="splash-banner-top" style="display:none; width:100%; max-width:520px; margin-top:8px;">
+      <div class="hero-banner-frame" id="splash-banner-top-frame">
+        <div id="splash-banner-top-content"></div>
+      </div>
+    </section>
+    <input type="file" id="splash-banner-top-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+  </div>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
@@ -236,38 +285,6 @@ try {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
-
-  // Types the splash heading out word by word, like someone typing it
-  // live, instead of it just appearing all at once. The full sentence is
-  // still set as an aria-label on the parent <p> (see markup) so screen
-  // readers get it immediately rather than word-by-word.
-  var headingTextEl = document.getElementById('ws-cta-heading-text');
-  var headingCursorEl = document.getElementById('ws-cta-cursor');
-  var HEADING_FULL_TEXT = 'IL Y A DES MOMENTS QU\u2019ON N\u2019OUBLIE JAMAIS';
-  var HEADING_WORD_DELAY = 160; // ms between each word appearing
-  var headingTypeTimer = null;
-  function typeHeading() {
-    if (!headingTextEl) return;
-    clearTimeout(headingTypeTimer);
-    headingTextEl.textContent = '';
-    if (headingCursorEl) headingCursorEl.classList.remove('ws-cta-cursor-hidden');
-    var words = HEADING_FULL_TEXT.split(' ');
-    var i = 0;
-    function typeNextWord() {
-      headingTextEl.textContent = words.slice(0, i + 1).join(' ');
-      i++;
-      if (i < words.length) {
-        headingTypeTimer = setTimeout(typeNextWord, HEADING_WORD_DELAY);
-      } else if (headingCursorEl) {
-        // Stop blinking a couple seconds after the sentence finishes,
-        // like a cursor settling once someone's done typing.
-        headingTypeTimer = setTimeout(function () {
-          headingCursorEl.classList.add('ws-cta-cursor-hidden');
-        }, 1800);
-      }
-    }
-    typeNextWord();
-  }
   // Repeat visits within the same session, and entry via the admin link
   // (see the ws-skip check in <head> above, which now covers both
   // cases), skip the greeting itself -- the chime and its up-front
@@ -309,39 +326,10 @@ try {
     if (footer) footerHome = { parent: footer.parentNode, next: footer.nextSibling };
   }
 
-  // Keeps the floating heading+button group pinned at a fixed spot on
-  // screen while the visitor scrolls the splash up/down, but "parks" it
-  // Keeps the floating "Decouvrir la collection" button pinned at a fixed
-  // spot on screen while the visitor scrolls the splash up/down, but
-  // "parks" it (switches to a normal, in-flow absolute position just
-  // above the footer) once the footer scrolls close enough that the
-  // fixed button would otherwise sit on top of it. Recomputed on every
-  // scroll/resize since the footer's position within the scrollable
-  // splash content can change (e.g. orientation change, banner image
-  // finishing loading and shifting layout).
-  var BTN_FIXED_TOP = 206; // keep in sync with .hb-hero-cta-repositioned top in style.css
-  var BTN_FOOTER_GAP = 16;
-  function updateEnterBtnParking() {
-    if (!btn || !footer) return;
-    var footerTopInScreen = footer.offsetTop; // offsetTop is relative to #welcome-screen, its offsetParent
-    var btnHeight = btn.offsetHeight || 44;
-    var wouldOverlap = (footerTopInScreen - screen.scrollTop) < (BTN_FIXED_TOP + btnHeight + BTN_FOOTER_GAP);
-    if (wouldOverlap) {
-      btn.classList.add('ws-enter-btn-parked');
-      btn.style.top = (footerTopInScreen - btnHeight - BTN_FOOTER_GAP) + 'px';
-    } else {
-      btn.classList.remove('ws-enter-btn-parked');
-      btn.style.top = '';
-    }
-  }
-
   function moveFooterToSplash() {
     captureFooter();
     if (!footer) return;
     screen.insertBefore(footer, wsChime || null);
-    updateEnterBtnParking();
-    screen.addEventListener('scroll', updateEnterBtnParking, { passive: true });
-    window.addEventListener('resize', updateEnterBtnParking);
   }
   function restoreFooter() {
     if (!footer || !footerHome) return;
@@ -350,9 +338,6 @@ try {
     } else {
       footerHome.parent.appendChild(footer);
     }
-    screen.removeEventListener('scroll', updateEnterBtnParking);
-    window.removeEventListener('resize', updateEnterBtnParking);
-    if (btn) { btn.classList.remove('ws-enter-btn-parked'); btn.style.top = ''; }
   }
 
   // Web Audio (fetch + decode ahead of time for near-instant playback)
@@ -398,7 +383,7 @@ try {
   // point in parsing, so this waits for DOMContentLoaded (by which
   // time the whole document, footer included, has been parsed).
   if (splashOpen) {
-    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); typeHeading(); });
+    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); });
   }
 
   function handleEnter(pushHistory) {
@@ -424,58 +409,15 @@ try {
     }
     screen.classList.add('ws-leaving');
     document.documentElement.style.overflow = '';
-    // Instant, not the page's default smooth scroll (see the matching
-    // note in forceScrollUnlock below) -- this is a reset to the top of
-    // a page the visitor hasn't scrolled yet, not a navigation they
-    // should see animate.
-    (function () {
-      var prev = document.documentElement.style.scrollBehavior;
-      document.documentElement.style.scrollBehavior = 'auto';
-      window.scrollTo(0, 0);
-      document.documentElement.style.scrollBehavior = prev;
-    })();
+    window.scrollTo(0, 0);
     // Hide (not remove) once the fade/slide-up transition finishes, so it
     // stops intercepting taps/clicks -- but stays in the DOM so pressing
     // Back can bring it back exactly as it was, instead of being rebuilt.
     var done = false;
-    function forceScrollUnlock() {
-      // Some in-app browsers (Instagram/Facebook/TikTok WebViews) fail to
-      // hand scroll control back to the page after this fixed, full-screen
-      // overlay leaves layout, leaving the shop page stuck / unable to
-      // scroll until the tab is fully reloaded. None of this affects
-      // normal browsers, where it's already a harmless no-op.
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      // html{scroll-behavior:smooth} in style.css would otherwise turn
-      // the scrollTo calls below into an animated scroll that can land a
-      // few pixels short of the very top. 'auto' makes them jump straight
-      // to position 0 every time, then restores whatever was set before
-      // so smooth-scrolling elsewhere (e.g. the nav's own anchor links)
-      // keeps working as before.
-      var prevScrollBehavior = document.documentElement.style.scrollBehavior;
-      document.documentElement.style.scrollBehavior = 'auto';
-      // A tiny 1px-then-back scroll nudge is what actually unsticks the
-      // affected in-app browsers -- it forces them to recompute scroll
-      // without touching display/visibility on anything, so none of the
-      // page's CSS animations (e.g. the hero banner's fade-in) get
-      // interrupted and replayed. An earlier version of this fix hid/
-      // showed the whole <body> instead, which did force the same
-      // reflow, but also restarted every running CSS animation on the
-      // page each time it ran -- visible as flashes of light across the
-      // shop's top banner right after entering.
-      try { window.scrollTo(0, 1); } catch (e) {}
-      window.scrollTo(0, 0);
-      document.documentElement.style.scrollBehavior = prevScrollBehavior;
-      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
-      try { window.dispatchEvent(new Event('orientationchange')); } catch (e) {}
-    }
     function cleanup() {
       if (done) return;
       done = true;
       screen.classList.add('ws-hidden');
-      forceScrollUnlock();
-      setTimeout(forceScrollUnlock, 60);
-      setTimeout(forceScrollUnlock, 300);
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
@@ -503,15 +445,6 @@ try {
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
     screen.classList.remove('ws-hidden', 'ws-leaving');
     document.documentElement.style.overflow = 'hidden';
-    // moveFooterToSplash() above ran its position check while the splash
-    // was still hidden (display:none), so the footer/button measurements
-    // it used were all zero -- that's what parked the button off-screen
-    // until the next scroll/touch recalculated it. Now that the splash's
-    // "hidden" class has just been removed and it's actually visible,
-    // recompute once more with real measurements so the button shows up
-    // in the right place immediately, with no scroll/touch needed.
-    requestAnimationFrame(updateEnterBtnParking);
-    typeHeading();
   }
   window.wsReopen = reopenSplash;
 
@@ -699,10 +632,6 @@ try {
             <span class="pack4-price-old">225 DH</span>
           </div>
         </div>
-        <div class="pack4-banner-shipping">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
-          <span>Livraison gratuite</span>
-        </div>
         <div class="pack4-banner-cta" id="pack4-banner-cta">
           <span data-i18n="pack4BannerCta">Composer mon pack</span>
           <span class="pack4-banner-cta-arrow">
@@ -714,15 +643,6 @@ try {
         </div>
       </div>
     </div>
-
-    <p class="collection-divider-text">Chaque flacon, une histoire.</p>
-
-    <section id="ws-banner-1" style="display:none; margin-bottom:24px;">
-      <div class="hero-banner-frame" id="ws-banner-1-frame">
-        <div id="ws-banner-1-content"></div>
-      </div>
-    </section>
-    <input type="file" id="ws-banner-1-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
 
     <div class="product-grid" id="shop-grid"></div>
     <div id="shop-load-more-wrap"></div>
@@ -745,10 +665,17 @@ try {
   </div>
 </section>
 
-<!-- One more admin-manageable banner slot (same reusable banner
+<!-- Two more admin-manageable banner slots (same reusable banner
      system as hero/bottom banners -- see createBannerController in
      script.js), permanently visible here on the shop page instead of
      only inside the one-time splash screen. -->
+<section id="ws-banner-1" style="display:none; margin-top:24px;">
+  <div class="hero-banner-frame" id="ws-banner-1-frame">
+    <div id="ws-banner-1-content"></div>
+  </div>
+</section>
+<input type="file" id="ws-banner-1-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
+
 <section id="ws-banner-2" style="display:none; margin-top:16px;">
   <div class="hero-banner-frame" id="ws-banner-2-frame">
     <div id="ws-banner-2-content"></div>
@@ -1023,7 +950,6 @@ try {
   <div class="container">
     <div class="footer-top">
       <div class="footer-logo"><img class="seq-lazy footer-logo-img" data-src="/histoire-logo.webp" alt="KORAL" width="2299" height="707" decoding="async"></div>
-      <p class="footer-tagline">Fabrication française · Ingrédients d'exception</p>
     </div>
 
     <div class="footer-links-grid">

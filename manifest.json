@@ -4,8 +4,8 @@
   "description": "KORAL — boutique de parfums de luxe pour homme et femme.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
+  "background_color": "#35C4C9",
+  "theme_color": "#35C4C9",
   "icons": [
     {
       "src": "/icon-192.png",
