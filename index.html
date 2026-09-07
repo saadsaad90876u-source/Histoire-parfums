@@ -197,13 +197,19 @@ try {
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
         <div class="hb-hero-overlay">
-          <h2 class="hb-hero-heading">Le parfum de<br>vos plus beaux<br>souvenirs</h2>
         </div>
-        <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Shop Now</span></button>
       </div>
     </section>
     <input type="file" id="splash-banner-bottom-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
   </div>
+
+  <!-- Lives outside the clipped hero-banner-frame on purpose: it needs to
+       float (position:fixed) over the splash content as the visitor
+       scrolls, which an "overflow:hidden" ancestor would otherwise clip.
+       The small script below parks it (position:absolute, pinned just
+       above the footer) once the footer scrolls into view, so it never
+       overlaps/covers the footer. -->
+  <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label">Découvrir la collection</span></button>
 
   <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
@@ -269,10 +275,37 @@ try {
     if (footer) footerHome = { parent: footer.parentNode, next: footer.nextSibling };
   }
 
+  // Keeps the floating "Decouvrir la collection" button pinned at a fixed
+  // spot on screen while the visitor scrolls the splash up/down, but
+  // "parks" it (switches to a normal, in-flow absolute position just
+  // above the footer) once the footer scrolls close enough that the
+  // fixed button would otherwise sit on top of it. Recomputed on every
+  // scroll/resize since the footer's position within the scrollable
+  // splash content can change (e.g. orientation change, banner image
+  // finishing loading and shifting layout).
+  var BTN_FIXED_TOP = 104; // keep in sync with .hb-hero-cta-repositioned top in style.css
+  var BTN_FOOTER_GAP = 16;
+  function updateEnterBtnParking() {
+    if (!btn || !footer) return;
+    var footerTopInScreen = footer.offsetTop; // offsetTop is relative to #welcome-screen, its offsetParent
+    var btnHeight = btn.offsetHeight || 44;
+    var wouldOverlap = (footerTopInScreen - screen.scrollTop) < (BTN_FIXED_TOP + btnHeight + BTN_FOOTER_GAP);
+    if (wouldOverlap) {
+      btn.classList.add('ws-enter-btn-parked');
+      btn.style.top = (footerTopInScreen - btnHeight - BTN_FOOTER_GAP) + 'px';
+    } else {
+      btn.classList.remove('ws-enter-btn-parked');
+      btn.style.top = '';
+    }
+  }
+
   function moveFooterToSplash() {
     captureFooter();
     if (!footer) return;
     screen.insertBefore(footer, wsChime || null);
+    updateEnterBtnParking();
+    screen.addEventListener('scroll', updateEnterBtnParking, { passive: true });
+    window.addEventListener('resize', updateEnterBtnParking);
   }
   function restoreFooter() {
     if (!footer || !footerHome) return;
@@ -281,6 +314,9 @@ try {
     } else {
       footerHome.parent.appendChild(footer);
     }
+    screen.removeEventListener('scroll', updateEnterBtnParking);
+    window.removeEventListener('resize', updateEnterBtnParking);
+    if (btn) { btn.classList.remove('ws-enter-btn-parked'); btn.style.top = ''; }
   }
 
   // Web Audio (fetch + decode ahead of time for near-instant playback)
