@@ -197,7 +197,7 @@ try {
       <div class="hero-banner-frame" id="splash-banner-bottom-frame">
         <div id="splash-banner-bottom-content"></div>
         <div class="hb-hero-overlay">
-          <p class="ws-cta-heading">IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS</p>
+          <p class="ws-cta-heading" id="ws-cta-heading" aria-label="IL Y A DES MOMENTS QU’ON N’OUBLIE JAMAIS"><span id="ws-cta-heading-text" aria-hidden="true"></span><span class="ws-cta-cursor" id="ws-cta-cursor" aria-hidden="true"></span></p>
         </div>
       </div>
     </section>
@@ -236,6 +236,38 @@ try {
   var screen = document.getElementById('welcome-screen');
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
+
+  // Types the splash heading out word by word, like someone typing it
+  // live, instead of it just appearing all at once. The full sentence is
+  // still set as an aria-label on the parent <p> (see markup) so screen
+  // readers get it immediately rather than word-by-word.
+  var headingTextEl = document.getElementById('ws-cta-heading-text');
+  var headingCursorEl = document.getElementById('ws-cta-cursor');
+  var HEADING_FULL_TEXT = 'IL Y A DES MOMENTS QU\u2019ON N\u2019OUBLIE JAMAIS';
+  var HEADING_WORD_DELAY = 160; // ms between each word appearing
+  var headingTypeTimer = null;
+  function typeHeading() {
+    if (!headingTextEl) return;
+    clearTimeout(headingTypeTimer);
+    headingTextEl.textContent = '';
+    if (headingCursorEl) headingCursorEl.classList.remove('ws-cta-cursor-hidden');
+    var words = HEADING_FULL_TEXT.split(' ');
+    var i = 0;
+    function typeNextWord() {
+      headingTextEl.textContent = words.slice(0, i + 1).join(' ');
+      i++;
+      if (i < words.length) {
+        headingTypeTimer = setTimeout(typeNextWord, HEADING_WORD_DELAY);
+      } else if (headingCursorEl) {
+        // Stop blinking a couple seconds after the sentence finishes,
+        // like a cursor settling once someone's done typing.
+        headingTypeTimer = setTimeout(function () {
+          headingCursorEl.classList.add('ws-cta-cursor-hidden');
+        }, 1800);
+      }
+    }
+    typeNextWord();
+  }
   // Repeat visits within the same session, and entry via the admin link
   // (see the ws-skip check in <head> above, which now covers both
   // cases), skip the greeting itself -- the chime and its up-front
@@ -366,7 +398,7 @@ try {
   // point in parsing, so this waits for DOMContentLoaded (by which
   // time the whole document, footer included, has been parsed).
   if (splashOpen) {
-    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); });
+    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); typeHeading(); });
   }
 
   function handleEnter(pushHistory) {
@@ -457,6 +489,7 @@ try {
     // recompute once more with real measurements so the button shows up
     // in the right place immediately, with no scroll/touch needed.
     requestAnimationFrame(updateEnterBtnParking);
+    typeHeading();
   }
   window.wsReopen = reopenSplash;
 
