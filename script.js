@@ -441,13 +441,223 @@ const translations = {
     deleteSelectedOrdersTemplate: 'Supprimer les {count} commandes sélectionnées ? Cette action est irréversible.',
     orderItemsLabel: "Articles"
   },
+  ar: {
+    cartEmpty: "سلة التسوق فارغة.",
+    cartTitle: "السلة",
+    checkoutBtn: "إتمام الطلب",
+    addToCartBtn: "أضف إلى السلة",
+    orderNowBtn: "اطلب الآن",
+    backToShopBtn: "رجوع",
+    sideMenuTitle: "القائمة",
+    familyLabel: "الفئة (مثال: رجالي · عطري خشبي)",
+    sizeLabel: "الحجم (مثال: 100مل · EDP)",
+    sideMenuTrackOrder: "تتبع طلبي",
+    sideMenuAboutUs: "من نحن",
+    aboutUsTitle: "من نحن",
+    aboutUsBody: "تقدم KORAL Parfum Collection تشكيلة حصرية من العطور عالية الجودة، المستوحاة من أعرق دور العطور، بأسعار في متناول الجميع. كل زجاجة تُختار بعناية لتمنحك تجربة عطرية راقية وثابتة. نوصل إلى جميع أنحاء المغرب، مع الدفع عند الاستلام وخدمة عملاء دائمة الاستماع لكم.",
+    quantityLabel: "الكمية",
+    trustDeliveryTitle: "توصيل 1-4 أيام",
+    trustDeliverySub: "في جميع أنحاء المغرب",
+    trustCertifiedTitle: "جودة معتمدة",
+    trustCertifiedSub: "عطور عالية الجودة",
+    trustPaymentTitle: "الدفع",
+    trustPaymentSub: "عند الاستلام",
+    trustSupportTitle: "خدمة العملاء",
+    trustSupportSub: "في خدمتكم دائمًا",
+    descriptionAccordionTitle: "الوصف",
+    coverImageBadge: "صورة الغلاف",
+    setCoverBtn: "تعيين كصورة غلاف",
+    addProductImagesBtn: "إضافة صور",
+    removeProductImageConfirm: "حذف هذه الصورة؟",
+    checkoutError: "الرجاء إدخال الاسم ورقم الهاتف والعنوان.",
+    addressLabel: "عنوان السكن",
+    addressPh: "العنوان",
+    phonePh: "رقم الهاتف",
+    checkoutSub: "أدخل بياناتك لتأكيد طلبك.",
+    checkoutTitle: "إتمام الطلب",
+    pack4BannerTag: "عرض عبوة من 3 عطور",
+    pack4BannerHeadingTop: "عبوة من",
+    pack4BannerLabel: "اختر عبوتك من 3 عطور",
+    pack4BannerLabelPre: "اختر عطورك الثلاثة المفضلة",
+    pack4BannerLabelHighlight: "3 عطور",
+    pack4BannerShipping: "توصيل مجاني",
+    pack4ShippingPlain: "التوصيل",
+    pack4ShippingBold: "مجاني",
+    pack4SavingsPlain: "وفّر",
+    pack4Feat1a: "3 عطور",
+    pack4Feat1b: "حسب اختيارك",
+    pack4Feat2a: "علبة",
+    pack4Feat2b: "هدية",
+    pack4Feat3a: "توصيل",
+    pack4Feat3b: "سريع",
+    pack4BannerCta: "أنشئ مجموعتي",
+    pack4ModalTitle: "كوّن عبوتك من 3 عطور",
+    pack4ModalSub: "اختر عطورك الثلاثة المفضّلة حسب ذوقك، من بين كامل تشكيلتنا.",
+    pack4CardHeading: "كوّن عبوتك",
+    pack4CardShipping: "توصيل مجاني.",
+    pack4AddCartBtn: "أضف إلى السلة",
+    pack4AddedToCartToast: "تمت إضافة العبوة إلى السلة!",
+    cartToastTitle: "تمت الإضافة إلى السلة",
+    pack4ChooseLabel: "اختر عطرًا",
+    pack4Progress: "مختارة",
+    pack4PriceLabel: "سعر العبوة",
+    pack4Savings: "توفر 51 درهمًا مقارنة بالشراء المنفصل",
+    pack4AddBtn: "اشترِ الآن",
+    pack4PickerTitle: "اختر عطرًا",
+    pack4FilterAll: "الكل",
+    pack4CartFamily: "عبوة اكتشاف · 3\u00A0عطور",
+    closeBtn: "إغلاق",
+    confirmOrder: "تأكيد الطلب",
+    copyright: "© 2026 KORAL Parfum Collection. جميع الحقوق محفوظة.",
+    filterMen: "رجالي",
+    filterWomen: "نسائي",
+    fullName: "الاسم الكامل",
+    phoneNumber: "رقم الهاتف",
+    searchTitle: "ابحث عن عطر",
+    subtotal: "المجموع الفرعي",
+    whatsappLabel: "اضغط هنا للمحادثة",
+    wishlistEmpty: "قائمة رغباتك فارغة.",
+    wishlistTitle: "قائمة الرغبات",
+    adminLoginTitle: "تسجيل دخول المشرف",
+    adminLoginSub: "أدخل كلمة مرور المشرف لإدارة المنتجات.",
+    passwordLabel: "كلمة المرور",
+    incorrectPassword: "كلمة المرور غير صحيحة.",
+    loginBtn: "تسجيل الدخول",
+    exitAdminBtn: "الخروج من وضع المشرف",
+    productNameLabel: "اسم المنتج",
+    descriptionLabel: "الوصف",
+    priceLabel: "السعر (درهم)",
+    categoryLabel: "الفئة",
+    productImageLabel: "صورة المنتج",
+    pinnedPackLabel: "إظهاره دائمًا في الأخير (العبوة)",
+    saveProductBtn: "حفظ العطر",
+    cancelBtn: "إلغاء",
+    deleteBtn: "حذف",
+    fullNamePh: "الاسم الكامل",
+    searchPh: "ابحث بالاسم أو المكونات...",
+    menEdit: "تشكيلة رجالي",
+    womenEdit: "تشكيلة نسائي",
+    menCollection: "تشكيلة رجالي",
+    womenCollection: "تشكيلة نسائي",
+    addNewPerfume: "إضافة عطر جديد",
+    shopLoadMoreBtn: "عرض المزيد",
+    noResultsFound: "لم يتم العثور على أي عطر.",
+    orderSuccess: "تم تأكيد طلبك! سنتواصل معك قريبًا.",
+    editPerfumeTitle: "تعديل العطر",
+    addNewPerfumeTitle: "إضافة عطر جديد",
+    accountTitle: "حسابي",
+    accountSub: "احفظ بياناتك لإتمام الطلب بشكل أسرع.",
+    accountError: "الرجاء ملء كلا الحقلين.",
+    saveProfileBtn: "حفظ الملف الشخصي",
+    editProfileBtn: "تعديل الملف الشخصي",
+    signOutBtn: "تسجيل الخروج",
+    deleteConfirmTemplate: 'حذف "{name}"؟ هذا الإجراء لا يمكن التراجع عنه.',
+    toastTooLarge: "الكتالوج كبير جدًا للحفظ (الصورة كبيرة جدًا) — التغيير سيُطبَّق لهذه الجلسة فقط.",
+    toastStorageUnavailable: "التخزين المشترك غير متاح — التغييرات ستُطبَّق لهذه الجلسة فقط.",
+    customersBtn: "العملاء",
+    ordersBtn: "لوحة التحكم",
+    ordersTitle: "الطلبات",
+    statTotalOrders: "إجمالي الطلبات",
+    statRevenue: "إجمالي الإيرادات",
+    statToday: "طلبات اليوم",
+    customersSearchPh: "ابحث بالاسم أو رقم الهاتف...",
+    noCustomersFound: "لم يتم العثور على أي عميل.",
+    noOrdersFound: "لم يتم العثور على أي طلب.",
+    loadingText: "جارٍ التحميل...",
+    toastImageUploadFailed: "فشل رفع الصورة — سيتم استخدام نسخة مضغوطة بدلًا منها.",
+    toastLargeAnimatedImage: "تم إرسال الصورة المتحركة الكبيرة كما هي (غير مضغوطة) للحفاظ على الحركة.",
+    qtyLabel: "الكمية",
+    orderSummaryTitle: "ملخص الطلب",
+    deliveryFee: "رسوم التوصيل",
+    discountLabel: "الخصم",
+    totalLabel: "المجموع",
+    promoCodeTitle: "رمز الخصم",
+    couponPh: "أدخل رمزك",
+    applyBtn: "تطبيق",
+    couponInvalid: "رمز الخصم غير صالح أو منتهي الصلاحية.",
+    couponAppliedMsg: "تم تطبيق رمز الخصم بنجاح",
+    deliveryInfoTitle: "معلومات التوصيل",
+    cityLabel: "المدينة",
+    cityPh: "مثال: الدار البيضاء",
+    notesLabel: "ملاحظات (اختياري)",
+    notesPh: "هل لديك أي ملاحظة؟",
+    paymentMethodTitle: "طريقة الدفع",
+    codLabel: "الدفع عند الاستلام",
+    codNote: "لن تدفع إلا عند استلام طلبك. لا حاجة لأي دفع إلكتروني.",
+    shippingInfoTitle: "معلومات الشحن",
+    shippingFeeLabel: "رسوم التوصيل",
+    freeShippingLabel: "مجاني",
+    estimatedDeliveryLabel: "التوصيل المتوقع",
+    estimatedDeliveryValue: "من 1 إلى 3 أيام عمل",
+    shippingCompanyLabel: "الناقل",
+    shippingCompanyValue: "توصيل محلي",
+    trustCod: "الدفع عند الاستلام",
+    trustSecure: "طلب آمن",
+    trustPackaging: "تغليف فاخر",
+    trustShipping: "توصيل سريع",
+    trustSupport: "خدمة العملاء",
+    orderSuccessTitle: "تم تسجيل طلبك بنجاح!",
+    orderSuccessMsg: "شكرًا لاختيارك KORAL. تم استلام طلبك وهو قيد المعالجة.",
+    orderNumberLabel: "رقم الطلب",
+    dateLabel: "التاريخ",
+    orderStatusLabel: "حالة الطلب",
+    trackOrderBtn: "تتبع طلبي",
+    menuTitle: "القائمة",
+    aboutUsBtn: "من نحن",
+    aboutUsText: "تقدم KORAL Parfum Collection عطورًا مستوحاة من الفخامة، مختارة بعناية لثباتها وفوحانها ورقيها. مهمتنا هي إتاحة الفخامة العطرية للجميع، مع خدمة سريعة وعناية فائقة في جميع أنحاء المغرب.",
+    continueShoppingBtn: "متابعة التسوق",
+    trackingTitle: "تتبع الطلب",
+    statusPending: "قيد الانتظار",
+    statusConfirmed: "مؤكد",
+    statusPreparing: "قيد التحضير",
+    statusShipped: "تم الشحن",
+    statusDelivered: "تم التوصيل",
+    statusCancelled: "ملغى",
+    trackingEtaPrefix: "التوصيل المتوقع بين",
+    trackingEtaAnd: "و",
+    trackingLookupSub: "أدخل رقم طلبك لمعرفة حالته.",
+    trackingLookupPh: "مثال: KORAL-XXXXXXX",
+    genericErrorMsg: "حدث خطأ ما، يرجى المحاولة مرة أخرى.",
+    trackingLookupBtn: "تتبع",
+    trackingNotFound: "لم يتم العثور على أي طلب بهذا الرقم.",
+    trackingMineLabel: "طلباتي السابقة",
+    trackingCancelBtn: "إلغاء الطلب",
+    trackingCancelConfirmMsg: "هل تريد بالفعل إلغاء هذا الطلب؟ هذا الإجراء لا يمكن التراجع عنه.",
+    trackingCancelConfirmYes: "نعم، إلغاء",
+    trackingCancelConfirmNo: "لا، الاحتفاظ بطلبي",
+    trackingCancelSuccess: "تم إلغاء طلبك بنجاح.",
+    trackingCancelError: "تعذر إلغاء الطلب حاليًا. تواصل معنا عبر واتساب.",
+    trackingCancelUnavailable: "لم يعد بالإمكان إلغاء هذا الطلب عبر الموقع، فهو قيد الشحن أو التوصيل بالفعل. تواصل معنا عبر واتساب.",
+    editBannerBtn: "تعديل",
+    freeShippingBar: "توصيل مجاني للطلبات التي تفوق قيمتها 195 درهمًا",
+    removeBannerBtn: "حذف",
+    addBannerBtn: "إضافة بانر",
+    bannerCategoryBadge: "بانر {cat}",
+    bannerUploading: "جارٍ رفع البانر...",
+    removeBannerConfirm: "حذف البانر؟ هذا الإجراء لا يمكن التراجع عنه.",
+    deleteCustomerTemplate: 'حذف العميل "{name}"؟ هذا الإجراء لا يمكن التراجع عنه.',
+    deleteOrderTemplate: 'حذف طلب "{name}"؟ هذا الإجراء لا يمكن التراجع عنه.',
+    deleteSelectedOrdersTemplate: 'حذف الطلبات المحددة ({count})؟ هذا الإجراء لا يمكن التراجع عنه.',
+    orderItemsLabel: "المنتجات"
+  },
 };
 
 function t(key){
-  return (translations.fr && translations.fr[key]) || key;
+  const dict = translations[currentLang] || translations.fr;
+  return (dict && dict[key]) || (translations.fr && translations.fr[key]) || key;
 }
 
 function applyTranslations(){
+  document.documentElement.setAttribute('lang', currentLang);
+  // Deliberately NOT setting dir="rtl" on <html>: this shop's layout
+  // relies on a lot of explicit flex-direction/left-positioned/absolute
+  // custom CSS, and a page-wide dir flip reverses "row" flex ordering
+  // and mirrors positioning throughout, which would break far more than
+  // it fixes. Arabic text still renders correctly right-to-left on its
+  // own (Unicode's bidi algorithm handles that per text run); the
+  // lang-ar class below only nudges alignment on the translated text
+  // itself via CSS, without touching layout structure/order.
+  document.documentElement.classList.toggle('lang-ar', currentLang === 'ar');
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(el.getAttribute('data-i18n'));
   });
@@ -559,7 +769,6 @@ function productCard(pRaw, category, idx){
     <div class="pc-body">
       <div class="pc-fam">${p.family} · ${p.size}</div>
       <h3>${p.name}</h3>
-      <div class="pc-stars">★★★★★</div>
       <div class="desc">${p.desc}</div>
       <div class="pc-bottom">
         <div class="pc-price-wrap">
@@ -1998,6 +2207,14 @@ async function renderProductReviews(productName){
     return;
   }
   const avg = reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length;
+  const topBadge = document.getElementById('pp-rating-badge');
+  if(topBadge){
+    topBadge.style.display = 'flex';
+    const topStarsEl = document.getElementById('pp-rating-badge-stars');
+    const topTextEl = document.getElementById('pp-rating-badge-text');
+    if(topStarsEl) topStarsEl.innerHTML = reviewStarsHtml(Math.round(avg));
+    if(topTextEl) topTextEl.textContent = `${avg.toFixed(1)} · ${reviews.length} avis`;
+  }
   if(summaryEl){
     summaryEl.style.display = 'flex';
     const starsEl = document.getElementById('pp-reviews-summary-stars');
@@ -3212,9 +3429,9 @@ function productPageTemplate(pRaw, category, idx){
       <div class="pp-info">
         <div class="pc-fam reveal">${p.family} · ${p.size}</div>
         <h1 class="pp-title reveal">${p.name}</h1>
-        <div class="pp-rating-badge reveal">
-          <span class="pp-rating-stars">${reviewStarsHtml(Math.round(p.rating || 5))}</span>
-          <span class="pp-rating-text">${(p.rating || 5).toFixed(1)} · ${p.reviews || 0} avis</span>
+        <div class="pp-rating-badge reveal" id="pp-rating-badge" style="display:none;">
+          <span class="pp-rating-stars" id="pp-rating-badge-stars"></span>
+          <span class="pp-rating-text" id="pp-rating-badge-text"></span>
         </div>
         <div class="pp-price-row reveal">
           <span class="pp-price-old">75 DH</span>
@@ -3735,6 +3952,9 @@ async function isAnimatedWebp(file){
 
 
 function createBannerController(cfg){
+  if(!document.getElementById(cfg.sectionId) || !document.getElementById(cfg.contentId) || !document.getElementById(cfg.inputId)){
+    return { render(){}, setCategory(){}, load(){} };
+  }
   const state = {
     keyBase: cfg.storageKey,
     category: currentFilter, 
@@ -3986,6 +4206,7 @@ function createBannerController(cfg){
   function render(){
     const section = document.getElementById(state.sectionId);
     const content = document.getElementById(state.contentId);
+    if(!section || !content) return;
 
     if(state.activeIndex >= state.banners.length) state.activeIndex = Math.max(0, state.banners.length - 1);
 
@@ -4061,7 +4282,9 @@ function createBannerController(cfg){
         </div>`;
     } else {
       stopAutoplay();
-      section.style.display = 'none';
+      if(state.sectionId !== 'splash-banner-bottom'){
+        section.style.display = 'none';
+      }
       content.innerHTML = '';
     }
     
@@ -4475,6 +4698,76 @@ document.getElementById('menu-toggle-btn').addEventListener('click', () => openS
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') close();
   });
+})();
+
+(function () {
+  const wrap = document.getElementById('lang-wrap');
+  const toggleBtn = document.getElementById('lang-toggle-btn');
+  const toggleLabel = document.getElementById('lang-toggle-label');
+  const options = document.getElementById('lang-options');
+  if (!wrap || !toggleBtn || !toggleLabel || !options) return;
+
+  // Collapsed, the button only ever shows the language that ISN'T
+  // active right now -- i.e. the one a tap would switch to -- never the
+  // language currently in use (that one is already visible everywhere
+  // else on the page).
+  function otherLang(lang) { return lang === 'ar' ? 'fr' : 'ar'; }
+
+  function syncLabel() {
+    toggleLabel.textContent = otherLang(currentLang).toUpperCase();
+    options.querySelectorAll('.lang-opt').forEach((opt) => {
+      opt.classList.toggle('active', opt.dataset.lang === currentLang);
+    });
+  }
+
+  function closeLang() {
+    wrap.classList.remove('open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  }
+  function openLang() {
+    wrap.classList.add('open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (wrap.classList.contains('open')) closeLang();
+    else openLang();
+  });
+
+  options.querySelectorAll('.lang-opt').forEach((opt) => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const lang = opt.dataset.lang;
+      if (lang && lang !== currentLang) {
+        currentLang = lang;
+        try { localStorage.setItem('koral-lang', currentLang); } catch (err) {}
+        applyTranslations();
+        // Re-render the bits of the page that build their own markup
+        // with translated strings baked in at render time (plain
+        // data-i18n swaps above don't reach these).
+        if (typeof renderShop === 'function') renderShop(currentFilter, true);
+        if (typeof renderHeroBanner === 'function') renderHeroBanner();
+      }
+      syncLabel();
+      closeLang();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.classList.contains('open')) return;
+    if (!wrap.contains(e.target)) closeLang();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLang();
+  });
+
+  try {
+    const saved = localStorage.getItem('koral-lang');
+    if (saved === 'ar' || saved === 'fr') currentLang = saved;
+  } catch (err) {}
+  applyTranslations();
+  syncLabel();
 })();
 
 document.getElementById('side-menu-close').addEventListener('click', () => closeSideMenu());
@@ -5781,6 +6074,11 @@ if(newsletterForm){
 
 
 function scrollToSection(id){
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const splashOpen = welcomeScreen && getComputedStyle(welcomeScreen).display !== 'none' && !document.documentElement.classList.contains('ws-skip');
+  if(splashOpen && typeof window.wsDismiss === 'function'){
+    window.wsDismiss(false);
+  }
   const el = document.getElementById(id);
   if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
