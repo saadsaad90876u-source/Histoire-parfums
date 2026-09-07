@@ -494,6 +494,15 @@ try {
       // normal browsers, where it's already a harmless no-op.
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      // #welcome-screen scrolls internally (overflow-y:auto, see style.css)
+      // so visitors can scroll down past the circles/button to reach the
+      // footer without ever leaving the splash. If they did that before
+      // tapping "Découvrir la collection", this container is hidden
+      // (display:none) while still scrolled down and, on many mobile
+      // browsers, still holding the active touch/scroll session tied to
+      // that now-gone scroll layer -- which freezes the shop page
+      // underneath (can't scroll up or down at all) until reset here.
+      try { screen.scrollTop = 0; } catch (e) {}
       // html{scroll-behavior:smooth} in style.css would otherwise turn
       // the scrollTo calls below into an animated scroll that can land a
       // few pixels short of the very top. 'auto' makes them jump straight

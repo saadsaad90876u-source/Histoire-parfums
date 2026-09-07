@@ -102,6 +102,12 @@ header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(
    without flipping the page's overall (still LTR) layout structure --
    see the comment in applyTranslations() in script.js for why. */
 html.lang-ar [data-i18n],html.lang-ar [data-i18n-placeholder]{direction:rtl;text-align:right}
+/* .collection-divider-text is a short standalone centered caption
+   between sections, not a paragraph of body copy -- the blanket
+   right-align rule above pulls it toward the edge instead of keeping
+   it centered like its French/other-language version. Re-center it
+   specifically (still direction:rtl so Arabic glyph order is correct). */
+html.lang-ar .collection-divider-text[data-i18n]{text-align:center}
 /* iOS Safari can fail to cursively join Arabic glyphs when letter-spacing
    or text-transform:uppercase is applied to them (both are Latin-script
    typographic conventions with no meaning for Arabic anyway), so both are
