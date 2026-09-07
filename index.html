@@ -357,20 +357,31 @@ try {
     // stops intercepting taps/clicks -- but stays in the DOM so pressing
     // Back can bring it back exactly as it was, instead of being rebuilt.
     var done = false;
+    function forceScrollUnlock() {
+      // Some in-app browsers (Instagram/Facebook/TikTok WebViews) fail to
+      // hand scroll control back to the page after this fixed, full-screen
+      // overlay leaves layout, leaving the shop page stuck / unable to
+      // scroll until the tab is fully reloaded. None of this affects
+      // normal browsers, where it's already a harmless no-op.
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      try {
+        var prevDisplay = document.body.style.display;
+        document.body.style.display = 'none';
+        void document.body.offsetHeight;
+        document.body.style.display = prevDisplay;
+      } catch (e) {}
+      window.scrollTo(0, 0);
+      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+      try { window.dispatchEvent(new Event('orientationchange')); } catch (e) {}
+    }
     function cleanup() {
       if (done) return;
       done = true;
       screen.classList.add('ws-hidden');
-      // Some in-app browsers (Instagram/Facebook/TikTok WebViews) fail to
-      // recompute the page's scrollable height after this fixed, full-screen
-      // overlay is removed from layout (display:none), leaving the shop
-      // page stuck / unable to scroll until the tab is fully reloaded.
-      // Forcing a reflow + dispatching a resize event nudges those WebViews
-      // into recalculating scroll bounds immediately, without affecting
-      // normal browsers where this is already a no-op.
-      void document.body.offsetHeight;
-      window.scrollTo(0, 0);
-      try { window.dispatchEvent(new Event('resize')); } catch (e) {}
+      forceScrollUnlock();
+      setTimeout(forceScrollUnlock, 60);
+      setTimeout(forceScrollUnlock, 300);
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
