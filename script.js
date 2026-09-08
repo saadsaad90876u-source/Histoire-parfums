@@ -123,12 +123,26 @@ document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());
 // re-rendered without being re-observed, etc.). Rather than chase every
 // possible cause of that, this sweep just checks periodically, with no
 // dependency on IntersectionObserver at all, and forces any `.reveal`
-// element visible again shortly after it first appears in the DOM --
-// so even if the "nice" scroll-in animation logic above misses a card,
-// it self-heals within ~2s instead of staying stuck until a manual
-// page reload.
+// element visible again shortly after it's been sitting near the
+// viewport for a while -- so even if the "nice" scroll-in animation
+// logic above misses a card, it self-heals within ~2s instead of
+// staying stuck until a manual page reload.
+// Important: this only arms the self-heal timer for elements that are
+// actually near the viewport right now (same idea as armWhenNear
+// above). Without that check, this sweep used to force every `.reveal`
+// on the page active a couple seconds after page load regardless of
+// scroll position -- which silently cancelled the scroll-reveal effect
+// for anything below the fold instead of just healing genuinely stuck
+// cards.
 setInterval(() => {
+  const vh = window.innerHeight || document.documentElement.clientHeight || 0;
   document.querySelectorAll('.reveal:not(.active)').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const nearViewport = rect.top < vh * 1.5 && rect.bottom > -vh * 0.5;
+    if(!nearViewport){
+      delete el.dataset.revealSeenAt;
+      return;
+    }
     if(!el.dataset.revealSeenAt){
       el.dataset.revealSeenAt = String(Date.now());
       return;

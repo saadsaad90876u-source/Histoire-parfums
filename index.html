@@ -341,6 +341,16 @@ try {
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(syncSplashHeaderGap).catch(function () {});
   }
+  // A handful of late, one-off re-checks: things that can nudge the
+  // header's real on-screen position after the checks above already
+  // ran -- the cart badge count arriving from storage, the KORAL
+  // wordmark/webfont finishing its swap, the announcement bar's ticker
+  // content being built by script.js, etc. None of these fire a
+  // 'resize' event, so without this the padding-top can stay locked to
+  // a slightly-off value taken too early.
+  [100, 300, 600, 1200, 2000].forEach(function (delay) {
+    setTimeout(syncSplashHeaderGap, delay);
+  });
   window.addEventListener('resize', syncSplashHeaderGap);
   window.addEventListener('orientationchange', function () {
     setTimeout(syncSplashHeaderGap, 50);
@@ -352,6 +362,15 @@ try {
   // gap" inconsistency.
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', syncSplashHeaderGap);
+    window.visualViewport.addEventListener('scroll', syncSplashHeaderGap);
+  }
+  // Belt-and-braces: if the header's own size ever changes for any
+  // reason not covered above, react to it directly instead of relying
+  // only on viewport-level events.
+  if (window.ResizeObserver) {
+    try {
+      new ResizeObserver(syncSplashHeaderGap).observe(document.querySelector('header') || screen);
+    } catch (err) {}
   }
 
   // Repeat visits within the same session, and entry via the admin link
