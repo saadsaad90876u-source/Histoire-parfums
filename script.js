@@ -2057,9 +2057,7 @@ document.addEventListener('click', (e) => {
   
   const featuredCard = e.target.closest('.featured-product-card');
   if(featuredCard){
-    const idx = Number(featuredCard.dataset.idx);
-    const p = featuredProducts[idx];
-    openPack4Modal(true, false, (p && p.gender === 'men') ? 'men' : 'women');
+    openPack4Modal(true, false);
   }
 });
 
