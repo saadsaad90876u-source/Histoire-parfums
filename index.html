@@ -74,6 +74,71 @@ try {
   document.documentElement.style.overflow = 'hidden';
 }
 
+// Same LCP optimization as below, but for the splash screen's own
+// banner (#splash-banner-bottom) -- this is the actual very first
+// image a visitor sees when landing on the site, before the shop
+// page (and its own hero banner, handled separately below) ever
+// becomes visible. See createBannerController's storageKey/category
+// for splash-banner-bottom in script.js; currentFilter there defaults
+// to 'women' (see script.js), so that's the category read here on a
+// fresh page load with no gender selection made yet.
+(function(){
+  try {
+    var raw = localStorage.getItem('cache-aura-splash-banner-bottom-women');
+    if (!raw) return;
+    var items = JSON.parse(raw);
+    var first = Array.isArray(items) ? items[0] : null;
+    if (first && first.url && first.type !== 'video') {
+      var link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = first.url;
+      link.fetchPriority = 'high';
+      document.head.appendChild(link);
+    }
+  } catch (e) { /* localStorage unavailable (private browsing) -- skip */ }
+})();
+
+// The block above only helps a REPEAT visit (this device has a cached
+// URL from before). On a genuinely first-ever visit there's nothing to
+// read from localStorage, and normally the real URL isn't discovered
+// until script.js -- a large bundle -- finishes downloading, parsing
+// and running, and only then calls Supabase through its full SDK. That
+// means the single most important image on the page would otherwise be
+// the LAST thing to start loading, not the first.
+//
+// This fixes that by firing the exact same lookup as a tiny, direct
+// REST request right now, in parallel with every other resource on the
+// page, completely independent of script.js -- so the URL (and then
+// the image itself) can start loading as early as physically possible,
+// even with an empty cache. SUPABASE_URL/ANON_KEY below are copied from
+// script.js: the anon key is Supabase's public, client-safe key
+// (access is controlled by Row Level Security, not by hiding this key),
+// so duplicating it here is safe.
+(function(){
+  if (typeof fetch !== 'function') return;
+  var SUPABASE_URL = 'https://kydrxvfarubaazemxqhw.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZHJ4dmZhcnViYWF6ZW14cWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3ODk1ODMsImV4cCI6MjA5OTM2NTU4M30.eYbHXtBVY8knbZtzX1BLaKWKlRznBYl9II2EcZKQG8M';
+  var apiUrl = SUPABASE_URL + '/rest/v1/kv_store?key=eq.aura-splash-banner-bottom-women&select=value';
+  fetch(apiUrl, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } })
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (rows) {
+      var value = rows && rows[0] && rows[0].value;
+      if (!value) return;
+      var items = Array.isArray(value.items) ? value.items : (value.url ? [{ url: value.url, type: value.type }] : []);
+      var first = items[0];
+      if (first && first.url && first.type !== 'video') {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = first.url;
+        link.fetchPriority = 'high';
+        document.head.appendChild(link);
+      }
+    })
+    .catch(function () { /* offline/blocked -- script.js's normal flow still renders the banner later */ });
+})();
+
 // Improves LCP: the hero banner image is admin-managed content fetched
 // from Supabase at runtime, so it can't be hardcoded into the static
 // HTML. But the banner controller already caches the last-seen banner
@@ -135,7 +200,6 @@ try {
      no need to hold up rendering while these download. The
      preload+rel-swap trick fetches them with high priority but without
      blocking, then applies them the instant they arrive. -->
-<link rel="preload" as="fetch" href="/welcome-chime.mp3" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Work+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet';">
 <!-- script.js is the core of the entire site (product data, cart, every
      interaction) but its <script defer> tag sits near the very end of
@@ -216,8 +280,6 @@ try {
        overlaps/covers the footer. The heading above stays static inside
        the banner (doesn't float) -- only this button moves. -->
   <button type="button" class="hb-hero-cta hb-hero-cta-repositioned ws-enter-btn" id="ws-enter-btn"><span class="ws-enter-label" data-i18n="splashEnterBtn">Découvrir la collection</span></button>
-
-  <audio id="ws-chime" src="/welcome-chime.mp3" preload="auto" playsinline></audio>
 </div>
 
 <!-- Asked when the visitor taps the "Parfums" circle: which gender's
@@ -243,20 +305,17 @@ try {
 
   // Repeat visits within the same session, and entry via the admin link
   // (see the ws-skip check in <head> above, which now covers both
-  // cases), skip the greeting itself -- the chime and its up-front
-  // audio decoding below -- since re-playing that every single page
-  // load in the session would just be wasted work for a sound that was
-  // already heard. The splash itself is now just the logo/circles/
-  // enter-button greeting -- FAQ and testimonials live permanently on
-  // the shop page, so skipping the greeting here doesn't hide them.
+  // cases), skip the greeting itself since re-showing it every single
+  // page load in the session would just be wasted work. The splash
+  // itself is now just the logo/circles/enter-button greeting -- FAQ
+  // and testimonials live permanently on the shop page, so skipping the
+  // greeting here doesn't hide them.
   var skipGreeting = false;
   try {
     skipGreeting = document.documentElement.classList.contains('ws-skip');
   } catch (e) {}
 
   var fired = skipGreeting;
-  var chime = document.getElementById('ws-chime');
-  var unlocked = false;
 
   // The real, single <footer> element (logo, links, social icons,
   // copyright) is moved into the splash screen while it's up, and
@@ -274,7 +333,6 @@ try {
   // actual move) rather than captured up front.
   var footer = null;
   var footerHome = null;
-  var wsChime = document.getElementById('ws-chime');
 
   function captureFooter() {
     if (footer) return;
@@ -311,7 +369,7 @@ try {
   function moveFooterToSplash() {
     captureFooter();
     if (!footer) return;
-    screen.insertBefore(footer, wsChime || null);
+    screen.appendChild(footer);
     updateEnterBtnParking();
     screen.addEventListener('scroll', updateEnterBtnParking, { passive: true });
     window.addEventListener('resize', updateEnterBtnParking);
@@ -326,27 +384,6 @@ try {
     screen.removeEventListener('scroll', updateEnterBtnParking);
     window.removeEventListener('resize', updateEnterBtnParking);
     if (btn) { btn.classList.remove('ws-enter-btn-parked'); btn.style.top = ''; }
-  }
-
-  // Web Audio (fetch + decode ahead of time for near-instant playback)
-  // was tried here to remove the plain <audio> element's felt first-play
-  // delay, but it turned out unreliable in practice across real
-  // devices/browsers in a way that was hard to fully pin down and fix
-  // remotely -- and silence is a much worse outcome than a slight delay.
-  // Back to the simple, consistently-audible approach.
-  function unlockAudio() {
-    if (!chime) return;
-    // Kept as two separate try/catch blocks on purpose: if resetting
-    // currentTime throws (the element can be in a transitional state
-    // right after a previous playback, e.g. between "ended" and the
-    // next readyState update), that must not skip play() -- skipping it
-    // is what caused sound to work every other tap and not the ones in
-    // between, before this was split out.
-    try { chime.currentTime = 0; } catch (e) {}
-    try {
-      var p = chime.play();
-      if (p && p.catch) p.catch(function () {});
-    } catch (e) {}
   }
 
   // true while the splash is the thing on screen; false once the visitor
@@ -543,14 +580,6 @@ try {
   // mouse/keyboard/assistive tech); the `fired` guard above stops the
   // click that follows a touchstart from running everything twice.
   //
-  // Audio is fired FIRST, synchronously, as the very first line of the
-  // touchstart handler -- before preventDefault() and before
-  // handleEnter() -- so the sound is tied to the moment the finger lands,
-  // not to any animation or navigation that happens afterwards. Modern
-  // WebKit/iOS Safari does grant user-activation on touchstart itself
-  // (not just touchend/click) as long as .play() is called synchronously
-  // inside the handler, which is exactly what unlockAudio() does.
-  //
   // preventDefault() on touchstart (passive:false, not passive:true) is
   // required here: handleEnter() immediately adds "ws-leaving", which
   // sets pointer-events:none on the whole overlay right away so the shop
@@ -562,38 +591,20 @@ try {
   // unintentionally. Calling preventDefault() on touchstart tells the
   // browser not to synthesize that follow-up mouse/click sequence at all.
   btn.addEventListener('touchstart', function (e) {
-    unlockAudio();
     e.preventDefault();
   }, { passive: false });
-  // Navigation now waits for the finger to actually lift (touchend),
-  // exactly like a normal tap/button press -- this is what lets the
-  // CSS :active press effect (scale-down) show during the hold, the
-  // same way it does on "Composer mon pack". Audio still starts
-  // instantly on touchstart above, so there's no felt delay there.
+  // Navigation waits for the finger to actually lift (touchend), exactly
+  // like a normal tap/button press -- this is what lets the CSS :active
+  // press effect (scale-down) show during the hold, the same way it does
+  // on "Composer mon pack".
   btn.addEventListener('touchend', function (e) {
     e.preventDefault();
     handleEnter();
   }, { passive: false });
-  // Mouse equivalent of touchstart above: 'click' only fires on
-  // mouseup/release, so without this the chime would only start once
-  // the mouse button comes back up instead of the instant it goes down.
-  btn.addEventListener('mousedown', function () {
-    unlockAudio();
-  });
-  // Keyboard/assistive-tech activation (Enter/Space) has no separate
-  // "press" event to hook the chime to the way mousedown/touchstart do,
-  // so it plays here instead, right as the key goes down.
-  btn.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-      unlockAudio();
-    }
-  });
   // click covers mouse/keyboard/assistive-tech activation (desktop, or any
   // touch device where touchstart didn't fire for some reason). touchend
   // above calls preventDefault(), so on touch devices this click won't
-  // also fire and double up the chime. The chime itself is already
-  // handled by mousedown/keydown/touchstart above, so this only
-  // triggers navigation.
+  // also fire and double up navigation.
   btn.addEventListener('click', function () {
     handleEnter();
   });

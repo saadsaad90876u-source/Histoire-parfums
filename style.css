@@ -356,9 +356,10 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .hero-banner-frame{position:relative;width:100%;margin:0 auto;border-radius:0;overflow:hidden;aspect-ratio:1/1;background:#FFFFFF;animation:heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;box-shadow:none;border:none}
 #splash-banner-bottom-frame{background:#F4FBFB}
 .hb-hero-cta{pointer-events:auto;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:none;color:#2E1608;background:#E3CBA0;border:1px solid rgba(46,22,8,.15);border-radius:6px;padding:7px 22px;cursor:pointer;box-shadow:none;transition:transform .2s ease}
-.hb-hero-cta-repositioned{position:fixed;left:8%;top:520px;transform:none;z-index:5}
-.hb-hero-cta-repositioned.ws-enter-btn-parked{position:absolute;top:auto}
+.hb-hero-cta-repositioned{position:fixed;left:50%;top:520px;transform:translateX(-50%);z-index:5}
+.hb-hero-cta-repositioned.ws-enter-btn-parked{position:absolute;top:auto;left:50%;transform:translateX(-50%)}
 .hb-hero-cta:active{transform:scale(.96)}
+.hb-hero-cta-repositioned:active{transform:translateX(-50%) scale(.96)}
 .ws-cta-wrap-repositioned:active{transform:scale(.96)}
 @media (hover:hover) and (pointer:fine){.hb-hero-cta:hover{box-shadow:0 8px 22px rgba(20,14,8,.32)}
 }
