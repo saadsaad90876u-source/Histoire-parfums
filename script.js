@@ -112,6 +112,33 @@ function refreshScrollReveal(root){
 }
 document.addEventListener('DOMContentLoaded', () => refreshScrollReveal());
 
+// Belt-and-suspenders fix for product cards (and other .reveal elements)
+// occasionally getting stuck permanently faded-out and shifted down --
+// reported as randomly happening after tapping a product, only fixed by
+// reloading the page. That symptom is exactly what .reveal's default
+// state looks like (opacity:0, translateY(28px) -- see style.css)
+// before the "active" class lands, so something is occasionally
+// preventing "active" from ever being added on some cards (an
+// IntersectionObserver race, a timer getting cleared/throttled, a card
+// re-rendered without being re-observed, etc.). Rather than chase every
+// possible cause of that, this sweep just checks periodically, with no
+// dependency on IntersectionObserver at all, and forces any `.reveal`
+// element visible again shortly after it first appears in the DOM --
+// so even if the "nice" scroll-in animation logic above misses a card,
+// it self-heals within ~2s instead of staying stuck until a manual
+// page reload.
+setInterval(() => {
+  document.querySelectorAll('.reveal:not(.active)').forEach(el => {
+    if(!el.dataset.revealSeenAt){
+      el.dataset.revealSeenAt = String(Date.now());
+      return;
+    }
+    if(Date.now() - Number(el.dataset.revealSeenAt) > 1800){
+      el.classList.add('active');
+    }
+  });
+}, 500);
+
 if(document.readyState === 'interactive' || document.readyState === 'complete'){
   refreshScrollReveal();
 }

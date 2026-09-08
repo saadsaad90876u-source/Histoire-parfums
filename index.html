@@ -303,6 +303,57 @@ try {
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
 
+  // Keeps the splash content glued to the real header's bottom edge,
+  // whatever that edge actually is at any given moment -- rather than
+  // assuming it's always exactly 88px (32px announcement bar + 56px
+  // header) like the CSS default padding-top does. That fixed number
+  // only matches reality some of the time: mobile Safari/Chrome on
+  // iPhone resize the visual viewport (and can reflow fixed-position
+  // elements slightly differently) as the address bar/toolbar
+  // collapses or expands, which is why the gap below the header was
+  // showing up inconsistently -- sometimes the assumption held,
+  // sometimes it didn't. Measuring the header's actual position on
+  // screen sidesteps that assumption entirely.
+  var headerEl = null;
+  function syncSplashHeaderGap() {
+    if (!headerEl) headerEl = document.querySelector('header');
+    if (!headerEl) return;
+    var bottom = headerEl.getBoundingClientRect().bottom;
+    // A near-zero/negative reading means the header hasn't actually
+    // laid out yet (e.g. this ran before fonts/CSS finished) -- skip
+    // rather than lock in a bad value.
+    if (bottom < 20) return;
+    // Small negative overlap (matches the existing banner nudge below)
+    // so the two edges always meet or slightly overlap under the
+    // header rather than risking a hairline gap from subpixel rounding.
+    screen.style.paddingTop = Math.max(0, bottom - 2) + 'px';
+  }
+  // <header> is declared further down the page and doesn't exist as a
+  // DOM node yet at this point in parsing, so the very first check has
+  // to wait until the document (and therefore <header>) is actually
+  // there.
+  document.addEventListener('DOMContentLoaded', syncSplashHeaderGap);
+  requestAnimationFrame(syncSplashHeaderGap);
+  // Re-check after the very first paint/layout and once web fonts are
+  // in (a font swap can change nothing here since the header has a
+  // fixed height, but this stays cheap insurance against any reflow).
+  requestAnimationFrame(syncSplashHeaderGap);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncSplashHeaderGap).catch(function () {});
+  }
+  window.addEventListener('resize', syncSplashHeaderGap);
+  window.addEventListener('orientationchange', function () {
+    setTimeout(syncSplashHeaderGap, 50);
+    setTimeout(syncSplashHeaderGap, 300);
+  });
+  // visualViewport specifically reports the address-bar/toolbar
+  // collapsing or expanding on iOS, which plain window 'resize' can
+  // miss -- this is the actual event behind the "sometimes there's a
+  // gap" inconsistency.
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', syncSplashHeaderGap);
+  }
+
   // Repeat visits within the same session, and entry via the admin link
   // (see the ws-skip check in <head> above, which now covers both
   // cases), skip the greeting itself since re-showing it every single
@@ -509,18 +560,51 @@ try {
       document.documentElement.style.scrollBehavior = prevScrollBehavior;
       try { window.dispatchEvent(new Event('resize')); } catch (e) {}
       try { window.dispatchEvent(new Event('orientationchange')); } catch (e) {}
+      // Stronger nudge for iPhones where the scrollTo trick above isn't
+      // enough on its own (seen on both Instagram's in-app browser and
+      // regular Safari/Chrome, since Chrome on iOS is just Safari's
+      // engine under the hood -- Apple requires it). Toggling this
+      // property off and back on forces iOS to tear down and rebuild
+      // its internal scrolling coordinator for the page, which is what
+      // actually reattaches touch scroll here -- a plain reflow read
+      // (offsetHeight) isn't enough by itself because this is a
+      // WebKit *scrolling-layer* bug, not a layout/paint one.
+      try {
+        document.body.style.webkitOverflowScrolling = 'auto';
+        // eslint-disable-next-line no-unused-expressions
+        document.body.offsetHeight; // force the style change to take effect
+        document.body.style.webkitOverflowScrolling = 'touch';
+      } catch (e) {}
     }
     function cleanup() {
       if (done) return;
       done = true;
       screen.classList.add('ws-hidden');
       forceScrollUnlock();
+      // requestAnimationFrame retries line up with iOS's actual paint/
+      // compositing cycle (unlike fixed setTimeout delays, which can
+      // land mid-frame and get eaten), so they catch cases the timers
+      // below miss on slower devices.
+      requestAnimationFrame(function () {
+        forceScrollUnlock();
+        requestAnimationFrame(forceScrollUnlock);
+      });
       setTimeout(forceScrollUnlock, 60);
       setTimeout(forceScrollUnlock, 300);
+      setTimeout(forceScrollUnlock, 800);
       flushAfterSplash();
     }
     screen.addEventListener('transitionend', cleanup, { once: true });
     setTimeout(cleanup, 900);
+    // Safety net: if the page was backgrounded (e.g. the visitor briefly
+    // switched to another app) while still stuck, re-run the unlock the
+    // moment it's foregrounded again -- matches what visitors report
+    // happening naturally (switching apps and back "fixes" it), so this
+    // just does the same recompute proactively instead of relying on
+    // them to do that manually.
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && fired) forceScrollUnlock();
+    });
   }
   // Exposed so the Pack Femme/Homme circles (now living inside this
   // splash screen) can dismiss it themselves when tapped, instead of
