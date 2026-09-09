@@ -759,7 +759,7 @@ to{opacity:1;transform:translateY(0)}
 .cf-input-icon{padding-left:62px;min-height:56px}
 textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .collection-divider-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:clamp(19px,3.6vw,24px);color:#4D8986;text-align:center;margin:0 auto 30px;max-width:420px}
-.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:1px solid #E4DAC8;border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:radial-gradient(120% 70% at 12% 0%,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 60%),linear-gradient(100deg,#1A1A1A 0%,#000000 65%);box-shadow:none}
+.pack4-banner{display:flex;align-items:stretch;gap:clamp(6px,calc(3.33vw - 4.67px),16px);border:1px solid rgba(53,196,201,.55);border-radius:24px;padding:clamp(12px,calc(2vw + 5.6px),18px) clamp(6px,calc(2.67vw - 2.53px),14px);margin:0 auto 28px;max-width:620px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;background:radial-gradient(120% 70% at 12% 0%,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 60%),linear-gradient(100deg,#1A1A1A 0%,#000000 65%);box-shadow:none}
 .pack4-banner.reveal:not(.active){transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 @property --pack4-angle{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes pack4-border-spin{to{--pack4-angle:360deg}
@@ -828,7 +828,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 }
 .pack4-banner-cta:active{transform:scale(0.98);filter:brightness(1.08)}
 .pack4-banner-cta::before{content:"";position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 100%);border-radius:14px 14px 0 0;pointer-events:none}
-.pack4-banner-cta::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);transform:translateX(-150%) skewX(-20deg);pointer-events:none;will-change:transform;animation:pack4CtaShine 6s ease-in-out 3}
+.pack4-banner-cta::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);transform:translateX(-150%) skewX(-20deg);pointer-events:none;will-change:transform;animation:pack4CtaShine 6s ease-in-out 1}
 @keyframes pack4CtaShine{0%{transform:translateX(-150%) skewX(-20deg)}
 20%{transform:translateX(280%) skewX(-20deg)}
 100%{transform:translateX(280%) skewX(-20deg)}
@@ -1360,7 +1360,7 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #shop-view .pc-rating-value{color:#CFCFCF;}
 
 /* ====== تعديل مخصص: بطاقة "عرض الباك" (offre de pack) رجعت بخلفية سوداء ====== */
-#shop-view .pack4-banner{background:radial-gradient(120% 70% at 12% 0%,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 60%),linear-gradient(100deg,#1A1A1A 0%,#000000 65%);border:1px solid #2A2A2A;}
+#shop-view .pack4-banner{background:radial-gradient(120% 70% at 12% 0%,rgba(255,255,255,.10) 0%,rgba(255,255,255,0) 60%),linear-gradient(100deg,#1A1A1A 0%,#000000 65%);border:1px solid rgba(53,196,201,.55);}
 #shop-view .pack4-banner-heading-top{color:#E4DAC8;}
 #shop-view .pack4-banner-heading-main{color:#35C4C9;}
 

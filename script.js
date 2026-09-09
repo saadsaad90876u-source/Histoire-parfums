@@ -2569,7 +2569,7 @@ function showTestimonial(i){
 function startTestimonialAutoplay(){
   stopTestimonialAutoplay();
   if(publicReviews.length < 2) return;
-  testimonialTimer = setInterval(() => showTestimonial(testimonialIndex + 1), 4000);
+  testimonialTimer = setInterval(() => showTestimonial(testimonialIndex + 1), 7000);
 }
 function stopTestimonialAutoplay(){
   if(testimonialTimer) clearInterval(testimonialTimer);
