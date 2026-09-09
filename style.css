@@ -25,7 +25,7 @@ to{opacity:1;transform:translateY(0) scale(1)}
 @keyframes skeletonShine{0%{background-position:200% 0}
 100%{background-position:-200% 0}
 }
-#welcome-screen{position:fixed;inset:0;height:100dvh;z-index:900;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding-top:88px;background:#F4FBFB;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
+#welcome-screen{position:fixed;inset:0;height:100dvh;z-index:900;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding-top:80px;background:#F4FBFB;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 /* While the splash is up, the real #announcement-bar and <header> are
    physically moved (not cloned) to sit right before #welcome-screen in
    the DOM and switched to normal flow here -- see moveHeaderInFlow() /
@@ -37,12 +37,12 @@ to{opacity:1;transform:translateY(0) scale(1)}
    drifting out of sync on some devices. */
 html.ws-inflow #announcement-bar{position:static;transform:none;-webkit-transform:none;will-change:auto}
 html.ws-inflow header{position:static;top:auto;transform:none;-webkit-transform:none;will-change:auto}
-html.ws-inflow #welcome-screen{position:relative;inset:auto;height:calc(100dvh - 88px);padding-top:0}
+html.ws-inflow #welcome-screen{position:relative;inset:auto;height:calc(100dvh - 80px);padding-top:0}
 /* While the splash governs the layout (html.ws-inflow), the real shop
    content sitting right after it in the DOM must be fully removed from
    layout, not just visually covered -- #welcome-screen's box can be
    shorter than the viewport on tall screens (its content doesn't always
-   fill 100dvh - 88px), and any leftover space inside that box would
+   fill 100dvh - 80px), and any leftover space inside that box would
    otherwise act as a window straight onto whatever renders next in
    normal flow (#shop-view's own hero banner). display:none removes
    #shop-view/#product-page from flow entirely so there's nothing to
@@ -104,12 +104,12 @@ body{overscroll-behavior-y:none;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 .icon{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
-#announcement-bar{position:fixed;top:0;left:0;right:0;z-index:4000;height:32px;overflow:hidden;background:#FFFFFF;display:flex;align-items:center;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
+#announcement-bar{position:fixed;top:0;left:0;right:0;z-index:4000;height:24px;overflow:hidden;background:#FFFFFF;display:flex;align-items:center;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .ab-track{display:flex;width:max-content;animation:ab-scroll 22s linear infinite}
 .ab-group{display:flex;align-items:center;flex-shrink:0}
-.ab-item{display:inline-flex;align-items:center;gap:8px;font-family:'Work Sans',sans-serif;font-style:normal;font-weight:600;font-size:clamp(11px,calc(0.833vw + 8.33px),13px);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:#35C4C9;padding:0 clamp(24px,calc(6.667vw + 2.67px),40px)}
-.ab-truck-icon{width:15px;height:15px;flex-shrink:0;color:#35C4C9}
-header{position:fixed;top:32px;left:0;right:0;z-index:1000;backdrop-filter:blur(16px) saturate(160%);background:#000000;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
+.ab-item{display:inline-flex;align-items:center;gap:6px;font-family:'Work Sans',sans-serif;font-style:normal;font-weight:600;font-size:clamp(10px,calc(0.75vw + 7.5px),12px);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:#35C4C9;padding:0 clamp(24px,calc(6.667vw + 2.67px),40px)}
+.ab-truck-icon{width:13px;height:13px;flex-shrink:0;color:#35C4C9}
+header{position:fixed;top:24px;left:0;right:0;z-index:1000;backdrop-filter:blur(16px) saturate(160%);background:#000000;-webkit-transform:translateZ(0);transform:translateZ(0);will-change:transform}
 .nav-wrap{position:relative;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 10px;direction:ltr;overflow:hidden}
 .logo{font-family:'Poppins',sans-serif;font-size:19px;letter-spacing:.3em;font-weight:600;background:none;border:none;padding:0;color:#35C4C9;cursor:pointer}
 .logo-center{position:absolute;left:50%;top:50%;transform:translate(-50%,calc(-50% + 3px))}
@@ -181,7 +181,7 @@ html.lang-ar .footer-links-grid{direction:rtl}
 #search-btn{background:none;width:clamp(39px,calc(1.25vw + 35px),42px);height:clamp(39px,calc(1.25vw + 35px),42px);font-size:clamp(21px,calc(0.417vw + 19.67px),22px);color:#ffffff}
 #search-btn:hover{background:rgba(255,255,255,.1);color:#ffffff}
 .cart-badge{position:absolute;top:1px;right:1px;background:#E3CBA0;color:#2E1608;font-size:8.5px;font-weight:700;width:15px;height:15px;border-radius:50%;border:1.6px solid #FFFFFF;box-shadow:none;display:flex;align-items:center;justify-content:center}
-#shop-view{padding:96px 0 0}
+#shop-view{padding:88px 0 0}
 #bottom-banner{padding:16px 0 1mm}
 #bottom-banner-2{padding:1mm 0 60px}
 .hero-banner-frame img,.hero-banner-frame video{width:100%;height:100%;object-fit:cover;display:block;background:#FFFFFF}
@@ -253,7 +253,7 @@ html.lang-ar .footer-links-grid{direction:rtl}
 .instagram-btn,.facebook-btn,.tiktok-btn,.whatsapp-btn{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:22px;height:22px;transition:opacity .3s ease,transform .3s ease}
 .instagram-btn:hover,.facebook-btn:hover,.tiktok-btn:hover,.whatsapp-btn:hover{opacity:.8;transform:scale(1.08)}
 .footer-bottom{border-top:1px solid rgba(53,196,201,.25);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;letter-spacing:.02em;color:#8C8072}
-.wishlist-overlay{position:fixed;top:32px;right:0;bottom:0;left:0;background:rgba(20,16,14,.45);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;z-index:2000}
+.wishlist-overlay{position:fixed;top:24px;right:0;bottom:0;left:0;background:rgba(20,16,14,.45);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;z-index:2000}
 .wishlist-overlay.open{opacity:1;visibility:visible}
 .wishlist-drawer.open{transform:translateX(0);box-shadow:-30px 0 80px rgba(0,0,0,.5)}
 .wd-header h3{font-family:'Work Sans',sans-serif;font-size:21px;text-transform:uppercase}
@@ -311,7 +311,7 @@ html.lang-ar .footer-links-grid{direction:rtl}
 .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .modal-overlay{position:fixed;inset:0;background:rgba(20,16,14,.5);opacity:0;visibility:hidden;transition:opacity .4s cubic-bezier(.2,.8,.2,1),visibility .4s cubic-bezier(.2,.8,.2,1);z-index:3000}
 .modal-overlay.open{opacity:1;visibility:visible}
-.checkout-modal .wd-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 32px + 8px);left:20px;right:auto;width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:0;z-index:4001;cursor:pointer}
+.checkout-modal .wd-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 24px + 8px);left:20px;right:auto;width:42px;height:42px;border-radius:50%;background:#FFFFFF;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:0;z-index:4001;cursor:pointer}
 .checkout-modal .wd-close::before{content:'‹';font-size:26px;line-height:1;color:var(--ink);font-weight:600;margin-right:2px}
 .order-summary-card{background:#EAE1D0;border:none;border-radius:12px;padding:14px 16px;margin-bottom:14px;font-family:'Work Sans',sans-serif}
 #checkout-page .order-summary-card{border-radius:12px 12px 0 0;margin-bottom:0;padding-bottom:12px;background:#000000;position:relative;overflow:hidden}
@@ -447,7 +447,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .product-card .pc-action-cart{position:relative;overflow:hidden;background:#35C4C9;border:1px solid #35C4C9;color:#FFFFFF;padding:9px 14px;box-shadow:none}
 @media (hover:hover) and (pointer:fine){.product-card .pc-action-cart:hover{background:#1E8A69;border-color:#35C4C9;box-shadow:none}
 }
-.checkout-modal{position:fixed;inset:0;margin:0;width:100%;max-width:100%;height:100%;max-height:100%;overflow-y:auto;background:#FFFFFF;border-radius:0;padding:calc(env(safe-area-inset-top,0px) + 96px) 24px 32px;z-index:3001;box-shadow:none;opacity:0;visibility:hidden;transition:opacity .4s cubic-bezier(.2,.8,.2,1),visibility .4s cubic-bezier(.2,.8,.2,1);border:none}
+.checkout-modal{position:fixed;inset:0;margin:0;width:100%;max-width:100%;height:100%;max-height:100%;overflow-y:auto;background:#FFFFFF;border-radius:0;padding:calc(env(safe-area-inset-top,0px) + 88px) 24px 32px;z-index:3001;box-shadow:none;opacity:0;visibility:hidden;transition:opacity .4s cubic-bezier(.2,.8,.2,1),visibility .4s cubic-bezier(.2,.8,.2,1);border:none}
 .checkout-modal.open{opacity:1;visibility:visible}
 #confirm-overlay{z-index:6500}
 #confirm-modal{z-index:6501}
@@ -473,7 +473,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .order-customer .oc-name{font-family:'Poppins',sans-serif;font-size:19px;color:var(--ink)}
 .order-total{font-family:'Poppins',sans-serif;font-size:24px;font-weight:700;color:#150F0C}
 .order-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;border-top-color:#E4DAC8}
-.wishlist-drawer{position:fixed;top:32px;right:0;bottom:0;height:calc(100% - 32px);height:calc(100dvh - 32px);width:360px;max-width:88vw;background:#FFFFFF;z-index:2001;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.wishlist-drawer{position:fixed;top:24px;right:0;bottom:0;height:calc(100% - 24px);height:calc(100dvh - 24px);width:360px;max-width:88vw;background:#FFFFFF;z-index:2001;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
 .wd-header{display:flex;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid var(--line)}
 .wd-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--ink)}
 .wishlist-empty{color:var(--text-soft);font-size:14px;text-align:center;margin-top:50px}
@@ -503,7 +503,7 @@ footer{background:#000000;color:#35C4C9;padding:60px 0 calc(26px + env(safe-area
 .ab-track{animation:none}
 .checkout-modal,.wishlist-drawer{transition:opacity .01ms,visibility .01ms !important}
 }
-#product-page{padding:88px 20px 60px;min-height:100vh;background:var(--cream,#FFFFFF);color:var(--ink);position:relative;z-index:950}
+#product-page{padding:80px 20px 60px;min-height:100vh;background:var(--cream,#FFFFFF);color:var(--ink);position:relative;z-index:950}
 #product-page-content.pp-fade-in{animation:ppFadeIn 0.5s cubic-bezier(.22,.61,.36,1)}
 @keyframes ppFadeIn{from{opacity:0;transform:translateY(16px)}
 to{opacity:1;transform:none}
@@ -515,7 +515,7 @@ to{opacity:1;transform:none}
 #checkout-page .checkout-sub{margin-bottom:20px}
 #checkout-page,#checkout-page input,#checkout-page textarea,#checkout-page button,#checkout-page *{font-family:'Work Sans',sans-serif}
 #checkout-page h3,#checkout-page .payment-name{font-family:'Poppins',sans-serif;font-weight:500}
-@media(max-width:640px){#checkout-page{padding:88px 18px calc(env(safe-area-inset-bottom,0px) + 40px)}
+@media(max-width:640px){#checkout-page{padding:80px 18px calc(env(safe-area-inset-bottom,0px) + 40px)}
 }
 #checkout-page .cf-input{border:1.5px solid rgba(200,205,212,.6);background:#FFFFFF}
 #checkout-page .cf-input:focus{border-color:var(--emerald-deep);box-shadow:0 0 0 3px rgba(77,137,134,.16)}
@@ -604,7 +604,7 @@ to{opacity:1;transform:none}
 .sf-btn{padding:10px 2px;font-size:11px}
 .product-card .pc-actions{gap:4px;margin-top:4px}
 .product-card .pc-action-btn{padding:7px 12px;font-size:11px}
-#product-page{padding:88px 12px 50px}
+#product-page{padding:80px 12px 50px}
 .pp-back-row{margin:8px 0 12px}
 .pp-title{font-size:29px}
 }
@@ -618,7 +618,7 @@ to{opacity:1;transform:none}
 #menu-about-content h4{font-size:22px;margin-bottom:14px}
 #menu-about-content p{font-size:14.5px;color:var(--text-soft);line-height:1.8}
 #menu-toggle-btn{background:none;border:none;cursor:pointer;padding:0;width:23px;height:23px;display:flex;align-items:center;justify-content:center;color:#ffffff;flex-shrink:0}
-.side-menu-drawer{left:0;right:auto;top:32px;bottom:0;width:88vw;max-width:88vw;height:calc(100vh - 32px);height:calc(100dvh - 32px);transform:translateX(-100%);background:#FFFFFF;color:var(--ink)}
+.side-menu-drawer{left:0;right:auto;top:24px;bottom:0;width:88vw;max-width:88vw;height:calc(100vh - 24px);height:calc(100dvh - 24px);transform:translateX(-100%);background:#FFFFFF;color:var(--ink)}
 .side-menu-drawer.open{transform:translateX(0);box-shadow:20px 0 60px rgba(0,0,0,.18)}
 .side-menu-drawer .wd-header{background:#000000;border-bottom:none;height:56px;padding:0 24px;position:relative}
 .side-menu-drawer .wd-header::after{display:none}

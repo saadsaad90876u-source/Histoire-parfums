@@ -303,6 +303,38 @@ try {
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
 
+  // overflow:hidden on <html> (set synchronously in <head>, further up)
+  // stops the outer document from actually scrolling, but mobile
+  // Safari/Chrome still let the outer page visually rubber-band on a
+  // drag gesture regardless -- overflow:hidden blocks the scroll
+  // *position* from changing, not the elastic bounce animation itself.
+  // Meanwhile #welcome-screen is its own separate internally-scrolling
+  // box (overflow-y:auto) with its own overscroll-behavior-y:none,
+  // which *does* suppress its bounce. Two independently-bouncing layers
+  // stacked directly on top of each other (header/announcement-bar in
+  // the outer document, banner inside the inner box) is exactly what
+  // produces a gap between them during the drag that closes again once
+  // the outer bounce settles. Pinning <body> itself with position:fixed
+  // removes the outer document from the bounce equation entirely --
+  // there's nothing left for it to elastically move.
+  var bodyScrollLocked = false;
+  function lockBodyScroll() {
+    if (bodyScrollLocked) return;
+    bodyScrollLocked = true;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '0';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+  }
+  function unlockBodyScroll() {
+    if (!bodyScrollLocked) return;
+    bodyScrollLocked = false;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+  }
+
   // Physically moves the real #announcement-bar and <header> (the exact
   // same single instances used on the shop page -- not a clone) to sit
   // right before this splash screen in the DOM, and switches them from
@@ -486,7 +518,7 @@ try {
   // point in parsing, so this waits for DOMContentLoaded (by which
   // time the whole document, footer included, has been parsed).
   if (splashOpen) {
-    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); moveHeaderInFlow(); });
+    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); moveHeaderInFlow(); lockBodyScroll(); });
   }
 
   function handleEnter(pushHistory) {
@@ -512,6 +544,7 @@ try {
     }
     screen.classList.add('ws-leaving');
     restoreHeaderFixed();
+    unlockBodyScroll();
     document.documentElement.style.overflow = '';
     // Instant, not the page's default smooth scroll (see the matching
     // note in forceScrollUnlock below) -- this is a reset to the top of
@@ -636,6 +669,7 @@ try {
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
     screen.classList.remove('ws-hidden', 'ws-leaving');
     document.documentElement.style.overflow = 'hidden';
+    lockBodyScroll();
     // moveFooterToSplash() above ran its position check while the splash
     // was still hidden (display:none), so the footer/button measurements
     // it used were all zero -- that's what parked the button off-screen
