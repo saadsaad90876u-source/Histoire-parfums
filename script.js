@@ -2535,7 +2535,7 @@ function showTestimonial(i){
   setTimeout(() => {
     track.innerHTML = testimonialCardHtml(publicReviews[testimonialIndex]);
     track.classList.remove('is-fading');
-  }, 220);
+  }, 450);
   updateTestimonialIndicator();
 }
 

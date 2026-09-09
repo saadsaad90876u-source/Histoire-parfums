@@ -64,7 +64,7 @@
 
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
 
-    /* ---------------- product card: entrance (fade + rise + scale) -------- */
+    /* ---------------- product card: entrance (fade + rise, no scale) ------ */
     function animateCardIn(card) {
       if (card.dataset.mFadeIn) return;
       card.dataset.mFadeIn = '1';
@@ -75,11 +75,13 @@
       // fade-in/out system below (which toggles the "active" class every
       // time the card enters/leaves the viewport). Keeping opacity purely
       // class-driven means the fade keeps replaying on every scroll pass,
-      // while GSAP still owns the one-time rise + scale flourish.
+      // while GSAP still owns the one-time rise flourish. No "scale" here
+      // on purpose — the card's size must never change, under any
+      // circumstance (including a ScrollTrigger refresh re-running this).
       gsap.fromTo(card,
-        { y: 36, scale: 0.95 },
+        { y: 36 },
         {
-          y: 0, scale: 1, duration: 0.6, ease: 'power3.out',
+          y: 0, duration: 0.6, ease: 'power3.out',
           scrollTrigger: { trigger: card, start: 'top 85%', once: true }
         });
     }
@@ -91,14 +93,14 @@
     // This bypasses animateCardIn's scrollTrigger entirely for those two
     // cards (marking dataset.mFadeIn up front so scanCards() below doesn't
     // also attach the scroll-based version to them) and just plays the
-    // same fade/rise/scale immediately.
+    // same fade/rise immediately (no scale — see note above).
     function animateFirstTwoIn(cards) {
       cards.slice(0, 2).forEach((card) => {
         if (card.dataset.mFadeIn) return;
         card.dataset.mFadeIn = '1';
         gsap.fromTo(card,
-          { opacity: 0, y: 36, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out', delay: 0.05 });
+          { opacity: 0, y: 36 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.05 });
       });
     }
 
@@ -231,8 +233,8 @@
         }
         card.classList.add('active'); // instantly satisfies the CSS .reveal end-state; GSAP below drives the actual visible entrance
         gsap.fromTo(card,
-          { opacity: 0, y: 36, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' });
+          { opacity: 0, y: 36 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' });
       });
       return true;
     }
