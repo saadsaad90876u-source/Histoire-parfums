@@ -26,6 +26,18 @@ to{opacity:1;transform:translateY(0) scale(1)}
 100%{background-position:-200% 0}
 }
 #welcome-screen{position:fixed;inset:0;height:100dvh;z-index:900;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding-top:88px;background:#F4FBFB;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
+/* While the splash is up, the real #announcement-bar and <header> are
+   physically moved (not cloned) to sit right before #welcome-screen in
+   the DOM and switched to normal flow here -- see moveHeaderInFlow() /
+   restoreHeaderFixed() in index.html. That makes the splash's hero
+   image start exactly where the header ends by construction (ordinary
+   block layout), instead of relying on JS to continuously re-measure
+   two independently `position:fixed` layers and keep them in sync,
+   which is what the previous approach did and which kept intermittently
+   drifting out of sync on some devices. */
+html.ws-inflow #announcement-bar{position:static}
+html.ws-inflow header{position:static;top:auto}
+html.ws-inflow #welcome-screen{position:static;inset:auto;height:auto;min-height:calc(100dvh - 88px);padding-top:0}
 .ws-content{flex:0 0 auto;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:0}
 .ws-subtitle{font-family:'Poppins',sans-serif;font-weight:500;font-size:clamp(12px,2.3vw,15px);letter-spacing:0.4em;text-transform:uppercase;color:var(--green,#35C4C9);opacity:1;margin:0 0 30px}
 .ws-enter-btn{position:relative;overflow:hidden;font-family:'Poppins',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:0.2em;text-transform:uppercase;color:#EDE0C8;background:rgba(0,0,0,0.32);border:1px solid rgba(214,187,140,0.28);border-radius:4px;width:fit-content;max-width:92vw;padding:7px 22px;cursor:pointer;opacity:1;display:inline-flex;align-items:center;gap:9px;box-shadow:none;transition:background .4s ease,border-color .4s ease,filter .4s ease,transform .25s ease}
@@ -410,7 +422,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .sf-btn.active{background:transparent;color:#201A16;font-weight:600;border-bottom:2px solid #35C4C9}
 .product-card .pc-fam,.product-card .desc{display:none}
 .product-card .pc-bottom{justify-content:center}
-.product-card h3{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;font-style:italic;margin-bottom:6px;color:#14100E;text-align:center;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-card h3{font-family:'Work Sans',sans-serif;font-size:20px;font-weight:700;font-style:normal;margin-bottom:6px;color:#14100E;text-align:center;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pc-rating{display:flex;align-items:center;justify-content:flex-start;gap:4px;margin:0 0 2px}
 .pc-stars{color:#B9AC98;font-size:9px;letter-spacing:1.5px;display:block;text-align:center;margin:0 0 8px}
 .pc-rating-value{font-family:'Work Sans',sans-serif;font-size:10.5px;color:var(--text-soft)}
@@ -614,7 +626,7 @@ to{opacity:1;transform:none}
 .cart-count-wrap{display:none}
 #cart-drawer .wd-close{color:#35C4C9;background:rgba(53,196,201,.10);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .25s ease}
 #cart-drawer .wd-close:hover{background:rgba(53,196,201,.18)}
-.side-menu-item{position:relative;width:100%;display:flex;align-items:center;gap:18px;background:none;border:none;border-bottom:1px solid rgba(53,196,201,.16);border-radius:0;padding:21px 2px;cursor:pointer;text-align:left;font-family:'Work Sans',sans-serif;color:var(--ink);transition:background .3s ease;opacity:0;transform:translateY(10px)}
+.side-menu-item{position:relative;width:100%;display:flex;align-items:center;gap:18px;background:none;border:none;border-bottom:none;border-radius:0;padding:21px 2px;cursor:pointer;text-align:left;font-family:'Work Sans',sans-serif;color:var(--ink);transition:background .3s ease;opacity:0;transform:translateY(10px)}
 .side-menu-item:last-child{border-bottom:none}
 .side-menu-drawer.open .side-menu-item{animation:smItemIn .5s cubic-bezier(.16,1,.3,1) both}
 .side-menu-drawer.open .side-menu-item:nth-child(1){animation-delay:0ms}
@@ -636,14 +648,14 @@ to{opacity:1;transform:translateY(0)}
 .sm-icon-wa{color:var(--emerald-deep)}
 .side-menu-item .icon{width:19px;height:19px;flex-shrink:0}
 .sm-item-text{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
-.sm-item-label{position:relative;display:inline-block;width:fit-content;font-size:16px;font-weight:600;letter-spacing:.015em;color:var(--ink)}
+.sm-item-label{position:relative;display:inline-block;width:fit-content;font-size:19px;font-weight:600;letter-spacing:.015em;color:var(--ink)}
 .sm-item-label::after{content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1px;background:#35C4C9;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.65,0,.35,1)}
 .side-menu-item:hover .sm-item-label::after{transform:scaleX(1)}
 .sm-item-sub{font-family:'Poppins',sans-serif;font-style:italic;font-size:14px;color:var(--text-soft);font-weight:500;letter-spacing:.01em}
 .sm-chevron{flex-shrink:0;width:15px;height:15px;color:rgba(20,16,14,.3);transition:transform .3s cubic-bezier(.65,0,.35,1),color .25s ease}
 .side-menu-item:hover .sm-chevron{transform:translateX(4px);color:var(--emerald-deep)}
 .sm-footer{margin-top:auto;padding:20px 24px calc(26px + env(safe-area-inset-bottom,0px))}
-.sm-footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(53,196,201,.5),transparent);margin-bottom:16px}
+.sm-footer-divider{display:none}
 .sm-footer-brand{text-align:center;font-family:'Poppins',sans-serif;font-size:22px;font-weight:600;letter-spacing:.12em;color:var(--ink);display:flex;flex-direction:column;gap:4px}
 .sm-footer-sub{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.3em;color:var(--emerald-deep)}
 #search-results .wi-name{color:var(--ink)}

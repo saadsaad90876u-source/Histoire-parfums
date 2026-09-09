@@ -983,7 +983,6 @@ function productCard(pRaw, category, idx){
   const delay = Math.min(idx, 8) * 0.05;
   const revealDelayClass = `d${(idx % 4) + 1}`;
   
-  const oldPrice = 75;
   return `<div class="product-card reveal ${revealDelayClass} ${p.pinned ? 'product-card-pinned' : ''}" data-name="${p.name}" data-category="${category}" style="animation-delay:${delay}s;">
     ${adminControls}
     ${pinBadge}
@@ -997,7 +996,6 @@ function productCard(pRaw, category, idx){
       <div class="pc-bottom">
         <div class="pc-price-wrap">
           <div class="pc-price-row">
-            <span class="pc-price-old">${oldPrice} DH</span>
             <span class="price">${p.price} DH</span>
           </div>
         </div>
@@ -3656,7 +3654,6 @@ function productPageTemplate(pRaw, category, idx){
           <span class="pp-rating-text" id="pp-rating-badge-text"></span>
         </div>
         <div class="pp-price-row reveal">
-          <span class="pp-price-old">75 DH</span>
           <span class="pp-price">${p.price} DH</span>
         </div>
 
@@ -3844,11 +3841,23 @@ window.addEventListener('popstate', (e) => {
   const path = location.pathname.replace(/\/+$/, '') || '/';
   if(path.startsWith('/product/')){
     const slug = decodeURIComponent(path.slice('/product/'.length));
-    
-    
-    
-    
-    
+    // A direct/fresh visit straight to a product URL (someone pasting a
+    // shared link in a browser that never saw the splash this session)
+    // skips the splash entirely by going straight to openProductPage()
+    // below -- but the splash's own setup script (inline, in <head>)
+    // had already locked the whole page's scrolling
+    // (documentElement.style.overflow = 'hidden') to stop the shop from
+    // scrolling underneath it while it's up. That lock is only ever
+    // lifted inside handleEnter(), which runs when someone taps
+    // "Découvrir la collection" -- never triggered on this path, so the
+    // page was left permanently unscrollable ("frozen") after landing
+    // directly on a product link. Reuse the same dismissal handleEnter()
+    // exposes as window.wsDismiss() so this deep-link path gets exactly
+    // the same cleanup (lifts the scroll lock, hides the splash, marks
+    // it seen for the rest of the tab session) without pushing a
+    // duplicate history entry (the `false` argument).
+    if(typeof window.wsDismiss === 'function') window.wsDismiss(false);
+    document.documentElement.style.overflow = '';
     catalogReady.then(() => {
       const ref = findProductBySlug(slug);
       if(ref){
@@ -3860,12 +3869,18 @@ window.addEventListener('popstate', (e) => {
     });
     return;
   } else if(path === '/offre' || path === '/pack-parfums'){
-    
-    
-    
-    
-    
-    history.replaceState({}, '', '/');
+    // Same class of bug as the /product/ case above: a fresh browser
+    // landing straight on this link skipped the splash and its
+    // scroll-unlock, and on top of that this branch didn't even open
+    // the pack picker -- it just silently reset the URL back to '/' and
+    // left the plain splash showing instead of the "choose 3 products"
+    // modal the link was actually pointing at.
+    if(typeof window.wsDismiss === 'function') window.wsDismiss(false);
+    document.documentElement.style.overflow = '';
+    catalogReady.then(() => {
+      history.replaceState({ pack4: true }, '', path);
+      openPack4Modal(false);
+    });
     return;
   } else if(path === '/checkout'){
     

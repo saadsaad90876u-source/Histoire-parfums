@@ -171,15 +171,15 @@ try {
 <meta name="description" content="KORAL — boutique de parfums de luxe pour homme et femme. Découvrez notre collection exclusive de fragrances, livraison au Maroc.">
 <meta name="keywords" content="parfum, parfums de luxe, KORAL, parfum homme, parfum femme, boutique parfum Maroc">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://histoire-parfum.vercel.app/">
+<link rel="canonical" href="https://histoire-parfums.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="KORAL — Parfums de Luxe">
 <meta property="og:description" content="Découvrez notre collection exclusive de parfums de luxe pour homme et femme.">
-<meta property="og:image" content="https://histoire-parfum.vercel.app/histoire-logo.webp">
+<meta property="og:image" content="https://histoire-parfums.vercel.app/histoire-logo.webp">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:url" content="https://histoire-parfum.vercel.app/">
+<meta property="og:url" content="https://histoire-parfums.vercel.app/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://histoire-parfum.vercel.app/histoire-logo.webp">
+<meta name="twitter:image" content="https://histoire-parfums.vercel.app/histoire-logo.webp">
 <meta name="twitter:title" content="KORAL — Parfums de Luxe">
 <meta name="twitter:description" content="Découvrez notre collection exclusive de parfums de luxe pour homme et femme.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -246,8 +246,8 @@ try {
   window.addEventListener('pageshow', function(e){ if(e.persisted) runCheck(); });
 })();
 </script>
-<link rel="icon" href="/histoire-favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/histoire-favicon.png?v=2" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
 </head>
 <body>
 <div id="welcome-screen">
@@ -303,74 +303,49 @@ try {
   var btn = document.getElementById('ws-enter-btn');
   if (!screen || !btn) return;
 
-  // Keeps the splash content glued to the real header's bottom edge,
-  // whatever that edge actually is at any given moment -- rather than
-  // assuming it's always exactly 88px (32px announcement bar + 56px
-  // header) like the CSS default padding-top does. That fixed number
-  // only matches reality some of the time: mobile Safari/Chrome on
-  // iPhone resize the visual viewport (and can reflow fixed-position
-  // elements slightly differently) as the address bar/toolbar
-  // collapses or expands, which is why the gap below the header was
-  // showing up inconsistently -- sometimes the assumption held,
-  // sometimes it didn't. Measuring the header's actual position on
-  // screen sidesteps that assumption entirely.
-  var headerEl = null;
-  function syncSplashHeaderGap() {
-    if (!headerEl) headerEl = document.querySelector('header');
-    if (!headerEl) return;
-    var bottom = headerEl.getBoundingClientRect().bottom;
-    // A near-zero/negative reading means the header hasn't actually
-    // laid out yet (e.g. this ran before fonts/CSS finished) -- skip
-    // rather than lock in a bad value.
-    if (bottom < 20) return;
-    // Small negative overlap (matches the existing banner nudge below)
-    // so the two edges always meet or slightly overlap under the
-    // header rather than risking a hairline gap from subpixel rounding.
-    screen.style.paddingTop = Math.max(0, bottom - 2) + 'px';
+  // Physically moves the real #announcement-bar and <header> (the exact
+  // same single instances used on the shop page -- not a clone) to sit
+  // right before this splash screen in the DOM, and switches them from
+  // position:fixed to position:static for as long as the splash is up.
+  // This replaces an earlier approach that kept them as separate fixed
+  // layers and used JS to continuously re-measure the header's on-screen
+  // position and pad the splash content to match it -- that worked most
+  // of the time but the gap it was fighting kept coming back on some
+  // devices/timings no matter how many events/timers were added to
+  // re-trigger it. Two independently `position:fixed` boxes always need
+  // *something* keeping them in sync; putting them in the same normal
+  // document flow instead means there's nothing to keep in sync -- the
+  // splash content starts exactly where the header ends because that's
+  // just how block layout works, the same way it would in a plain
+  // static HTML page. See the matching .ws-inflow rules in style.css.
+  var headerBar = null, announcementBar = null;
+  var headerHome = null, announcementHome = null;
+  function captureHeaderEls() {
+    if (headerBar && announcementBar) return;
+    headerBar = document.querySelector('header');
+    announcementBar = document.getElementById('announcement-bar');
+    if (headerBar) headerHome = { parent: headerBar.parentNode, next: headerBar.nextSibling };
+    if (announcementBar) announcementHome = { parent: announcementBar.parentNode, next: announcementBar.nextSibling };
   }
-  // <header> is declared further down the page and doesn't exist as a
-  // DOM node yet at this point in parsing, so the very first check has
-  // to wait until the document (and therefore <header>) is actually
-  // there.
-  document.addEventListener('DOMContentLoaded', syncSplashHeaderGap);
-  requestAnimationFrame(syncSplashHeaderGap);
-  // Re-check after the very first paint/layout and once web fonts are
-  // in (a font swap can change nothing here since the header has a
-  // fixed height, but this stays cheap insurance against any reflow).
-  requestAnimationFrame(syncSplashHeaderGap);
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(syncSplashHeaderGap).catch(function () {});
+  function moveHeaderInFlow() {
+    captureHeaderEls();
+    if (!headerBar || !announcementBar) return;
+    var parent = screen.parentNode;
+    parent.insertBefore(announcementBar, screen);
+    parent.insertBefore(headerBar, screen);
+    document.documentElement.classList.add('ws-inflow');
   }
-  // A handful of late, one-off re-checks: things that can nudge the
-  // header's real on-screen position after the checks above already
-  // ran -- the cart badge count arriving from storage, the KORAL
-  // wordmark/webfont finishing its swap, the announcement bar's ticker
-  // content being built by script.js, etc. None of these fire a
-  // 'resize' event, so without this the padding-top can stay locked to
-  // a slightly-off value taken too early.
-  [100, 300, 600, 1200, 2000].forEach(function (delay) {
-    setTimeout(syncSplashHeaderGap, delay);
-  });
-  window.addEventListener('resize', syncSplashHeaderGap);
-  window.addEventListener('orientationchange', function () {
-    setTimeout(syncSplashHeaderGap, 50);
-    setTimeout(syncSplashHeaderGap, 300);
-  });
-  // visualViewport specifically reports the address-bar/toolbar
-  // collapsing or expanding on iOS, which plain window 'resize' can
-  // miss -- this is the actual event behind the "sometimes there's a
-  // gap" inconsistency.
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', syncSplashHeaderGap);
-    window.visualViewport.addEventListener('scroll', syncSplashHeaderGap);
-  }
-  // Belt-and-braces: if the header's own size ever changes for any
-  // reason not covered above, react to it directly instead of relying
-  // only on viewport-level events.
-  if (window.ResizeObserver) {
-    try {
-      new ResizeObserver(syncSplashHeaderGap).observe(document.querySelector('header') || screen);
-    } catch (err) {}
+  function restoreHeaderFixed() {
+    if (!headerBar || !announcementBar) return;
+    document.documentElement.classList.remove('ws-inflow');
+    if (announcementHome) {
+      if (announcementHome.next && announcementHome.next.parentNode === announcementHome.parent) announcementHome.parent.insertBefore(announcementBar, announcementHome.next);
+      else announcementHome.parent.appendChild(announcementBar);
+    }
+    if (headerHome) {
+      if (headerHome.next && headerHome.next.parentNode === headerHome.parent) headerHome.parent.insertBefore(headerBar, headerHome.next);
+      else headerHome.parent.appendChild(headerBar);
+    }
   }
 
   // Repeat visits within the same session, and entry via the admin link
@@ -500,7 +475,7 @@ try {
   // point in parsing, so this waits for DOMContentLoaded (by which
   // time the whole document, footer included, has been parsed).
   if (splashOpen) {
-    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); });
+    document.addEventListener('DOMContentLoaded', function () { moveFooterToSplash(); moveHeaderInFlow(); });
   }
 
   function handleEnter(pushHistory) {
@@ -525,6 +500,7 @@ try {
       try { history.pushState({ shop: true }, '', location.pathname + location.search); } catch (e) {}
     }
     screen.classList.add('ws-leaving');
+    restoreHeaderFixed();
     document.documentElement.style.overflow = '';
     // Instant, not the page's default smooth scroll (see the matching
     // note in forceScrollUnlock below) -- this is a reset to the top of
@@ -645,6 +621,7 @@ try {
     // handleEnter() sets, so the <head> check doesn't short-circuit it.
     try { sessionStorage.removeItem('ws-seen'); } catch (e) {}
     moveFooterToSplash();
+    moveHeaderInFlow();
     try { document.documentElement.classList.remove('ws-skip'); } catch (e) {}
     screen.classList.remove('ws-hidden', 'ws-leaving');
     document.documentElement.style.overflow = 'hidden';
