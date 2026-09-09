@@ -503,7 +503,7 @@ footer{background:#000000;color:#35C4C9;padding:60px 0 calc(26px + env(safe-area
 .ab-track{animation:none}
 .checkout-modal,.wishlist-drawer{transition:opacity .01ms,visibility .01ms !important}
 }
-#product-page{padding:80px 20px 60px;min-height:100vh;background:var(--cream,#FFFFFF);color:var(--ink);position:relative;z-index:950}
+#product-page{padding:80px 20px 60px;min-height:100vh;background:#000000;color:var(--ink);position:relative;z-index:950}
 #product-page-content.pp-fade-in{animation:ppFadeIn 0.5s cubic-bezier(.22,.61,.36,1)}
 @keyframes ppFadeIn{from{opacity:0;transform:translateY(16px)}
 to{opacity:1;transform:none}
@@ -573,7 +573,7 @@ to{opacity:1;transform:none}
 .pp-admin-add-thumb{width:72px;height:72px;border-radius:10px;border:1.5px dashed var(--emerald-deep);background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--emerald-deep);font-size:9px;text-align:center;padding:4px}
 .pp-admin-add-thumb span:first-child{font-size:18px;line-height:1}
 .pp-info{padding-top:6px}
-.pp-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;font-size:38px;margin-bottom:8px;line-height:1.15;color:var(--ink)}
+.pp-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;font-size:38px;margin-bottom:8px;line-height:1.15;color:#FFFFFF}
 .pp-rating-badge{display:flex;align-items:center;gap:8px;margin-bottom:24px}
 .pp-rating-stars{display:flex;gap:1px;font-size:15px;letter-spacing:1px}
 .pp-rating-stars .review-star.filled{color:#E3CBA0}
@@ -587,7 +587,7 @@ to{opacity:1;transform:none}
 .pp-notes-text{font-family:'Work Sans',sans-serif;font-size:13.5px;line-height:1.6;color:var(--ink);flex:1}
 .pp-price-row{display:flex;align-items:baseline;gap:12px;margin:6px 0 26px}
 .pp-price-old{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:400;color:#9C8F7C;text-decoration:line-through;text-decoration-color:#4D8986;text-decoration-thickness:1px}
-.pp-price{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:500;color:#150F0C;margin:0}
+.pp-price{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:500;color:#FFFFFF;margin:0}
 @media(max-width:560px){.ab-track{animation-duration:8s}
 #shop-view{padding:86px 0 0}
 .hero-banner-frame{aspect-ratio:1/1;border-radius:0}
@@ -785,14 +785,14 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-banner-heading-main-wrap{position:relative;display:inline-block;isolation:isolate;overflow:hidden}
 .pack4-banner-heading-main{font-family:'Poppins',sans-serif;font-size:clamp(20px,calc(8vw - 5.6px),44px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;display:block;color:#9CD0CE;text-shadow:none}
 .pack4-banner-title{font-family:'Work Sans',sans-serif;font-size:13px;font-weight:500;color:#201A16;margin-bottom:8px}
-.pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#FFFFFF;border:1px solid #E4DAC8;box-shadow:0 4px 14px -8px rgba(20,14,4,.18);border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:12px;width:100%}
+.pack4-banner-price-box{display:flex;flex-direction:column;align-items:center;background:#000000;border:1px solid #2A2A2A;box-shadow:0 4px 14px -8px rgba(0,0,0,.5);border-radius:18px;padding:clamp(4.5px,calc(1.03vw + 1.19px),7.6px) clamp(8px,calc(2.67vw - 0.53px),16px);margin-bottom:12px;width:100%}
 .pack4-banner-shipping{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:10px;color:#9CD0CE;font-family:'Work Sans',sans-serif;font-size:clamp(8.5px,calc(1.6vw + 3.5px),11px);font-weight:500;letter-spacing:.03em}
 .pack4-banner-shipping svg{width:13px;height:13px;flex-shrink:0}
 .pack4-banner-price{display:flex;align-items:center;justify-content:center;gap:clamp(10px,calc(1.33vw + 5.73px),14px);width:100%}
-.pack4-price-new{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(24px,calc(7.33vw + 0.53px),46px);line-height:1;color:#1C1512}
-.pack4-price-unit{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(11px,calc(3vw + 1.4px),20px);color:#1C1512;margin-left:2px}
-.pack4-price-sep{width:1px;height:clamp(16px,calc(4.67vw + 1.07px),30px);background:rgba(122,31,43,.15);flex-shrink:0}
-.pack4-price-old{font-family:'Work Sans',sans-serif;color:var(--text-soft);font-size:clamp(11px,calc(3vw + 1.4px),20px);text-decoration:line-through;text-decoration-color:#35C4C9;text-decoration-thickness:1px}
+.pack4-price-new{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(24px,calc(7.33vw + 0.53px),46px);line-height:1;color:#FFFFFF}
+.pack4-price-unit{font-family:'Work Sans',sans-serif;font-weight:700;font-size:clamp(11px,calc(3vw + 1.4px),20px);color:#FFFFFF;margin-left:2px}
+.pack4-price-sep{width:1px;height:clamp(16px,calc(4.67vw + 1.07px),30px);background:rgba(255,255,255,.2);flex-shrink:0}
+.pack4-price-old{font-family:'Work Sans',sans-serif;color:#9C9082;font-size:clamp(11px,calc(3vw + 1.4px),20px);text-decoration:line-through;text-decoration-color:#35C4C9;text-decoration-thickness:1px}
 .pack4-banner-savings{display:inline-flex;align-items:center;gap:5px;background:#35C4C9;color:#150F0C;font-family:'Work Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.01em;border-radius:999px;padding:4px 20px;margin-bottom:10px}
 .pack4-banner-savings b{color:#150F0C;font-weight:700}
 .pack4-banner-savings .pack4-shipping-icon{flex-shrink:0}
