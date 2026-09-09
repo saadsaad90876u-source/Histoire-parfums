@@ -1731,21 +1731,34 @@ function renderPack4BadgeImage(playShine){
   const imageWrap = document.getElementById('pack4-banner-image');
   if(!img) return;
   if(pack4BadgeImageUrl){
-    img.src = pack4BadgeImageUrl;
-    img.style.display = 'block';
-    if(placeholder) placeholder.style.display = 'none';
-    if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${pack4BadgeImageUrl}")`);
+    const showLoadedImage = () => {
+      img.style.display = 'block';
+      if(placeholder) placeholder.style.display = 'none';
+      if(imageWrap) imageWrap.style.setProperty('--pack4-shine-mask', `url("${pack4BadgeImageUrl}")`);
+      if(playShine && imageWrap){
+        imageWrap.classList.remove('pack4-shine-active');
+        void imageWrap.offsetWidth;
+        imageWrap.classList.add('pack4-shine-active');
+      }
+    };
+    if(img.src === pack4BadgeImageUrl && img.complete && img.naturalWidth > 0){
+      // الصورة محمّلة مسبقًا في ذاكرة المتصفح (كاش) -- تظهر فورًا بدون أي وميض
+      showLoadedImage();
+    } else {
+      // نبقي على العنصر البديل ظاهرًا وما نعرض الصورة الحقيقية إلا بعد
+      // اكتمال تحميلها فعليًا، لتجنّب ظهور أيقونة الصورة المكسورة/علامة الاستفهام
+      if(placeholder) placeholder.style.display = 'flex';
+      img.style.display = 'none';
+      img.onload = showLoadedImage;
+      img.onerror = () => { /* يبقى العنصر البديل ظاهرًا في حال فشل التحميل */ };
+      img.src = pack4BadgeImageUrl;
+    }
   } else {
     img.style.display = 'none';
     if(placeholder) placeholder.style.display = 'flex';
     if(imageWrap) imageWrap.style.removeProperty('--pack4-shine-mask');
   }
   if(editBtn) editBtn.style.display = isAdmin ? 'flex' : 'none';
-  if(playShine && imageWrap && img.style.display !== 'none'){
-    imageWrap.classList.remove('pack4-shine-active');
-    void imageWrap.offsetWidth;
-    imageWrap.classList.add('pack4-shine-active');
-  }
   // The splash screen's "Parfums" circle (see pack-circles.js) shows this
   // exact same photo -- keep it in sync whenever this card's image changes.
   if(typeof window.renderSplashCircle === 'function') window.renderSplashCircle();
