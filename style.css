@@ -1331,3 +1331,21 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #splash-trust-section .reveal{opacity:1;transform:none;transition:none}
 @media (prefers-reduced-motion:reduce){.ws-pack-circles{animation:none;opacity:1}
 }
+
+/* ====== تعديل مخصص: الصفحة الرئيسية بخلفية سوداء ونص أبيض ====== */
+#shop-view{background:#000000;}
+#shop-view .shop-heading{color:#FFFFFF;}
+#shop-view .sf-btn{color:#B8B8B8;}
+#shop-view .sf-btn:hover,#shop-view .sf-btn.active{color:#FFFFFF;}
+#shop-view .product-card h3{color:#FFFFFF;}
+#shop-view .product-card .price,
+#shop-view .pc-price-row .price{color:#FFFFFF;}
+#shop-view .pc-price-old{color:#B8B8B8;}
+#shop-view .product-card .desc{color:#CFCFCF;}
+#shop-view .featured-product-name{color:#FFFFFF;}
+#shop-view .featured-product-price{color:#FFFFFF;}
+#shop-view .collection-divider-text{color:#FFFFFF;}
+
+/* ====== تعديل مخصص: بطاقة "عرض الباك" (offre de pack) بخلفية بيضاء ====== */
+#shop-view .pack4-banner{background:#FFFFFF;border:1px solid #E4DAC8;}
+#shop-view .pack4-banner-heading-top{color:#14100E;}
