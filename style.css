@@ -1227,9 +1227,9 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-rating-text{font-size:11.5px;letter-spacing:.05em;color:var(--text-soft);white-space:nowrap}
 .testimonial-carousel{max-width:660px;margin:0 auto;touch-action:pan-y;position:relative}
 .testimonial-carousel-track{aspect-ratio:16/9;height:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none}
-.testimonial-carousel-track.is-fading .testimonial-card{opacity:0;transform:translateY(6px)}
+.testimonial-carousel-track.is-fading .testimonial-card{opacity:0}
 .testimonial-skel{width:100%;aspect-ratio:16/9;border-radius:2px;background:linear-gradient(90deg,#F7F2E9 25%,#FAF7F0 50%,#F7F2E9 75%);background-size:200% 100%;animation:adSkeleton 1.4s ease-in-out infinite}
-.testimonial-card{width:100%;aspect-ratio:16/9;height:auto;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:#FFFFFF;border:1px solid rgba(10,47,29,.07);border-radius:0;box-shadow:0 24px 48px -28px rgba(10,47,29,.28),0 2px 10px rgba(10,20,40,.04);position:relative;opacity:1;transform:translateY(0);overflow:hidden;transition:opacity .45s ease,transform .45s ease}
+.testimonial-card{width:100%;aspect-ratio:16/9;height:auto;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:#FFFFFF;border:1px solid rgba(10,47,29,.07);border-radius:0;box-shadow:0 24px 48px -28px rgba(10,47,29,.28),0 2px 10px rgba(10,20,40,.04);position:relative;opacity:1;overflow:hidden;transition:opacity .45s ease}
 .testimonial-body{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left}
 .testimonial-stars{display:flex;justify-content:flex-start;gap:3px;font-size:11px;margin-bottom:10px}
 .testimonial-stars .review-star{color:#E6DCC8}

@@ -2534,7 +2534,21 @@ function showTestimonial(i){
   track.classList.add('is-fading');
   setTimeout(() => {
     track.innerHTML = testimonialCardHtml(publicReviews[testimonialIndex]);
+    const newCard = track.querySelector('.testimonial-card');
+    if(newCard){
+      // ابدأ البطاقة الجديدة من نفس حالة الاختفاء (بدون transition) قبل إظهارها
+      newCard.style.transition = 'none';
+      newCard.style.opacity = '0';
+      // فرض إعادة رسم لتثبيت الحالة الابتدائية قبل تفعيل الانتقال
+      void newCard.offsetHeight;
+      newCard.style.transition = '';
+    }
     track.classList.remove('is-fading');
+    requestAnimationFrame(() => {
+      if(newCard){
+        newCard.style.opacity = '';
+      }
+    });
   }, 450);
   updateTestimonialIndicator();
 }
