@@ -1346,6 +1346,100 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #shop-view .featured-product-price{color:#FFFFFF;}
 #shop-view .collection-divider-text{color:#FFFFFF;}
 
-/* ====== تعديل مخصص: بطاقة "عرض الباك" (offre de pack) بخلفية بيضاء ====== */
-#shop-view .pack4-banner{background:#FFFFFF;border:1px solid #E4DAC8;}
-#shop-view .pack4-banner-heading-top{color:#14100E;}
+/* ====== تعديل مخصص: بطاقة "عرض الباك" (offre de pack) رجعت بخلفية سوداء ====== */
+#shop-view .pack4-banner{background:#000000;border:1px solid #2A2A2A;}
+#shop-view .pack4-banner-heading-top{color:#F2E9DC;}
+#shop-view .pack4-banner-heading-main{color:#35C4C9;}
+
+/* ====== تعديل مخصص: خلفية سوداء لقسمي الأسئلة الشائعة والتقييمات ====== */
+#shop-view #faq-section,
+#shop-view #reviews-section{background:#000000;}
+#shop-view #faq-section .lux-heading,
+#shop-view #reviews-section .lux-heading{color:#FFFFFF;}
+#shop-view .faq-question{color:#FFFFFF;}
+#shop-view .faq-question-icon{color:#FFFFFF;}
+#shop-view .faq-item.open .faq-question-icon{color:#FFFFFF;}
+#shop-view .faq-item{border-bottom-color:rgba(255,255,255,.15);}
+#shop-view .faq-answer-inner{color:#CFCFCF;}
+#shop-view .testimonial-empty-title{color:#FFFFFF;}
+#shop-view .testimonial-empty-sub{color:#CFCFCF;}
+
+/* ====== تعديل مخصص: زر "Ajouter au panier" بسطر واحد في كل أحجام الهواتف ====== */
+.product-card .pc-action-btn{white-space:nowrap;letter-spacing:.05em;font-size:clamp(8.5px,2.6vw,11px);padding-left:6px;padding-right:6px;}
+.pc-cart-plus{margin-right:3px;}
+@media(max-width:760px){
+  .product-card .pc-action-btn{font-size:clamp(8px,2.4vw,11px);padding:7px 4px;letter-spacing:.03em;}
+}
+@media(max-width:340px){
+  .product-card .pc-action-btn{font-size:7.5px;letter-spacing:.01em;}
+}
+
+/* ====== تعديل مخصص: خلفية سوداء لكل صفحات ونوافذ الموقع (السلة، المفضلة، القائمة، الدفع، تتبع الطلب، البحث، والنوافذ المنبثقة) ====== */
+
+/* السلة والمفضلة والقائمة الجانبية */
+.wishlist-drawer{background:#000000;color:#FFFFFF;}
+.wd-header{border-bottom-color:rgba(255,255,255,.15);}
+.wd-header h3{color:#FFFFFF;}
+.wd-close{color:#FFFFFF;}
+.wishlist-empty{color:#CFCFCF;}
+.wi-name{color:#FFFFFF;}
+.wi-meta{color:#CFCFCF;}
+#cart-drawer .wi-price{color:#FFFFFF;}
+.wi-remove{color:#CFCFCF;}
+.co-item-thumb{background:#FFFFFF;}
+.wi-thumb{background:#FFFFFF;}
+#search-results .wi-name{color:#FFFFFF;}
+#search-results .wi-meta{color:#CFCFCF;}
+
+/* القائمة الجانبية (menu) */
+.sm-item-label{color:#FFFFFF;}
+.sm-item-sub{color:#CFCFCF;}
+.sm-chevron{color:rgba(255,255,255,.4);}
+.sm-footer-brand{color:#FFFFFF;}
+.menu-link{color:#FFFFFF;border-bottom-color:rgba(255,255,255,.15);}
+.menu-back{color:#CFCFCF;}
+#menu-about-content p{color:#CFCFCF;}
+
+/* رسالة نجاح الطلب */
+#checkout-success-view p{color:#CFCFCF;}
+#continue-shopping-btn{color:#FFFFFF!important;border-color:rgba(255,255,255,.3)!important;}
+#confirm-cancel{color:#FFFFFF!important;border-color:rgba(255,255,255,.3)!important;}
+
+/* صفحة إتمام الطلب checkout-page */
+#checkout-page{background:#000000;color:#FFFFFF;}
+#checkout-page .checkout-sub{color:#CFCFCF;}
+#checkout-page .cf-label{color:#CFCFCF;}
+#checkout-page h3{color:#FFFFFF;}
+#checkout-page .osc-title[data-i18n="deliveryInfoTitle"],
+#checkout-page .osc-title[data-i18n="paymentMethodTitle"]{color:#FFFFFF;}
+#checkout-page .trust-item{color:#FFFFFF;background:#111111;border-color:rgba(255,255,255,.25);}
+#checkout-page .order-customer .oc-name{color:#FFFFFF;}
+
+/* كل النوافذ المنبثقة: تتبع الطلب، البحث، الشروط، سياسة الخصوصية، الشحن، الإرجاع، من نحن، المؤسس، مراجعة الطلب... */
+.checkout-modal{background:#000000;color:#FFFFFF;}
+.checkout-modal h3{color:#FFFFFF;}
+.checkout-modal .checkout-sub{color:#CFCFCF;}
+.checkout-modal .cf-label{color:#CFCFCF;}
+.checkout-modal .tk-mine-label{color:#CFCFCF;}
+.checkout-modal .tk-mine-item-date{color:#CFCFCF;}
+.checkout-modal .trust-item{color:#FFFFFF;background:#111111;border-color:rgba(255,255,255,.25);}
+
+/* ====== تعديل مخصص: إزالة تأثير اللمعان وتأثير التكبير (zoom) عند لمس بطاقة المنتج ====== */
+.pc-stage::after{content:none;}
+.product-card:hover{transform:none;box-shadow:none;}
+.product-card:hover .pc-price-row .price{transform:none;}
+.product-card:hover .pc-price-old{transform:none;}
+.product-card:hover h3{color:#FFFFFF;}
+
+/* ====== تعديل مخصص: إصلاح تباين ألوان النصوص في صفحة تفاصيل المنتج ====== */
+#product-page{color:#FFFFFF;}
+#product-page .pp-info .pc-fam{color:#35C4C9;}
+#product-page .pp-rating-text{color:#CFCFCF;}
+#product-page .pp-price-old{color:#B8B8B8;}
+#product-page .pp-trust-grid-standalone .pp-trust-item strong{color:#FFFFFF;}
+#product-page .pp-trust-grid-standalone .pp-trust-item span{color:#CFCFCF;}
+#product-page .pp-accordion{border-top-color:rgba(255,255,255,.15);}
+#product-page .pp-accordion p{color:#CFCFCF;}
+#product-page .pp-reviews-section{border-top-color:rgba(255,255,255,.12);}
+#product-page .pp-reviews-title{color:#FFFFFF;}
+#product-page .pp-reviews-summary-text{color:#CFCFCF;}
