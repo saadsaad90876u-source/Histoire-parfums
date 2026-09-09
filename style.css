@@ -35,8 +35,8 @@ to{opacity:1;transform:translateY(0) scale(1)}
    two independently `position:fixed` layers and keep them in sync,
    which is what the previous approach did and which kept intermittently
    drifting out of sync on some devices. */
-html.ws-inflow #announcement-bar{position:static}
-html.ws-inflow header{position:static;top:auto}
+html.ws-inflow #announcement-bar{position:static;transform:none;-webkit-transform:none;will-change:auto}
+html.ws-inflow header{position:static;top:auto;transform:none;-webkit-transform:none;will-change:auto}
 html.ws-inflow #welcome-screen{position:relative;inset:auto;height:calc(100dvh - 88px);padding-top:0}
 /* While the splash governs the layout (html.ws-inflow), the real shop
    content sitting right after it in the DOM must be fully removed from
@@ -384,8 +384,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .hero-banner-frame{position:relative;width:100%;margin:0 auto;border-radius:0;overflow:hidden;aspect-ratio:1/1;background:#FFFFFF;animation:heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;box-shadow:none;border:none}
 #splash-banner-bottom-frame{background:#F4FBFB}
 .hb-hero-cta{pointer-events:auto;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:none;color:#2E1608;background:#E3CBA0;border:1px solid rgba(46,22,8,.15);border-radius:6px;padding:7px 22px;cursor:pointer;box-shadow:none;transition:transform .2s ease}
-.hb-hero-cta-repositioned{position:fixed;left:50%;top:520px;transform:translateX(-50%);z-index:5}
-.hb-hero-cta-repositioned.ws-enter-btn-parked{position:absolute;top:auto;left:50%;transform:translateX(-50%)}
+.hb-hero-cta-repositioned{position:absolute;left:50%;top:520px;transform:translateX(-50%);z-index:5}
 .hb-hero-cta:active{transform:scale(.96)}
 .hb-hero-cta-repositioned:active{transform:translateX(-50%) scale(.96)}
 .ws-cta-wrap-repositioned:active{transform:scale(.96)}

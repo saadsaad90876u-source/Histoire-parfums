@@ -401,14 +401,25 @@ try {
     if (!btn || !footer) return;
     var footerTopInScreen = footer.offsetTop; // offsetTop is relative to #welcome-screen, its offsetParent
     var btnHeight = btn.offsetHeight || 44;
-    var wouldOverlap = (footerTopInScreen - screen.scrollTop) < (BTN_FIXED_TOP + btnHeight + BTN_FOOTER_GAP);
-    if (wouldOverlap) {
-      btn.classList.add('ws-enter-btn-parked');
-      btn.style.top = (footerTopInScreen - btnHeight - BTN_FOOTER_GAP) + 'px';
-    } else {
-      btn.classList.remove('ws-enter-btn-parked');
-      btn.style.top = '';
-    }
+    // Both candidate positions are now expressed in the exact same
+    // coordinate space (absolute, relative to #welcome-screen) instead of
+    // switching between position:fixed (viewport-relative) and
+    // position:absolute (container-relative) -- mixing those two used to
+    // produce a sudden jump the instant the button crossed the parking
+    // threshold, because a viewport-relative "520px from the top" and a
+    // container-relative "520px from the top" stopped being the same
+    // point on screen once the splash itself sits below the header
+    // instead of starting at the very top of the viewport. Taking the
+    // smaller of the two candidates -- "float at a fixed spot as the
+    // visitor scrolls" vs "sit just above the footer" -- makes the
+    // transition between them continuous by construction: right at the
+    // threshold the two values are equal, so there's nothing to jump
+    // between.
+    var floatTop = screen.scrollTop + BTN_FIXED_TOP;
+    var parkedTop = footerTopInScreen - btnHeight - BTN_FOOTER_GAP;
+    var top = Math.min(floatTop, parkedTop);
+    btn.classList.toggle('ws-enter-btn-parked', top === parkedTop);
+    btn.style.top = top + 'px';
   }
 
   function moveFooterToSplash() {
