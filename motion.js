@@ -128,25 +128,17 @@
       if (card.dataset.mTilt) return;
       card.dataset.mTilt = '1';
 
-      if (mq.matches) {
-        card.addEventListener('mouseenter', () => {
-          gsap.to(card, { y: -4, scale: 1.015, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
-        });
-        card.addEventListener('mouseleave', () => {
-          gsap.to(card, { y: 0, scale: 1, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
-        });
-      }
+      // Hover and touch scaling disabled — card stays fixed/still in
+      // both cases. Only the subtle border highlight (m-touch-active)
+      // is toggled on touch for feedback.
 
-      // Touch: a small, quick settle on tap — no bounce, no overshoot.
+      // Touch: no scale animation — card stays fixed, only the subtle
+      // border highlight (m-touch-active) is toggled for feedback.
       card.addEventListener('touchstart', () => {
         card.classList.add('m-touch-active');
-        gsap.killTweensOf(card);
-        gsap.to(card, { scale: 1.015, duration: 0.15, ease: 'power2.out', overwrite: true });
       }, { passive: true });
       const releaseTouch = () => {
         card.classList.remove('m-touch-active');
-        gsap.killTweensOf(card);
-        gsap.to(card, { scale: 1, duration: 0.15, ease: 'power2.out', overwrite: true });
       };
       card.addEventListener('touchend', releaseTouch, { passive: true });
       card.addEventListener('touchcancel', releaseTouch, { passive: true });

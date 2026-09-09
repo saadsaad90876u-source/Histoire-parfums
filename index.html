@@ -1118,7 +1118,7 @@ try {
         <label class="cf-label"><span class="sr-only" data-i18n="addressLabel">Home Address</span>
           <div class="cf-field-wrap">
             <span class="cf-field-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11A6.5 6.5 0 0 1 12 3.5 6.5 6.5 0 0 1 18.5 10c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg></span>
-            <textarea id="checkout-address" class="cf-input cf-input-icon" rows="1" style="resize:vertical;" data-i18n-placeholder="addressPh" placeholder="Adresse de livraison" required></textarea>
+            <textarea id="checkout-address" class="cf-input cf-input-icon" rows="1" style="resize:vertical;" data-i18n-placeholder="addressPh" placeholder="Adresse de livraison" autocomplete="off" required></textarea>
           </div>
         </label>
         <label class="cf-label"><span class="sr-only" data-i18n="cityLabel">Ville</span>
@@ -1148,7 +1148,7 @@ try {
         </div>
 
         <p id="checkout-error" data-i18n="checkoutError" style="display:none; color:#c0392b; font-size:13px; margin:10px 0 -2px;">Please fill in your name and phone number.</p>
-        <button type="submit" id="checkout-submit-btn" class="checkout-btn" style="margin-top:14px;"><span data-i18n="confirmOrder">Confirm Order</span> — <span id="checkout-btn-total">0 DH</span></button>
+        <button type="submit" id="checkout-submit-btn" class="checkout-btn" style="margin-top:14px;"><span data-i18n="confirmOrder">Confirm Order</span></button>
 
         <div class="trust-grid">
           <div class="trust-item">✓ <span data-i18n="trustCod">Cash on Delivery</span></div>
@@ -1183,7 +1183,6 @@ try {
   <div class="container">
     <div class="footer-top">
       <div class="footer-logo"><img class="seq-lazy footer-logo-img" data-src="/histoire-logo.webp" alt="KORAL" width="2299" height="707" decoding="async"></div>
-      <p class="footer-tagline" data-i18n="footerTagline">Fabrication française · Ingrédients d'exception</p>
     </div>
 
     <div class="footer-links-grid">

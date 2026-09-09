@@ -487,7 +487,6 @@ const translations = {
     genderWomen: "Femme",
     genderMen: "Homme",
     genderMixte: "Mixte",
-    footerTagline: "Fabrication française · Ingrédients d'exception",
     footerQuickLinks: "Liens Rapides",
     footerLinkMen: "Collection Homme",
     footerLinkWomen: "Collection Femme",
@@ -774,7 +773,6 @@ const translations = {
     genderWomen: "نسائي",
     genderMen: "رجالي",
     genderMixte: "مختلط",
-    footerTagline: "صناعة فرنسية · مكونات استثنائية",
     footerQuickLinks: "روابط سريعة",
     footerLinkMen: "مجموعة رجالي",
     footerLinkWomen: "مجموعة نسائي",
@@ -2368,16 +2366,19 @@ function reviewFormatDate(iso){
 }
 
 function testimonialCardHtml(r){
-  const img = r.image_url ? `<div class="testimonial-photo"><img class="seq-lazy" data-src="${r.image_url}" alt="Photo de ${(r.customer_name || '').replace(/</g, '&lt;')}"></div>` : '';
+  const name = (r.customer_name || '').replace(/</g, '&lt;');
+  const img = r.image_url
+    ? `<div class="testimonial-photo"><img class="seq-lazy" data-src="${r.image_url}" alt="Photo de ${name}"></div>`
+    : `<div class="testimonial-photo testimonial-photo-fallback">${reviewInitial(r.customer_name)}</div>`;
   return `
     <div class="testimonial-card">
-      <div class="testimonial-quote-mark" aria-hidden="true">&ldquo;</div>
-      <div class="testimonial-stars">${reviewStarsHtml(r.rating)}</div>
-      <p class="testimonial-text">${(r.comment || '').replace(/</g, '&lt;')}</p>
       ${img}
-      <div class="testimonial-divider"></div>
-      <div class="testimonial-name">${(r.customer_name || '').replace(/</g, '&lt;')}</div>
-      <div class="testimonial-date">${reviewFormatDate(r.created_at)}</div>
+      <div class="testimonial-body">
+        <div class="testimonial-stars">${reviewStarsHtml(r.rating)}</div>
+        <p class="testimonial-text">${(r.comment || '').replace(/</g, '&lt;')}</p>
+        <div class="testimonial-name">${name}</div>
+        <div class="testimonial-date">${reviewFormatDate(r.created_at)}</div>
+      </div>
     </div>`;
 }
 
