@@ -488,7 +488,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .wi-price{font-family:'IBM Plex Mono',monospace;font-variant-numeric:lining-nums;font-size:14.5px;font-weight:500;margin-top:4px;color:var(--emerald-deep)}
 #cart-drawer .wi-price{color:#1C1512}
 .wi-remove{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:15px;flex-shrink:0}
-.cart-footer{border-top:1px solid var(--line);padding:20px 24px}
+.cart-footer{border-top:1px solid #35C4C9;padding:20px 24px}
 .cart-subtotal{display:flex;justify-content:space-between;align-items:center;font-family:'Work Sans',sans-serif;font-size:14px;font-weight:500;margin-bottom:16px;color:var(--ink);}
 #cart-drawer .cart-subtotal{color:#FFFFFF;}
 .cart-subtotal span:last-child{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500}
@@ -1265,7 +1265,7 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-text{font-size:13px;-webkit-line-clamp:3}
 }
 .review-modal{background:#FAF6EF}
-#review-modal h3.review-modal-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;letter-spacing:.06em;font-size:22px;color:var(--green-darkest);margin-bottom:8px;line-height:1.1}
+#review-modal h3.review-modal-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;letter-spacing:.06em;font-size:22px;color:#FFFFFF;margin-bottom:8px;line-height:1.1}
 .review-modal-subtitle{display:flex;align-items:center;gap:7px;font-family:'Work Sans',sans-serif;font-size:14px;color:var(--text-soft);margin-bottom:22px}
 .review-modal-subtitle svg{flex-shrink:0;color:var(--text-soft)}
 .review-card{background:#FFFFFF;border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 24px -12px rgba(32,26,22,.12);display:flex;align-items:center;gap:14px}
