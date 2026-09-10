@@ -1810,7 +1810,7 @@ async function loadPack4BadgeImage(){
   }catch(err){ }
 }
 
-document.getElementById('pack4-banner-image').addEventListener('click', (e) => {
+document.getElementById('pack4-banner-image')?.addEventListener('click', (e) => {
   if(!isAdmin) return;
   if(e.target.closest('.pack4-banner-image-edit') || e.target.closest('.pack4-banner-image-placeholder')){
     e.stopPropagation();
@@ -1818,7 +1818,7 @@ document.getElementById('pack4-banner-image').addEventListener('click', (e) => {
   }
 });
 
-document.getElementById('pack4-banner-image-input').addEventListener('change', async (e) => {
+document.getElementById('pack4-banner-image-input')?.addEventListener('change', async (e) => {
   const file = e.target.files && e.target.files[0];
   e.target.value = '';
   if(!file) return;
@@ -1966,6 +1966,7 @@ function featuredProductCard(p, idx){
     </div>
     <div class="featured-product-name">${p.name}</div>
     <div class="featured-product-price">${p.price} DH</div>
+    <button type="button" class="featured-pack-btn is-${p.gender === 'men' ? 'men' : 'women'}" data-i18n="pack4BannerCta">${t('pack4BannerCta')}</button>
   </div>`;
 }
 
@@ -3177,7 +3178,7 @@ function closePack4Modal(fromPopstate){
     try{ history.pushState({}, '', '/'); }catch(err){}
   }
 }
-document.getElementById('pack4-banner-btn').addEventListener('click', () => openPack4Modal());
+document.getElementById('pack4-banner-btn')?.addEventListener('click', () => openPack4Modal());
 document.getElementById('pack4-modal-close').addEventListener('click', () => closePack4Modal());
 document.getElementById('pack4-overlay').addEventListener('click', () => closePack4Modal());
 

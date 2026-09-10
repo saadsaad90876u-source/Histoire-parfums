@@ -834,46 +834,7 @@ try {
       <button class="sf-btn" data-f="men" data-i18n="filterMen">Men</button>
     </div>
 
-    <div class="pack4-banner reveal" id="pack4-banner-btn">
-      <div class="pack4-banner-image" id="pack4-banner-image">
-        <img id="pack4-banner-img" class="pack4-banner-img" src="" alt="Pack 3 parfums" loading="eager" fetchpriority="high" style="display:none;">
-        <div class="pack4-banner-image-placeholder" id="pack4-banner-image-placeholder" style="display:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        </div>
-        <button type="button" class="pack4-banner-image-edit" id="pack4-banner-image-edit" title="Changer l'image" aria-label="Changer l'image">✎</button>
-        <input type="file" id="pack4-banner-image-input" accept="image/*,image/avif" hidden>
-      </div>
-      <div class="pack4-banner-text">
-        <div class="pack4-banner-heading">
-          <span class="pack4-banner-heading-top">
-            <span data-i18n="pack4BannerHeadingTop">Pack de</span>
-          </span>
-          <span class="pack4-banner-heading-main-wrap">
-            <span class="pack4-banner-heading-main" data-i18n="pack4BannerLabelHighlight">3 parfums</span>
-          </span>
-        </div>
-        <div class="pack4-banner-price-box">
-          <div class="pack4-banner-price">
-            <span class="pack4-price-new">195<span class="pack4-price-unit">DH</span></span>
-            <span class="pack4-price-sep"></span>
-            <span class="pack4-price-old">225 DH</span>
-          </div>
-        </div>
-        <div class="pack4-banner-shipping">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="7" width="13" height="9"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>
-          <span data-i18n="pack4BannerShipping">Livraison gratuite</span>
-        </div>
-        <div class="pack4-banner-cta" id="pack4-banner-cta">
-          <span data-i18n="pack4BannerCta">Composer mon pack</span>
-          <span class="pack4-banner-cta-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" y1="12" x2="19" y2="12"></line>
-              <polyline points="13 6 19 12 13 18"></polyline>
-            </svg>
-          </span>
-        </div>
-      </div>
-    </div>
+    <div class="featured-products" id="featured-products-list"></div>
 
     <p class="collection-divider-text" data-i18n="collectionDividerText">Chaque flacon, une histoire.</p>
 
@@ -886,8 +847,6 @@ try {
 
     <div class="product-grid" id="shop-grid"></div>
     <div id="shop-load-more-wrap"></div>
-
-    <div class="featured-products" id="featured-products-list"></div>
 
     <section id="bottom-banner" class="reveal" style="display:none;">
       <div class="hero-banner-frame" id="bottom-banner-frame">

@@ -207,13 +207,13 @@ html.lang-ar .footer-links-grid{direction:rtl}
 .hb-admin-btn.remove:hover{background:#35C4C9;color:#F4EEE4}
 .featured-products{display:flex;flex-direction:column;align-items:center;gap:28px;margin-top:32px}
 .featured-product-card{position:relative;text-align:center;width:100%;max-width:340px;margin:0 auto}
-.featured-product-media{position:relative;width:100%;aspect-ratio:1/1;border-radius:0;overflow:hidden;background:#000000;transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+.featured-product-media{position:relative;width:80%;margin:0 auto;min-height:176px;border-radius:0;overflow:hidden;background:#000000;transition:transform .5s cubic-bezier(.22,.61,.36,1)}
 .featured-product-card::before{content:"";position:absolute;inset:0;border-radius:0;padding:1.5px;background:linear-gradient(135deg,color-mix(in srgb,var(--emerald) 70%,transparent) 0%,color-mix(in srgb,var(--emerald) 8%,transparent) 45%,color-mix(in srgb,var(--emerald) 70%,transparent) 100%);-webkit-mask:linear-gradient(#F4EEE4 0 0) content-box,linear-gradient(#F4EEE4 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:3}
 @media (hover:hover) and (pointer:fine){.featured-product-card:hover .featured-product-media{transform:translateY(-10px)}
 .featured-product-card:hover::before{opacity:1}
 .featured-product-card:hover .featured-product-name{color:var(--emerald-deep)}
 }
-.featured-product-media img{width:100%;height:100%;object-fit:cover;display:block}
+.featured-product-media img{width:100%;height:auto;display:block}
 .featured-product-name{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;letter-spacing:.06em;font-size:19px;color:var(--ink);margin-top:18px}
 .featured-product-price{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500;color:#1A1A1A;margin-top:6px}
 .featured-pack-btn{display:block;width:fit-content;margin:10px auto 0;padding:9px 24px;border:none;border-radius:8px;font-family:'Work Sans',sans-serif;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;position:relative;isolation:isolate;transition:filter .25s ease,transform .15s ease}
