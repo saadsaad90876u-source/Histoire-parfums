@@ -682,7 +682,7 @@ to{opacity:1;transform:translateY(0)}
 .sm-footer-sub{font-family:'Work Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.3em;color:#35C4C9}
 #search-results .wi-name{color:var(--ink)}
 #search-results .wi-meta{color:var(--text-soft)}
-#search-results .wi-price{color:#FFFFFF}
+#search-results .wi-price{color:var(--emerald-deep)}
 #search-results .wishlist-item:hover .wi-name{color:var(--emerald-deep)}
 .pp-qty-cart-row{display:flex;align-items:center;gap:10px;margin:20px 0 10px}
 .pp-qty-stepper{background:#FFFFFF;border:1.5px solid var(--line);border-radius:10px;padding:11px 16px;gap:18px;flex-shrink:0}
@@ -1282,7 +1282,7 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-text{font-size:13px;-webkit-line-clamp:3}
 }
 .review-modal{background:#FAF6EF}
-#review-modal h3.review-modal-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;letter-spacing:.06em;font-size:22px;color:#FFFFFF;margin-bottom:8px;line-height:1.1}
+#review-modal h3.review-modal-title{font-family:'Work Sans',sans-serif;font-weight:700;font-style:normal;text-transform:uppercase;letter-spacing:.06em;font-size:22px;color:#150F0C;margin-bottom:8px;line-height:1.1}
 .review-modal-subtitle{display:flex;align-items:center;gap:7px;font-family:'Work Sans',sans-serif;font-size:14px;color:var(--text-soft);margin-bottom:22px}
 .review-modal-subtitle svg{flex-shrink:0;color:var(--text-soft)}
 .review-card{background:#FFFFFF;border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 24px -12px rgba(32,26,22,.12);display:flex;align-items:center;gap:14px}
@@ -1413,23 +1413,14 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .wi-remove{color:#CFCFCF;}
 .co-item-thumb{background:#000000;}
 .wi-thumb{background:#000000;}
-#search-results .wi-name{color:#FFFFFF;}
-#search-results .wi-meta{color:#CFCFCF;}
+#search-results .wi-name{color:var(--ink);}
+#search-results .wi-meta{color:var(--text-soft);}
 
 /* رسالة نجاح الطلب */
-#checkout-success-view p{color:#CFCFCF!important;}
-#continue-shopping-btn{color:#FFFFFF!important;border-color:rgba(255,255,255,.3)!important;}
 #confirm-cancel{color:#FFFFFF!important;border-color:rgba(255,255,255,.3)!important;}
 
-/* صفحة إتمام الطلب checkout-page */
-#checkout-page{background:#000000;color:#FFFFFF;}
-#checkout-page .checkout-sub{color:#CFCFCF;}
-#checkout-page .cf-label{color:#CFCFCF;}
-#checkout-page h3{color:#FFFFFF;}
-#checkout-page .osc-title[data-i18n="deliveryInfoTitle"],
-#checkout-page .osc-title[data-i18n="paymentMethodTitle"]{color:#FFFFFF;}
-#checkout-page .trust-item{color:#FFFFFF;background:#111111;border-color:rgba(255,255,255,.25);}
-#checkout-page .order-customer .oc-name{color:#FFFFFF;}
+/* صفحة إتمام الطلب checkout-page: خلفية بيضاء */
+#checkout-page .pp-back{color:var(--ink);}
 
 /* كل النوافذ المنبثقة: تتبع الطلب، البحث، الشروط، سياسة الخصوصية، الشحن، الإرجاع، من نحن، المؤسس، مراجعة الطلب... */
 .checkout-modal{background:#000000;color:#FFFFFF;}
@@ -1438,8 +1429,8 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #search-modal h3{font-family:'Work Sans',sans-serif;font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:22px;}
 .checkout-modal .checkout-sub{color:#CFCFCF;}
 .checkout-modal .cf-label{color:#CFCFCF;}
-.checkout-modal .tk-mine-label{color:#CFCFCF;}
-.checkout-modal .tk-mine-item-date{color:#CFCFCF;}
+.checkout-modal .tk-mine-label{color:var(--text-soft);}
+.checkout-modal .tk-mine-item-date{color:var(--text-soft);}
 .checkout-modal .trust-item{color:#FFFFFF;background:#111111;border-color:rgba(255,255,255,.25);}
 
 /* ====== تعديل مخصص: إزالة تأثير اللمعان وتأثير التكبير (zoom) عند لمس بطاقة المنتج ====== */
@@ -1450,6 +1441,10 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .product-card:hover h3{color:#FFFFFF;}
 
 /* ====== إصلاح شامل: تباين النصوص فوق الخلفية السوداء في كل الموقع ====== */
+
+/* ====== تعديل مخصص: صفحة البحث بخلفية بيضاء ====== */
+#search-modal{background:#FFFFFF;color:var(--ink);}
+#search-modal h3{color:#150F0C;}
 
 /* ====== تعديل مخصص: صفحة "اختيار 3 عطور" (Composez votre Pack) بخلفية بيضاء ====== */
 #pack4-modal{background:#FFFFFF;color:var(--ink);}
@@ -1468,9 +1463,19 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #pack4-modal .pack4-price-row .label{color:var(--text-soft);}
 #pack4-modal .pack4-price-row .value{color:#1C1512;}
 
-/* 3) صفحة الدفع: سطور المجموع الفرعي ورسوم التوصيل في ملخص الطلب */
-#checkout-page .osc-row{color:#CFCFCF;}
-/* بطاقة "Résumé de la commande" رجعت بيضاء: نصوصها لازم تبقى غامقة عشان تتقرأ */
+/* ====== تعديل مخصص: صفحة تتبع الطلبية بخلفية بيضاء ====== */
+#tracking-modal{background:#FFFFFF;color:var(--ink);}
+#tracking-modal h3{color:#150F0C;}
+#tracking-modal .checkout-sub{color:var(--text-soft);}
+
+/* ====== تعديل مخصص: صفحة "Écrire un avis" (كتابة تعليق) بخلفية بيضاء ====== */
+#review-modal{background:#FFFFFF;color:var(--ink);}
+
+/* ====== تعديل مخصص: صفحة "À propos de nous" بخلفية بيضاء ====== */
+#about-modal{background:#FFFFFF;color:var(--ink);}
+#about-modal h3{color:#150F0C;}
+
+/* 3) بطاقة "Résumé de la commande": نصوصها غامقة عشان تتقرأ */
 #checkout-page .order-summary-card .osc-title{color:#150F0C;}
 #checkout-page .order-summary-card .osc-row{color:var(--text-soft);}
 
@@ -1482,8 +1487,6 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #founder-modal .founder-bio-text{color:#CFCFCF!important;}
 
 /* 6) نصوص أخرى كانت محددة بلون داكن مباشرة داخل الصفحة (inline style) فوق نوافذ سوداء */
-#tracking-order-number{color:#CFCFCF!important;}
-[data-i18n="reviewThanksSub"]{color:#CFCFCF!important;}
 
 /* 7) عداد الكمية (+/-) في السلة كان بدون خلفية ولون غامق فوق الأسود = غير ظاهر */
 #cart-drawer .qty-stepper{border-color:var(--line);}
@@ -1491,5 +1494,3 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #cart-drawer .qty-num{color:var(--ink);}
 
 /* 8) نافذة تأكيد إلغاء الطلب (تتبع الطلب) */
-.checkout-modal .tracking-cancel-confirm p{color:#FFFFFF;}
-.checkout-modal .tracking-cancel-confirm-no{color:#FFFFFF;border-color:rgba(255,255,255,.3);}
