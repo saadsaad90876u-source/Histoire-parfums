@@ -3620,7 +3620,7 @@ function productPageTemplate(pRaw, category, idx){
   const images = productImages(p);
   const coverIdx = (typeof pRaw.cover === 'number') ? pRaw.cover : 0;
 
-  const backBtnHtml = `<div class="pp-back-row"><button type="button" class="pp-back-float" id="pp-back" aria-label="${t('backToShopBtn')}">←</button></div>`;
+  const backBtnHtml = `<div class="pp-back-row"><button type="button" class="pp-back" id="pp-back"><span aria-hidden="true">←</span><span>${t('backToShopBtn')}</span></button></div>`;
 
   const gallery = images.length ? `
     ${backBtnHtml}
