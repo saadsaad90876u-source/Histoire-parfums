@@ -1358,19 +1358,14 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 @media (prefers-reduced-motion:reduce){.ws-pack-circles{animation:none;opacity:1}
 }
 
-/* ====== تعديل مخصص: الصفحة الرئيسية بخلفية سوداء ونص أبيض ====== */
-#shop-view{background:#000000;}
-#shop-view .shop-heading{color:#FFFFFF;}
-#shop-view .sf-btn{color:#B8B8B8;}
-#shop-view .sf-btn:hover,#shop-view .sf-btn.active{color:#FFFFFF;}
+/* ====== تعديل مخصص: الصفحة الرئيسية بخلفية بيضاء، وبطاقات المنتجات سوداء بإطار فيروزي ====== */
+#shop-view{background:#FFFFFF;}
+#shop-view .product-card{background:#000000;}
 #shop-view .product-card h3{color:#FFFFFF;}
 #shop-view .product-card .price,
 #shop-view .pc-price-row .price{color:#FFFFFF;}
 #shop-view .pc-price-old{color:#B8B8B8;}
 #shop-view .product-card .desc{color:#CFCFCF;}
-#shop-view .featured-product-name{color:#FFFFFF;}
-#shop-view .featured-product-price{color:#FFFFFF;}
-#shop-view .collection-divider-text{color:#FFFFFF;}
 #shop-view .pc-rating-value{color:#CFCFCF;}
 
 /* ====== تعديل مخصص: بطاقة "عرض الباك" (offre de pack) رجعت بخلفية سوداء ====== */
@@ -1378,18 +1373,12 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #shop-view .pack4-banner-heading-top{color:#E4DAC8;}
 #shop-view .pack4-banner-heading-main{color:#35C4C9;}
 
-/* ====== تعديل مخصص: خلفية سوداء لقسمي الأسئلة الشائعة والتقييمات ====== */
-#shop-view #faq-section,
-#shop-view #reviews-section{background:#000000;}
-#shop-view #faq-section .lux-heading,
-#shop-view #reviews-section .lux-heading{color:#FFFFFF;}
+/* ====== تعديل مخصص: قسما الأسئلة الشائعة والتقييمات بخلفية بيضاء، وبطاقتاهما الداخليتان سوداء بإطار فيروزي ====== */
 #shop-view .faq-question{color:#FFFFFF;}
 #shop-view .faq-question-icon{color:#FFFFFF;}
 #shop-view .faq-item.open .faq-question-icon{color:#FFFFFF;}
 #shop-view .faq-item{border-bottom-color:rgba(255,255,255,.15);}
 #shop-view .faq-answer-inner{color:#CFCFCF;}
-#shop-view .testimonial-empty-title{color:#FFFFFF;}
-#shop-view .testimonial-empty-sub{color:#CFCFCF;}
 #shop-view .faq-frame{background:#000000;border-color:rgba(53,196,201,.55);box-shadow:none;}
 
 /* ====== تعديل مخصص: زر "Ajouter au panier" بسطر واحد في كل أحجام الهواتف ====== */
