@@ -493,7 +493,7 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)
 .wi-remove{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:15px;flex-shrink:0}
 .cart-footer{border-top:1px solid #35C4C9;padding:20px 24px}
 .cart-subtotal{display:flex;justify-content:space-between;align-items:center;font-family:'Work Sans',sans-serif;font-size:14px;font-weight:500;margin-bottom:16px;color:var(--ink);}
-#cart-drawer .cart-subtotal{color:#FFFFFF;}
+#cart-drawer .cart-subtotal{color:var(--ink);}
 .cart-subtotal span:last-child{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500}
 .qty-stepper{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:4px 10px}
 .qty-btn{background:none;border:none;cursor:pointer;font-size:15px;color:var(--ink);line-height:1;width:14px}
@@ -508,7 +508,7 @@ footer{background:#000000;color:#35C4C9;padding:60px 0 calc(26px + env(safe-area
 .ab-track{animation:none}
 .checkout-modal,.wishlist-drawer{transition:opacity .01ms,visibility .01ms !important}
 }
-#product-page{padding:80px 20px 60px;min-height:100vh;background:#000000;color:var(--ink);position:relative;z-index:950}
+#product-page{padding:80px 20px 60px;min-height:100vh;background:#FFFFFF;color:var(--ink);position:relative;z-index:950}
 #product-page-content.pp-fade-in{animation:ppFadeIn 0.5s cubic-bezier(.22,.61,.36,1)}
 @keyframes ppFadeIn{from{opacity:0;transform:translateY(16px)}
 to{opacity:1;transform:none}
@@ -641,7 +641,7 @@ to{opacity:1;transform:none}
 .side-menu-drawer .wd-close:hover{background:rgba(53,196,201,.18)}
 .sm-divider{display:none}
 .sm-body{padding:6px 24px 24px;display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
-#cart-drawer{width:88vw;max-width:88vw;background:#000000}
+#cart-drawer{width:88vw;max-width:88vw;background:#FFFFFF;color:var(--ink)}
 #cart-drawer .wd-header{background:#000000;border-bottom:none;height:56px;padding:0 24px;position:relative}
 #cart-drawer .wd-header::after{display:none}
 #cart-drawer .wd-header h3{color:#35C4C9;font-family:'Work Sans',sans-serif;font-size:22px;letter-spacing:.08em;text-transform:uppercase;margin:0}
@@ -735,6 +735,11 @@ to{opacity:1;transform:translateY(0)}
 .pp-reviews-summary-text{font-size:13.5px;color:var(--text-soft)}
 .pp-reviews-list{display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
 .pp-review-card{border:1px solid rgba(20,18,14,.08);border-radius:14px;padding:14px 16px;background:#FFFFFF;box-shadow:0 4px 18px -12px rgba(20,18,14,.15)}
+/* ====== تعديل مخصص: بطاقات التعليقات داخل صفحة المنتج بخلفية سوداء وإطار فيروزي ====== */
+.pp-review-card{background:#000000;border:1px solid rgba(53,196,201,.55);box-shadow:none;}
+.pp-review-card .review-card-name{color:#FFFFFF;}
+.pp-review-card .review-card-date{color:#CFCFCF;}
+.pp-review-card .review-card-text{color:#CFCFCF;}
 .pp-review-photo{width:100%;max-width:160px;aspect-ratio:1/1;border-radius:12px;overflow:hidden;margin-top:12px;border:1.5px solid #35C4C9;box-shadow:0 6px 16px -8px rgba(20,18,14,.25)}
 .pp-review-photo img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;image-rendering:-webkit-optimize-contrast;image-rendering:high-quality}
 .pp-reviews-more-btn{display:none;align-items:center;justify-content:center;width:100%;background:none;border:none;cursor:pointer;font-family:'Work Sans',sans-serif;font-size:14px;font-weight:600;color:#35C4C9;padding:6px 0 32px;text-decoration:underline;text-underline-offset:3px}
@@ -1401,21 +1406,15 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .wishlist-empty{color:#CFCFCF;}
 .wi-name{color:#FFFFFF;}
 .wi-meta{color:#CFCFCF;}
-#cart-drawer .wi-price{color:#FFFFFF;}
+#cart-drawer .wi-name{color:var(--ink);}
+#cart-drawer .wi-meta{color:var(--text-soft);}
+#cart-drawer .wi-remove{color:var(--text-soft);}
+#cart-drawer .wishlist-empty{color:var(--text-soft);}
 .wi-remove{color:#CFCFCF;}
 .co-item-thumb{background:#000000;}
 .wi-thumb{background:#000000;}
 #search-results .wi-name{color:#FFFFFF;}
 #search-results .wi-meta{color:#CFCFCF;}
-
-/* القائمة الجانبية (menu) */
-.sm-item-label{color:#FFFFFF;}
-.sm-item-sub{color:#CFCFCF;}
-.sm-chevron{color:rgba(255,255,255,.4);}
-.sm-footer-brand{color:#FFFFFF;}
-.menu-link{color:#FFFFFF;border-bottom-color:rgba(255,255,255,.15);}
-.menu-back{color:#CFCFCF;}
-#menu-about-content p{color:#CFCFCF;}
 
 /* رسالة نجاح الطلب */
 #checkout-success-view p{color:#CFCFCF!important;}
@@ -1450,24 +1449,13 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .product-card:hover .pc-price-old{transform:none;}
 .product-card:hover h3{color:#FFFFFF;}
 
-/* ====== تعديل مخصص: إصلاح تباين ألوان النصوص في صفحة تفاصيل المنتج ====== */
-#product-page{color:#FFFFFF;}
-#product-page .pp-info .pc-fam{color:#35C4C9;}
-#product-page .pp-rating-text{color:#CFCFCF;}
-#product-page .pp-price-old{color:#B8B8B8;}
-#product-page .pp-trust-grid-standalone .pp-trust-item strong{color:#FFFFFF;}
-#product-page .pp-trust-grid-standalone .pp-trust-item span{color:#CFCFCF;}
-#product-page .pp-accordion{border-top-color:rgba(255,255,255,.15);}
-#product-page .pp-accordion p{color:#CFCFCF;}
-#product-page .pp-reviews-section{border-top-color:rgba(255,255,255,.12);}
-#product-page .pp-reviews-title{color:#FFFFFF;}
-#product-page .pp-reviews-summary-text{color:#CFCFCF;}
-#product-page .pp-desc{color:#CFCFCF;}
-
 /* ====== إصلاح شامل: تباين النصوص فوق الخلفية السوداء في كل الموقع ====== */
 
-/* 1) القائمة الجانبية (المنيو): كانت خلفيتها لسه بيضاء بينما نصوصها بقت بيضاء = نص مختفي بالكامل */
-.side-menu-drawer{background:#000000;color:#FFFFFF;}
+/* ====== تعديل مخصص: صفحة "اختيار 3 عطور" (Composez votre Pack) بخلفية بيضاء ====== */
+#pack4-modal{background:#FFFFFF;color:var(--ink);}
+#pack4-modal h3{color:#150F0C;}
+#pack4-modal .checkout-sub{color:var(--text-soft);}
+#pack4-modal .pp-back{color:var(--ink);}
 
 /* 2) صفحة اختيار 3 عطور (Pack): أسماء العطور في القائمة، رقم الكمية، وسعر الباك */
 .checkout-modal .pack4-picker-name{color:#FFFFFF;}
@@ -1476,9 +1464,9 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .checkout-modal .pack4-picker-item.is-selected .pack4-picker-name{color:#FFFFFF;}
 .checkout-modal .pack4-picker-item:hover .pack4-picker-meta,
 .checkout-modal .pack4-picker-item.is-selected .pack4-picker-meta{color:#F2E9DC;}
-.checkout-modal .pack4-qty-num{color:#FFFFFF;}
-.checkout-modal .pack4-price-row .label{color:#CFCFCF;}
-.checkout-modal .pack4-price-row .value{color:#FFFFFF;}
+#pack4-modal .pack4-qty-num{color:var(--ink);}
+#pack4-modal .pack4-price-row .label{color:var(--text-soft);}
+#pack4-modal .pack4-price-row .value{color:#1C1512;}
 
 /* 3) صفحة الدفع: سطور المجموع الفرعي ورسوم التوصيل في ملخص الطلب */
 #checkout-page .osc-row{color:#CFCFCF;}
@@ -1498,9 +1486,9 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 [data-i18n="reviewThanksSub"]{color:#CFCFCF!important;}
 
 /* 7) عداد الكمية (+/-) في السلة كان بدون خلفية ولون غامق فوق الأسود = غير ظاهر */
-#cart-drawer .qty-stepper{border-color:rgba(255,255,255,.3);}
-#cart-drawer .qty-btn{color:#FFFFFF;}
-#cart-drawer .qty-num{color:#FFFFFF;}
+#cart-drawer .qty-stepper{border-color:var(--line);}
+#cart-drawer .qty-btn{color:var(--ink);}
+#cart-drawer .qty-num{color:var(--ink);}
 
 /* 8) نافذة تأكيد إلغاء الطلب (تتبع الطلب) */
 .checkout-modal .tracking-cancel-confirm p{color:#FFFFFF;}
