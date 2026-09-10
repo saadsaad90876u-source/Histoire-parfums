@@ -298,6 +298,7 @@ const translations = {
     aboutUsTitle: "À propos de nous",
     aboutUsBody: "KORAL Parfum Collection propose une sélection exclusive de parfums de qualité, inspirés des plus grandes maisons, à des prix accessibles. Chaque flacon est choisi avec soin pour offrir une expérience olfactive raffinée et durable. Nous livrons partout au Maroc, avec un paiement à la livraison et un service client à votre écoute.",
     quantityLabel: "Quantité",
+    pack4IncompleteWarning: "Veuillez choisir vos 3 parfums avant de continuer",
     trustDeliveryTitle: "Livraison 1-4j",
     trustDeliverySub: "Partout au Maroc",
     trustCertifiedTitle: "Qualité certifiée",
@@ -584,6 +585,7 @@ const translations = {
     aboutUsTitle: "من نحن",
     aboutUsBody: "تقدم KORAL Parfum Collection تشكيلة حصرية من العطور عالية الجودة، المستوحاة من أعرق دور العطور، بأسعار في متناول الجميع. كل زجاجة تُختار بعناية لتمنحك تجربة عطرية راقية وثابتة. نوصل إلى جميع أنحاء المغرب، مع الدفع عند الاستلام وخدمة عملاء دائمة الاستماع لكم.",
     quantityLabel: "الكمية",
+    pack4IncompleteWarning: "يرجى اختيار العطور الثلاثة قبل المتابعة",
     trustDeliveryTitle: "توصيل 1-4 أيام",
     trustDeliverySub: "في جميع أنحاء المغرب",
     trustCertifiedTitle: "جودة معتمدة",
@@ -3111,8 +3113,6 @@ function renderPack4Slots(){
   }).join('<div class="pack4-plus-sep">+</div>');
   const filled = pack4Selection.filter(Boolean).length;
   document.getElementById('pack4-progress').textContent = `${filled}/3`;
-  document.getElementById('pack4-add-btn').disabled = filled < 3;
-  document.getElementById('pack4-cart-btn').disabled = filled < 3;
   document.getElementById('pack4-price-value').textContent = `${PACK4_PRICE * pack4Qty} DH`;
 }
 
@@ -3281,7 +3281,7 @@ function pack4CurrentBadgeImage(){
 
 document.getElementById('pack4-add-btn').addEventListener('click', () => {
   const names = pack4Selection.filter(Boolean);
-  if(names.length < 3) return;
+  if(names.length < 3){ showToast(t('pack4IncompleteWarning') || 'Veuillez choisir vos 3 parfums avant de continuer'); return; }
   checkoutOverrideItems = [{
     name: `${t('pack4CartFamily')} — ${names.join(', ')}`,
     displayName: t('pack4CartFamily'),
@@ -3299,7 +3299,7 @@ document.getElementById('pack4-add-btn').addEventListener('click', () => {
 
 document.getElementById('pack4-cart-btn').addEventListener('click', () => {
   const names = pack4Selection.filter(Boolean);
-  if(names.length < 3) return;
+  if(names.length < 3){ showToast(t('pack4IncompleteWarning') || 'Veuillez choisir vos 3 parfums avant de continuer'); return; }
   addToCart(`${t('pack4CartFamily')} — ${names.join(', ')}`, PACK4_PRICE, t('pack4CartFamily'), pack4Qty, {
     displayName: t('pack4CartFamily'),
     image: pack4CurrentBadgeImage()

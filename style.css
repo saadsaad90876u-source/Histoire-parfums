@@ -382,7 +382,7 @@ html.lang-ar .footer-links-grid{direction:rtl}
 body{background:#FFFFFF;color:var(--ink);font-family:'Work Sans',sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)}
 .shop-section{padding:8px 0 14px;position:relative}
-#hero-banner{width:100vw;margin-left:calc(-50vw + 50%);margin-right:calc(-50vw + 50%);margin-top:-96px}
+#hero-banner{width:100vw;margin-left:calc(-50vw + 50%);margin-right:calc(-50vw + 50%)}
 .hero-banner-frame{position:relative;width:100%;margin:0 auto;border-radius:0;overflow:hidden;aspect-ratio:1/1;background:#000000;animation:heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;box-shadow:none;border:none}
 #splash-banner-bottom-frame{background:#000000}
 .hb-hero-cta{pointer-events:auto;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:none;color:#2E1608;background:#E3CBA0;border:1px solid rgba(46,22,8,.15);border-radius:6px;padding:7px 22px;cursor:pointer;box-shadow:none;transition:transform .2s ease}
@@ -600,7 +600,6 @@ to{opacity:1;transform:none}
 .pp-price{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:500;color:#FFFFFF;margin:0}
 @media(max-width:560px){.ab-track{animation-duration:8s}
 #shop-view{padding:86px 0 0}
-#hero-banner{margin-top:-94px}
 .hero-banner-frame{aspect-ratio:1/1;border-radius:0}
 .product-grid{grid-template-columns:repeat(2,1fr);gap:10px}
 .shop-section .container{padding-left:12px;padding-right:12px}
@@ -862,7 +861,7 @@ textarea.cf-input-icon{padding-top:16px;height:56px;min-height:56px}
 .pack4-slot:not(.filled){aspect-ratio:1 / 1}
 .pack4-slot:hover{border-color:var(--emerald);background:#FFFFFF}
 .pack4-qty-row{display:flex;flex-direction:column;align-items:center;gap:10px;margin:18px 0 16px}
-.pack4-qty-label{font-family:'Work Sans',sans-serif;font-size:13px;color:var(--text-soft)}
+.pack4-qty-label{font-family:'Work Sans',sans-serif;font-size:13px;color:var(--lux-text-soft)}
 .pack4-qty-stepper{display:flex;align-items:stretch;border:1px solid #DED2BC;border-radius:10px;overflow:hidden}
 .pack4-qty-stepper > *{width:56px;display:flex;align-items:center;justify-content:center}
 .pack4-qty-stepper > *:not(:last-child){border-right:1px solid #DED2BC}
@@ -1236,10 +1235,10 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-rating-stars .review-star.filled{color:#E5C878}
 .testimonial-rating-text{font-size:11.5px;letter-spacing:.05em;color:var(--text-soft);white-space:nowrap}
 .testimonial-carousel{max-width:660px;margin:0 auto;touch-action:pan-y;position:relative}
-.testimonial-carousel-track{aspect-ratio:16/9;height:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none;background:#000000}
+.testimonial-carousel-track{aspect-ratio:16/9;height:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none;background:#000000;border:1px solid rgba(53,196,201,.3);box-sizing:border-box}
 .testimonial-carousel-track.is-fading .testimonial-card{opacity:0}
 .testimonial-skel{width:100%;aspect-ratio:16/9;border-radius:2px;background:linear-gradient(90deg,#F7F2E9 25%,#FAF7F0 50%,#F7F2E9 75%);background-size:200% 100%;animation:adSkeleton 1.4s ease-in-out infinite}
-.testimonial-card{width:100%;aspect-ratio:16/9;height:auto;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:#000000;border:1px solid rgba(53,196,201,.3);border-radius:0;box-shadow:none;position:relative;opacity:1;overflow:hidden;transition:opacity .45s ease;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0)}
+.testimonial-card{width:100%;height:100%;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:transparent;border:none;border-radius:0;box-shadow:none;position:relative;opacity:1;overflow:hidden;transition:opacity .45s ease;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0)}
 .testimonial-body{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left}
 .testimonial-stars{display:flex;justify-content:flex-start;gap:3px;font-size:11px;margin-bottom:10px}
 .testimonial-stars .review-star{color:#E6DCC8}
