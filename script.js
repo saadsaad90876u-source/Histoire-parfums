@@ -6364,12 +6364,21 @@ if(newsletterForm){
 
 function scrollToSection(id){
   const welcomeScreen = document.getElementById('welcome-screen');
+  const el = document.getElementById(id);
+  // FAQ + testimonials now live permanently inside #welcome-screen (moved
+  // off the shop page) -- for those, bring the splash back instead of
+  // dismissing it, since dismissing would hide the very element we're
+  // trying to scroll to.
+  const targetInSplash = !!(el && welcomeScreen && welcomeScreen.contains(el));
   const splashOpen = welcomeScreen && getComputedStyle(welcomeScreen).display !== 'none' && !document.documentElement.classList.contains('ws-skip');
-  if(splashOpen && typeof window.wsDismiss === 'function'){
+  if(targetInSplash){
+    if(!splashOpen && typeof window.wsReopen === 'function'){
+      window.wsReopen();
+    }
+  } else if(splashOpen && typeof window.wsDismiss === 'function'){
     window.wsDismiss(false);
   }
-  const el = document.getElementById(id);
-  if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if(el) requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 }
 const footerLinkMen = document.getElementById('footer-link-men');
 if(footerLinkMen) footerLinkMen.addEventListener('click', () => {
