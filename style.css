@@ -25,7 +25,7 @@ to{opacity:1;transform:translateY(0) scale(1)}
 @keyframes skeletonShine{0%{background-position:200% 0}
 100%{background-position:-200% 0}
 }
-#welcome-screen{position:fixed;inset:0;height:100dvh;z-index:900;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding-top:80px;background:#F4FBFB;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
+#welcome-screen{position:fixed;inset:0;height:100dvh;z-index:900;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding-top:80px;background:#FFFFFF;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;transition:opacity 0.7s cubic-bezier(.22,.61,.36,1),transform 0.7s cubic-bezier(.22,.61,.36,1)}
 /* While the splash is up, the real #announcement-bar and <header> are
    physically moved (not cloned) to sit right before #welcome-screen in
    the DOM and switched to normal flow here -- see moveHeaderInFlow() /
@@ -385,7 +385,6 @@ html.lang-ar .footer-links-grid{direction:rtl}
 body{background:#FFFFFF;color:var(--ink);font-family:'Work Sans',sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)}
 .shop-section{padding:8px 0 14px;position:relative}
-#hero-banner{width:100vw;margin-left:calc(-50vw + 50%);margin-right:calc(-50vw + 50%);margin-top:-16px}
 .hero-banner-frame{position:relative;width:100%;margin:0 auto;border-radius:0;overflow:hidden;aspect-ratio:1/1;background:#000000;animation:heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;box-shadow:none;border:none}
 #splash-banner-bottom-frame{background:#000000}
 .hb-hero-cta{pointer-events:auto;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:none;color:#2E1608;background:#E3CBA0;border:1px solid rgba(46,22,8,.15);border-radius:6px;padding:7px 22px;cursor:pointer;box-shadow:none;transition:transform .2s ease}
@@ -605,7 +604,6 @@ to{opacity:1;transform:none}
 .pp-price{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:500;color:var(--seal);margin:0}
 @media(max-width:560px){.ab-track{animation-duration:8s}
 #shop-view{padding:86px 0 0}
-#hero-banner{margin-top:-14px}
 .hero-banner-frame{aspect-ratio:1/1;border-radius:0}
 .product-grid{grid-template-columns:repeat(2,1fr);gap:22px}
 .shop-section .container{padding-left:12px;padding-right:12px}

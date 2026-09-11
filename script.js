@@ -1837,15 +1837,6 @@ document.getElementById('pack4-banner-image-input')?.addEventListener('change', 
 });
 
 
-const heroBannerCtrl = createBannerController({
-  sectionId: 'hero-banner',
-  contentId: 'hero-banner-content',
-  inputId: 'hero-banner-input',
-  storageKey: 'aura-hero-banner',
-  autoplay: true,
-  autoplayDelay: 6000,
-  priority: true
-});
 const bottomBannerCtrl = createBannerController({
   sectionId: 'bottom-banner',
   contentId: 'bottom-banner-content',
@@ -1909,12 +1900,11 @@ wsBannerCtrl1.load();
 wsBannerCtrl2.load();
 splashBannerTopCtrl.load();
 splashBannerBottomCtrl.load();
-heroBannerCtrl.load();
 bottomBannerCtrl.load();
 bottomBannerCtrl2.load();
 
 
-function renderHeroBanner(){ heroBannerCtrl.render(); bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
+function renderHeroBanner(){ bottomBannerCtrl.render(); bottomBannerCtrl2.render(); }
 
 
 
@@ -1945,7 +1935,14 @@ async function saveFeaturedProducts(){
 async function loadFeaturedProducts(){
   try{
     const data = await kvGet(FEATURED_KEY);
-    if(Array.isArray(data)) featuredProducts = data;
+    if(Array.isArray(data)){
+      featuredProducts = data;
+      // Mirrors createBannerController's localStorage cache for the hero
+      // banner: lets the <head> preload script (see index.html) start
+      // fetching this card's image on the very next visit, before
+      // script.js itself has even downloaded.
+      try{ localStorage.setItem('cache-aura-featured-products-v1', JSON.stringify(data)); }catch(err){}
+    }
   }catch(err){
     featuredStorageAvailable = false;
   }
@@ -1959,10 +1956,18 @@ function featuredProductCard(p, idx){
       <button class="featured-del-btn" data-idx="${idx}" aria-label="Delete product">🗑</button>
     </div>` : '';
   const revealDelayClass = `d${(idx % 4) + 1}`;
+  // The first card is visible immediately on page load (no scrolling
+  // needed), so unlike the rest of the grid it must NOT go through the
+  // seq-lazy queue built for off-screen images -- it loads eagerly
+  // instead. Its URL is also preloaded even earlier, directly in
+  // <head> (see index.html), independent of script.js.
+  const img = idx === 0
+    ? `<img src="${p.image || ''}" alt="${p.name}" decoding="async" fetchpriority="high">`
+    : `<img class="seq-lazy" data-src="${p.image || ''}" alt="${p.name}" decoding="async">`;
   return `<div class="featured-product-card reveal ${revealDelayClass}" data-idx="${idx}">
     <div class="featured-product-media">
       ${adminControls}
-      <img class="seq-lazy" data-src="${p.image || ''}" alt="${p.name}" decoding="async">
+      ${img}
     </div>
     <div class="featured-product-name">${p.name}</div>
     <div class="featured-product-price">${p.price} DH</div>

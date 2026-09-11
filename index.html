@@ -33,7 +33,7 @@ svg:not([width]) { width: 1em; height: 1em; }
   align-items: center;
   justify-content: center;
   padding-bottom: 4vh;
-  background: #F7F4ED;
+  background: #FFFFFF;
   overflow: hidden;
 }
 /* Repeat visits within the same tab/session skip the splash entirely --
@@ -77,8 +77,7 @@ try {
 // Same LCP optimization as below, but for the splash screen's own
 // banner (#splash-banner-bottom) -- this is the actual very first
 // image a visitor sees when landing on the site, before the shop
-// page (and its own hero banner, handled separately below) ever
-// becomes visible. See createBannerController's storageKey/category
+// page ever becomes visible. See createBannerController's storageKey/category
 // for splash-banner-bottom in script.js; currentFilter there defaults
 // to 'women' (see script.js), so that's the category read here on a
 // fresh page load with no gender selection made yet.
@@ -139,30 +138,53 @@ try {
     .catch(function () { /* offline/blocked -- script.js's normal flow still renders the banner later */ });
 })();
 
-// Improves LCP: the hero banner image is admin-managed content fetched
-// from Supabase at runtime, so it can't be hardcoded into the static
-// HTML. But the banner controller already caches the last-seen banner
-// URL in localStorage (see createBannerController in script.js) so the
-// page can paint instantly from cache on repeat visits. We read that
-// same cache here, synchronously, before anything else loads, and hint
-// the browser to start fetching that image immediately -- instead of
-// waiting for the full JS bundle to load, parse and run before the
-// browser even discovers the image exists.
+// Same LCP fix as the splash banner above, but for the first "featured
+// product" card in the shop -- it renders visible immediately (no
+// scroll needed), yet until now its image URL was only discovered
+// after script.js finished loading, parsing and running (see
+// FEATURED_KEY/loadFeaturedProducts in script.js), and even then it
+// went through the seq-lazy queue meant for off-screen images. The
+// repeat-visit fast path below reads the local cache written by
+// loadFeaturedProducts; the direct-fetch fallback below that covers a
+// genuinely first-ever visit with an empty cache.
 (function(){
   try {
-    var raw = localStorage.getItem('cache-aura-hero-banner-women');
+    var raw = localStorage.getItem('cache-aura-featured-products-v1');
     if (!raw) return;
     var items = JSON.parse(raw);
     var first = Array.isArray(items) ? items[0] : null;
-    if (first && first.url && first.type !== 'video') {
+    if (first && first.image) {
       var link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
-      link.href = first.url;
+      link.href = first.image;
       link.fetchPriority = 'high';
       document.head.appendChild(link);
     }
   } catch (e) { /* localStorage unavailable (private browsing) -- skip */ }
+})();
+
+(function(){
+  if (typeof fetch !== 'function') return;
+  var SUPABASE_URL = 'https://kydrxvfarubaazemxqhw.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5ZHJ4dmZhcnViYWF6ZW14cWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3ODk1ODMsImV4cCI6MjA5OTM2NTU4M30.eYbHXtBVY8knbZtzX1BLaKWKlRznBYl9II2EcZKQG8M';
+  var apiUrl = SUPABASE_URL + '/rest/v1/kv_store?key=eq.aura-featured-products-v1&select=value';
+  fetch(apiUrl, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } })
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (rows) {
+      var value = rows && rows[0] && rows[0].value;
+      var items = Array.isArray(value) ? value : null;
+      var first = items && items[0];
+      if (first && first.image) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = first.image;
+        link.fetchPriority = 'high';
+        document.head.appendChild(link);
+      }
+    })
+    .catch(function () { /* offline/blocked -- script.js's normal flow still renders it later */ });
 })();
 </script>
 <meta name="color-scheme" content="light only">
@@ -865,13 +887,6 @@ try {
 <main id="shop-view">
 <section class="shop-section">
   <div class="container">
-    <section id="hero-banner" style="display:none;">
-      <div class="hero-banner-frame" id="hero-banner-frame">
-        <div id="hero-banner-content"></div>
-      </div>
-    </section>
-    <input type="file" id="hero-banner-input" accept="image/*,image/avif,video/mp4" multiple style="display:none;">
-
     <h2 class="shop-heading reveal" id="shop-heading">Women's Collection</h2>
     <div class="shop-filters" id="shop-filters">
       <button class="sf-btn active" data-f="women" data-i18n="filterWomen">Women</button>
