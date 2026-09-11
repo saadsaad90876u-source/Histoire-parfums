@@ -239,11 +239,32 @@ function seqEnqueueImages(root){
   // IntersectionObserver to report they're near the viewport) is what
   // keeps downloads prioritized top-to-bottom while still starting
   // everything immediately.
+  //
+  // One exception: shop/product images (#shop-grid, #featured-products-list)
+  // jump to the FRONT of the queue instead of the back. They live in the
+  // DOM after the splash screen's own decorative content (banners,
+  // testimonials...), but they're what the customer actually sees the
+  // instant they tap "Découvrir la collection" -- so they shouldn't sit
+  // waiting behind splash-only images the visitor may never even scroll
+  // to before leaving the splash.
   const els = (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-observed]), video.seq-lazy[data-src]:not([data-seq-observed])');
+  const priorityEls = [];
+  const normalEls = [];
   els.forEach(el => {
+    (el.closest('#shop-grid, #featured-products-list') ? priorityEls : normalEls).push(el);
+  });
+  normalEls.forEach(el => {
     el.setAttribute('data-seq-observed', '1');
     el.setAttribute('data-seq-queued', '1');
     seqImageQueue.push(el);
+  });
+  // unshift (in original order) so these jump ahead of anything already
+  // sitting in the queue from splash-only content, not just ahead of the
+  // normalEls found in this same call.
+  priorityEls.reverse().forEach(el => {
+    el.setAttribute('data-seq-observed', '1');
+    el.setAttribute('data-seq-queued', '1');
+    seqImageQueue.unshift(el);
   });
   seqProcessQueue();
 }
@@ -954,7 +975,13 @@ function productMedia(p, idx){
   
   
   
-  const eager = typeof idx === 'number' && idx < 4;
+  // Every product on the shop's first page (SHOP_PAGE_SIZE) loads eagerly
+  // with top network priority -- same treatment as the splash hero banner
+  // -- instead of only the first 4. Those are exactly the cards the
+  // customer sees the instant they land on the shop (right after tapping
+  // "Découvrir la collection"), so they shouldn't have to wait behind the
+  // general sequential queue used for everything further down/off-screen.
+  const eager = typeof idx === 'number' && idx < SHOP_PAGE_SIZE;
   const coverSrcset = (p.imagesSrcset && p.imagesSrcset[cover]) || '';
   const sizesAttr = coverSrcset ? ` sizes="(max-width: 640px) 45vw, 320px"` : '';
   const srcAttrs = eager
@@ -3760,6 +3787,14 @@ function productPageTemplate(pRaw, category, idx){
         ${images.map((url, i) => {
           if(isVideoUrl(url)) return `<div class="pp-slide pp-slide-video"><video class="seq-lazy" data-src="${url}" loop playsinline webkit-playsinline preload="none" aria-label="${p.name}"></video></div>`;
           const ss = (p.imagesSrcset && p.imagesSrcset[url]) || '';
+          // The very first slide is the big image the customer sees the
+          // instant the product page opens (same idea as the shop grid's
+          // first page and the splash hero banner's first slide) -- it
+          // loads eagerly with top network priority instead of sitting in
+          // the general sequential queue behind other on-page images.
+          if(i === 0){
+            return `<div class="pp-slide"><img src="${url}"${ss ? ` srcset="${ss}" sizes="100vw"` : ''} alt="${p.name}" loading="eager" fetchpriority="high"></div>`;
+          }
           return `<div class="pp-slide"><img class="seq-lazy" data-src="${url}"${ss ? ` data-srcset="${ss}" sizes="100vw"` : ''} alt="${p.name}"></div>`;
         }).join('')}
       </div>
@@ -3769,7 +3804,9 @@ function productPageTemplate(pRaw, category, idx){
     ${images.length > 1 ? `<div class="pp-scroll-progress" id="pp-scroll-progress"><div class="pp-scroll-progress-bar" id="pp-scroll-progress-bar" style="width:${(100/images.length).toFixed(2)}%;left:0%;"></div><span class="pp-scroll-arrow">‹</span></div>` : ''}
     ${images.length > 1 ? `<div class="pp-thumbs">${images.map((url, i) => isVideoUrl(url)
       ? `<button type="button" class="pp-thumb pp-thumb-video${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir vidéo ${i + 1}"><video class="seq-lazy" data-src="${url}" muted playsinline preload="none"></video><span class="pp-thumb-play-badge">▶</span></button>`
-      : `<button type="button" class="pp-thumb${i === 0 ? ' active' : ''}" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`).join('')}</div>` : ''}` : `
+      : (i === 0
+          ? `<button type="button" class="pp-thumb active" data-i="0" aria-label="Voir image 1"><img src="${url}" alt="${p.name} miniature 1" loading="eager" fetchpriority="high"></button>`
+          : `<button type="button" class="pp-thumb" data-i="${i}" aria-label="Voir image ${i + 1}"><img class="seq-lazy" data-src="${url}" alt="${p.name} miniature ${i + 1}"></button>`)).join('')}</div>` : ''}` : `
     ${backBtnHtml}
     <div class="pp-gallery pp-gallery-placeholder">
       <div class="bottle mini-bottle" style="transform:scale(1.5);">
