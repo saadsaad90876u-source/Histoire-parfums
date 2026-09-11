@@ -487,7 +487,7 @@ const translations = {
     splashGenderTitle: "Quel pack KORAL voulez-vous composer ?",
     genderWomen: "Femme",
     genderMen: "Homme",
-    genderMixte: "Mixte",
+    genderMixte: "Tout",
     footerQuickLinks: "Liens Rapides",
     footerLinkMen: "Collection Homme",
     footerLinkWomen: "Collection Femme",
@@ -774,7 +774,7 @@ const translations = {
     splashGenderTitle: "أي باك من KORAL تريد تكوينه؟",
     genderWomen: "نسائي",
     genderMen: "رجالي",
-    genderMixte: "مختلط",
+    genderMixte: "الكل",
     footerQuickLinks: "روابط سريعة",
     footerLinkMen: "مجموعة رجالي",
     footerLinkWomen: "مجموعة نسائي",
@@ -1848,6 +1848,111 @@ document.getElementById('pack4-banner-image-input')?.addEventListener('change', 
 });
 
 
+// Single admin-uploadable image for each of the 3 splash category
+// shortcut cards (Femme/Homme/Composer mon pack) -- replaces the static
+// SVG icon that used to sit in the middle of each card. One fixed image
+// per card (no carousel), stored in Supabase via kvSet/kvGet exactly
+// like the other banners, cached in localStorage the same way. Visitors
+// just see the image (or an empty box if none was uploaded yet); admins
+// see a placeholder with an "Ajouter" hint when empty, and clicking the
+// box in admin mode opens the file picker instead of triggering the
+// card's normal navigation (filter shop / open pack modal).
+function createSimpleImageSlot(cfg){
+  const box = document.getElementById(cfg.boxId);
+  const img = document.getElementById(cfg.imgId);
+  const placeholder = document.getElementById(cfg.placeholderId);
+  const input = document.getElementById(cfg.inputId);
+  if(!box || !img || !placeholder || !input) return { render(){}, load(){} };
+
+  let url = null;
+  const cacheKey = `cache-${cfg.storageKey}`;
+
+  function persistCache(){
+    try{ localStorage.setItem(cacheKey, JSON.stringify({ url })); }
+    catch(err){}
+  }
+
+  function render(){
+    if(url){
+      if(img.src !== url) img.src = url;
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+    } else {
+      img.style.display = 'none';
+      img.removeAttribute('src');
+      placeholder.style.display = isAdmin ? 'flex' : 'none';
+    }
+    box.classList.toggle('splash-cat-box-admin', isAdmin);
+  }
+
+  async function load(){
+    try{
+      const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+      if(cached && cached.url){ url = cached.url; render(); }
+    }catch(err){}
+    try{
+      const data = await kvGet(cfg.storageKey).catch(() => null);
+      if(data && data.url){
+        url = data.url;
+        persistCache();
+        render();
+      }
+    }catch(err){}
+  }
+
+  box.addEventListener('click', (e) => {
+    if(!isAdmin) return;
+    e.preventDefault();
+    e.stopPropagation();
+    input.click();
+  });
+
+  input.addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if(!file) return;
+    showToast(t('bannerUploading'));
+    const res = await uploadProductImage(file, { transparent: false, responsive: false });
+    const newUrl = res && res.url;
+    if(newUrl){
+      const oldUrl = url;
+      url = newUrl;
+      try{ await kvSet(cfg.storageKey, { url }); }
+      catch(err){ if(isAdmin) showToast(t('toastStorageUnavailable')); }
+      persistCache();
+      if(oldUrl && oldUrl !== newUrl) deleteStorageFile('product-images', oldUrl);
+      render();
+    }
+  });
+
+  return { render, load };
+}
+
+const splashCatWomenImageCtrl = createSimpleImageSlot({
+  boxId: 'splash-cat-women-box',
+  imgId: 'splash-cat-women-img',
+  placeholderId: 'splash-cat-women-placeholder',
+  inputId: 'splash-cat-women-input',
+  storageKey: 'aura-splash-cat-women-image'
+});
+const splashCatMenImageCtrl = createSimpleImageSlot({
+  boxId: 'splash-cat-men-box',
+  imgId: 'splash-cat-men-img',
+  placeholderId: 'splash-cat-men-placeholder',
+  inputId: 'splash-cat-men-input',
+  storageKey: 'aura-splash-cat-men-image'
+});
+const splashCatPackImageCtrl = createSimpleImageSlot({
+  boxId: 'splash-cat-pack-box',
+  imgId: 'splash-cat-pack-img',
+  placeholderId: 'splash-cat-pack-placeholder',
+  inputId: 'splash-cat-pack-input',
+  storageKey: 'aura-splash-cat-pack-image'
+});
+splashCatWomenImageCtrl.load();
+splashCatMenImageCtrl.load();
+splashCatPackImageCtrl.load();
+
 const bottomBannerCtrl = createBannerController({
   sectionId: 'bottom-banner',
   contentId: 'bottom-banner-content',
@@ -2906,6 +3011,9 @@ function setAdminUI(){
   wsBannerCtrl2.render();
   splashBannerTopCtrl.render();
   splashBannerBottomCtrl.render();
+  splashCatWomenImageCtrl.render();
+  splashCatMenImageCtrl.render();
+  splashCatPackImageCtrl.render();
   renderPack4BadgeImage();
   renderFeaturedProducts();
   if(currentProductPage) renderProductPage();
@@ -2980,6 +3088,15 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
   if(ok){
     isAdmin = true;
     closeAdminLoginModal();
+    // Entering via the admin link hides the whole splash screen
+    // (html.ws-skip -- see the <head> script in index.html), including
+    // the splash-only banner slots (#splash-banner-top/#splash-banner-bottom)
+    // that live nowhere else on the page. Without this, an admin who
+    // logs in via that link could never see or manage those banners at
+    // all, since logging in alone doesn't undo the skip. wsReopen() (set
+    // up in index.html) removes ws-skip and brings the splash back in
+    // place so the admin controls on those banners become reachable.
+    if(typeof window.wsReopen === 'function') window.wsReopen();
     setAdminUI();
     if(pendingAdminOrderNumber){
       const target = pendingAdminOrderNumber;
@@ -6421,7 +6538,10 @@ if(splashCatMen) splashCatMen.addEventListener('click', () => {
   scrollToSection('shop-heading');
 });
 const splashCatPack = document.getElementById('splash-cat-pack');
-if(splashCatPack) splashCatPack.addEventListener('click', () => openPack4Modal());
+if(splashCatPack) splashCatPack.addEventListener('click', () => {
+  if(typeof window.openSplashGenderPrompt === 'function') window.openSplashGenderPrompt();
+  else openPack4Modal();
+});
 const footerLinkFaq = document.getElementById('footer-link-faq');
 if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => {
   scrollToSection('faq-section');

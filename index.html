@@ -341,17 +341,38 @@ try {
     <div class="container">
       <div class="splash-cat-grid">
         <button type="button" class="splash-cat-card" id="splash-cat-women">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2c-2.8 0-5 2.4-5 5.3 0 2.5 1.6 4.6 3.8 5.1v2.1H8.5v1.6h2.3V19H7v1.6h3.8V22h1.6v-1.4H16V19h-3.6v-2.9c2.2-.5 3.8-2.6 3.8-5.1C16.2 4.4 14 2 12 2z"/></svg>
-          <span data-i18n="filterWomen">Femme</span>
+          <span class="splash-cat-box" id="splash-cat-women-box">
+            <img class="splash-cat-img" id="splash-cat-women-img" alt="Femme" style="display:none;">
+            <span class="splash-cat-img-placeholder" id="splash-cat-women-placeholder" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-5 5"/></svg>
+              <span data-i18n="addBannerBtn">Ajouter</span>
+            </span>
+          </span>
+          <span class="splash-cat-label" data-i18n="filterWomen">Femme</span>
         </button>
+        <input type="file" id="splash-cat-women-input" accept="image/*" style="display:none;">
         <button type="button" class="splash-cat-card" id="splash-cat-men">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="14" r="6.2"/><path d="M14.4 9.6 20 4M14.5 4h5.5v5.5"/></svg>
-          <span data-i18n="filterMen">Homme</span>
+          <span class="splash-cat-box" id="splash-cat-men-box">
+            <img class="splash-cat-img" id="splash-cat-men-img" alt="Homme" style="display:none;">
+            <span class="splash-cat-img-placeholder" id="splash-cat-men-placeholder" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-5 5"/></svg>
+              <span data-i18n="addBannerBtn">Ajouter</span>
+            </span>
+          </span>
+          <span class="splash-cat-label" data-i18n="filterMen">Homme</span>
         </button>
+        <input type="file" id="splash-cat-men-input" accept="image/*" style="display:none;">
         <button type="button" class="splash-cat-card" id="splash-cat-pack">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8.5" width="18" height="12" rx="1.5"/><path d="M3 12.5h18"/><path d="M12 8.5v12"/><path d="M12 8.5c-1.8 0-3.2-1.3-3.2-3S10.2 2.5 12 4.4c1.8-1.9 3.2-.8 3.2 1.1s-1.4 3-3.2 3z"/></svg>
-          <span data-i18n="pack4BannerCta">Composer mon pack</span>
+          <span class="splash-cat-box" id="splash-cat-pack-box">
+            <img class="splash-cat-img" id="splash-cat-pack-img" alt="Pack" style="display:none;">
+            <span class="splash-cat-img-placeholder" id="splash-cat-pack-placeholder" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-5 5"/></svg>
+              <span data-i18n="addBannerBtn">Ajouter</span>
+            </span>
+          </span>
+          <span class="splash-cat-label">Mon pack</span>
         </button>
+        <input type="file" id="splash-cat-pack-input" accept="image/*" style="display:none;">
       </div>
     </div>
   </section>

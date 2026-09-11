@@ -97,6 +97,8 @@
   if (genderClose) genderClose.addEventListener('click', closeSplashGenderPrompt);
   if (genderOverlay) genderOverlay.addEventListener('click', closeSplashGenderPrompt);
 
+  window.openSplashGenderPrompt = openSplashGenderPrompt;
+
   document.querySelectorAll('.splash-gender-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var gender = btn.dataset.gender; 
