@@ -180,8 +180,18 @@ if(document.readyState === 'interactive' || document.readyState === 'complete'){
 
 
 
+// Images are queued and downloaded strictly in the order the customer
+// will encounter them on the page (top of page first, then downward,
+// then anything added later such as a newly rendered product grid or
+// modal) -- see seqEnqueueImages below. They start downloading right
+// away, without waiting for the element to scroll near the viewport,
+// so that by the time the visitor actually scrolls to a given image it
+// has already finished loading and simply appears, instead of popping
+// in. SEQ_MAX_CONCURRENT caps how many download at once so the very
+// first (most important) images aren't starved of bandwidth by
+// far-down-the-page ones that got enqueued moments later.
 const seqImageQueue = [];
-const SEQ_MAX_CONCURRENT = 6;
+const SEQ_MAX_CONCURRENT = 8;
 let seqImageLoadingCount = 0;
 
 function seqProcessQueue(){
@@ -222,33 +232,20 @@ function seqProcessQueue(){
 
 
 
-const seqIO = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(!entry.isIntersecting) return;
-    const el = entry.target;
-    seqIO.unobserve(el);
-    if(el.hasAttribute('data-seq-queued')) return;
-    el.setAttribute('data-seq-queued', '1');
-    seqImageQueue.push(el);
-    seqProcessQueue();
-  });
-}, { rootMargin: '600px 0px' }) : null;
-
 function seqEnqueueImages(root){
+  // querySelectorAll returns elements in document order, which is the
+  // same order the customer scrolls through them -- so pushing them
+  // straight into the queue (instead of waiting for an
+  // IntersectionObserver to report they're near the viewport) is what
+  // keeps downloads prioritized top-to-bottom while still starting
+  // everything immediately.
   const els = (root || document).querySelectorAll('img.seq-lazy[data-src]:not([data-seq-observed]), video.seq-lazy[data-src]:not([data-seq-observed])');
   els.forEach(el => {
     el.setAttribute('data-seq-observed', '1');
-    
-    
-    
-    if(!seqIO){
-      el.setAttribute('data-seq-queued', '1');
-      seqImageQueue.push(el);
-      return;
-    }
-    seqIO.observe(el);
+    el.setAttribute('data-seq-queued', '1');
+    seqImageQueue.push(el);
   });
-  if(!seqIO) seqProcessQueue();
+  seqProcessQueue();
 }
 
 new MutationObserver((mutations) => {
@@ -487,7 +484,7 @@ const translations = {
     splashGenderTitle: "Quel pack KORAL voulez-vous composer ?",
     genderWomen: "Femme",
     genderMen: "Homme",
-    genderMixte: "Tout",
+    genderMixte: "Tous",
     footerQuickLinks: "Liens Rapides",
     footerLinkMen: "Collection Homme",
     footerLinkWomen: "Collection Femme",
@@ -2902,7 +2899,7 @@ document.getElementById('review-form').addEventListener('submit', async (e) => {
 let adReviewsStatusFilter = 'pending';
 
 function adReviewCardHtml(r){
-  const img = r.image_url ? `<div class="ad-review-photo"><img src="${r.image_url}" alt="" loading="lazy"></div>` : '';
+  const img = r.image_url ? `<div class="ad-review-photo"><img class="seq-lazy" data-src="${r.image_url}" alt=""></div>` : '';
   const productTag = r.product_name ? `<div class="ad-review-product-tag">${(r.product_name || '').replace(/</g, '&lt;')}</div>` : '';
   const actionBtn = r.approved
     ? `<button type="button" class="ad-review-del-btn" data-id="${r.id}">Retirer</button>`

@@ -386,7 +386,7 @@ body{background:#FFFFFF;color:var(--ink);font-family:'Work Sans',sans-serif;font
 h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--ink)}
 .shop-section{padding:8px 0 14px;position:relative}
 .hero-banner-frame{position:relative;width:100%;margin:0 auto;border-radius:0;overflow:hidden;aspect-ratio:1/1;background:#000000;animation:heroFadeIn 1s cubic-bezier(.2,.8,.2,1) both;box-shadow:none;border:none}
-#splash-banner-bottom-frame{background:#000000}
+#splash-banner-bottom-frame{background:#000000;aspect-ratio:1/1;min-height:220px}
 .hb-hero-cta{pointer-events:auto;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.03em;text-transform:none;color:#2E1608;background:#E3CBA0;border:1px solid rgba(46,22,8,.15);border-radius:6px;padding:7px 22px;cursor:pointer;box-shadow:none;transition:transform .2s ease}
 .hb-hero-cta:active{transform:scale(.96)}
 .ws-cta-wrap-repositioned:active{transform:scale(.96)}
@@ -710,7 +710,7 @@ to{opacity:1;transform:translateY(0)}
 .splash-cat-img-placeholder svg{width:24px;height:24px}
 .splash-cat-box.splash-cat-box-admin{cursor:pointer}
 .splash-cat-box.splash-cat-box-admin::after{content:'';position:absolute;inset:0;border:1.5px dashed rgba(156,177,208,.6);border-radius:14px;pointer-events:none}
-.splash-cat-label{text-align:center}
+.splash-cat-label{text-align:center;color:#111111}
 .splash-cat-card:active .splash-cat-box{transform:scale(.96)}
 @media (hover:hover) and (pointer:fine){.splash-cat-card:hover .splash-cat-box{filter:brightness(1.25)}
 }
@@ -1245,10 +1245,10 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-rating-stars .review-star.filled{color:#E5C878}
 .testimonial-rating-text{font-size:11.5px;letter-spacing:.05em;color:var(--text-soft);white-space:nowrap}
 .testimonial-carousel{max-width:660px;margin:0 auto;touch-action:pan-y;position:relative}
-.testimonial-carousel-track{aspect-ratio:16/9;height:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none;background:#000000;border:2px solid #4A6FA5;box-sizing:border-box}
+.testimonial-carousel-track{height:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none;background:#000000;border:2px solid #4A6FA5;box-sizing:border-box}
 .testimonial-carousel-track.is-fading .testimonial-card{opacity:0}
 .testimonial-skel{width:100%;aspect-ratio:16/9;border-radius:2px;background:linear-gradient(90deg,#F7F2E9 25%,#FAF7F0 50%,#F7F2E9 75%);background-size:200% 100%;animation:adSkeleton 1.4s ease-in-out infinite}
-.testimonial-card{width:100%;height:100%;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:transparent;border:none;border-radius:0;box-shadow:none;position:relative;opacity:1;overflow:hidden;transition:opacity .45s ease;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0)}
+.testimonial-card{width:100%;height:auto;box-sizing:border-box;display:flex;flex-direction:row;align-items:center;text-align:left;gap:22px;padding:28px 32px;background:transparent;border:none;border-radius:0;box-shadow:none;position:relative;opacity:1;overflow:hidden;transition:opacity .45s ease;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0)}
 .testimonial-body{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left}
 .testimonial-stars{display:flex;justify-content:flex-start;gap:3px;font-size:11px;margin-bottom:10px}
 .testimonial-stars .review-star{color:#E6DCC8}
@@ -1270,7 +1270,7 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .testimonial-write-row{text-align:center;margin-top:22px}
 .reviews-write-btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 30px;border:1px solid #4A6FA5;border-radius:30px;background:transparent;color:#4A6FA5;font-family:'Work Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease}
 .reviews-write-btn-outline:hover{background:#4A6FA5;color:#F4EEE4}
-@media (max-width:640px){.testimonial-carousel-track{aspect-ratio:4/3}
+@media (max-width:640px){
 .testimonial-card{padding:18px;gap:14px}
 .testimonial-photo{width:56px;height:56px}
 .testimonial-photo-fallback{font-size:20px}
@@ -1436,7 +1436,9 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 .checkout-modal{background:#000000;color:#FFFFFF;}
 #pack4-picker-modal.checkout-modal{background:#FFFFFF;color:var(--ink);}
 #pack4-picker-modal.checkout-modal h3{color:var(--ink);}
-#pack4-picker-modal.checkout-modal .pp-back{color:var(--ink);}
+/* نفس التعديل أعلاه لـ #pack4-modal: الزر يتبع تدفق المحتوى أسفل الهيدر
+   بدل التثبيت فوقه. */
+#pack4-picker-modal.checkout-modal .pp-back{position:static;margin-bottom:10px;color:var(--ink);}
 .checkout-modal h3{color:#FFFFFF;}
 #pack4-modal h3{font-family:'Work Sans',sans-serif;font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:22px;}
 #search-modal h3{font-family:'Work Sans',sans-serif;font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:22px;}
@@ -1464,7 +1466,11 @@ body.printing-label .ad-label-box:last-child{page-break-after:auto}
 #pack4-modal{background:#FFFFFF;color:var(--ink);}
 #pack4-modal h3{color:#150F0C;}
 #pack4-modal .checkout-sub{color:var(--text-soft);}
-#pack4-modal .pp-back{color:var(--ink);}
+/* زر "Retour" هنا يتبع نفس تموضع باقي صفحات المتجر (أسفل الهيدر، ضمن
+   تدفق المحتوى العادي) بدل التموضع الثابت (position:fixed) فوق الهيدر
+   الأسود المستخدم في نوافذ الدفع الأخرى -- ولهذا نلغي هنا الخصائص التي
+   تثبّته فوق الهيدر (position/top/left/z-index من .checkout-modal .pp-back). */
+#pack4-modal .pp-back{position:static;margin-bottom:10px;color:var(--ink);}
 
 /* 2) صفحة اختيار 3 عطور (Pack): أسماء العطور في القائمة، رقم الكمية، وسعر الباك */
 .checkout-modal .pack4-picker-name{color:#FFFFFF;}
