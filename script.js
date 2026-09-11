@@ -1356,6 +1356,17 @@ function renderOrderSummary(){
 }
 
 function openCheckoutPage(pushHistory){
+  // If the splash screen is still up (visitor opened the cart and hit
+  // "Commander" before ever tapping "Découvrir la collection"), dismiss
+  // it first. Without this, the splash's fixed, full-screen overlay and
+  // locked body scroll (see lockBodyScroll() in index.html) stay active,
+  // so the checkout page renders behind/outside the visible area and
+  // nothing appears to happen when this button is tapped.
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const splashStillOpen = welcomeScreen && getComputedStyle(welcomeScreen).display !== 'none' && !document.documentElement.classList.contains('ws-skip');
+  if(splashStillOpen && typeof window.wsDismiss === 'function'){
+    window.wsDismiss(false);
+  }
   appliedCoupon = null;
   document.getElementById('coupon-input').value = '';
   document.getElementById('coupon-success').style.display = 'none';
@@ -6397,6 +6408,20 @@ if(footerLinkWomen) footerLinkWomen.addEventListener('click', () => {
   if(btn) btn.click();
   scrollToSection('shop-heading');
 });
+const splashCatWomen = document.getElementById('splash-cat-women');
+if(splashCatWomen) splashCatWomen.addEventListener('click', () => {
+  const btn = document.querySelector('.sf-btn[data-f="women"]');
+  if(btn) btn.click();
+  scrollToSection('shop-heading');
+});
+const splashCatMen = document.getElementById('splash-cat-men');
+if(splashCatMen) splashCatMen.addEventListener('click', () => {
+  const btn = document.querySelector('.sf-btn[data-f="men"]');
+  if(btn) btn.click();
+  scrollToSection('shop-heading');
+});
+const splashCatPack = document.getElementById('splash-cat-pack');
+if(splashCatPack) splashCatPack.addEventListener('click', () => openPack4Modal());
 const footerLinkFaq = document.getElementById('footer-link-faq');
 if(footerLinkFaq) footerLinkFaq.addEventListener('click', () => {
   scrollToSection('faq-section');
